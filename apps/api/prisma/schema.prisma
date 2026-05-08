@@ -222,7 +222,7 @@ model Product {
   id               String        @id @default(cuid())
   storeId          String
   categoryId       String?
-  slug             String
+  slug             String        @unique
   title            String
   description      String?
   price            Decimal?      @db.Decimal(12, 2)
@@ -244,6 +244,7 @@ model Product {
 
   @@unique([storeId, slug])
   @@index([status, publishedAt])
+  @@index([status, title])
   @@index([categoryId, status])
   @@index([storeId, status])
   @@map("products")

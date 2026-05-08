@@ -17,6 +17,7 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "prisma:generate": "npm run prisma:generate --workspace @topdanbazar/api",
+    "prisma:validate": "npm run prisma:validate --workspace @topdanbazar/api",
     "prisma:migrate": "npm run prisma:migrate --workspace @topdanbazar/api",
     "prisma:seed": "npm run prisma:seed --workspace @topdanbazar/api",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md,css}\""

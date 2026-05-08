@@ -22,4 +22,8 @@ export class CreateLeadEventDto {
   @IsString()
   @IsOptional()
   source?: string;
+
+  @IsString()
+  @IsOptional()
+  anonymousId?: string;
 }

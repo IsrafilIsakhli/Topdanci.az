@@ -12,6 +12,7 @@ export type AppEnvironment = Environment & {
   RATE_LIMIT_MAX: string;
   JWT_ACCESS_SECRET: string;
   JWT_REFRESH_SECRET: string;
+  LEAD_HASH_SALT: string;
 };
 
 export function validateEnv(env: Environment): AppEnvironment {
@@ -43,6 +44,7 @@ export function validateEnv(env: Environment): AppEnvironment {
     RATE_LIMIT_MAX: env.RATE_LIMIT_MAX ?? '120',
     JWT_ACCESS_SECRET: env.JWT_ACCESS_SECRET!,
     JWT_REFRESH_SECRET: env.JWT_REFRESH_SECRET!,
+    LEAD_HASH_SALT: env.LEAD_HASH_SALT ?? env.JWT_ACCESS_SECRET!,
   };
 }
 

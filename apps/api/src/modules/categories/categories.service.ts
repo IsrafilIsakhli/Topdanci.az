@@ -1,23 +1,107 @@
-import { Injectable } from '@nestjs/common';
-
-const publicCategories = [
-  { slug: 'geyim', name: 'Geyim', productCount: 45000, storeCount: 120 },
-  { slug: 'ayaqqabi', name: 'Ayaqqabi', productCount: 22000, storeCount: 85 },
-  { slug: 'aksesuar', name: 'Aksesuar', productCount: 15000, storeCount: 60 },
-  { slug: 'kosmetika', name: 'Kosmetika', productCount: 30000, storeCount: 95 },
-  { slug: 'elektronika', name: 'Elektronika', productCount: 18000, storeCount: 50 },
-  { slug: 'ev-mehsullari', name: 'Ev mehsullari', productCount: 25000, storeCount: 70 },
-  { slug: 'insaat-materiallari', name: 'Insaat materiallari', productCount: 12000, storeCount: 40 },
-  { slug: 'qida-mehsullari', name: 'Qida mehsullari', productCount: 40000, storeCount: 110 },
-];
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CategoryStatus, ProductStatus, StoreStatus } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
+import { ListCategoriesQueryDto } from './dto/list-categories-query.dto';
 
 @Injectable()
 export class CategoriesService {
-  listPublicCategories() {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async listPublicCategories(query: ListCategoriesQueryDto) {
+    const where = {
+      status: CategoryStatus.ACTIVE,
+      ...(query.q
+        ? {
+            name: {
+              contains: query.q,
+              mode: 'insensitive' as const,
+            },
+          }
+        : {}),
+    };
+
+    const categories = await this.prisma.category.findMany({
+      where,
+      orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        description: true,
+        icon: true,
+        _count: {
+          select: {
+            products: {
+              where: {
+                status: ProductStatus.ACTIVE,
+                store: { status: StoreStatus.ACTIVE },
+              },
+            },
+            stores: {
+              where: { status: StoreStatus.ACTIVE },
+            },
+          },
+        },
+      },
+    });
+
     return {
-      data: publicCategories,
+      data: categories.map((category) => ({
+        id: category.id,
+        slug: category.slug,
+        name: category.name,
+        description: category.description,
+        icon: category.icon,
+        productCount: category._count.products,
+        storeCount: category._count.stores,
+      })),
       meta: {
-        total: publicCategories.length,
+        total: categories.length,
+      },
+    };
+  }
+
+  async getPublicCategory(slug: string) {
+    const category = await this.prisma.category.findFirst({
+      where: {
+        slug,
+        status: CategoryStatus.ACTIVE,
+      },
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        description: true,
+        icon: true,
+        _count: {
+          select: {
+            products: {
+              where: {
+                status: ProductStatus.ACTIVE,
+                store: { status: StoreStatus.ACTIVE },
+              },
+            },
+            stores: {
+              where: { status: StoreStatus.ACTIVE },
+            },
+          },
+        },
+      },
+    });
+
+    if (!category) {
+      throw new NotFoundException('Category not found');
+    }
+
+    return {
+      data: {
+        id: category.id,
+        slug: category.slug,
+        name: category.name,
+        description: category.description,
+        icon: category.icon,
+        productCount: category._count.products,
+        storeCount: category._count.stores,
       },
     };
   }

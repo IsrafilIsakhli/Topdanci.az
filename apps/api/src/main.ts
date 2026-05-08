@@ -7,6 +7,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { RequestLoggingInterceptor } from './common/interceptors/request-logging.interceptor';
 import { RequestIdInterceptor } from './common/interceptors/request-id.interceptor';
 
 async function bootstrap(): Promise<void> {
@@ -24,7 +25,7 @@ async function bootstrap(): Promise<void> {
   });
 
   app.useGlobalFilters(new AllExceptionsFilter());
-  app.useGlobalInterceptors(new RequestIdInterceptor());
+  app.useGlobalInterceptors(new RequestIdInterceptor(), new RequestLoggingInterceptor());
 
   app.use(
     helmet({

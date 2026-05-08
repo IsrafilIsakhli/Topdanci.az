@@ -1,6 +1,6 @@
 import { IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
 
-export class ListProductsQueryDto {
+export class ListStoresQueryDto {
   @IsString()
   @IsOptional()
   @MaxLength(120)
@@ -15,11 +15,6 @@ export class ListProductsQueryDto {
   @IsOptional()
   @MaxLength(80)
   city?: string;
-
-  @IsString()
-  @IsOptional()
-  @MaxLength(120)
-  store?: string;
 
   @IsInt()
   @Min(1)

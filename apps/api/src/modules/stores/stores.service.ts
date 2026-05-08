@@ -1,61 +1,139 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ApplicationStatus, Prisma, ProductStatus, StoreStatus } from '@prisma/client';
+import { toCursorPagination } from '../../common/pagination/cursor-pagination';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateStoreApplicationDto } from './dto/create-store-application.dto';
-
-const publicStores = [
-  {
-    slug: 'baku-tekstil-mmc',
-    name: 'Baku Tekstil MMC',
-    category: 'Geyim va Tekstil',
-    city: 'Baki',
-    productCount: 1250,
-    verified: true,
-  },
-  {
-    slug: 'shoes-import-trade',
-    name: 'Shoes Import Trade',
-    category: 'Ayaqqabi',
-    city: 'Sumqayit',
-    productCount: 840,
-    verified: true,
-  },
-  {
-    slug: 'techwholesale-az',
-    name: 'TechWholesale AZ',
-    category: 'Elektronika',
-    city: 'Baki',
-    productCount: 3100,
-    verified: true,
-  },
-];
+import { ListStoresQueryDto } from './dto/list-stores-query.dto';
 
 @Injectable()
 export class StoresService {
-  listPublicStores() {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async listPublicStores(query: ListStoresQueryDto) {
+    const where = publicStoreWhere(query);
+    const { take, cursor, skip } = toCursorPagination(query);
+    const [stores, total] = await Promise.all([
+      this.prisma.store.findMany({
+        where,
+        take: take + 1,
+        ...(cursor ? { cursor } : {}),
+        ...(skip ? { skip } : {}),
+        orderBy: [{ publishedAt: 'desc' }, { id: 'desc' }],
+        select: publicStoreSelect,
+      }),
+      this.prisma.store.count({ where }),
+    ]);
+    const page = stores.slice(0, take);
+
     return {
-      data: publicStores,
+      data: page.map(mapPublicStore),
       meta: {
-        total: publicStores.length,
+        total,
+        nextCursor: stores.length > take ? page.at(-1)?.id ?? null : null,
       },
     };
   }
 
-  getPublicStore(slug: string) {
-    const store = publicStores.find((item) => item.slug === slug);
+  async getPublicStore(slug: string) {
+    const store = await this.prisma.store.findFirst({
+      where: {
+        slug,
+        status: StoreStatus.ACTIVE,
+      },
+      select: publicStoreSelect,
+    });
 
     if (!store) {
       throw new NotFoundException('Store not found');
     }
 
-    return { data: store };
+    return { data: mapPublicStore(store) };
   }
 
-  createApplication(dto: CreateStoreApplicationDto) {
-    return {
+  async createApplication(dto: CreateStoreApplicationDto) {
+    const application = await this.prisma.storeApplication.create({
       data: {
-        id: 'application_preview',
-        status: 'PENDING',
-        ...dto,
+        contactName: dto.contactName,
+        contactPhone: dto.contactPhone,
+        companyName: dto.companyName,
+        city: dto.city,
+        status: ApplicationStatus.PENDING,
+        ...(dto.contactEmail ? { contactEmail: dto.contactEmail } : {}),
+        ...(dto.taxNumber ? { taxNumber: dto.taxNumber } : {}),
+        ...(dto.district ? { district: dto.district } : {}),
+        ...(dto.description ? { description: dto.description } : {}),
       },
+      select: {
+        id: true,
+        status: true,
+        companyName: true,
+        createdAt: true,
+      },
+    });
+
+    return {
+      data: application,
     };
   }
+}
+
+const publicStoreSelect = {
+  id: true,
+  slug: true,
+  name: true,
+  description: true,
+  logoKey: true,
+  bannerKey: true,
+  city: true,
+  district: true,
+  verifiedAt: true,
+  publishedAt: true,
+  category: {
+    select: {
+      slug: true,
+      name: true,
+    },
+  },
+  _count: {
+    select: {
+      products: {
+        where: { status: ProductStatus.ACTIVE },
+      },
+    },
+  },
+} satisfies Prisma.StoreSelect;
+
+type PublicStoreRecord = Prisma.StoreGetPayload<{ select: typeof publicStoreSelect }>;
+
+function publicStoreWhere(query: ListStoresQueryDto): Prisma.StoreWhereInput {
+  return {
+    status: StoreStatus.ACTIVE,
+    ...(query.q
+      ? {
+          OR: [
+            { name: { contains: query.q, mode: 'insensitive' } },
+            { description: { contains: query.q, mode: 'insensitive' } },
+          ],
+        }
+      : {}),
+    ...(query.city ? { city: { equals: query.city, mode: 'insensitive' } } : {}),
+    ...(query.category ? { category: { slug: query.category } } : {}),
+  };
+}
+
+function mapPublicStore(store: PublicStoreRecord) {
+  return {
+    id: store.id,
+    slug: store.slug,
+    name: store.name,
+    description: store.description,
+    logoKey: store.logoKey,
+    bannerKey: store.bannerKey,
+    city: store.city,
+    district: store.district,
+    verified: Boolean(store.verifiedAt),
+    publishedAt: store.publishedAt,
+    category: store.category,
+    productCount: store._count.products,
+  };
 }
