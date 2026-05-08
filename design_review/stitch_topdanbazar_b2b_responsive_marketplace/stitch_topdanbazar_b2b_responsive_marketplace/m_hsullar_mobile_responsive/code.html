@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Məhsullar - TopdanBazar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "surface-container-high": "#dce9ff",
+                      "secondary-container": "#5dfd8a",
+                      "secondary-fixed": "#66ff8e",
+                      "on-secondary-fixed-variant": "#005322",
+                      "primary-fixed": "#afefdd",
+                      "tertiary-fixed-dim": "#ffb5a1",
+                      "background": "#f8f9ff",
+                      "primary": "#00342b",
+                      "outline-variant": "#bfc9c4",
+                      "on-background": "#0b1c30",
+                      "tertiary": "#4e2013",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#7ebdac",
+                      "surface-container-low": "#eff4ff",
+                      "error": "#ba1a1a",
+                      "on-primary-fixed": "#00201a",
+                      "on-error": "#ffffff",
+                      "primary-container": "#004d40",
+                      "secondary": "#006d2f",
+                      "surface-dim": "#cbdbf5",
+                      "on-surface": "#0b1c30",
+                      "surface": "#f8f9ff",
+                      "on-secondary-fixed": "#002109",
+                      "surface-variant": "#d3e4fe",
+                      "tertiary-fixed": "#ffdbd1",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container": "#e5eeff",
+                      "tertiary-container": "#693527",
+                      "inverse-primary": "#94d3c1",
+                      "outline": "#707975",
+                      "on-secondary-container": "#007232",
+                      "inverse-surface": "#213145",
+                      "on-primary-fixed-variant": "#065043",
+                      "secondary-fixed-dim": "#3de273",
+                      "on-tertiary-fixed": "#370e04",
+                      "primary-fixed-dim": "#94d3c1",
+                      "on-tertiary-container": "#e89f8c",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-fixed-variant": "#6d382a",
+                      "error-container": "#ffdad6",
+                      "on-surface-variant": "#3f4945",
+                      "surface-tint": "#29695b",
+                      "inverse-on-surface": "#eaf1ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "md": "16px",
+                      "xxl": "64px",
+                      "sm": "8px",
+                      "gutter": "24px",
+                      "xs": "4px",
+                      "xl": "40px",
+                      "lg": "24px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "h2": [
+                              "Inter"
+                      ],
+                      "price-display": [
+                              "Inter"
+                      ],
+                      "h3": [
+                              "Inter"
+                      ],
+                      "h1": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "h2": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "price-display": [
+                              "20px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "h3": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "h1": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col items-center">
+<!-- Mobile Container (390px simulation) -->
+<div class="w-full max-w-[390px] bg-surface min-h-screen relative shadow-2xl overflow-x-hidden border-x border-outline-variant/30 flex flex-col">
+<!-- TopNavBar (Mobile Version) -->
+<header class="bg-surface-container-lowest text-primary-container font-body-sm font-medium tracking-tight w-full top-0 z-50 sticky border-b border-outline-variant shadow-sm h-[60px] flex items-center justify-between px-md">
+<!-- Hamburger Menu -->
+<button class="text-primary-container hover:bg-surface-container rounded-full p-2 transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<!-- Brand Logo -->
+<a class="text-[20px] font-black text-primary-container tracking-tighter" href="#">
+                TopdanBazar
+            </a>
+<!-- Trailing Icons -->
+<div class="flex items-center gap-xs">
+<button class="text-primary-container hover:bg-surface-container rounded-full p-2 transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full pb-xxl flex flex-col">
+<!-- Hero / Search Section -->
+<section class="px-md py-lg bg-surface-container-lowest border-b border-outline-variant/50">
+<h1 class="font-h2 text-h2 text-primary-container mb-xs">Məhsullar</h1>
+<p class="font-body-sm text-body-sm text-outline mb-md">Topdan satış üçün minlərlə məhsul növü.</p>
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full h-[48px] pl-[40px] pr-md rounded-DEFAULT border border-outline-variant bg-surface-bright focus:border-surface-tint focus:ring-1 focus:ring-surface-tint outline-none font-body-md text-body-md transition-all placeholder:text-outline/70" placeholder="Məhsul və ya kateqoriya axtar..." type="text"/>
+</div>
+</section>
+<!-- Catalog Toolbar -->
+<section class="px-md py-sm bg-surface-container-lowest flex items-center gap-sm border-b border-outline-variant/50 sticky top-[60px] z-40 shadow-sm">
+<button class="flex-1 h-[40px] flex items-center justify-center gap-xs rounded-DEFAULT border border-outline-variant bg-surface-bright text-primary-container font-body-sm text-body-sm hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+                    Filtrlər
+                </button>
+<div class="flex-1 relative">
+<select class="w-full h-[40px] appearance-none rounded-DEFAULT border border-outline-variant bg-surface-bright text-primary-container font-body-sm text-body-sm pl-sm pr-lg outline-none focus:border-surface-tint focus:ring-1 focus:ring-surface-tint cursor-pointer">
+<option value="new">Yenilər</option>
+<option value="price_asc">Ucuzdan bahaya</option>
+<option value="price_desc">Bahadan ucuza</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-outline pointer-events-none" data-icon="arrow_drop_down">arrow_drop_down</span>
+</div>
+</section>
+<!-- Product Grid -->
+<section class="p-sm grid grid-cols-2 gap-sm bg-surface">
+<!-- Product Card 1 -->
+<div class="bg-surface-container-lowest rounded-DEFAULT border border-outline-variant/60 shadow-sm overflow-hidden flex flex-col group hover:-translate-y-[2px] transition-all duration-200">
+<div class="aspect-square bg-surface-container w-full relative">
+<span class="absolute top-xs left-xs bg-surface-tint text-on-primary px-2 py-1 rounded-[2px] font-label-caps text-label-caps z-10">YENİ</span>
+<img alt="Qulaqlıq" class="w-full h-full object-cover mix-blend-multiply p-md" data-alt="A sleek, modern wireless headphone isolated on a pure white background. The lighting is crisp and even, highlighting the premium matte finish of the product. The aesthetic aligns with a high-end corporate wholesale catalog, emphasizing clean lines and professional minimalism without distracting shadows or backgrounds." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVkmVvA9jG-FsbW73W8fn5zbO1srQ40jWmpW-d5DjjiVvryHjhzxPQm9b2grYaHz3JrlLTUBQf7L4DCWZ92zPW3-P8fdrjMN08iiZW4EVMD1sUuZ5OSYtEXZW6rtgsGOIO-dRQcgoA-IC4b8ltezztNinK07ykSDS2Ms1EryAfWnmaqMEVv2kr67jUDwEbyjfbjq7v6BlM35JWtfOmA4GdTsGy8XRyaUjHrlldsoseSLBuDRcCsc89uA6RazhIQ6UBa5Qo2nnglM8"/>
+</div>
+<div class="p-sm flex flex-col flex-1 border-t border-outline-variant/30">
+<div class="font-label-caps text-[10px] text-outline mb-1">Elektronika</div>
+<h3 class="font-body-sm text-body-sm text-on-background font-medium line-clamp-2 leading-tight mb-2">Premium Simsiz Qulaqlıq S-200</h3>
+<div class="mt-auto">
+<div class="font-label-caps text-[10px] text-surface-tint mb-1">Topdan satış: Min. 50 ədəd</div>
+<div class="font-price-display text-[16px] text-primary-container">45.00 ₼</div>
+</div>
+<div class="flex flex-col gap-1 mt-3">
+<button class="w-full h-[32px] bg-[#25D366] hover:bg-[#1DA851] text-white rounded-[2px] font-body-sm text-[12px] font-medium flex items-center justify-center gap-1 transition-colors">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path></svg>
+                                WhatsApp
+                            </button>
+<button class="w-full h-[32px] bg-transparent border border-primary-container text-primary-container hover:bg-surface-container rounded-[2px] font-body-sm text-[12px] font-medium flex items-center justify-center transition-colors">
+                                Məhsula bax
+                            </button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-surface-container-lowest rounded-DEFAULT border border-outline-variant/60 shadow-sm overflow-hidden flex flex-col group hover:-translate-y-[2px] transition-all duration-200">
+<div class="aspect-square bg-surface-container w-full relative">
+<img alt="Kamera" class="w-full h-full object-cover mix-blend-multiply p-md" data-alt="A professional DSLR camera lens isolated perfectly on a pristine white background. The image has high contrast, sharp details, and no distracting environment, typical of a high-end wholesale catalog. The lighting is studio-quality, emphasizing the metallic and glass textures of the product within a minimalist corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBndlBO8nSwDPz82f2GAZ9joEeKkakwDPZhH0FDk8zTnpp6R4WOHwzrM93uYYxegwqmAab3B3NSAiPo1X8uJwgCy6rZknoMJetaO_r1yYfUcKQPwRoi-UvEZF2XF9IftJNUQc0J9f1ucsdXvXII6ughq41IsHKRmxSxHKoth4OIl_xWEmd4Jgz_ZVLmmV9-y-gMQOuCRoH6AUK1heA07Tl8zyQCfKeK08Q4xdHxgbZWFH_OsbBMlSlHxAfbvntDnh3rN2pkaecXIeM"/>
+</div>
+<div class="p-sm flex flex-col flex-1 border-t border-outline-variant/30">
+<div class="font-label-caps text-[10px] text-outline mb-1">Foto &amp; Video</div>
+<h3 class="font-body-sm text-body-sm text-on-background font-medium line-clamp-2 leading-tight mb-2">Pro Kamera Linzası 50mm f/1.8</h3>
+<div class="mt-auto">
+<div class="font-label-caps text-[10px] text-surface-tint mb-1">Topdan satış: Min. 10 ədəd</div>
+<div class="font-price-display text-[16px] text-primary-container">120.00 ₼</div>
+</div>
+<div class="flex flex-col gap-1 mt-3">
+<button class="w-full h-[32px] bg-[#25D366] hover:bg-[#1DA851] text-white rounded-[2px] font-body-sm text-[12px] font-medium flex items-center justify-center gap-1 transition-colors">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path></svg>
+                                WhatsApp
+                            </button>
+<button class="w-full h-[32px] bg-transparent border border-primary-container text-primary-container hover:bg-surface-container rounded-[2px] font-body-sm text-[12px] font-medium flex items-center justify-center transition-colors">
+                                Məhsula bax
+                            </button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-surface-container-lowest rounded-DEFAULT border border-outline-variant/60 shadow-sm overflow-hidden flex flex-col group hover:-translate-y-[2px] transition-all duration-200">
+<div class="aspect-square bg-surface-container w-full relative">
+<img alt="Ayaqqabı" class="w-full h-full object-cover mix-blend-multiply p-md" data-alt="A single red athletic shoe displayed against a pure, bright white background. The image is clean and minimalist, devoid of lifestyle elements, focusing entirely on the product's design and material for a B2B wholesale catalog. The studio lighting emphasizes the texture and vibrant color of the shoe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD96hFQ4whEitwABfOqMubA1-zCKpMqQrr-g8_0MejBJ-jXUxHp2CAeU0n7aaAo5LGHMz3uukjTHtvfYkOlgNugG5LKJb28IoBvhlde6pV4Wow7Zos7m6ZnedT-zEwIjn7yPsw6ckx9EG0qnsfR4_n5k2PkwBuijX-Ghd2DD-tJPfzJVhNgm44DQhGNBpOgfPypbb-yDUNb5TaggFxq_Ebpr9ExVIqO1njjTWJQ_ltdOdpt1zwEDi6IjoFjlHZdDeQ-36jVS3bmva0"/>
+</div>
+<div class="p-sm flex flex-col flex-1 border-t border-outline-variant/30">
+<div class="font-label-caps text-[10px] text-outline mb-1">Geyim &amp; Ayaqqabı</div>
+<h3 class="font-body-sm text-body-sm text-on-background font-medium line-clamp-2 leading-tight mb-2">İdman Ayaqqabısı R-Fit Seriyası</h3>
+<div class="mt-auto">
+<div class="font-label-caps text-[10px] text-surface-tint mb-1">Topdan satış: Min. 20 cüt</div>
+<div class="font-price-display text-[16px] text-primary-container">35.50 ₼</div>
+</div>
+<div class="flex flex-col gap-1 mt-3">
+<button class="w-full h-[32px] bg-[#25D366] hover:bg-[#1DA851] text-white rounded-[2px] font-body-sm text-[12px] font-medium flex items-center justify-center gap-1 transition-colors">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path></svg>
+                                WhatsApp
+                            </button>
+<button class="w-full h-[32px] bg-transparent border border-primary-container text-primary-container hover:bg-surface-container rounded-[2px] font-body-sm text-[12px] font-medium flex items-center justify-center transition-colors">
+                                Məhsula bax
+                            </button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="bg-surface-container-lowest rounded-DEFAULT border border-outline-variant/60 shadow-sm overflow-hidden flex flex-col group hover:-translate-y-[2px] transition-all duration-200">
+<div class="aspect-square bg-surface-container w-full relative">
+<span class="absolute top-xs left-xs bg-surface-tint text-on-primary px-2 py-1 rounded-[2px] font-label-caps text-label-caps z-10">ENDIRIM</span>
+<img alt="Qulaqlıq" class="w-full h-full object-cover mix-blend-multiply p-md" data-alt="A set of minimalist white truly wireless earbuds in their charging case, set against a stark white background. The image is designed for a professional wholesale portal, emphasizing clean product visualization without lifestyle context. Soft, diffuse lighting eliminates harsh shadows and highlights the smooth plastic finish." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXLekMlG6_u8JOk7xwSzTsRtevjWaDScJ4dewqkSSePItA8WgyElrKMCe_QQ_GlQHo8S3y3uOliO7ofARbQE0qHBKRSUEh2Y9KGY6YXorjZYwJyoaSRC70QYbQ0Z5PqX6Bn4qk4lVWlvuNwwIeyHH9_8nPmRWTtEbykP_HYDWYQW3RIgDvzmLpgvPKlgGhS-yoZOR96VHJRtOWG-TseLcuwNW4vAf6QopoaqTQpyp_CpWzCJRdCwY0yyqp1d7FlARARvv7Xb61z9c"/>
+</div>
+<div class="p-sm flex flex-col flex-1 border-t border-outline-variant/30">
+<div class="font-label-caps text-[10px] text-outline mb-1">Elektronika</div>
+<h3 class="font-body-sm text-body-sm text-on-background font-medium line-clamp-2 leading-tight mb-2">TWS Qulaqlıq Pods-Pro</h3>
+<div class="mt-auto">
+<div class="font-label-caps text-[10px] text-surface-tint mb-1">Topdan satış: Min. 100 ədəd</div>
+<div class="font-price-display text-[16px] text-primary-container">12.50 ₼</div>
+</div>
+<div class="flex flex-col gap-1 mt-3">
+<button class="w-full h-[32px] bg-[#25D366] hover:bg-[#1DA851] text-white rounded-[2px] font-body-sm text-[12px] font-medium flex items-center justify-center gap-1 transition-colors">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path></svg>
+                                WhatsApp
+                            </button>
+<button class="w-full h-[32px] bg-transparent border border-primary-container text-primary-container hover:bg-surface-container rounded-[2px] font-body-sm text-[12px] font-medium flex items-center justify-center transition-colors">
+                                Məhsula bax
+                            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Pagination Action -->
+<section class="p-md flex justify-center mt-md">
+<button class="w-full max-w-[200px] h-[48px] bg-primary-container text-on-primary rounded-DEFAULT font-body-md text-body-md font-medium hover:bg-primary transition-colors">
+                    Daha çox göstər
+                </button>
+</section>
+</main>
+<!-- BottomNavigation Shell / Action Buttons for Nav -> Translated from Desktop intent, but restricted for catalog view -> Məhsullar is active -->
+<nav class="w-full border-t border-outline-variant bg-surface-container-lowest flex items-center justify-between h-[64px] pb-safe sticky bottom-0 z-50">
+<a class="flex-1 flex flex-col items-center justify-center gap-1 text-outline hover:text-primary-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="home">home</span>
+<span class="font-label-caps text-[10px]">Ana səhifə</span>
+</a>
+<a class="flex-1 flex flex-col items-center justify-center gap-1 text-outline hover:text-primary-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-[10px]">Kateqoriyalar</span>
+</a>
+<a class="flex-1 flex flex-col items-center justify-center gap-1 text-primary-container" href="#">
+<span class="material-symbols-outlined text-[24px] rounded-full bg-surface-container-highest p-1" data-icon="inventory_2" data-weight="fill" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-caps text-[10px] font-bold">Məhsullar</span>
+</a>
+<a class="flex-1 flex flex-col items-center justify-center gap-1 text-outline hover:text-primary-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="storefront">storefront</span>
+<span class="font-label-caps text-[10px]">Mağazalar</span>
+</a>
+</nav>
+<!-- Filter Bottom Sheet (Mockup state - hidden by default, visually represented structure) -->
+<!-- In a real app this would be toggled. Adding it structurally hidden for UI completeness -->
+<div class="hidden fixed inset-0 z-[100] bg-on-background/50 flex flex-col justify-end max-w-[390px] mx-auto">
+<div class="bg-surface-container-lowest w-full rounded-t-xl p-md pb-xxl flex flex-col animate-[slideUp_0.3s_ease-out]">
+<div class="w-[40px] h-[4px] bg-outline-variant rounded-full mx-auto mb-md"></div>
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-h3 text-[20px] text-primary-container">Filtrlər</h2>
+<button class="text-outline hover:text-primary-container"><span class="material-symbols-outlined" data-icon="close">close</span></button>
+</div>
+<div class="flex flex-col gap-md">
+<!-- Categories -->
+<div>
+<h4 class="font-label-caps text-outline mb-2">KATEQORİYA</h4>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1.5 border border-primary-container bg-surface-container-lowest text-primary-container rounded-[2px] font-body-sm text-[12px]">Bütün</span>
+<span class="px-3 py-1.5 border border-outline-variant bg-surface-bright text-outline rounded-[2px] font-body-sm text-[12px]">Elektronika</span>
+<span class="px-3 py-1.5 border border-outline-variant bg-surface-bright text-outline rounded-[2px] font-body-sm text-[12px]">Geyim</span>
+</div>
+</div>
+<!-- Price Range -->
+<div>
+<h4 class="font-label-caps text-outline mb-2">QİYMƏT ARALIĞI (₼)</h4>
+<div class="flex items-center gap-2">
+<input class="w-full h-[40px] rounded-[2px] border border-outline-variant bg-surface-bright outline-none px-sm font-body-sm text-body-sm" placeholder="Min" type="number"/>
+<span class="text-outline">-</span>
+<input class="w-full h-[40px] rounded-[2px] border border-outline-variant bg-surface-bright outline-none px-sm font-body-sm text-body-sm" placeholder="Max" type="number"/>
+</div>
+</div>
+</div>
+<div class="mt-xl flex gap-sm">
+<button class="flex-1 h-[48px] bg-transparent border border-outline-variant text-outline rounded-[2px] font-body-md text-body-md font-medium">Təmizlə</button>
+<button class="flex-1 h-[48px] bg-primary-container text-on-primary rounded-[2px] font-body-md text-body-md font-medium">Tətbiq et</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

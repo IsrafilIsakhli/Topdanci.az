@@ -1,0 +1,32 @@
+{
+  "name": "topdanbazar",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "dev:web": "npm run dev --workspace @topdanbazar/web",
+    "dev:api": "npm run start:dev --workspace @topdanbazar/api",
+    "build": "npm run build --workspaces --if-present",
+    "build:web": "npm run build --workspace @topdanbazar/web",
+    "build:api": "npm run build --workspace @topdanbazar/api",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "prisma:generate": "npm run prisma:generate --workspace @topdanbazar/api",
+    "prisma:migrate": "npm run prisma:migrate --workspace @topdanbazar/api",
+    "prisma:seed": "npm run prisma:seed --workspace @topdanbazar/api",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,css}\""
+  },
+  "engines": {
+    "node": ">=20.11.0",
+    "npm": ">=10.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3"
+  }
+}

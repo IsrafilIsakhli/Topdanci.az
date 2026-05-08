@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Daxil ol - TopdanBazar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#007232",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#eaf1ff",
+                        "secondary-container": "#5dfd8a",
+                        "on-secondary-fixed": "#002109",
+                        "on-surface-variant": "#3f4945",
+                        "on-primary-container": "#7ebdac",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "secondary": "#006d2f",
+                        "inverse-surface": "#213145",
+                        "inverse-primary": "#94d3c1",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed-dim": "#94d3c1",
+                        "on-primary-fixed-variant": "#065043",
+                        "tertiary-fixed": "#ffdbd1",
+                        "primary-fixed": "#afefdd",
+                        "surface-container": "#e5eeff",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#3de273",
+                        "outline": "#707975",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#29695b",
+                        "primary": "#00342b",
+                        "surface-container-high": "#dce9ff",
+                        "primary-container": "#004d40",
+                        "outline-variant": "#bfc9c4",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#005322",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#00201a",
+                        "on-surface": "#0b1c30",
+                        "secondary-fixed": "#66ff8e",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "on-tertiary-fixed": "#370e04",
+                        "on-tertiary-container": "#e89f8c",
+                        "tertiary-container": "#693527",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#d3e4fe",
+                        "tertiary": "#4e2013",
+                        "on-background": "#0b1c30",
+                        "surface": "#f8f9ff",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "xl": "40px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "xxl": "64px",
+                        "lg": "24px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "price-display": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h3": ["Inter"],
+                        "h2": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "price-display": ["20px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen font-body-md text-on-background flex flex-col antialiased">
+<!-- TopNavBar Suppressed for Transactional Login Page -->
+<main class="flex-grow flex items-center justify-center p-gutter">
+<div class="max-w-container-max w-full grid grid-cols-1 lg:grid-cols-2 gap-xxl items-center bg-surface-container-lowest rounded-xl shadow-[0_20px_40px_-15px_rgba(0,52,43,0.05)] overflow-hidden border border-outline-variant/30 min-h-[700px]">
+<!-- Left Side (Info Panel) -->
+<div class="hidden lg:flex flex-col justify-center h-full bg-primary-container p-xxl relative overflow-hidden group">
+<!-- Abstract Background Elements -->
+<div class="absolute top-0 right-0 -mt-16 -mr-16 w-64 h-64 bg-primary rounded-full opacity-20 mix-blend-multiply blur-3xl"></div>
+<div class="absolute bottom-0 left-0 -mb-16 -ml-16 w-80 h-80 bg-primary-fixed rounded-full opacity-10 mix-blend-overlay blur-3xl"></div>
+<div class="relative z-10 text-on-primary">
+<h1 class="font-h1 text-h1 mb-lg font-black tracking-tight leading-tight">TopdanBazar-a<br/>xoş gəlmisiniz</h1>
+<p class="font-body-lg text-body-lg mb-xl text-primary-fixed-dim max-w-md">Azərbaycanın B2B topdansatış platformasında mağazanızı və məhsullarınızı idarə edin.</p>
+<ul class="space-y-lg">
+<li class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-primary/40 flex items-center justify-center border border-primary-fixed/20">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="store" data-weight="fill" style="font-variation-settings: 'FILL' 1;">store</span>
+</div>
+<span class="font-h3 text-h3 font-medium">400+ təsdiqlənmiş mağaza</span>
+</li>
+<li class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-primary/40 flex items-center justify-center border border-primary-fixed/20">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="inventory_2" data-weight="fill" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+</div>
+<span class="font-h3 text-h3 font-medium">200K+ məhsul</span>
+</li>
+<li class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-primary/40 flex items-center justify-center border border-primary-fixed/20">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="forum" data-weight="fill" style="font-variation-settings: 'FILL' 1;">forum</span>
+</div>
+<span class="font-h3 text-h3 font-medium">Birbaşa əlaqə</span>
+</li>
+<li class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-primary/40 flex items-center justify-center border border-primary-fixed/20">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="shield" data-weight="fill" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<span class="font-h3 text-h3 font-medium">Güvənli mağaza paneli</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Right Side (Login Form Card) -->
+<div class="flex flex-col justify-center p-gutter lg:p-xxl h-full bg-surface-container-lowest">
+<div class="max-w-[420px] w-full mx-auto">
+<!-- Mobile Brand Anchor (Visible only on small screens since left panel is hidden) -->
+<div class="lg:hidden mb-xl text-center">
+<span class="text-3xl font-black text-primary-container tracking-tight">TopdanBazar</span>
+</div>
+<h2 class="font-h2 text-h2 text-primary-container mb-sm">Daxil ol</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-xl">Hesabınıza daxil olun və mağaza panelinizi idarə edin.</p>
+<form class="space-y-lg">
+<div class="space-y-sm">
+<label class="font-label-caps text-label-caps text-on-surface block" for="email_or_phone">E-poçt və ya telefon</label>
+<input class="w-full h-[56px] px-md rounded-lg border border-outline-variant bg-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-colors font-body-md text-on-surface placeholder-outline" id="email_or_phone" name="email_or_phone" placeholder="Nümunə: +994 50 123 45 67" type="text"/>
+</div>
+<div class="space-y-sm">
+<label class="font-label-caps text-label-caps text-on-surface block" for="password">Şifrə</label>
+<div class="relative">
+<input class="w-full h-[56px] px-md pr-12 rounded-lg border border-outline-variant bg-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-colors font-body-md text-on-surface placeholder-outline" id="password" name="password" placeholder="••••••••" type="password"/>
+<button class="absolute inset-y-0 right-0 flex items-center pr-md text-outline hover:text-primary-container transition-colors focus:outline-none" type="button">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between mt-md">
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary-container focus:ring-primary-container transition-colors cursor-pointer" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary-container transition-colors">Məni yadda saxla</span>
+</label>
+<a class="font-body-sm text-body-sm font-semibold text-primary-container hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">Şifrəni unutmusunuz?</a>
+</div>
+<button class="w-full h-[56px] mt-xl bg-primary-container text-on-primary font-body-lg text-body-lg font-semibold rounded-lg shadow-sm hover:bg-primary transition-all active:scale-[0.98] flex items-center justify-center gap-sm" type="submit">
+                            Daxil ol
+                            <span class="material-symbols-outlined" data-icon="login">login</span>
+</button>
+</form>
+<div class="mt-xl pt-lg border-t border-outline-variant/30 text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Mağazanız yoxdur? 
+                            <a class="font-semibold text-primary-container hover:text-primary hover:underline underline-offset-4 transition-colors ml-sm" href="#">Mağaza aç</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Suppressed for Transactional Login Page to maintain focus -->
+</body></html>

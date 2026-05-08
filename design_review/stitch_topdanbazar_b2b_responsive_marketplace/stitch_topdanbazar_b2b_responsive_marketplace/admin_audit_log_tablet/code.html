@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TopdanBazar - Audit Log</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "on-tertiary": "#ffffff",
+                            "inverse-primary": "#94d3c1",
+                            "surface-container-low": "#eff4ff",
+                            "on-tertiary-fixed-variant": "#6d382a",
+                            "on-error": "#ffffff",
+                            "tertiary": "#4e2013",
+                            "secondary-container": "#5dfd8a",
+                            "on-tertiary-container": "#e89f8c",
+                            "surface-dim": "#cbdbf5",
+                            "secondary-fixed": "#66ff8e",
+                            "error": "#ba1a1a",
+                            "on-background": "#0b1c30",
+                            "secondary-fixed-dim": "#3de273",
+                            "error-container": "#ffdad6",
+                            "background": "#f8f9ff",
+                            "surface-container-highest": "#d3e4fe",
+                            "inverse-surface": "#213145",
+                            "surface-bright": "#f8f9ff",
+                            "tertiary-fixed": "#ffdbd1",
+                            "primary-fixed-dim": "#94d3c1",
+                            "primary-container": "#004d40",
+                            "inverse-on-surface": "#eaf1ff",
+                            "tertiary-container": "#693527",
+                            "surface": "#f8f9ff",
+                            "on-secondary-fixed": "#002109",
+                            "surface-variant": "#d3e4fe",
+                            "surface-container-high": "#dce9ff",
+                            "on-secondary-fixed-variant": "#005322",
+                            "outline": "#707975",
+                            "surface-container": "#e5eeff",
+                            "secondary": "#006d2f",
+                            "on-primary-container": "#7ebdac",
+                            "on-primary-fixed": "#00201a",
+                            "on-primary-fixed-variant": "#065043",
+                            "on-secondary-container": "#007232",
+                            "surface-tint": "#29695b",
+                            "primary-fixed": "#afefdd",
+                            "on-surface": "#0b1c30",
+                            "surface-container-lowest": "#ffffff",
+                            "primary": "#00342b",
+                            "outline-variant": "#bfc9c4",
+                            "on-secondary": "#ffffff",
+                            "on-surface-variant": "#3f4945",
+                            "on-error-container": "#93000a",
+                            "on-tertiary-fixed": "#370e04",
+                            "on-primary": "#ffffff",
+                            "tertiary-fixed-dim": "#ffb5a1"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "gutter": "24px",
+                            "xxl": "64px",
+                            "xs": "4px",
+                            "container-max": "1280px",
+                            "sm": "8px",
+                            "xl": "40px",
+                            "md": "16px",
+                            "lg": "24px",
+                            "base": "4px"
+                    },
+                    "fontFamily": {
+                            "body-lg": ["Inter"],
+                            "body-md": ["Inter"],
+                            "price-display": ["Inter"],
+                            "h3": ["Inter"],
+                            "h1": ["Inter"],
+                            "label-caps": ["Inter"],
+                            "h2": ["Inter"],
+                            "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                            "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                            "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                            "price-display": ["20px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                            "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                            "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                            "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                            "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                            "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex w-full">
+<!-- Sidebar Navigation - Fixed on Tablet/Desktop -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-primary-container text-on-primary-container shadow-lg z-50 p-md space-y-sm">
+<div class="mb-lg px-sm pt-sm">
+<h1 class="text-h3 font-h3 font-bold text-on-primary-container">TopdanBazar</h1>
+<p class="text-label-caps font-label-caps text-on-primary-container opacity-80 mt-xs">B2B Management</p>
+</div>
+<nav class="flex-1 flex flex-col space-y-xs overflow-y-auto">
+<a class="flex items-center space-x-md px-sm py-sm rounded-lg text-on-primary-container/80 hover:text-on-primary-container hover:bg-primary/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-body-md font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center space-x-md px-sm py-sm rounded-lg text-on-primary-container/80 hover:text-on-primary-container hover:bg-primary/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="text-body-md font-body-md">Stores</span>
+</a>
+<a class="flex items-center space-x-md px-sm py-sm rounded-lg text-on-primary-container/80 hover:text-on-primary-container hover:bg-primary/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="text-body-md font-body-md">Products</span>
+</a>
+<a class="flex items-center space-x-md px-sm py-sm rounded-lg text-on-primary-container/80 hover:text-on-primary-container hover:bg-primary/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-body-md font-body-md">Users</span>
+</a>
+<a class="flex items-center space-x-md px-sm py-sm rounded-lg text-on-primary-container/80 hover:text-on-primary-container hover:bg-primary/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="text-body-md font-body-md">Categories</span>
+</a>
+<a class="flex items-center space-x-md px-sm py-sm rounded-lg text-on-primary-container/80 hover:text-on-primary-container hover:bg-primary/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-body-md font-body-md">Appeals</span>
+</a>
+<a class="flex items-center space-x-md px-sm py-sm rounded-lg bg-secondary-container text-on-secondary-container font-semibold translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="text-body-md font-body-md">Audit log</span>
+</a>
+<a class="flex items-center space-x-md px-sm py-sm rounded-lg text-on-primary-container/80 hover:text-on-primary-container hover:bg-primary/20 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-body-md font-body-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg border-t border-on-primary-container/10 flex items-center space-x-md px-sm pb-sm">
+<img alt="Admin Avatar" class="w-10 h-10 rounded-full object-cover shadow-sm border border-on-primary-container/20" data-alt="A professional headshot of a business administrator in a crisp modern office setting. The lighting is soft and natural, emphasizing trust and competence. The individual is wearing a subtle corporate uniform. The aesthetic is clean, well-lit, and perfectly suited for a high-end enterprise management dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVhk_2Pf1JsH_1lf8FSfJBEPsnN8IViiRcqp4VlhhaRP3rg7qOPqgdX9kr99hN46QYqiS8aGXZlToI48jarnABiLNt9c5AE3xxHWcKiIhC10z4d9v2AWTYhRny7E4_3AsdSjXtwRNeBYlFFxBcvUuQsogH8CmhuAKPeFMTdjzhs3EjfY2F1Y5JoBN8jky2Mh1D7UW3H8GD2pp15MRl_yVP7tW_z2qzDEWS7T_9Qs9EIWqY7PAM5YEOn16_2prpE423BWyZyaH0_Og"/>
+<div>
+<p class="text-body-sm font-body-sm font-bold text-on-primary-container">Admin User</p>
+<p class="text-label-caps font-label-caps text-on-primary-container/80">Superadmin</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0 md:ml-64 w-full">
+<!-- Top App Bar -->
+<header class="bg-surface-container-lowest text-primary shadow-sm flex justify-between items-center px-lg py-sm w-full sticky top-0 z-40 border-b border-outline-variant">
+<div class="flex items-center space-x-md">
+<button class="md:hidden text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 p-xs rounded-full">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h2 class="text-h3 font-h3 text-primary hidden md:block">Audit log</h2>
+</div>
+<!-- Search Bar - Top Left -->
+<div class="flex-1 max-w-md ml-md hidden sm:block">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-surface-container-high border border-outline-variant rounded-lg py-sm pl-xl pr-sm text-body-sm font-body-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-on-surface placeholder-on-surface-variant group-hover:bg-surface-container" placeholder="Search logs..." type="text"/>
+</div>
+</div>
+<div class="flex items-center space-x-sm ml-md">
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 p-sm rounded-full relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-sm right-sm w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 p-sm rounded-full">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="hidden md:flex items-center space-x-xs pl-sm border-l border-outline-variant ml-xs">
+<span class="text-body-sm font-body-sm text-on-surface font-semibold">Admin Profile</span>
+</div>
+</div>
+</header>
+<div class="p-gutter overflow-x-hidden">
+<!-- Header Section -->
+<div class="mb-lg md:hidden">
+<h2 class="text-h2 font-h2 text-on-background mb-xs">Audit log</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">Review system activities and changes.</p>
+</div>
+<!-- Filters Section (Compact for Tablet) -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm p-lg mb-gutter">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Date Range -->
+<div>
+<label class="block text-label-caps font-label-caps text-on-surface-variant mb-xs">Date Range</label>
+<div class="flex items-center space-x-sm">
+<input class="flex-1 bg-surface-bright border border-outline-variant rounded-lg py-sm px-sm text-body-sm font-body-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-on-surface" type="date"/>
+<span class="text-on-surface-variant text-body-sm">-</span>
+<input class="flex-1 bg-surface-bright border border-outline-variant rounded-lg py-sm px-sm text-body-sm font-body-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-on-surface" type="date"/>
+</div>
+</div>
+<!-- Action Type -->
+<div>
+<label class="block text-label-caps font-label-caps text-on-surface-variant mb-xs">Action Type</label>
+<select class="w-full bg-surface-bright border border-outline-variant rounded-lg py-sm px-sm text-body-sm font-body-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-on-surface">
+<option>All Actions</option>
+<option>Create</option>
+<option>Update</option>
+<option>Delete</option>
+<option>Login</option>
+</select>
+</div>
+<!-- User -->
+<div>
+<label class="block text-label-caps font-label-caps text-on-surface-variant mb-xs">User</label>
+<select class="w-full bg-surface-bright border border-outline-variant rounded-lg py-sm px-sm text-body-sm font-body-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-on-surface">
+<option>All Users</option>
+<option>Admin User</option>
+<option>System</option>
+<option>John Doe (Store)</option>
+</select>
+</div>
+<!-- Resource -->
+<div>
+<label class="block text-label-caps font-label-caps text-on-surface-variant mb-xs">Resource</label>
+<select class="w-full bg-surface-bright border border-outline-variant rounded-lg py-sm px-sm text-body-sm font-body-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-on-surface">
+<option>All Resources</option>
+<option>Products</option>
+<option>Orders</option>
+<option>Users</option>
+<option>Settings</option>
+</select>
+</div>
+</div>
+<div class="mt-md flex justify-end space-x-sm border-t border-outline-variant pt-md">
+<button class="bg-surface-bright border border-primary text-primary px-lg py-sm rounded-lg text-body-sm font-body-sm font-semibold hover:bg-surface-container transition-colors">Clear Filters</button>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg text-body-sm font-body-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm">Apply Filters</button>
+</div>
+</section>
+<!-- Table Section -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="p-md text-label-caps font-label-caps text-on-surface-variant">Timestamp</th>
+<th class="p-md text-label-caps font-label-caps text-on-surface-variant">User</th>
+<th class="p-md text-label-caps font-label-caps text-on-surface-variant">Action</th>
+<th class="p-md text-label-caps font-label-caps text-on-surface-variant">Resource</th>
+<th class="p-md text-label-caps font-label-caps text-on-surface-variant">Details</th>
+<th class="p-md text-label-caps font-label-caps text-on-surface-variant text-right">IP Address</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant text-body-sm font-body-sm">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group cursor-pointer">
+<td class="p-md whitespace-nowrap text-on-surface-variant">Oct 24, 2023 14:32:01</td>
+<td class="p-md">
+<div class="flex items-center space-x-sm">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-[10px] font-bold">AU</div>
+<span class="font-semibold text-on-surface">Admin User</span>
+</div>
+</td>
+<td class="p-md">
+<span class="inline-flex items-center px-sm py-xs rounded-full bg-surface-container-highest text-primary font-semibold text-[11px] uppercase tracking-wider">Update</span>
+</td>
+<td class="p-md text-on-surface">Product: SKU-10492</td>
+<td class="p-md text-on-surface-variant truncate max-w-[200px]" title="Changed price from 150 AZN to 145 AZN">Changed price from 150 AZN to 145 AZN</td>
+<td class="p-md text-on-surface-variant text-right whitespace-nowrap">192.168.1.105</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group cursor-pointer">
+<td class="p-md whitespace-nowrap text-on-surface-variant">Oct 24, 2023 11:15:44</td>
+<td class="p-md">
+<div class="flex items-center space-x-sm">
+<div class="w-6 h-6 rounded-full bg-surface-dim text-on-surface flex items-center justify-center text-[10px] font-bold">SYS</div>
+<span class="font-semibold text-on-surface">System</span>
+</div>
+</td>
+<td class="p-md">
+<span class="inline-flex items-center px-sm py-xs rounded-full bg-error-container text-on-error-container font-semibold text-[11px] uppercase tracking-wider">Delete</span>
+</td>
+<td class="p-md text-on-surface">Temporary Files</td>
+<td class="p-md text-on-surface-variant truncate max-w-[200px]">Automated daily cleanup completed</td>
+<td class="p-md text-on-surface-variant text-right whitespace-nowrap">localhost</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group cursor-pointer">
+<td class="p-md whitespace-nowrap text-on-surface-variant">Oct 24, 2023 09:05:12</td>
+<td class="p-md">
+<div class="flex items-center space-x-sm">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-[10px] font-bold">AU</div>
+<span class="font-semibold text-on-surface">Admin User</span>
+</div>
+</td>
+<td class="p-md">
+<span class="inline-flex items-center px-sm py-xs rounded-full bg-surface-container-highest text-primary font-semibold text-[11px] uppercase tracking-wider">Login</span>
+</td>
+<td class="p-md text-on-surface">Session</td>
+<td class="p-md text-on-surface-variant truncate max-w-[200px]">Successful login via Web Portal</td>
+<td class="p-md text-on-surface-variant text-right whitespace-nowrap">192.168.1.105</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group cursor-pointer">
+<td class="p-md whitespace-nowrap text-on-surface-variant">Oct 23, 2023 16:45:30</td>
+<td class="p-md">
+<div class="flex items-center space-x-sm">
+<div class="w-6 h-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-[10px] font-bold">JD</div>
+<span class="font-semibold text-on-surface">John Doe</span>
+</div>
+</td>
+<td class="p-md">
+<span class="inline-flex items-center px-sm py-xs rounded-full bg-secondary-container text-on-secondary-container font-semibold text-[11px] uppercase tracking-wider">Create</span>
+</td>
+<td class="p-md text-on-surface">Order: ORD-9921</td>
+<td class="p-md text-on-surface-variant truncate max-w-[200px]">Created bulk order for 500 units</td>
+<td class="p-md text-on-surface-variant text-right whitespace-nowrap">45.212.19.8</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group cursor-pointer">
+<td class="p-md whitespace-nowrap text-on-surface-variant">Oct 23, 2023 14:20:05</td>
+<td class="p-md">
+<div class="flex items-center space-x-sm">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-[10px] font-bold">AU</div>
+<span class="font-semibold text-on-surface">Admin User</span>
+</div>
+</td>
+<td class="p-md">
+<span class="inline-flex items-center px-sm py-xs rounded-full bg-surface-container-highest text-primary font-semibold text-[11px] uppercase tracking-wider">Update</span>
+</td>
+<td class="p-md text-on-surface">Settings: Tax Rate</td>
+<td class="p-md text-on-surface-variant truncate max-w-[200px]">Updated base tax rate from 18% to 18.5%</td>
+<td class="p-md text-on-surface-variant text-right whitespace-nowrap">192.168.1.105</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-md border-t border-outline-variant flex items-center justify-between bg-surface-bright">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Showing 1 to 5 of 1,248 entries</span>
+<div class="flex items-center space-x-xs">
+<button class="p-xs rounded text-on-surface-variant hover:bg-surface-container-high disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded bg-primary text-on-primary text-body-sm font-bold flex items-center justify-center shadow-sm">1</button>
+<button class="w-8 h-8 rounded text-on-surface hover:bg-surface-container-high text-body-sm font-body-sm flex items-center justify-center transition-colors">2</button>
+<button class="w-8 h-8 rounded text-on-surface hover:bg-surface-container-high text-body-sm font-body-sm flex items-center justify-center transition-colors">3</button>
+<span class="text-on-surface-variant px-xs">...</span>
+<button class="w-8 h-8 rounded text-on-surface hover:bg-surface-container-high text-body-sm font-body-sm flex items-center justify-center transition-colors">250</button>
+<button class="p-xs rounded text-on-surface-variant hover:bg-surface-container-high">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

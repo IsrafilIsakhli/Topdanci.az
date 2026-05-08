@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin - Məhsullar | TopdanBazar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "tertiary-fixed": "#ffdbd1",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#afefdd",
+                        "background": "#f8f9ff",
+                        "on-secondary-fixed-variant": "#005322",
+                        "surface-container-low": "#eff4ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-bright": "#f8f9ff",
+                        "primary-container": "#004d40",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#e89f8c",
+                        "on-secondary-container": "#007232",
+                        "secondary": "#006d2f",
+                        "surface-variant": "#d3e4fe",
+                        "on-primary-fixed-variant": "#065043",
+                        "tertiary-container": "#693527",
+                        "on-secondary-fixed": "#002109",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#29695b",
+                        "on-primary-fixed": "#00201a",
+                        "surface": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#7ebdac",
+                        "primary-fixed-dim": "#94d3c1",
+                        "on-surface-variant": "#3f4945",
+                        "on-background": "#0b1c30",
+                        "secondary-container": "#5dfd8a",
+                        "tertiary": "#4e2013",
+                        "inverse-surface": "#213145",
+                        "on-tertiary-fixed": "#370e04",
+                        "outline-variant": "#bfc9c4",
+                        "primary": "#00342b",
+                        "outline": "#707975",
+                        "inverse-primary": "#94d3c1",
+                        "secondary-fixed-dim": "#3de273",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#0b1c30",
+                        "secondary-fixed": "#66ff8e",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "surface-container-high": "#dce9ff",
+                        "surface-container": "#e5eeff",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "md": "16px",
+                        "xxl": "64px",
+                        "xl": "40px",
+                        "sm": "8px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "price-display": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "price-display": ["20px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased flex">
+<!-- SideNavBar -->
+<nav class="fixed h-screen left-0 top-0 w-64 hidden lg:flex flex-col bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant py-xl z-50">
+<div class="px-lg mb-xl">
+<h1 class="font-h3 text-h3 font-bold text-primary dark:text-inverse-primary">TopdanBazar</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-sm">Admin Dashboard</p>
+</div>
+<div class="px-lg mb-lg">
+<button class="w-full bg-primary text-on-primary py-sm px-md rounded-lg font-body-md text-body-md font-semibold hover:bg-primary-container transition-colors duration-200 flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">add</span>
+                Yeni Məhsul
+            </button>
+</div>
+<ul class="flex flex-col h-full overflow-y-auto px-sm gap-xs">
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    İdarə paneli
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">store</span>
+                    Mağazalar
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg font-semibold opacity-90 transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                    Məhsullar
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">group</span>
+                    İstifadəçilər
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">category</span>
+                    Kateqoriyalar
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">mail</span>
+                    Müraciətlər
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">perm_media</span>
+                    Media
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">report</span>
+                    Şikayətlər
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+                    Audit log
+                </a>
+</li>
+<li class="mt-auto">
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Ayarlar
+                </a>
+</li>
+</ul>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-h-screen lg:ml-64 w-full">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-40 w-full bg-surface dark:bg-on-background border-b border-outline-variant shadow-sm flex justify-between items-center px-lg h-20">
+<div class="flex items-center gap-md">
+<!-- Mobile Menu Toggle (Visible only on md screens and below, placeholder icon) -->
+<button class="lg:hidden p-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-h3 text-h3 font-bold text-primary dark:text-inverse-primary hidden md:block">Admin Panel</span>
+</div>
+<!-- Search Bar -->
+<div class="flex-1 max-w-md mx-md hidden sm:block">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-xl pr-sm py-sm rounded-lg border border-outline-variant bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-sm font-body-sm transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)]" placeholder="Məhsul adı..." type="text"/>
+</div>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors p-xs rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors p-xs rounded-full hover:bg-surface-container hidden sm:block">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="flex items-center gap-sm ml-sm pl-sm border-l border-outline-variant cursor-pointer hover:opacity-80 transition-opacity">
+<img alt="Admin User Avatar" class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="A professional headshot of a corporate administrator, clean lighting, white background, conveying trust and authority in a modern light mode UI setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDok8d3CIv55eyxST7SsHchqiEw73bdfDEuzCTiG5BmDVK7OURXUyiVARVWRsWK11mjrPi2ILPaMLCvp5HgWNs6m-8Bsz4HtnbRBsSoEi3VfOvOr9V1xVfIfD3Iq2t8WdQXPL48JL02faAXRVkgo881ITA8ikXqQZMfEqE4ZNbu4KuqJrb211Z8wa2lnbohQk7zjvlGSqklsxH4BxW9PZJk5xvqdf7e1RMQzQ71aA1bQSMI9cGCPWxpIY1cgXIQhcB44jwMTxBwZK4"/>
+<span class="font-body-sm text-body-sm font-medium text-on-surface hidden md:block">Profil</span>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 p-lg md:p-xl overflow-x-hidden">
+<!-- Header Section -->
+<div class="mb-xl">
+<h2 class="font-h2 text-h2 text-on-surface">Məhsullar</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Platformadakı məhsulları moderasiya edin və idarə edin.</p>
+</div>
+<!-- Stat Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-md mb-xl">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-[0_4px_20px_rgba(0,77,64,0.03)] hover:-translate-y-[2px] transition-transform duration-200">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-sm">Toplam məhsul</p>
+<div class="flex items-end gap-sm">
+<span class="font-h2 text-h2 text-on-surface">12,450</span>
+<span class="material-symbols-outlined text-primary mb-[4px]">inventory_2</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-[0_4px_20px_rgba(0,77,64,0.03)] hover:-translate-y-[2px] transition-transform duration-200">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-sm">Aktiv məhsul</p>
+<div class="flex items-end gap-sm">
+<span class="font-h2 text-h2 text-secondary-container">9,820</span>
+<span class="material-symbols-outlined text-secondary-container mb-[4px]">check_circle</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-[0_4px_20px_rgba(0,77,64,0.03)] hover:-translate-y-[2px] transition-transform duration-200">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-sm">Təsdiq gözləyir</p>
+<div class="flex items-end gap-sm">
+<span class="font-h2 text-h2 text-on-tertiary-container">450</span>
+<span class="material-symbols-outlined text-on-tertiary-container mb-[4px]">pending_actions</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-[0_4px_20px_rgba(0,77,64,0.03)] hover:-translate-y-[2px] transition-transform duration-200">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-sm">Rədd edilmiş</p>
+<div class="flex items-end gap-sm">
+<span class="font-h2 text-h2 text-error">120</span>
+<span class="material-symbols-outlined text-error mb-[4px]">cancel</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-[0_4px_20px_rgba(0,77,64,0.03)] hover:-translate-y-[2px] transition-transform duration-200">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-sm">Passiv</p>
+<div class="flex items-end gap-sm">
+<span class="font-h2 text-h2 text-outline">2,060</span>
+<span class="material-symbols-outlined text-outline mb-[4px]">do_not_disturb_on</span>
+</div>
+</div>
+</div>
+<!-- Filters Section -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-[0_4px_20px_rgba(0,77,64,0.03)] mb-xl flex flex-wrap gap-md items-end">
+<div class="flex-1 min-w-[200px]">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Məhsul adı</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-xl pr-sm py-xs rounded border border-outline-variant bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-sm font-body-sm" placeholder="Axtar..." type="text"/>
+</div>
+</div>
+<div class="w-full sm:w-auto min-w-[150px]">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Mağaza</label>
+<select class="w-full px-sm py-xs rounded border border-outline-variant bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-sm font-body-sm appearance-none">
+<option>Bütün Mağazalar</option>
+<option>Baku Electronics</option>
+<option>Kontakt Home</option>
+</select>
+</div>
+<div class="w-full sm:w-auto min-w-[150px]">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Kateqoriya</label>
+<select class="w-full px-sm py-xs rounded border border-outline-variant bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-sm font-body-sm appearance-none">
+<option>Bütün Kateqoriyalar</option>
+<option>Elektronika</option>
+<option>Geyim</option>
+</select>
+</div>
+<div class="w-full sm:w-auto min-w-[150px]">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Status</label>
+<select class="w-full px-sm py-xs rounded border border-outline-variant bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-sm font-body-sm appearance-none">
+<option>Bütün Statuslar</option>
+<option>Aktiv</option>
+<option>Təsdiq gözləyir</option>
+</select>
+</div>
+<div class="w-full sm:w-auto min-w-[150px]">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Tarix</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">calendar_month</span>
+<input class="w-full pl-xl pr-sm py-xs rounded border border-outline-variant bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-sm font-body-sm appearance-none" type="date"/>
+</div>
+</div>
+<div class="w-full sm:w-auto">
+<button class="w-full bg-surface-variant text-on-surface-variant px-md py-xs rounded border border-outline-variant font-body-sm text-body-sm hover:bg-surface-container-high transition-colors flex items-center justify-center gap-xs h-[34px]">
+<span class="material-symbols-outlined text-[20px]">filter_list</span> Filter
+                    </button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_4px_20px_rgba(0,77,64,0.03)] overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container border-b border-outline-variant">
+<tr>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Məhsul</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Mağaza</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Kateqoriya</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Qiymət</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Tarix</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider text-right">Əməliyyatlar</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1: Təsdiq gözləyir -->
+<tr class="hover:bg-surface-container-low transition-colors duration-150 group">
+<td class="py-sm px-lg">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded border border-outline-variant overflow-hidden shrink-0 bg-white flex items-center justify-center">
+<img alt="Premium Headphones" class="w-full h-full object-contain p-1" data-alt="High quality product photography of premium over-ear headphones on a clean white background. Studio lighting, sharp focus, professional wholesale catalog aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9kBOoVr_3tR0jjWqIev3WBYMqiYSvtm1CrcCfAi4_LI9V29QUOwV4dgsWtldLnXf7rCbr8xyhqz3cdTHwUr2sQaP1RCeBNgQjs-aYobsy9XUuGEheJRYXmfb86T-kZOfurdsOMkXOd9EyCtsq7nc-LD05MiOxxrTg6gzywrjushBX-OQ4pULgNAcdZhmaVZGt1lHzI-6Qj2CtQtxB4HFtAEgCn6EZG93rVbLASxqNBhMQLLBtwvBXAAShX5uyIHNpDwxDC8f6MRg"/>
+</div>
+<div>
+<p class="font-body-md text-body-md font-medium text-on-surface">Sony WH-1000XM4</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Stok: 500 ədəd</p>
+</div>
+</div>
+</td>
+<td class="py-md px-lg font-body-sm text-body-sm text-on-surface">TechBaku MMC</td>
+<td class="py-md px-lg font-body-sm text-body-sm text-on-surface-variant">Elektronika / Audio</td>
+<td class="py-md px-lg font-price-display text-price-display text-on-surface">450.00 ₼</td>
+<td class="py-md px-lg">
+<span class="inline-flex items-center gap-xs px-sm py-[2px] rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-label-caps">
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+                                        Təsdiq gözləyir
+                                    </span>
+</td>
+<td class="py-md px-lg font-body-sm text-body-sm text-on-surface-variant">12 Fev, 2024</td>
+<td class="py-md px-lg text-right">
+<div class="flex items-center justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors tooltip" title="Bax">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-xs text-secondary-container hover:text-secondary-fixed transition-colors tooltip" title="Təsdiqlə">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</button>
+<button class="p-xs text-error hover:text-on-error-container transition-colors tooltip" title="Rədd et">
+<span class="material-symbols-outlined text-[20px]">cancel</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Aktiv -->
+<tr class="hover:bg-surface-container-low transition-colors duration-150 group">
+<td class="py-sm px-lg">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded border border-outline-variant overflow-hidden shrink-0 bg-white flex items-center justify-center">
+<img alt="Sport Shoes" class="w-full h-full object-contain p-1" data-alt="High quality product photography of a red Nike sport shoe on a clean white background. Studio lighting, sharp focus, professional wholesale catalog aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhZJgetjwOznN526kcPvKg11sNUBB1f7kNAgmiXUeIygOcQ9zu7YyRTz6rNK6lZ-ktOuhulLdwjeqOy8yQngaSn-PTXPPM0bS_1pY8Hp-78zlMYkixnTv_R6hvR08Gs0R5Ip8Bl5r_dQsdGOWb8zyZf3OwKwQqGa6bhByaGA4ENIS-usr127hWBRdeNcFQlEPiG6iXpk-Rhd28ld7knaZOSERTZLZytBGdYR96Uy__fmKO4I6M_lhXoFdroJyKyYbWeBcoy6E-ncU"/>
+</div>
+<div>
+<p class="font-body-md text-body-md font-medium text-on-surface">Nike Air Max 2024</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Stok: 1200 cüt</p>
+</div>
+</div>
+</td>
+<td class="py-md px-lg font-body-sm text-body-sm text-on-surface">SportLine MMC</td>
+<td class="py-md px-lg font-body-sm text-body-sm text-on-surface-variant">Geyim / Ayaqqabı</td>
+<td class="py-md px-lg font-price-display text-price-display text-on-surface">120.00 ₼</td>
+<td class="py-md px-lg">
+<span class="inline-flex items-center gap-xs px-sm py-[2px] rounded-full bg-surface-container text-secondary font-label-caps text-label-caps">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                        Aktiv
+                                    </span>
+</td>
+<td class="py-md px-lg font-body-sm text-body-sm text-on-surface-variant">10 Fev, 2024</td>
+<td class="py-md px-lg text-right">
+<div class="flex items-center justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors tooltip" title="Bax">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:text-outline transition-colors tooltip" title="Passiv et">
+<span class="material-symbols-outlined text-[20px]">block</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Rədd edildi -->
+<tr class="hover:bg-surface-container-low transition-colors duration-150 group opacity-70 hover:opacity-100">
+<td class="py-sm px-lg">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded border border-outline-variant overflow-hidden shrink-0 bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">image_not_supported</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-medium text-on-surface">Adsız Məhsul Kodu 89</p>
+<p class="font-body-sm text-body-sm text-error">Şəkil qaydalarına uyğun deyil</p>
+</div>
+</div>
+</td>
+<td class="py-md px-lg font-body-sm text-body-sm text-on-surface">YeniMağaza MMC</td>
+<td class="py-md px-lg font-body-sm text-body-sm text-on-surface-variant">Naməlum</td>
+<td class="py-md px-lg font-price-display text-price-display text-on-surface">0.00 ₼</td>
+<td class="py-md px-lg">
+<span class="inline-flex items-center gap-xs px-sm py-[2px] rounded-full bg-error-container text-error font-label-caps text-label-caps">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+                                        Rədd edildi
+                                    </span>
+</td>
+<td class="py-md px-lg font-body-sm text-body-sm text-on-surface-variant">09 Fev, 2024</td>
+<td class="py-md px-lg text-right">
+<div class="flex items-center justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors tooltip" title="Bax">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="border-t border-outline-variant px-lg py-sm flex items-center justify-between bg-surface-container-lowest">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Göstərilir: 1-10 (Toplam: 12,450)</p>
+<div class="flex items-center gap-xs">
+<button class="p-xs text-on-surface-variant hover:text-primary disabled:opacity-50 transition-colors" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded bg-primary text-on-primary font-body-sm text-body-sm flex items-center justify-center">1</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-on-surface-variant font-body-sm text-body-sm flex items-center justify-center transition-colors">2</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-on-surface-variant font-body-sm text-body-sm flex items-center justify-center transition-colors">3</button>
+<span class="text-on-surface-variant">...</span>
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

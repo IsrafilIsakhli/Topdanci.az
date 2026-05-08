@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin - Məhsullar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "tertiary-fixed": "#ffdbd1",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#afefdd",
+                        "background": "#f8f9ff",
+                        "on-secondary-fixed-variant": "#005322",
+                        "surface-container-low": "#eff4ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-bright": "#f8f9ff",
+                        "primary-container": "#004d40",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#e89f8c",
+                        "on-secondary-container": "#007232",
+                        "secondary": "#006d2f",
+                        "surface-variant": "#d3e4fe",
+                        "on-primary-fixed-variant": "#065043",
+                        "tertiary-container": "#693527",
+                        "on-secondary-fixed": "#002109",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#29695b",
+                        "on-primary-fixed": "#00201a",
+                        "surface": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#7ebdac",
+                        "primary-fixed-dim": "#94d3c1",
+                        "on-surface-variant": "#3f4945",
+                        "on-background": "#0b1c30",
+                        "secondary-container": "#5dfd8a",
+                        "tertiary": "#4e2013",
+                        "inverse-surface": "#213145",
+                        "on-tertiary-fixed": "#370e04",
+                        "outline-variant": "#bfc9c4",
+                        "primary": "#00342b",
+                        "outline": "#707975",
+                        "inverse-primary": "#94d3c1",
+                        "secondary-fixed-dim": "#3de273",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#0b1c30",
+                        "secondary-fixed": "#66ff8e",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "surface-container-high": "#dce9ff",
+                        "surface-container": "#e5eeff",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "md": "16px",
+                        "xxl": "64px",
+                        "xl": "40px",
+                        "sm": "8px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "price-display": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "price-display": ["20px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #f8f9ff; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background max-w-[390px] mx-auto min-h-screen flex flex-col relative pb-24">
+<!-- Top App Bar -->
+<header class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-40 w-full flex items-center justify-between px-md h-20">
+<div class="flex items-center gap-sm">
+<button class="p-2 text-primary-container">
+<span class="material-symbols-outlined text-[24px]">menu</span>
+</button>
+<h1 class="text-2xl font-black text-primary-container tracking-tighter">TopdanBazar</h1>
+</div>
+<div class="flex items-center gap-xs">
+<button class="p-2 text-primary-container">
+<span class="material-symbols-outlined text-[24px]">search</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 px-4 py-6 flex flex-col gap-xl">
+<!-- Header Section -->
+<div>
+<h2 class="font-h2 text-h2 text-on-surface mb-sm">Məhsullar</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Bütün məhsulların idarə edilməsi</p>
+</div>
+<!-- Stat Cards (2 per row) -->
+<div class="grid grid-cols-2 gap-sm">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container-lowest p-md rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(0,77,64,0.03)] flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ÜMUMİ</span>
+<span class="font-h3 text-h3 text-on-surface">1,248</span>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-container-lowest p-md rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(0,77,64,0.03)] flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant">GÖZLƏYƏN</span>
+<span class="font-h3 text-h3 text-error">42</span>
+</div>
+</div>
+<!-- Filters & Actions -->
+<div class="flex justify-between items-center bg-surface-container-lowest p-sm rounded-lg border border-outline-variant">
+<div class="flex-1">
+<input class="w-full bg-transparent border-none font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:ring-0" placeholder="Axtarış..." type="text"/>
+</div>
+<button class="p-2 text-on-surface-variant flex items-center justify-center border-l border-outline-variant ml-sm pl-sm">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+</div>
+<!-- Product Cards List -->
+<div class="flex flex-col gap-md">
+<!-- Card 1 (Pending) -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(0,77,64,0.03)] p-md flex flex-col gap-md">
+<div class="flex gap-md">
+<img alt="Product thumbnail" class="w-20 h-20 rounded object-cover" data-alt="A clean, professional product photography shot of a modern electronic device on a pristine white background. High-key lighting, corporate modern aesthetic, deep green and soft grey shadows. Minimalist presentation for a wholesale catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAX9tdAIvs_VBol6ENr4Feyib3KVTQdStHl2fgNERormoO2O1n5btvcIPXqhwru7kJKXrSlBBq2MJRL_-QX2oseR0x8SGM4t43vgGehYcoqz1oGQj8X709kRZQ-YlzZfz6KTytw_AO_iWwaffyKVhyoWFhh3yKBbPqj7vg5_ubbnD6Z2R-rKYzR2F8swTTyCcXabRDr0VVylLFem0J3D1Vl-DFBeVvJZi5lqc7DDKlyzvSn88PGEppUZNlQ8qMYeEtWhK3Sx5rNP9A"/>
+<div class="flex flex-col justify-center gap-xs flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface line-clamp-1">Premium Smart Watch</h3>
+<span class="bg-[#fff3cd] text-[#856404] px-2 py-0.5 rounded font-label-caps text-[10px]">Gözləyir</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Electro Store LLC</p>
+<p class="font-price-display text-price-display text-primary-container mt-xs">45.00 ₼</p>
+</div>
+</div>
+<div class="flex gap-sm border-t border-outline-variant pt-md">
+<button class="flex-1 bg-surface-container text-on-surface font-body-sm text-body-sm py-2 rounded font-medium flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">visibility</span> Bax
+                    </button>
+<button class="flex-1 bg-primary text-on-primary font-body-sm text-body-sm py-2 rounded font-medium">Təsdiqlə</button>
+<button class="flex-1 bg-error-container text-on-error-container font-body-sm text-body-sm py-2 rounded font-medium">Rədd et</button>
+</div>
+</div>
+<!-- Card 2 (Active) -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(0,77,64,0.03)] p-md flex flex-col gap-md">
+<div class="flex gap-md">
+<img alt="Product thumbnail" class="w-20 h-20 rounded object-cover" data-alt="A clean, professional product photography shot of premium headphones on a pristine white background. High-key lighting, corporate modern aesthetic, deep green and soft grey shadows. Minimalist presentation for a wholesale catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQZnsiHmvownGTvGML1ZqsWH1SXKkKqUTSoCk3SotySFlF3AREKxw9Nd40P55G9uTU27Rbhf-C3cM1J0hJcHfDmZVmvbKTkRFsglxhi4fzYrg8uj4GCurNj3d8sA6eF7E9D4L5rbZ7Akwmbn6uyU7MEg56twtSJjXQKcK3Nl5vVKMlonVqsPXXlZ107ttcuZeFF3ZpbCYuUS5s4vaIc9N7ull9DMXe2970EBQBApJYmeAbnwNUZP7YC1bJnhhH8TTiqFRIE6ZcwwA"/>
+<div class="flex flex-col justify-center gap-xs flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface line-clamp-1">Studio Headphones</h3>
+<span class="bg-[#d4edda] text-[#155724] px-2 py-0.5 rounded font-label-caps text-[10px]">Aktiv</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">AudioTech MMC</p>
+<p class="font-price-display text-price-display text-primary-container mt-xs">120.50 ₼</p>
+</div>
+</div>
+<div class="flex gap-sm border-t border-outline-variant pt-md">
+<button class="flex-1 bg-surface-container text-on-surface font-body-sm text-body-sm py-2 rounded font-medium flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">visibility</span> Bax
+                    </button>
+<button class="flex-1 bg-transparent border border-primary-container text-primary-container font-body-sm text-body-sm py-2 rounded font-medium">Passiv et</button>
+</div>
+</div>
+<!-- Card 3 (Rejected) -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(0,77,64,0.03)] p-md flex flex-col gap-md opacity-75">
+<div class="flex gap-md">
+<img alt="Product thumbnail" class="w-20 h-20 rounded object-cover grayscale" data-alt="A clean, professional product photography shot of a generic laptop on a pristine white background, presented in grayscale. High-key lighting, corporate modern aesthetic, soft grey shadows. Minimalist presentation for a wholesale catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO9Z1IWgYvwsvLyMNX-2f5Aug2no2M2dKxW1mneV17L4_4u5bjSNC6g8wDFEgdtSPlegV8vx05d6v4fLOZBB7uHuMsNu1jbkXHqVD3ajDwGqkCiN7dt0qS1KkxL_qBx6k25TCgU90reZKLCudJzH_zlCsc2FQGZJJLW4tEOIyLk2UQ0lXsdLuqfkuEJ1bmwX66TmGeU4mTdSA7AMGVUXh9KDwdsavEr5sUDb0KuvCmsv8X_pUQyGubfhfNgwfa8PeltPKuHIVTEu4"/>
+<div class="flex flex-col justify-center gap-xs flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface line-clamp-1">Pro Laptop 15"</h3>
+<span class="bg-[#f8d7da] text-[#721c24] px-2 py-0.5 rounded font-label-caps text-[10px]">Rədd edilib</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Tech Supply Co.</p>
+<p class="font-price-display text-price-display text-primary-container mt-xs">850.00 ₼</p>
+</div>
+</div>
+<div class="flex gap-sm border-t border-outline-variant pt-md">
+<button class="flex-1 bg-surface-container text-on-surface font-body-sm text-body-sm py-2 rounded font-medium flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">visibility</span> Bax
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 md:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-100 dark:border-gray-800 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+<a class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-['Inter'] text-[10px] font-semibold uppercase tracking-widest">Ana səhifə</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#004D40] dark:text-teal-400 bg-teal-50/50 dark:bg-teal-900/20 rounded-xl px-4 py-1 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1">grid_view</span>
+<span class="font-['Inter'] text-[10px] font-semibold uppercase tracking-widest">Məhsullar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1">shopping_bag</span>
+<span class="font-['Inter'] text-[10px] font-semibold uppercase tracking-widest">Sifarişlər</span>
+</a>
+<a class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-['Inter'] text-[10px] font-semibold uppercase tracking-widest">Profil</span>
+</a>
+</nav>
+</body></html>

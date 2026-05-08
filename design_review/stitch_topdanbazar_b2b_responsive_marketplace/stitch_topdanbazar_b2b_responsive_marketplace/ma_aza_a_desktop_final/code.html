@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mağaza Aç - TopdanBazar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-container": "#007232",
+            "error": "#ba1a1a",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary-container": "#5dfd8a",
+            "on-secondary-fixed": "#002109",
+            "on-surface-variant": "#3f4945",
+            "on-primary-container": "#7ebdac",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-fixed-variant": "#6d382a",
+            "secondary": "#006d2f",
+            "inverse-surface": "#213145",
+            "inverse-primary": "#94d3c1",
+            "surface-dim": "#cbdbf5",
+            "primary-fixed-dim": "#94d3c1",
+            "on-primary-fixed-variant": "#065043",
+            "tertiary-fixed": "#ffdbd1",
+            "primary-fixed": "#afefdd",
+            "surface-container": "#e5eeff",
+            "on-primary": "#ffffff",
+            "secondary-fixed-dim": "#3de273",
+            "outline": "#707975",
+            "error-container": "#ffdad6",
+            "surface-tint": "#29695b",
+            "primary": "#00342b",
+            "surface-container-high": "#dce9ff",
+            "primary-container": "#004d40",
+            "outline-variant": "#bfc9c4",
+            "surface-container-highest": "#d3e4fe",
+            "on-secondary-fixed-variant": "#005322",
+            "surface-container-low": "#eff4ff",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#00201a",
+            "on-surface": "#0b1c30",
+            "secondary-fixed": "#66ff8e",
+            "background": "#f8f9ff",
+            "tertiary-fixed-dim": "#ffb5a1",
+            "on-tertiary-fixed": "#370e04",
+            "on-tertiary-container": "#e89f8c",
+            "tertiary-container": "#693527",
+            "on-error-container": "#93000a",
+            "surface-variant": "#d3e4fe",
+            "tertiary": "#4e2013",
+            "on-background": "#0b1c30",
+            "surface": "#f8f9ff",
+            "on-error": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "container-max": "1280px",
+            "xl": "40px",
+            "md": "16px",
+            "sm": "8px",
+            "gutter": "24px",
+            "xs": "4px",
+            "xxl": "64px",
+            "lg": "24px",
+            "base": "4px"
+          },
+          "fontFamily": {
+            "label-caps": ["Inter"],
+            "price-display": ["Inter"],
+            "body-lg": ["Inter"],
+            "h3": ["Inter"],
+            "h2": ["Inter"],
+            "h1": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "price-display": ["20px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+            "h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+            "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+            "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-['Inter'] antialiased">
+<!-- Main Canvas Content -->
+<main class="flex-grow flex items-center justify-center py-xxl px-gutter">
+<div class="max-w-[1280px] w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-xxl items-start">
+<!-- Left Side: Info/Benefits -->
+<div class="space-y-xl mt-xl">
+<div class="space-y-md">
+<h1 class="font-h1 text-h1 text-primary">Mağazanızı TopdanBazar-da açın</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+            Məhsullarınızı onlayn kataloqda nümayiş etdirin, yeni alıcılara çatın və müraciətləri bir paneldən izləyin.
+          </p>
+</div>
+<div class="space-y-lg">
+<!-- Benefit Item -->
+<div class="flex items-start gap-md">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary-container text-[24px]">storefront</span>
+</div>
+<div class="pt-2">
+<h3 class="font-h3 text-h3 text-primary mb-1">Məhsullarınızı nümayiş etdirin</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Bütün məhsullarınızı yüksək keyfiyyətli formatda alıcılara təqdim edin.</p>
+</div>
+</div>
+<!-- Benefit Item -->
+<div class="flex items-start gap-md">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary-container text-[24px]">group</span>
+</div>
+<div class="pt-2">
+<h3 class="font-h3 text-h3 text-primary mb-1">Yeni alıcılara çatın</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Geniş alıcı bazamıza çıxış əldə edərək satışlarınızı artırın.</p>
+</div>
+</div>
+<!-- Benefit Item -->
+<div class="flex items-start gap-md">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary-container text-[24px]">trending_up</span>
+</div>
+<div class="pt-2">
+<h3 class="font-h3 text-h3 text-primary mb-1">WhatsApp kliklərini izləyin</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Potensial müştərilərin müraciətlərini dəqiq statistika ilə nəzarətdə saxlayın.</p>
+</div>
+</div>
+<!-- Benefit Item -->
+<div class="flex items-start gap-md">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary-container text-[24px]">dashboard</span>
+</div>
+<div class="pt-2">
+<h3 class="font-h3 text-h3 text-primary mb-1">Mağaza panelindən idarə edin</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Sadə və anlaşılan interfeyslə məhsullarınızı rahatlıqla idarə edin.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Form Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_20px_40px_-15px_rgba(0,52,43,0.05)] border border-outline-variant p-xl">
+<h2 class="font-h2 text-h2 text-primary mb-lg">Mağaza müraciəti</h2>
+<form class="space-y-xl">
+<!-- Section 1: Əlaqə məlumatları -->
+<div class="space-y-lg">
+<h3 class="font-label-caps text-label-caps text-outline uppercase pb-sm border-b border-surface-variant">Əlaqə məlumatları</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Ad və soyad</label>
+<input class="w-full h-12 px-md border border-outline-variant rounded-DEFAULT bg-surface-bright text-on-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Ad və soyadınızı daxil edin" type="text"/>
+</div>
+<div class="space-y-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant">E-poçt</label>
+<input class="w-full h-12 px-md border border-outline-variant rounded-DEFAULT bg-surface-bright text-on-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="nümunə@mail.com" type="email"/>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Telefon</label>
+<input class="w-full h-12 px-md border border-outline-variant rounded-DEFAULT bg-surface-bright text-on-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="+994 (--) --- -- --" type="tel"/>
+</div>
+<div class="space-y-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant">WhatsApp nömrəsi</label>
+<input class="w-full h-12 px-md border border-outline-variant rounded-DEFAULT bg-surface-bright text-on-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="+994 (--) --- -- --" type="tel"/>
+</div>
+</div>
+</div>
+<!-- Section 2: Mağaza məlumatları -->
+<div class="space-y-lg">
+<h3 class="font-label-caps text-label-caps text-outline uppercase pb-sm border-b border-surface-variant">Mağaza məlumatları</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Mağaza adı</label>
+<input class="w-full h-12 px-md border border-outline-variant rounded-DEFAULT bg-surface-bright text-on-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Mağazanızın adı" type="text"/>
+</div>
+<div class="space-y-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Əsas kateqoriya</label>
+<select class="w-full h-12 px-md border border-outline-variant rounded-DEFAULT bg-surface-bright text-on-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%208l5%205%205-5%22%20stroke%3D%22%23707975%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[position:right_16px_center]">
+<option disabled="" selected="" value="">Kategoriya seçin</option>
+<option value="1">Geyim</option>
+<option value="2">Elektronika</option>
+<option value="3">Qida</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Şəhər</label>
+<input class="w-full h-12 px-md border border-outline-variant rounded-DEFAULT bg-surface-bright text-on-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Məsələn: Bakı" type="text"/>
+</div>
+<div class="space-y-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Rayon</label>
+<input class="w-full h-12 px-md border border-outline-variant rounded-DEFAULT bg-surface-bright text-on-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Məsələn: Nəsimi" type="text"/>
+</div>
+</div>
+<div class="space-y-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Qısa mağaza təsviri</label>
+<textarea class="w-full p-md border border-outline-variant rounded-DEFAULT bg-surface-bright text-on-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none" placeholder="Mağazanız və məhsullarınız haqqında qısa məlumat..." rows="3"></textarea>
+</div>
+</div>
+<!-- Footer of form -->
+<div class="space-y-lg pt-md">
+<div class="flex items-start gap-sm">
+<input class="mt-1 w-5 h-5 text-primary-container border-outline-variant rounded-DEFAULT focus:ring-primary-container" id="terms" type="checkbox"/>
+<label class="font-body-sm text-body-sm text-on-surface-variant" for="terms">
+<a class="text-primary hover:underline underline-offset-2" href="#">İstifadəçi qaydaları</a> və <a class="text-primary hover:underline underline-offset-2" href="#">məxfilik siyasəti</a> ilə razıyam.
+              </label>
+</div>
+<div class="bg-surface-container-low p-md rounded-lg flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary-container text-[20px] shrink-0">info</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Müraciətiniz admin tərəfindən yoxlanıldıqdan sonra mağazanız aktiv ediləcək.</p>
+</div>
+<button class="w-full h-12 bg-primary-container text-on-primary font-body-md font-semibold rounded-lg hover:bg-primary transition-colors shadow-sm flex items-center justify-center gap-2" type="button">
+              Müraciəti göndər
+              <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<div class="text-center pt-sm border-t border-surface-variant">
+<a class="font-body-md text-body-md text-primary hover:underline underline-offset-4" href="#">Artıq hesabınız var? Daxil ol</a>
+</div>
+</div>
+</form>
+</div>
+</div>
+</main>
+</body></html>

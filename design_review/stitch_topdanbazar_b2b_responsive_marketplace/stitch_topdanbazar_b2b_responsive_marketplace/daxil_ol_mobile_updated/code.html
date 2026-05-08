@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Daxil ol - TopdanBazar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f8f9ff",
+                    "outline": "#707975",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-fixed-variant": "#005322",
+                    "secondary": "#006d2f",
+                    "on-tertiary-container": "#e89f8c",
+                    "on-error": "#ffffff",
+                    "on-surface-variant": "#3f4945",
+                    "on-background": "#0b1c30",
+                    "surface": "#f8f9ff",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#5dfd8a",
+                    "inverse-primary": "#94d3c1",
+                    "tertiary-fixed": "#ffdbd1",
+                    "on-error-container": "#93000a",
+                    "inverse-surface": "#213145",
+                    "background": "#f8f9ff",
+                    "on-secondary": "#ffffff",
+                    "surface-container-high": "#dce9ff",
+                    "outline-variant": "#bfc9c4",
+                    "surface-dim": "#cbdbf5",
+                    "primary-container": "#004d40",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#065043",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#afefdd",
+                    "on-tertiary-fixed-variant": "#6d382a",
+                    "on-primary-container": "#7ebdac",
+                    "on-tertiary-fixed": "#370e04",
+                    "surface-tint": "#29695b",
+                    "tertiary-container": "#693527",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-secondary-container": "#007232",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed-dim": "#ffb5a1",
+                    "surface-container-low": "#eff4ff",
+                    "on-primary-fixed": "#00201a",
+                    "secondary-fixed-dim": "#3de273",
+                    "secondary-fixed": "#66ff8e",
+                    "on-secondary-fixed": "#002109",
+                    "surface-container": "#e5eeff",
+                    "primary-fixed-dim": "#94d3c1",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#0b1c30",
+                    "tertiary": "#4e2013",
+                    "primary": "#00342b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "xxl": "64px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "xl": "40px",
+                    "gutter": "24px",
+                    "sm": "8px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "h1": [
+                            "Inter"
+                    ],
+                    "label-caps": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "price-display": [
+                            "Inter"
+                    ],
+                    "h3": [
+                            "Inter"
+                    ],
+                    "body-sm": [
+                            "Inter"
+                    ],
+                    "h2": [
+                            "Inter"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "h1": [
+                            "40px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "1",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "price-display": [
+                            "20px",
+                            {
+                                    "lineHeight": "1",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "h3": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "h2": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface-bright text-on-background antialiased selection:bg-primary-fixed selection:text-on-primary-fixed flex flex-col min-h-screen">
+<!-- Mobile Header -->
+<header class="w-full bg-surface-container-lowest border-b border-outline-variant/30 px-md py-sm flex items-center justify-between sticky top-0 z-50">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[28px] text-primary" style="font-variation-settings: 'FILL' 1;">storefront</span>
+<span class="font-h3 text-[20px] text-primary font-black tracking-tighter">TopdanBazar</span>
+</div>
+<button class="text-on-surface hover:bg-surface-variant p-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+<span class="material-symbols-outlined text-[24px]">menu</span>
+</button>
+</header>
+<!-- Mobile-Optimized Content Container -->
+<main class="flex-grow flex flex-col justify-center items-center p-md">
+<!-- Login Card -->
+<div class="w-full max-w-[400px] bg-surface-container-lowest rounded-xl shadow-[0_20px_40px_-15px_rgba(0,52,43,0.05)] p-lg border border-outline-variant/30 relative overflow-hidden">
+<!-- Subtle top accent line representing primary brand color -->
+<div class="absolute top-0 left-0 w-full h-[4px] bg-primary"></div>
+<!-- Context Title -->
+<div class="mb-lg mt-sm">
+<h2 class="font-h3 text-h3 text-on-background">Daxil ol</h2>
+<p class="font-body-sm text-body-sm text-outline mt-xs">Hesabınıza daxil olun...</p>
+</div>
+<!-- Login Form -->
+<form action="#" method="POST">
+<!-- Identifer Input -->
+<div class="mb-lg">
+<label class="block font-body-sm text-body-sm text-on-surface-variant mb-sm font-semibold" for="identifier">
+                        E-poçt və ya Telefon
+                    </label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-[20px] text-outline">person</span>
+</div>
+<input class="w-full h-[48px] bg-surface-bright border border-outline-variant rounded-lg pl-[44px] pr-md font-body-md text-body-md text-on-background placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" id="identifier" name="identifier" placeholder="nümunə@şirkət.az" type="text"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="mb-xl">
+<div class="flex justify-between items-center mb-sm">
+<label class="block font-body-sm text-body-sm text-on-surface-variant font-semibold" for="password">
+                            Şifrə
+                        </label>
+<a class="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors font-medium" href="#">
+                            Şifrəni unutmusunuz?
+                        </a>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-[20px] text-outline">lock</span>
+</div>
+<input class="w-full h-[48px] bg-surface-bright border border-outline-variant rounded-lg pl-[44px] pr-[44px] font-body-md text-body-md text-on-background placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" id="password" name="password" placeholder="••••••••" type="password"/>
+<button class="absolute inset-y-0 right-0 pr-md flex items-center text-outline hover:text-on-surface-variant transition-colors cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility_off</span>
+</button>
+</div>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full h-[52px] bg-primary text-on-primary font-body-md text-body-md font-bold rounded-lg hover:bg-on-primary-fixed-variant active:scale-[0.98] transition-all flex justify-center items-center gap-2 shadow-sm" type="submit">
+                    Daxil ol
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</form>
+<!-- Registration Prompt -->
+<div class="text-center mt-xl border-t border-outline-variant/30 pt-lg">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Mağazanız yoxdur? 
+                    <br class="sm:hidden"/>
+<a class="text-primary font-semibold hover:underline inline-block mt-xs sm:mt-0 sm:ml-1" href="#">
+                        Mağaza aç
+                    </a>
+</p>
+</div>
+</div>
+<!-- Secure/Trust Indicator below card -->
+<div class="mt-lg flex items-center justify-center gap-xs text-outline opacity-70 mb-md">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+<span class="font-label-caps text-label-caps">Təhlükəsiz bağlantı</span>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Əlaqə - TopdanBazar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#0b1c30",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#00201a",
+                    "surface-dim": "#cbdbf5",
+                    "on-tertiary-fixed-variant": "#6d382a",
+                    "on-primary-fixed-variant": "#065043",
+                    "secondary": "#006d2f",
+                    "on-error-container": "#93000a",
+                    "surface-container": "#e5eeff",
+                    "outline": "#707975",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface": "#f8f9ff",
+                    "inverse-surface": "#213145",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-container": "#7ebdac",
+                    "outline-variant": "#bfc9c4",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#d3e4fe",
+                    "tertiary-fixed": "#ffdbd1",
+                    "surface-variant": "#d3e4fe",
+                    "tertiary-container": "#693527",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#3f4945",
+                    "surface-bright": "#f8f9ff",
+                    "on-tertiary-container": "#e89f8c",
+                    "surface-container-low": "#eff4ff",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-fixed-dim": "#3de273",
+                    "error-container": "#ffdad6",
+                    "inverse-primary": "#94d3c1",
+                    "on-secondary-fixed-variant": "#005322",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#afefdd",
+                    "tertiary-fixed-dim": "#ffb5a1",
+                    "secondary-fixed": "#66ff8e",
+                    "on-tertiary-fixed": "#370e04",
+                    "secondary-container": "#5dfd8a",
+                    "primary": "#00342b",
+                    "background": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "tertiary": "#4e2013",
+                    "on-secondary-container": "#007232",
+                    "on-background": "#0b1c30",
+                    "primary-container": "#004d40",
+                    "primary-fixed-dim": "#94d3c1",
+                    "on-secondary-fixed": "#002109",
+                    "surface-tint": "#29695b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "base": "4px",
+                    "xl": "40px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "xxl": "64px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Inter"],
+                    "h3": ["Inter"],
+                    "h2": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "price-display": ["Inter"],
+                    "h1": ["Inter"]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "price-display": ["20px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .contact-card-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 52, 43, 0.05);
+        }
+        body {
+            background-color: #f8f9ff;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="bg-surface border-b border-outline-variant fixed top-0 left-0 right-0 z-50">
+<div class="flex justify-between items-center px-lg py-md w-full max-w-container-max mx-auto">
+<div class="font-h3 text-h3 font-bold text-primary">TopdanBazar</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Ana səhifə</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Kateqoriyalar</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Mağazalar</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Məhsullar</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md" href="#">Əlaqə</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant font-body-md px-md py-sm hover:bg-surface-container-low transition-all">Daxil ol</button>
+<button class="bg-primary text-on-primary font-body-md px-lg py-sm rounded-lg hover:opacity-90 active:scale-95 transition-all">Mağaza aç</button>
+</div>
+</div>
+</header>
+<main class="pt-[88px]">
+<!-- Hero Section -->
+<section class="py-xxl px-lg bg-surface-container-low">
+<div class="max-w-container-max mx-auto text-center">
+<h1 class="font-h1 text-h1 text-primary mb-md">Əlaqə</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                    Suallarınız, əməkdaşlıq və mağaza müraciətləri üçün bizimlə əlaqə saxlayın. Biz hər zaman kömək etməyə hazırıq.
+                </p>
+</div>
+</section>
+<!-- Contact Cards Grid -->
+<section class="py-xl px-lg">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
+<!-- Card 1: E-poçt -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl contact-card-shadow flex flex-col items-center text-center">
+<div class="w-12 h-12 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined">mail</span>
+</div>
+<h3 class="font-h3 text-[18px] text-primary mb-xs">E-poçt</h3>
+<p class="font-body-sm text-on-surface-variant">support@topdanbazar.az</p>
+</div>
+<!-- Card 2: Telefon -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl contact-card-shadow flex flex-col items-center text-center">
+<div class="w-12 h-12 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined">call</span>
+</div>
+<h3 class="font-h3 text-[18px] text-primary mb-xs">Telefon</h3>
+<p class="font-body-sm text-on-surface-variant">+994 (12) 123 45 67</p>
+</div>
+<!-- Card 3: Ünvan -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl contact-card-shadow flex flex-col items-center text-center">
+<div class="w-12 h-12 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined">location_on</span>
+</div>
+<h3 class="font-h3 text-[18px] text-primary mb-xs">Ünvan</h3>
+<p class="font-body-sm text-on-surface-variant text-balance">Bakı şəhəri, Nərimanov r., Əhməd Rəcəbli küç.</p>
+</div>
+<!-- Card 4: İş saatları -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl contact-card-shadow flex flex-col items-center text-center">
+<div class="w-12 h-12 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<h3 class="font-h3 text-[18px] text-primary mb-xs">İş saatları</h3>
+<p class="font-body-sm text-on-surface-variant">B.e - Cümə: 09:00 - 18:00<br/>Şənbə: 10:00 - 15:00</p>
+</div>
+</div>
+</section>
+<!-- Contact Form & Map Section -->
+<section class="py-xl px-lg">
+<div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Form Column -->
+<div class="lg:col-span-7 bg-surface-container-lowest border border-outline-variant p-xl rounded-xl contact-card-shadow">
+<h2 class="font-h2 text-h2 text-primary mb-lg">Bizə yazın</h2>
+<form class="space-y-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Ad və soyad</label>
+<input class="w-full bg-surface border border-outline-variant rounded-lg p-md focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Adınızı daxil edin" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant">E-poçt</label>
+<input class="w-full bg-surface border border-outline-variant rounded-lg p-md focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="nümunə@mail.com" type="email"/>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Telefon</label>
+<input class="w-full bg-surface border border-outline-variant rounded-lg p-md focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="+994 (__) ___ __ __" type="tel"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Mövzu</label>
+<select class="w-full bg-surface border border-outline-variant rounded-lg p-md focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all">
+<option>Mağaza müraciəti</option>
+<option>Texniki dəstək</option>
+<option>Müştəri xidmətləri</option>
+<option>Digər</option>
+</select>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Mesaj</label>
+<textarea class="w-full bg-surface border border-outline-variant rounded-lg p-md focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all resize-none" placeholder="Mesajınızı bura yazın..." rows="5"></textarea>
+</div>
+<button class="bg-primary text-on-primary font-body-md font-bold px-xxl py-md rounded-lg hover:opacity-90 active:scale-95 transition-all w-full md:w-auto" type="submit">
+                            Mesajı göndər
+                        </button>
+</form>
+</div>
+<!-- Map / Illustration Column -->
+<div class="lg:col-span-5 flex flex-col gap-lg">
+<div class="flex-1 bg-surface-container-high rounded-xl overflow-hidden min-h-[300px] border border-outline-variant relative">
+<img class="w-full h-full object-cover grayscale opacity-80 hover:grayscale-0 transition-all duration-700" data-alt="A detailed digital map interface of Baku city showing professional business districts. The map is rendered in a minimalist light mode style with soft blue and gray tones, consistent with a premium corporate aesthetic. Key landmarks are subtly highlighted with small primary-colored pins. The lighting is clean and balanced, suggesting a high-tech navigation tool." data-location="Baku" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO4p7XK8l7SrtLdgHmqxL5SYMfBry0E2hhrFW5c2SIVRsAdl_M4lVprVMOWgFbiJE2Z7334HMnJazBKNCzvjt8fcOzlFJ7Wtb7fEUf_Cis5VsQ51zW9GzlXdd3WxplF3Ymo9K_Xzf6ktrjkBLwz2r9JkKR4jUr74o_3_P4cP2KdcHy5KKbL_ReTkR7mt2VX7Hda-tFfhDjvcbx1-Js4W7zFPUZsTW20P98PuDNzwwdFQoR5GygFa8IN4OeS1R5GT2LRZdlKM6rXJY"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-primary text-on-primary p-md rounded-full shadow-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+</div>
+<div class="bg-secondary text-on-secondary p-lg rounded-xl flex items-center gap-md">
+<div class="w-12 h-12 bg-on-secondary/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">chat</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps opacity-80">WhatsApp ilə dəstək</p>
+<p class="font-body-lg font-bold">Məsləhət alın</p>
+</div>
+<button class="ml-auto bg-on-secondary text-secondary font-bold px-md py-sm rounded-lg hover:bg-opacity-90 transition-all">
+                            Yazın
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="py-xxl px-lg bg-surface-container-lowest border-y border-outline-variant">
+<div class="max-w-3xl mx-auto">
+<h2 class="font-h2 text-h2 text-primary text-center mb-xl">Tez-tez verilən suallar</h2>
+<div class="space-y-md">
+<div class="border border-outline-variant rounded-lg p-lg hover:border-primary transition-all cursor-pointer group">
+<div class="flex justify-between items-center">
+<span class="font-body-lg font-bold text-primary">Mağaza necə açılır?</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">expand_more</span>
+</div>
+</div>
+<div class="border border-outline-variant rounded-lg p-lg hover:border-primary transition-all cursor-pointer group">
+<div class="flex justify-between items-center">
+<span class="font-body-lg font-bold text-primary">Məhsul əlavə etmək pulludur?</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">expand_more</span>
+</div>
+</div>
+<div class="border border-outline-variant rounded-lg p-lg hover:border-primary transition-all cursor-pointer group">
+<div class="flex justify-between items-center">
+<span class="font-body-lg font-bold text-primary">Platformada satış olurmu?</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">expand_more</span>
+</div>
+</div>
+<div class="border border-outline-variant rounded-lg p-lg hover:border-primary transition-all cursor-pointer group">
+<div class="flex justify-between items-center">
+<span class="font-body-lg font-bold text-primary">Satıcı ilə necə əlaqə saxlayım?</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Store CTA Section -->
+<section class="py-xxl px-lg">
+<div class="max-w-container-max mx-auto bg-primary rounded-[24px] p-xxl text-center text-on-primary overflow-hidden relative">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-container opacity-20 rounded-full translate-x-32 -translate-y-32"></div>
+<div class="absolute bottom-0 left-0 w-40 h-40 bg-secondary-container opacity-20 rounded-full -translate-x-20 translate-y-20"></div>
+<h2 class="font-h2 text-h2 mb-md relative z-10">Mağaza açmaq istəyirsiniz?</h2>
+<p class="font-body-lg text-body-lg mb-xl opacity-90 relative z-10">Məhsullarınızı minlərlə alıcıya təqdim etmək üçün bu gün qeydiyyatdan keçin.</p>
+<button class="bg-secondary text-on-secondary font-h3 text-h3 px-xxl py-md rounded-xl hover:opacity-95 active:scale-95 transition-all relative z-10">
+                    Mağaza aç
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg px-lg py-xl w-full max-w-container-max mx-auto">
+<div class="space-y-md">
+<div class="font-h3 text-h3 font-bold text-primary">TopdanBazar</div>
+<p class="font-body-sm text-on-surface-variant max-w-xs">Azərbaycanın ən böyük topdansatış platforması. Biznesiniz üçün ən uyğun tərəfdaş.</p>
+<p class="font-body-sm text-on-surface-variant opacity-60">© 2024 TopdanBazar. Bütün hüquqlar qorunur.</p>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-caps text-label-caps text-primary">Platforma</h4>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Haqqımızda</a>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Mağazalar</a>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Məhsullar</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-caps text-label-caps text-primary">Dəstək</h4>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">İstifadəçi razılaşması</a>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Məxfilik siyasəti</a>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Yardım mərkəzi</a>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">FAQ</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

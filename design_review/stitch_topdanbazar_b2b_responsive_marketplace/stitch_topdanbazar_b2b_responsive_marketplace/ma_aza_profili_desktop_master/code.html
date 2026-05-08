@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Baku Build &amp; Supply MMC - TopdanBazar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#5dfd8a",
+                        "secondary-fixed-dim": "#3de273",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#94d3c1",
+                        "primary-fixed": "#afefdd",
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "surface-container": "#e5eeff",
+                        "inverse-primary": "#94d3c1",
+                        "secondary-fixed": "#66ff8e",
+                        "tertiary": "#4e2013",
+                        "on-surface": "#0b1c30",
+                        "on-tertiary-fixed": "#370e04",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#d3e4fe",
+                        "surface-dim": "#cbdbf5",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#ffdbd1",
+                        "on-background": "#0b1c30",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#007232",
+                        "on-primary-fixed": "#00201a",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#005322",
+                        "surface-container-high": "#dce9ff",
+                        "on-primary-container": "#7ebdac",
+                        "surface-container-highest": "#d3e4fe",
+                        "inverse-surface": "#213145",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-primary-fixed-variant": "#065043",
+                        "on-tertiary-container": "#e89f8c",
+                        "on-secondary-fixed": "#002109",
+                        "secondary": "#006d2f",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#004d40",
+                        "outline": "#707975",
+                        "primary": "#00342b",
+                        "outline-variant": "#bfc9c4",
+                        "surface-tint": "#29695b",
+                        "background": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "surface": "#f8f9ff",
+                        "on-surface-variant": "#3f4945",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#693527"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "md": "16px",
+                        "xxl": "64px",
+                        "xs": "4px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "sm": "8px",
+                        "xl": "40px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "price-display": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "h2": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h3": ["Inter"]
+                    },
+                    "fontSize": {
+                        "price-display": ["20px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md">
+<!-- TopNavBar Shared Component -->
+<header class="bg-white dark:bg-slate-900 font-['Inter'] text-sm tracking-tight docked full-width top-0 border-b z-50 border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="max-w-[1280px] mx-auto px-6 h-20 flex items-center justify-between w-full">
+<a class="text-2xl font-black text-[#004D40] dark:text-emerald-500 tracking-tighter hover:opacity-80 transition-opacity" href="#">TopdanBazar</a>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-[#004D40] dark:hover:text-emerald-300 transition-all duration-200" href="#">Kateqoriyalar</a>
+<a class="text-[#004D40] dark:text-emerald-400 font-bold border-b-2 border-[#004D40] pb-1 hover:text-[#004D40] dark:hover:text-emerald-300 transition-all duration-200" href="#">Mağazalar</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-[#004D40] dark:hover:text-emerald-300 transition-all duration-200" href="#">Haqqımızda</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-[#004D40] dark:hover:text-emerald-300 transition-all duration-200" href="#">Əlaqə</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-[#004D40] dark:text-emerald-400 font-bold hover:bg-surface-container-low px-4 py-2 rounded scale-95 active:scale-100 transition-transform">Daxil ol</button>
+<button class="bg-[#004D40] text-white px-5 py-2.5 rounded-md font-bold scale-95 active:scale-100 transition-transform hover:bg-[#00342b]">Mağaza aç</button>
+</div>
+</div>
+</header>
+<main class="flex-grow pb-xxl">
+<!-- Store Hero Section -->
+<section class="bg-white border-b border-outline-variant shadow-sm relative z-10">
+<div class="h-[240px] w-full bg-surface-container-high relative">
+<img class="w-full h-full object-cover" data-alt="A wide, high-quality photograph showing a modern, well-lit construction materials warehouse. Aisles of neatly stacked lumber, cement bags, and building supplies stretch into the background. The lighting is bright and industrial, emphasizing order and large-scale wholesale operations. The color palette features neutral grays and earth tones with subtle deep green structural elements aligning with the professional corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuiTS_joxX_yRvhXhhwHMjBuQ7eMoTVPU_jxmX6oClUkgX-7IhdGnUfC-4IOSqD-d8-cqeGtpHEE1G3JW_Y-OU5hwwib1t04s34z3Dumf2ekrW7GQ_vANkndMOnhJo0TQt0tG2Pggv7Rp2UWtcmtE-INtwZE22QIlNlQ4LHlILZGFMCIp3nq8Oymi-ydWSkzrlShZW1Kc3z8sG617xrdJUYoICbDUgN8s1Bba_tGoYRCDrfr8LQKs9fDXCodI8b7NlLBPplE2RxLQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+</div>
+<div class="max-w-[1280px] mx-auto px-gutter relative">
+<div class="flex flex-col md:flex-row gap-lg -mt-16 pb-lg">
+<!-- Store Logo -->
+<div class="w-[120px] h-[120px] bg-white rounded-lg p-2 shadow-sm border border-outline-variant relative z-20 flex-shrink-0">
+<div class="w-full h-full bg-surface flex items-center justify-center rounded border border-outline-variant">
+<span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings: 'FILL' 1;">store</span>
+</div>
+</div>
+<!-- Store Info -->
+<div class="flex-grow pt-4 md:pt-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-md">
+<div>
+<div class="flex items-center gap-sm mb-1">
+<h1 class="font-h1 text-h1 text-on-surface">Baku Build &amp; Supply MMC</h1>
+<div class="bg-primary-container/10 text-primary-container px-2 py-1 rounded flex items-center gap-1 border border-primary-container/20">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-caps text-label-caps tracking-widest">Təsdiqlənmiş mağaza</span>
+</div>
+</div>
+<div class="flex items-center gap-md text-on-surface-variant font-body-sm mt-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">category</span> İnşaat materialları</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span> Bakı</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<span class="flex items-center gap-1 font-semibold text-on-surface"><span class="material-symbols-outlined text-sm">inventory_2</span> 1,245 məhsul</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">visibility</span> 12.5K baxış</span>
+</div>
+</div>
+<!-- Hero Actions -->
+<div class="flex gap-sm w-full md:w-auto">
+<button class="flex-1 md:flex-none bg-[#25D366] hover:bg-[#1DA851] text-white px-4 py-2 rounded font-body-sm font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm">
+                                WhatsApp ilə əlaqə
+                            </button>
+<button class="bg-white border border-outline text-on-surface hover:bg-surface-container-lowest px-4 py-2 rounded font-body-sm font-semibold flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">phone</span> Telefonu göstər
+                            </button>
+</div>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex gap-lg border-b border-outline-variant overflow-x-auto no-scrollbar">
+<button class="font-body-md font-semibold text-primary border-b-2 border-primary pb-3 px-1 whitespace-nowrap">Məhsullar</button>
+<button class="font-body-md text-on-surface-variant hover:text-on-surface pb-3 px-1 whitespace-nowrap transition-colors">Mağaza haqqında</button>
+<button class="font-body-md text-on-surface-variant hover:text-on-surface pb-3 px-1 whitespace-nowrap transition-colors">Əlaqə</button>
+<button class="font-body-md text-on-surface-variant hover:text-on-surface pb-3 px-1 whitespace-nowrap transition-colors">Statistikalar</button>
+</div>
+</div>
+</section>
+<!-- Main Content -->
+<div class="max-w-[1280px] mx-auto px-gutter mt-xl flex flex-col lg:flex-row gap-lg">
+<!-- Left Column: Products -->
+<div class="flex-grow min-w-0">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-lg gap-4">
+<h2 class="font-h2 text-h2 text-on-surface">Bütün məhsullar</h2>
+<div class="flex w-full sm:w-auto gap-sm">
+<div class="relative flex-grow sm:flex-grow-0 sm:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 border border-outline-variant rounded bg-white text-on-surface font-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow" placeholder="Bu mağazada məhsul axtarın" type="text"/>
+</div>
+<div class="relative min-w-[140px]">
+<select class="w-full appearance-none pl-4 pr-10 py-2 border border-outline-variant rounded bg-white text-on-surface font-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary">
+<option>Ən yenilər</option>
+<option>Ada görə (A-Z)</option>
+<option>Populyar</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Product Grid (4 columns) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-md">
+<!-- Product Card 1 -->
+<div class="bg-white border border-outline-variant rounded shadow-[0_4px_20px_rgba(0,52,43,0.03)] hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(0,52,43,0.06)] hover:border-outline transition-all duration-300 flex flex-col group">
+<div class="aspect-square bg-surface-container-low relative border-b border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A professional studio shot of high-grade construction timber stacked neatly. The wood grain is clear and natural, presented against a stark white background. Lighting is even and bright, eliminating shadows to highlight the texture and quality of the materials. Minimalist and corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHwRhg8QIN20MJ5Eo28qbRgbvLNo3oSBAEf7BEyqd_k90p2QaBHZO_9gX_0Gm5RgGLLklULvGLNqwlgR7VMMVLso6wysL_8REtRYjUtNp_szkSYpuwoi6tesLP8x0PtvfywZ11MMWp8NB_FGEB-zq9aHD_A5TLuIcEl7vcE3e1ydSwXwr1D6TvJtUhc3kXoKzgyzF1hw0zJ8p0QqfF4dSNkmobQ9R37EiIYYsBaWwPttdLRGjxmi_hV2U76mvPdAFdgv_QPca8axg"/>
+<div class="absolute top-2 left-2 flex gap-1">
+<span class="bg-secondary-container text-on-secondary-container font-label-caps text-label-caps px-2 py-1 rounded">Topdan satış</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<div class="text-xs text-outline font-semibold mb-1 uppercase tracking-wider">Lövhə</div>
+<h3 class="font-body-md font-semibold text-on-surface mb-2 line-clamp-2 group-hover:text-primary transition-colors">A-Klass Şam Ağacı Lövhəsi (50x150x6000mm)</h3>
+<div class="mt-auto">
+<div class="font-price-display text-price-display text-primary mb-1">Razılaşma yolu ilə</div>
+<div class="font-body-sm text-on-surface-variant mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">inventory</span> Min. sifariş: 100 ədəd
+                                </div>
+<div class="flex gap-2">
+<button class="flex-1 bg-white border border-outline text-on-surface hover:bg-surface-container-lowest py-2 rounded font-body-sm font-semibold transition-colors">
+                                        Məhsula bax
+                                    </button>
+<button class="bg-[#25D366] hover:bg-[#1DA851] text-white p-2 rounded flex items-center justify-center transition-colors" title="WhatsApp ilə yaz">
+<span class="material-symbols-outlined text-sm">chat</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-white border border-outline-variant rounded shadow-[0_4px_20px_rgba(0,52,43,0.03)] hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(0,52,43,0.06)] hover:border-outline transition-all duration-300 flex flex-col group">
+<div class="aspect-square bg-surface-container-low relative border-b border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, catalog-style image of industrial cement bags stacked on a wooden pallet. The bags have clear branding, shot against a pure white background with soft, ambient lighting. The composition is structured and precise, conveying wholesale availability and professional quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPes85neu8VrUmNfB1jqswlvLW_RQ4iKSBu9W2rxIFqAN1lmAQ207oSnXmJc2i-jSUmGhx-Aog627VibHPb_0dtviPmksSeiyUTob_xPCeU2KtLzrS5E8jERMpA_LS3MfwYbzXQ2QiaZ3-FN6cc00KL__kN49ECFodSIe6Nts65nCRFilZjvTLmEFm2XHYmTbPsiA_48mtCx2fsLS7PA7Dyy6HYUuAiTKkBf4WIXpxcAipFatUdD_4WDNnQrinP4uddULcAIRVQEk"/>
+<div class="absolute top-2 left-2 flex gap-1">
+<span class="bg-surface-container-high text-on-surface font-label-caps text-label-caps px-2 py-1 rounded">Stokda var</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<div class="text-xs text-outline font-semibold mb-1 uppercase tracking-wider">Sement</div>
+<h3 class="font-body-md font-semibold text-on-surface mb-2 line-clamp-2 group-hover:text-primary transition-colors">Holcim Optimum Sement 400 M (50 kq)</h3>
+<div class="mt-auto">
+<div class="font-price-display text-price-display text-primary mb-1">Razılaşma yolu ilə</div>
+<div class="font-body-sm text-on-surface-variant mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">inventory</span> Min. sifariş: 1 Palet
+                                </div>
+<div class="flex gap-2">
+<button class="flex-1 bg-white border border-outline text-on-surface hover:bg-surface-container-lowest py-2 rounded font-body-sm font-semibold transition-colors">
+                                        Məhsula bax
+                                    </button>
+<button class="bg-[#25D366] hover:bg-[#1DA851] text-white p-2 rounded flex items-center justify-center transition-colors" title="WhatsApp ilə yaz">
+<span class="material-symbols-outlined text-sm">chat</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-lg flex justify-center">
+<button class="bg-white border border-outline-variant text-on-surface hover:bg-surface-container-lowest px-6 py-3 rounded font-body-md font-semibold transition-colors shadow-sm">
+                        Daha çox məhsul yüklə
+                    </button>
+</div>
+</div>
+<!-- Right Column: Sticky Contact & Info -->
+<aside class="w-full lg:w-[320px] flex-shrink-0 flex flex-col gap-md">
+<div class="sticky top-[100px] flex flex-col gap-md">
+<!-- Contact Card -->
+<div class="bg-white border border-outline-variant rounded shadow-sm p-lg">
+<h3 class="font-h3 text-h3 text-on-surface mb-4">Əlaqə saxla</h3>
+<div class="flex flex-col gap-3">
+<button class="w-full bg-[#25D366] hover:bg-[#1DA851] text-white px-4 py-3 rounded font-body-sm font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm">
+                                WhatsApp ilə yaz
+                            </button>
+<button class="w-full bg-primary hover:bg-primary/90 text-white px-4 py-3 rounded font-body-sm font-semibold flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">phone</span> Telefonu göstər
+                            </button>
+<button class="w-full bg-white border border-outline text-on-surface hover:bg-surface-container-lowest px-4 py-3 rounded font-body-sm font-semibold flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">mail</span> E-poçt göndər
+                            </button>
+</div>
+<div class="mt-6 pt-6 border-t border-outline-variant">
+<h4 class="font-label-caps text-label-caps text-outline mb-3 uppercase tracking-widest">İş saatları</h4>
+<div class="flex items-start gap-2 text-on-surface-variant font-body-sm">
+<span class="material-symbols-outlined text-[18px] mt-0.5">schedule</span>
+<div>
+<p class="font-semibold text-on-surface">Bazar ertəsi - Cümə:</p>
+<p>09:00 - 18:00</p>
+<p class="mt-2 font-semibold text-on-surface">Şənbə:</p>
+<p>10:00 - 14:00</p>
+</div>
+</div>
+</div>
+</div>
+<!-- About Snippet -->
+<div class="bg-surface-bright border border-outline-variant rounded p-lg">
+<h4 class="font-label-caps text-label-caps text-outline mb-2 uppercase tracking-widest">Mağaza haqqında qısa</h4>
+<p class="font-body-sm text-on-surface-variant line-clamp-4">
+                            Baku Build &amp; Supply MMC, Azərbaycanın aparıcı inşaat materialları təchizatçılarından biridir. Biz 10 ildən artıqdır ki, iri tikinti layihələrinə və perakende mağazalarına yüksək keyfiyyətli məhsullar təqdim edirik.
+                        </p>
+<a class="inline-block mt-3 font-body-sm font-semibold text-primary hover:underline" href="#">Daha ətraflı</a>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer Shared Component -->
+<footer class="bg-slate-50 dark:bg-slate-950 font-['Inter'] text-xs uppercase tracking-widest full-width border-t mt-auto border-slate-200 dark:border-slate-800 flat no shadows">
+<div class="max-w-[1280px] mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="text-lg font-bold text-slate-900 dark:text-white">TopdanBazar</div>
+<div class="flex flex-wrap items-center justify-center gap-6">
+<a class="text-slate-500 dark:text-slate-500 hover:underline transition-all opacity-80 hover:opacity-100" href="#">İstifadəçi şərtləri</a>
+<a class="text-slate-500 dark:text-slate-500 hover:underline transition-all opacity-80 hover:opacity-100" href="#">Məxfilik siyasəti</a>
+<a class="text-slate-500 dark:text-slate-500 hover:underline transition-all opacity-80 hover:opacity-100" href="#">Yardım</a>
+<a class="text-slate-500 dark:text-slate-500 hover:underline transition-all opacity-80 hover:opacity-100" href="#">FAQ</a>
+</div>
+<div class="text-slate-500 dark:text-slate-500">© 2024 TopdanBazar. Bütün hüquqlar qorunur.</div>
+</div>
+</footer>
+</body></html>

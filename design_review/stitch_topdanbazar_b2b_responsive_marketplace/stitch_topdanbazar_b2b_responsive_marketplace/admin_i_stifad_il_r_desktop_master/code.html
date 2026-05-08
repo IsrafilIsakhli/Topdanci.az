@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>İstifadəçilər - TopdanBazar Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#7ebdac",
+                        "on-error-container": "#93000a",
+                        "surface": "#f8f9ff",
+                        "secondary-fixed": "#66ff8e",
+                        "surface-container-high": "#dce9ff",
+                        "primary": "#00342b",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-low": "#eff4ff",
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "on-primary-fixed-variant": "#065043",
+                        "on-background": "#0b1c30",
+                        "primary-fixed": "#afefdd",
+                        "primary-container": "#004d40",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#94d3c1",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "inverse-on-surface": "#eaf1ff",
+                        "tertiary-fixed": "#ffdbd1",
+                        "secondary-fixed-dim": "#3de273",
+                        "surface-dim": "#cbdbf5",
+                        "on-secondary-container": "#007232",
+                        "secondary": "#006d2f",
+                        "outline": "#707975",
+                        "primary-fixed-dim": "#94d3c1",
+                        "tertiary": "#4e2013",
+                        "surface-container": "#e5eeff",
+                        "inverse-surface": "#213145",
+                        "on-secondary-fixed": "#002109",
+                        "on-surface": "#0b1c30",
+                        "on-tertiary-fixed": "#370e04",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#bfc9c4",
+                        "surface-tint": "#29695b",
+                        "on-primary-fixed": "#00201a",
+                        "background": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#5dfd8a",
+                        "surface-container-highest": "#d3e4fe",
+                        "tertiary-container": "#693527",
+                        "on-surface-variant": "#3f4945",
+                        "on-tertiary-container": "#e89f8c",
+                        "on-secondary-fixed-variant": "#005322",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "xxl": "64px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "container-max": "1280px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "price-display": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "price-display": ["20px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background flex min-h-screen">
+<!-- SideNavBar -->
+<nav class="fixed h-screen left-0 top-0 w-64 hidden lg:flex flex-col border-r border-outline-variant bg-surface-container-lowest z-50">
+<div class="flex flex-col h-full py-xl">
+<!-- Header -->
+<div class="px-lg mb-xl">
+<div class="flex items-center gap-md">
+<img alt="TopdanBazar Admin Logo" class="w-10 h-10 rounded-lg object-cover" data-alt="A clean, minimalist logo icon suitable for a modern corporate dashboard, featuring sharp geometric shapes in deep green and white, conveying trust and professionalism in a high-end wholesale marketplace setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlP3egIHTT1x3QrC_kC5cA9j_YzyyhFeTrUt1Xw3W_Fp84-jZRbal9CXzzkiduOyAFCreR3sBDtQSFVgw_d5gTTNA1L7CbIAABfQnwYWhdbW2n9rxK_rSOsZUyzpL5cA0ux4AdGDJwqgQV3u62Lqkhd67D39cq_J6EShdTS91XwgrG0IWyPnnkUyZrhZ1_iLJiZbnlzl0p-jFOx8Yl6NCfUruSxhZWipqAg4nTQ8v0-I5yWYJ8jWQZlLJpGDStANuYiAKc-eFB-E8"/>
+<div>
+<h1 class="font-h3 text-h3 font-bold text-primary">TopdanBazar</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Admin Dashboard</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto">
+<ul class="flex flex-col gap-sm px-sm">
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">İdarə paneli</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">store</span>
+<span class="font-body-md text-body-md">Mağazalar</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md text-body-md">Məhsullar</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md bg-secondary-container text-on-secondary-container rounded-lg font-semibold opacity-90 transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md text-body-md">İstifadəçilər</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="font-body-md text-body-md">Kateqoriyalar</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span class="font-body-md text-body-md">Müraciətlər</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">perm_media</span>
+<span class="font-body-md text-body-md">Media</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">report</span>
+<span class="font-body-md text-body-md">Şikayətlər</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-body-md text-body-md">Audit log</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Ayarlar</span>
+</a>
+</li>
+</ul>
+</div>
+<!-- CTA -->
+<div class="px-lg mt-auto pt-lg">
+<button class="w-full bg-primary text-on-primary font-body-md text-body-md font-semibold py-md rounded-lg hover:opacity-90 transition-opacity">
+                    Yeni Məhsul
+                </button>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 lg:ml-64 flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-40 w-full bg-surface border-b border-outline-variant shadow-sm h-20">
+<div class="flex justify-between items-center px-lg h-full max-w-container-max mx-auto">
+<div class="flex items-center gap-lg">
+<span class="font-h3 text-h3 font-bold text-primary md:hidden">TopdanBazar</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface hidden md:block">Admin Panel</span>
+</div>
+<div class="flex items-center gap-lg">
+<div class="hidden md:flex relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-xl pr-md py-sm rounded-full border border-outline-variant bg-surface-container-lowest text-body-sm font-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-64" placeholder="Axtar..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors hover:scale-95 duration-150 p-sm">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors hover:scale-95 duration-150 p-sm">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="flex items-center gap-sm ml-md pl-md border-l border-outline-variant cursor-pointer hover:bg-surface-container p-sm rounded-lg transition-colors">
+<img alt="Admin User Avatar" class="w-8 h-8 rounded-full object-cover" data-alt="A professional headshot of a corporate executive, clean lighting, white background, conveying authority and reliability for an admin panel user profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBq8VfCCosPGPR9FMPEFg9LAkwpXmtxaHw997vZSkqsPjtR-DnQveKHQFi9_-pWDmvETaexTgQHPGDXbmrkRWW05L-HYc4W-e-YaWh8SJnNodMlqkVWVj_YcHDMKRpErm-lnxYOUH5ifnxO7P0DeD8rPsDDqQyx10JcKu70mgo0f-vN712WGlKz3TPyLz3InzueaG_doOq48VZaTev3av7xTRwc3nDi1Nr4oYqgMdwLu2564xL9UDRmLDfiNRKs3ho77c3oWeBGvu0"/>
+<span class="font-body-sm text-body-sm font-semibold hidden md:block">Profil</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 p-gutter bg-background overflow-x-hidden">
+<div class="max-w-container-max mx-auto">
+<!-- Page Header -->
+<div class="mb-xl">
+<h2 class="font-h2 text-h2 text-primary mb-xs">İstifadəçilər</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Platformadakı istifadəçiləri və rolları idarə edin.</p>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-2 md:grid-cols-5 gap-md mb-xl">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform duration-200">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-sm">Toplam istifadəçi</p>
+<p class="font-price-display text-price-display text-primary">4,582</p>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform duration-200">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-sm">Satıcılar</p>
+<p class="font-price-display text-price-display text-primary">1,248</p>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform duration-200">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-sm">Adminlər</p>
+<p class="font-price-display text-price-display text-primary">12</p>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform duration-200">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-sm">Aktiv istifadəçi</p>
+<p class="font-price-display text-price-display text-secondary">4,120</p>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform duration-200">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-sm">Dayandırılmış</p>
+<p class="font-price-display text-price-display text-error">42</p>
+</div>
+</div>
+<!-- Main Section: Filters & Table -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<!-- Filters Row -->
+<div class="p-lg border-b border-outline-variant bg-surface flex flex-col md:flex-row gap-md items-center justify-between">
+<div class="relative w-full md:w-96">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-xl pr-md py-sm rounded-lg border border-outline-variant bg-surface-container-lowest text-body-sm font-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" placeholder="Ad, e-poçt və ya telefon axtar..." type="text"/>
+</div>
+<div class="flex flex-wrap items-center gap-sm w-full md:w-auto">
+<select class="rounded-lg border border-outline-variant bg-surface-container-lowest py-sm px-md text-body-sm font-body-sm focus:outline-none focus:border-primary">
+<option>Bütün rollar</option>
+<option>Alıcı</option>
+<option>Satıcı</option>
+<option>Admin</option>
+</select>
+<select class="rounded-lg border border-outline-variant bg-surface-container-lowest py-sm px-md text-body-sm font-body-sm focus:outline-none focus:border-primary">
+<option>Bütün statuslar</option>
+<option>Aktiv</option>
+<option>Dayandırılıb</option>
+<option>Silinmiş</option>
+</select>
+<div class="flex items-center gap-xs rounded-lg border border-outline-variant bg-surface-container-lowest py-sm px-md cursor-pointer hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">calendar_today</span>
+<span class="font-body-sm text-body-sm text-on-surface">Tarix aralığı</span>
+</div>
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase">İstifadəçi</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase">E-poçt</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase">Telefon</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase">Rol</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase">Status</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase">Mağaza</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase">Qeydiyyat tarixi</th>
+<th class="py-md px-lg font-label-caps text-label-caps text-on-surface-variant uppercase text-right">Əməliyyatlar</th>
+</tr>
+</thead>
+<tbody class="font-body-sm text-body-sm">
+<!-- Row 1 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container transition-colors">
+<td class="py-sm px-lg">
+<div class="flex items-center gap-md">
+<img alt="Leyla Əliyeva Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="A professional headshot of a smiling young woman, bright lighting, neutral background, suitable for a corporate directory or user profile avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLUo3_gv8RQkIq9qkfWLaLJhCrbCuiYEkju-fIqica9KLiHHX9JJkNp8tSvvQc6t-1BO6OR4WwdD6o1NexteqqIpaJd1GTPJ4vgPZ2W9HhWu2cNVLBYAcKnrZ9Ai6xU9pEMF9vticv3Zz1qbZl-PztKlBwAQSNCm_a1B6CnFL-RlH2VKtnI5Ht7l8mEhWaSMxmZuZyCRRwU8o_guDyKnjXInHFITrA5YhsYcHwewqM30v0-NrPGVk1UY2aNNv911CRioBtC1BfqRw"/>
+<span class="font-semibold text-on-surface">Leyla Əliyeva</span>
+</div>
+</td>
+<td class="py-sm px-lg text-on-surface-variant">leyla.a@example.com</td>
+<td class="py-sm px-lg text-on-surface-variant">+994 50 123 45 67</td>
+<td class="py-sm px-lg">
+<span class="inline-flex items-center px-sm py-xs rounded-full bg-secondary-container text-on-secondary-container font-label-caps text-label-caps">Satıcı</span>
+</td>
+<td class="py-sm px-lg">
+<span class="inline-flex items-center gap-xs text-secondary font-semibold">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> Aktiv
+                                        </span>
+</td>
+<td class="py-sm px-lg text-on-surface-variant">Baku Tech LLC</td>
+<td class="py-sm px-lg text-on-surface-variant">12 Okt 2023</td>
+<td class="py-sm px-lg text-right">
+<div class="flex items-center justify-end gap-xs">
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors" title="Bax"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors" title="Edit role"><span class="material-symbols-outlined text-[20px]">manage_accounts</span></button>
+<button class="p-xs text-on-surface-variant hover:text-error transition-colors" title="Block"><span class="material-symbols-outlined text-[20px]">block</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container transition-colors">
+<td class="py-sm px-lg">
+<div class="flex items-center gap-md">
+<img alt="Rəşad Məmmədov Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="A professional headshot of a confident middle-aged man in a suit, soft corporate lighting, white background, for a business admin dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-WVnx9dJoV_ciWWKaxH_d6Ptua8u52zEKCgWXBJMWGkR18E6ECoP7lftDpHMUnLRJCTiKfNqTL5fkiIJg1LeP9EUmbgbLDxFzCHWWH0KPsh2h-NSiq20KtHQTzfyeEfO06CcggeeNlxFVmffNqhSgdMMBezDwKQ72tr8ETOg3_r3cMUG6YW7T2bp-xmOXHgm1CzcZO3bXCrNGXcuMRTesKEjjniyyWnzFEIiCksSdyPYisWqu8esCwOqeQHj_Th-xhM4KLz9ZBN4"/>
+<span class="font-semibold text-on-surface">Rəşad Məmmədov</span>
+</div>
+</td>
+<td class="py-sm px-lg text-on-surface-variant">rashad.m@example.com</td>
+<td class="py-sm px-lg text-on-surface-variant">+994 55 987 65 43</td>
+<td class="py-sm px-lg">
+<span class="inline-flex items-center px-sm py-xs rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-label-caps border border-outline-variant">Alıcı</span>
+</td>
+<td class="py-sm px-lg">
+<span class="inline-flex items-center gap-xs text-error font-semibold">
+<span class="w-2 h-2 rounded-full bg-error"></span> Dayandırılıb
+                                        </span>
+</td>
+<td class="py-sm px-lg text-on-surface-variant">-</td>
+<td class="py-sm px-lg text-on-surface-variant">05 Noy 2023</td>
+<td class="py-sm px-lg text-right">
+<div class="flex items-center justify-end gap-xs">
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors" title="Bax"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors" title="Edit role"><span class="material-symbols-outlined text-[20px]">manage_accounts</span></button>
+<button class="p-xs text-on-surface-variant hover:text-secondary transition-colors" title="Activate"><span class="material-symbols-outlined text-[20px]">check_circle</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container transition-colors">
+<td class="py-sm px-lg">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+                                                AN
+                                            </div>
+<span class="font-semibold text-on-surface">Aysel Nəcəfova</span>
+</div>
+</td>
+<td class="py-sm px-lg text-on-surface-variant">aysel.n@admin.com</td>
+<td class="py-sm px-lg text-on-surface-variant">+994 70 456 78 90</td>
+<td class="py-sm px-lg">
+<span class="inline-flex items-center px-sm py-xs rounded-full bg-primary text-on-primary font-label-caps text-label-caps">Admin</span>
+</td>
+<td class="py-sm px-lg">
+<span class="inline-flex items-center gap-xs text-secondary font-semibold">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> Aktiv
+                                        </span>
+</td>
+<td class="py-sm px-lg text-on-surface-variant">-</td>
+<td class="py-sm px-lg text-on-surface-variant">01 Yan 2023</td>
+<td class="py-sm px-lg text-right">
+<div class="flex items-center justify-end gap-xs">
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors" title="Bax"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors" title="Edit role"><span class="material-symbols-outlined text-[20px]">manage_accounts</span></button>
+<button class="p-xs text-on-surface-variant hover:text-error transition-colors" title="Block"><span class="material-symbols-outlined text-[20px]">block</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container transition-colors">
+<td class="py-sm px-lg">
+<div class="flex items-center gap-md">
+<img alt="Vüqar Həsənov Avatar" class="w-10 h-10 rounded-full object-cover grayscale opacity-60" data-alt="A modern portrait of a young man with a neat beard, warm studio lighting, minimal background, suitable for a professional user profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPU3eOtDOhFK7uoWJtFwuLK0KQbl7YiMNa8a-o1H_lbVXB50dFkfLU2xkGUDuBnn1ecbF8841OMFKt7zS4JrUTBYYGVFJ93qLk3ZtWa7s317E21-4nhXfgDhiEg7C8Hn6Sls-HYUA0aaYswe-rrubY6N4ZiIrzTKBP1CShc5VyJM2OVfZj65S0tpQN_VbbiVPrt4sBTUDrAsbjdjqPyVmFEVQRYKf2EboIhrj8-ZPkf4IOVcb5IwoLIjV7XsNzoRinbg59s43ytk8"/>
+<span class="font-semibold text-on-surface-variant">Vüqar Həsənov</span>
+</div>
+</td>
+<td class="py-sm px-lg text-on-surface-variant">vuqar.h@example.com</td>
+<td class="py-sm px-lg text-on-surface-variant">+994 51 234 56 78</td>
+<td class="py-sm px-lg">
+<span class="inline-flex items-center px-sm py-xs rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-label-caps border border-outline-variant">Alıcı</span>
+</td>
+<td class="py-sm px-lg">
+<span class="inline-flex items-center gap-xs text-outline font-semibold">
+<span class="w-2 h-2 rounded-full bg-outline"></span> Silinmiş
+                                        </span>
+</td>
+<td class="py-sm px-lg text-on-surface-variant">-</td>
+<td class="py-sm px-lg text-on-surface-variant">20 Avq 2022</td>
+<td class="py-sm px-lg text-right">
+<div class="flex items-center justify-end gap-xs">
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors" title="Bax"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-md border-t border-outline-variant bg-surface-container-low flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Səhifə 1 / 15 (Ümumi 145 nəticə)</span>
+<div class="flex items-center gap-sm">
+<button class="p-xs rounded border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors disabled:opacity-50"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="w-8 h-8 rounded bg-primary text-on-primary font-body-sm font-semibold flex items-center justify-center">1</button>
+<button class="w-8 h-8 rounded border border-outline-variant text-on-surface hover:bg-surface-container font-body-sm flex items-center justify-center transition-colors">2</button>
+<button class="w-8 h-8 rounded border border-outline-variant text-on-surface hover:bg-surface-container font-body-sm flex items-center justify-center transition-colors">3</button>
+<span class="text-on-surface-variant">...</span>
+<button class="p-xs rounded border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

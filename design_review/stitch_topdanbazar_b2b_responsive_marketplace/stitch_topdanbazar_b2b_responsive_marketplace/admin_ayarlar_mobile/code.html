@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TopdanBazar - Ayarlar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#66ff8e",
+                      "error": "#ba1a1a",
+                      "inverse-surface": "#213145",
+                      "surface": "#f8f9ff",
+                      "primary-fixed": "#afefdd",
+                      "secondary-fixed-dim": "#3de273",
+                      "on-error": "#ffffff",
+                      "on-background": "#0b1c30",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-container-high": "#dce9ff",
+                      "on-surface-variant": "#3f4945",
+                      "on-primary-container": "#7ebdac",
+                      "tertiary": "#4e2013",
+                      "on-secondary-fixed": "#002109",
+                      "primary-container": "#004d40",
+                      "primary": "#00342b",
+                      "surface-tint": "#29695b",
+                      "primary-fixed-dim": "#94d3c1",
+                      "background": "#f8f9ff",
+                      "on-secondary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-fixed-variant": "#6d382a",
+                      "tertiary-container": "#693527",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-container": "#007232",
+                      "outline-variant": "#bfc9c4",
+                      "on-tertiary-container": "#e89f8c",
+                      "surface-container": "#e5eeff",
+                      "on-primary-fixed": "#00201a",
+                      "inverse-primary": "#94d3c1",
+                      "outline": "#707975",
+                      "on-primary-fixed-variant": "#065043",
+                      "error-container": "#ffdad6",
+                      "surface-dim": "#cbdbf5",
+                      "on-tertiary-fixed": "#370e04",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed-dim": "#ffb5a1",
+                      "secondary": "#006d2f",
+                      "surface-bright": "#f8f9ff",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-secondary-fixed-variant": "#005322",
+                      "surface-container-low": "#eff4ff",
+                      "on-surface": "#0b1c30",
+                      "surface-variant": "#d3e4fe",
+                      "on-error-container": "#93000a",
+                      "secondary-container": "#5dfd8a",
+                      "tertiary-fixed": "#ffdbd1"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "lg": "24px",
+                      "gutter": "24px",
+                      "xs": "4px",
+                      "md": "16px",
+                      "xl": "40px",
+                      "container-max": "1280px",
+                      "xxl": "64px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "h3": ["Inter"],
+                      "h2": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "h1": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "price-display": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "price-display": ["20px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom hide scrollbar for clean mobile look */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-xxl selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar (Mobile Adapted) -->
+<header class="bg-surface text-primary font-body-md border-b border-outline-variant fixed top-0 left-0 w-full z-40 flex justify-between items-center h-16 px-md shadow-sm">
+<div class="flex items-center gap-sm">
+<button class="p-xs text-primary hover:text-primary transition-all focus-within:ring-2 focus-within:ring-primary rounded-full md:hidden">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<span class="font-h3 text-h3 font-bold text-primary truncate hidden sm:block md:hidden">TopdanBazar</span>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-xs text-on-surface-variant hover:text-primary transition-all rounded-full focus-within:ring-2 focus-within:ring-primary">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:text-primary transition-all rounded-full focus-within:ring-2 focus-within:ring-primary">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar (Hidden on Mobile, included for completeness of JSON execution) -->
+<aside class="hidden md:flex flex-col h-full py-lg px-md bg-primary-container text-primary-fixed font-body-md h-full w-64 fixed left-0 top-0 border-r border-outline-variant shadow-sm z-50">
+<div class="mb-xl px-sm">
+<h2 class="font-h3 text-h3 font-bold text-on-primary">TopdanBazar</h2>
+<p class="font-label-caps text-label-caps text-primary-fixed-dim mt-xs">Admin Panel</p>
+</div>
+<nav class="flex-1 flex flex-col gap-xs overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm rounded-DEFAULT text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-DEFAULT text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span>Mağazalar</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-DEFAULT text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Məhsullar</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-DEFAULT text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>İstifadəçilər</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-DEFAULT text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined">category</span>
+<span>Kateqoriyalar</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-DEFAULT text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span>Müraciətlər</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-DEFAULT text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined">report_problem</span>
+<span>Şikayətlər</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-DEFAULT text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined">history</span>
+<span>Audit log</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-DEFAULT text-secondary-fixed font-bold bg-primary-fixed-dim/10 hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined icon-fill">settings</span>
+<span>Ayarlar</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="pt-[80px] pb-[100px] px-sm w-full max-w-[500px] mx-auto md:ml-64 md:px-lg md:max-w-none">
+<!-- Page Header -->
+<div class="mb-md">
+<h1 class="font-h2 text-h2 text-on-surface">Ayarlar</h1>
+</div>
+<!-- Settings Stack -->
+<div class="flex flex-col gap-md">
+<!-- Section 1: Platform -->
+<section class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(0,52,43,0.03)] p-md">
+<div class="flex items-center gap-sm mb-md pb-xs border-b border-surface-variant">
+<span class="material-symbols-outlined text-primary">language</span>
+<h2 class="font-h3 text-h3 text-primary">Platforma</h2>
+</div>
+<div class="flex flex-col gap-md">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Əsas Dil</label>
+<div class="relative">
+<select class="w-full h-12 appearance-none bg-surface-container-low border border-outline-variant rounded-DEFAULT px-md pr-xl font-body-md text-on-surface focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+<option>Azərbaycan dili</option>
+<option>İngilis dili</option>
+<option>Rus dili</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Valyuta</label>
+<div class="relative">
+<select class="w-full h-12 appearance-none bg-surface-container-low border border-outline-variant rounded-DEFAULT px-md pr-xl font-body-md text-on-surface focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+<option>AZN (Manat)</option>
+<option>USD (Dollar)</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Moderation -->
+<section class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(0,52,43,0.03)] p-md">
+<div class="flex items-center gap-sm mb-md pb-xs border-b border-surface-variant">
+<span class="material-symbols-outlined text-primary">gavel</span>
+<h2 class="font-h3 text-h3 text-primary">Moderasiya</h2>
+</div>
+<div class="flex flex-col gap-lg">
+<div class="flex items-center justify-between">
+<div>
+<span class="block font-body-md text-on-surface font-semibold">Avtomatik Təsdiq</span>
+<span class="block font-body-sm text-on-surface-variant mt-1">Yeni mağazaları yoxlamadan təsdiqlə</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer touch-manipulation">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:border-outline-variant after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<span class="block font-body-md text-on-surface font-semibold">Məcburi SMS Təsdiqi</span>
+<span class="block font-body-sm text-on-surface-variant mt-1">Qeydiyyat zamanı nömrə yoxlanışı</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer touch-manipulation">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:border-outline-variant after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Section 3: Uploads -->
+<section class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(0,52,43,0.03)] p-md">
+<div class="flex items-center gap-sm mb-md pb-xs border-b border-surface-variant">
+<span class="material-symbols-outlined text-primary">cloud_upload</span>
+<h2 class="font-h3 text-h3 text-primary">Yükləmələr</h2>
+</div>
+<div class="flex flex-col gap-md">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs">Maksimal Şəkil Həcmi (MB)</label>
+<input class="w-full h-12 bg-surface-container-low border border-outline-variant rounded-DEFAULT px-md font-body-md text-on-surface focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" type="number" value="5"/>
+</div>
+<div class="flex items-center justify-between pt-sm">
+<div>
+<span class="block font-body-md text-on-surface font-semibold">Su nişanı (Watermark)</span>
+<span class="block font-body-sm text-on-surface-variant mt-1">Məhsul şəkillərinə loqo əlavə et</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer touch-manipulation">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:border-outline-variant after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Section 4: Notifications -->
+<section class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(0,52,43,0.03)] p-md">
+<div class="flex items-center gap-sm mb-md pb-xs border-b border-surface-variant">
+<span class="material-symbols-outlined text-primary">notifications_active</span>
+<h2 class="font-h3 text-h3 text-primary">Bildirişlər</h2>
+</div>
+<div class="flex flex-col gap-lg">
+<div class="flex items-center justify-between">
+<div>
+<span class="block font-body-md text-on-surface font-semibold">Yeni Sifarişlər</span>
+<span class="block font-body-sm text-on-surface-variant mt-1">Admin e-poçtuna məktub göndər</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer touch-manipulation">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:border-outline-variant after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<span class="block font-body-md text-on-surface font-semibold">Gündəlik Hesabat</span>
+<span class="block font-body-sm text-on-surface-variant mt-1">Sistem fəaliyyəti barədə xülasə</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer touch-manipulation">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:border-outline-variant after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Section 5: Security -->
+<section class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-[0_4px_20px_rgba(0,52,43,0.03)] p-md">
+<div class="flex items-center gap-sm mb-md pb-xs border-b border-surface-variant">
+<span class="material-symbols-outlined text-primary">security</span>
+<h2 class="font-h3 text-h3 text-primary">Təhlükəsizlik</h2>
+</div>
+<div class="flex flex-col gap-md">
+<div class="flex items-center justify-between">
+<div>
+<span class="block font-body-md text-on-surface font-semibold">2FA Təsdiqi</span>
+<span class="block font-body-sm text-on-surface-variant mt-1">İki faktorlu autentifikasiya</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer touch-manipulation">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:border-outline-variant after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="pt-sm">
+<button class="w-full h-12 border border-primary text-primary font-body-md font-semibold rounded-DEFAULT flex items-center justify-center gap-sm hover:bg-surface-variant transition-colors active:scale-98">
+<span class="material-symbols-outlined">key</span>
+                            Parolu dəyiş
+                        </button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Pinned Save Button (Bottom Action Bar) -->
+<div class="fixed bottom-0 left-0 w-full p-md bg-surface/90 backdrop-blur-md border-t border-outline-variant z-40 md:w-[calc(100%-256px)] md:ml-64 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+<button class="w-full max-w-[500px] mx-auto block h-14 bg-primary text-on-primary font-h3 text-h3 text-[18px] rounded-DEFAULT flex items-center justify-center gap-sm hover:bg-primary-container transition-colors active:scale-98 touch-manipulation shadow-sm">
+<span class="material-symbols-outlined">save</span>
+            Dəyişiklikləri saxla
+        </button>
+</div>
+</body></html>

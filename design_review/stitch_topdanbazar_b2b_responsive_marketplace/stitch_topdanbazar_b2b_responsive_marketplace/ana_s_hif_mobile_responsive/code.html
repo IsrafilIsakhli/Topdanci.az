@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TopdanBazar - Topdansatış platforması</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#00201a",
+                        "outline": "#707975",
+                        "inverse-surface": "#213145",
+                        "on-tertiary-fixed": "#370e04",
+                        "surface-tint": "#29695b",
+                        "inverse-primary": "#94d3c1",
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#004d40",
+                        "surface-variant": "#d3e4fe",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed-variant": "#005322",
+                        "on-surface-variant": "#3f4945",
+                        "on-secondary-container": "#007232",
+                        "primary-fixed-dim": "#94d3c1",
+                        "primary": "#00342b",
+                        "secondary": "#006d2f",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#d3e4fe",
+                        "background": "#f8f9ff",
+                        "secondary-fixed-dim": "#3de273",
+                        "surface": "#f8f9ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-primary-container": "#7ebdac",
+                        "primary-fixed": "#afefdd",
+                        "error": "#ba1a1a",
+                        "on-surface": "#0b1c30",
+                        "tertiary-container": "#693527",
+                        "tertiary": "#4e2013",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#66ff8e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#e89f8c",
+                        "tertiary-fixed": "#ffdbd1",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "on-secondary-fixed": "#002109",
+                        "outline-variant": "#bfc9c4",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#065043",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-container": "#5dfd8a",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#cbdbf5",
+                        "surface-container": "#e5eeff",
+                        "whatsapp": "#25D366"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "xl": "40px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xxl": "64px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Inter"],
+                        "h3": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "price-display": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "price-display": ["20px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar (Mobile App Header) -->
+<header class="bg-surface-container-lowest text-primary-container font-body-md full-width top-0 border-b border-outline-variant shadow-sm sticky z-50">
+<div class="max-w-[1280px] mx-auto flex justify-between items-center px-4 h-16">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-primary-container p-2 hover:opacity-80 transition-all duration-200 active:scale-[0.98]">
+<span class="material-symbols-outlined text-h3" data-icon="menu">menu</span>
+</button>
+<div class="text-[20px] font-black text-primary-container tracking-tighter cursor-pointer">TopdanBazar</div>
+</div>
+<nav class="hidden md:flex items-center gap-8 h-full">
+<a class="text-primary-container border-b-2 border-primary-container pb-1 hover:opacity-80 transition-all duration-200 active:scale-[0.98] h-full flex items-center font-bold" href="#">Ana səhifə</a>
+<a class="text-outline hover:text-primary-container hover:opacity-80 transition-all duration-200 active:scale-[0.98] h-full flex items-center" href="#">Kateqoriyalar</a>
+<a class="text-outline hover:text-primary-container hover:opacity-80 transition-all duration-200 active:scale-[0.98] h-full flex items-center" href="#">Mağazalar</a>
+<a class="text-outline hover:text-primary-container hover:opacity-80 transition-all duration-200 active:scale-[0.98] h-full flex items-center" href="#">Məhsullar</a>
+<a class="text-outline hover:text-primary-container hover:opacity-80 transition-all duration-200 active:scale-[0.98] h-full flex items-center" href="#">Əlaqə</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="md:hidden text-primary-container p-2 hover:opacity-80 transition-all duration-200 active:scale-[0.98]">
+<span class="material-symbols-outlined text-h3" data-icon="search">search</span>
+</button>
+<div class="hidden md:flex items-center gap-4">
+<button class="text-primary-container hover:opacity-80 transition-all duration-200 active:scale-[0.98] p-2 flex items-center">
+<span class="material-symbols-outlined text-h3" data-icon="person_add">person_add</span>
+</button>
+<a class="text-outline hover:text-primary-container hover:opacity-80 transition-all duration-200 active:scale-[0.98]" href="#">Daxil ol</a>
+<a class="bg-primary-container text-on-primary font-body-sm font-semibold py-2 px-4 rounded hover:opacity-90 transition-all duration-200 active:scale-[0.98]" href="#">Mağaza aç</a>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow pb-xxl">
+<!-- Hero Section Mobile -->
+<section class="px-4 py-8 bg-surface-container-low text-center border-b border-outline-variant relative overflow-hidden md:hidden">
+<div class="relative z-10 flex flex-col items-center">
+<h1 class="font-h2 text-[28px] text-primary-container mb-4">Topdansatıcı mağazaları və məhsulları bir yerdə kəşf edin</h1>
+<p class="font-body-md text-on-surface-variant mb-6">Məhsulları araşdırın, mağazalara baxın və satıcılarla birbaşa əlaqə saxlayın.</p>
+<!-- Search Bar -->
+<div class="w-full bg-white rounded-lg shadow-sm border border-outline-variant p-2 flex flex-col gap-2 mb-6">
+<div class="relative w-full h-12 border-b border-outline-variant">
+<select class="w-full h-full appearance-none bg-transparent border-0 px-4 font-body-md text-on-surface focus:ring-0 cursor-pointer">
+<option>Bütün kateqoriyalar</option>
+<option>Geyim</option>
+<option>Elektronika</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<div class="relative w-full h-12">
+<span class="material-symbols-outlined absolute left-3 top-3 text-on-surface-variant">search</span>
+<input class="w-full h-full bg-transparent border-0 px-10 font-body-md text-on-surface placeholder-on-surface-variant focus:ring-0" placeholder="Məhsul, mağaza və ya kateqoriya axtarın" type="text"/>
+</div>
+<button class="w-full h-12 bg-primary-container text-white rounded-DEFAULT font-h3 text-[16px] hover:opacity-90 transition-opacity">
+          Axtar
+        </button>
+</div>
+<!-- Stats -->
+<div class="flex flex-wrap justify-center gap-4 opacity-80 text-[10px]">
+<div class="flex items-center gap-1 font-label-caps text-on-surface uppercase"><span class="material-symbols-outlined text-[14px]">store</span> 400+ mağaza</div>
+<div class="flex items-center gap-1 font-label-caps text-on-surface uppercase"><span class="material-symbols-outlined text-[14px]">inventory_2</span> 200K+ məhsul</div>
+<div class="flex items-center gap-1 font-label-caps text-on-surface uppercase"><span class="material-symbols-outlined text-[14px]">forum</span> Birbaşa əlaqə</div>
+<div class="flex items-center gap-1 font-label-caps text-on-surface uppercase"><span class="material-symbols-outlined text-[14px]">verified</span> Təsdiqlənmiş mağazalar</div>
+</div>
+</div>
+<!-- Abstract background shape -->
+<div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-surface-container to-transparent opacity-30 pointer-events-none z-0"></div>
+</section>
+<!-- Popular Categories Mobile -->
+<section class="py-8 md:hidden">
+<div class="px-4 mb-4">
+<h2 class="font-h3 text-[20px] text-on-surface">Populyar kateqoriyalar</h2>
+</div>
+<div class="grid grid-cols-4 gap-2 px-4 pb-4">
+<!-- Category Item -->
+<a class="bg-white border border-outline-variant rounded-lg p-3 flex flex-col items-center justify-center gap-2 hover:border-primary-container hover:shadow-md transition-all group" href="#">
+<div class="w-10 h-10 bg-surface-container-low rounded-full flex items-center justify-center text-primary-container group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">checkroom</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface text-center line-clamp-1">Geyim</span>
+</a>
+<!-- Category Item -->
+<a class="bg-white border border-outline-variant rounded-lg p-3 flex flex-col items-center justify-center gap-2 hover:border-primary-container hover:shadow-md transition-all group" href="#">
+<div class="w-10 h-10 bg-surface-container-low rounded-full flex items-center justify-center text-primary-container group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">steps</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface text-center line-clamp-1">Ayaqqabı</span>
+</a>
+<!-- Category Item -->
+<a class="bg-white border border-outline-variant rounded-lg p-3 flex flex-col items-center justify-center gap-2 hover:border-primary-container hover:shadow-md transition-all group" href="#">
+<div class="w-10 h-10 bg-surface-container-low rounded-full flex items-center justify-center text-primary-container group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">diamond</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface text-center line-clamp-1">Aksesuar</span>
+</a>
+<!-- Category Item -->
+<a class="bg-white border border-outline-variant rounded-lg p-3 flex flex-col items-center justify-center gap-2 hover:border-primary-container hover:shadow-md transition-all group" href="#">
+<div class="w-10 h-10 bg-surface-container-low rounded-full flex items-center justify-center text-primary-container group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">face_retouching_natural</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface text-center line-clamp-1">Kosmetika</span>
+</a>
+<!-- Category Item -->
+<a class="bg-white border border-outline-variant rounded-lg p-3 flex flex-col items-center justify-center gap-2 hover:border-primary-container hover:shadow-md transition-all group" href="#">
+<div class="w-10 h-10 bg-surface-container-low rounded-full flex items-center justify-center text-primary-container group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">devices</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface text-center line-clamp-1">Elektronika</span>
+</a>
+<!-- Category Item -->
+<a class="bg-white border border-outline-variant rounded-lg p-3 flex flex-col items-center justify-center gap-2 hover:border-primary-container hover:shadow-md transition-all group" href="#">
+<div class="w-10 h-10 bg-surface-container-low rounded-full flex items-center justify-center text-primary-container group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">chair</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface text-center line-clamp-1">Ev məhsulları</span>
+</a>
+<!-- Category Item -->
+<a class="bg-white border border-outline-variant rounded-lg p-3 flex flex-col items-center justify-center gap-2 hover:border-primary-container hover:shadow-md transition-all group" href="#">
+<div class="w-10 h-10 bg-surface-container-low rounded-full flex items-center justify-center text-primary-container group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">construction</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface text-center line-clamp-1">İnşaat mat.</span>
+</a>
+<!-- Category Item -->
+<a class="bg-white border border-outline-variant rounded-lg p-3 flex flex-col items-center justify-center gap-2 hover:border-primary-container hover:shadow-md transition-all group" href="#">
+<div class="w-10 h-10 bg-surface-container-low rounded-full flex items-center justify-center text-primary-container group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">restaurant</span>
+</div>
+<span class="font-body-sm text-[12px] text-on-surface text-center line-clamp-1">Qida</span>
+</a>
+</div>
+</section>
+<!-- New Products Mobile -->
+<section class="px-4 py-8 md:hidden border-t border-outline-variant">
+<div class="flex justify-between items-end mb-4">
+<h2 class="font-h3 text-[20px] text-on-surface">Yeni məhsullar</h2>
+<a class="font-body-sm text-primary-container hover:underline flex items-center gap-1" href="#">Hamısına bax <span class="material-symbols-outlined text-[16px]">arrow_forward</span></a>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- Product Card 1 -->
+<div class="bg-white border border-outline-variant rounded-lg overflow-hidden flex flex-col group">
+<div class="relative aspect-square bg-surface-container-low overflow-hidden">
+<img alt="Kişi qış gödəkçələri, topdansatış" class="w-full h-full object-cover" data-alt="A clean, professional product photography shot of several high-quality winter jackets hanging neatly on a rack against a stark white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0D8OFhv4SCLh2QeYqguH-5BfVsLvn1XELoq0oZ7n7lALo4gHKHJo6M5vECSUUtfwrr0raiJfMXUCoCbn2An44bDuDhZncmfmQPLBd0p3gQjFGc8lCp2mOkpZcxWbxWeZtBMrMXH7wXw4hUQCZvMFjuxvhFC4hHVCzsdQwb7WmApaKXG-KM-zaLqZciCqEnkJSJTRDfoE93K83OQ8GApFZJX4kkZdwnqsV3k3HGYovRUmepENimFdC7wFgtlnVmLkKOCl478rQLSs"/>
+<div class="absolute top-2 left-2 bg-surface-tint text-white px-1.5 py-0.5 rounded-sm font-label-caps text-[10px] uppercase tracking-wider">Yeni</div>
+</div>
+<div class="p-2 flex flex-col flex-1">
+<h3 class="font-body-sm text-[12px] text-on-surface font-semibold mb-1 line-clamp-2">Kişi qış gödəkçələri (Model 402)</h3>
+<div class="font-price-display text-[14px] text-primary-container mb-2">Razılaşma yolu ilə</div>
+<div class="mt-auto space-y-1">
+<div class="flex items-center gap-1 text-on-surface-variant text-[10px]">
+<span class="material-symbols-outlined text-[12px]">storefront</span>
+<span class="truncate">Baku Textile MMC</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant text-[10px]">
+<span class="material-symbols-outlined text-[12px]">location_on</span>
+<span>Bakı</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 mt-2 pt-2 border-t border-outline-variant/50">
+<button class="w-full bg-whatsapp text-white py-1.5 rounded text-[10px] font-medium flex items-center justify-center gap-1">
+                 WhatsApp ilə yaz
+              </button>
+<button class="w-full border border-primary-container text-primary-container py-1.5 rounded text-[10px] font-medium">
+                Məhsula bax
+              </button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-white border border-outline-variant rounded-lg overflow-hidden flex flex-col group">
+<div class="relative aspect-square bg-surface-container-low overflow-hidden">
+<img alt="Qadın ayaqqabıları topdansatış" class="w-full h-full object-cover" data-alt="A pristine studio shot of a pair of elegant women's leather boots displayed on a clean white pedestal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPZdpXl6G5ARMUffER7x48rFyvJc_hSh0StE2N9Vth2v2VWwLpB8tsfJebogacZCEu1BvYvzlj3cZZnv7GHANdlHaNbGMqEryF6Xjqq6Ifv_xu_nS5Vh1FjJ18s2v3ykLaSJLvF6wqmS9Y0c_Fp8o5fQzbPJ9UqH1D9lxCJPT4S8sVO2wYXu2xT9rYNbOmkthFW90JO0pdhEWfKiAwo1kSM5Cd-oD0hmcc584kCNd1pPateYYAG0lKP01R-5AC1YIPb0eIjg-Dem8"/>
+</div>
+<div class="p-2 flex flex-col flex-1">
+<h3 class="font-body-sm text-[12px] text-on-surface font-semibold mb-1 line-clamp-2">Qadın dəri çəkmələri (Stok: 500 cüt)</h3>
+<div class="font-price-display text-[14px] text-primary-container mb-2">Razılaşma yolu ilə</div>
+<div class="mt-auto space-y-1">
+<div class="flex items-center gap-1 text-on-surface-variant text-[10px]">
+<span class="material-symbols-outlined text-[12px]">storefront</span>
+<span class="truncate">Shoes Import Trade</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant text-[10px]">
+<span class="material-symbols-outlined text-[12px]">location_on</span>
+<span>Sumqayıt</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 mt-2 pt-2 border-t border-outline-variant/50">
+<button class="w-full bg-whatsapp text-white py-1.5 rounded text-[10px] font-medium flex items-center justify-center gap-1">
+                 WhatsApp ilə yaz
+              </button>
+<button class="w-full border border-primary-container text-primary-container py-1.5 rounded text-[10px] font-medium">
+                Məhsula bax
+              </button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-white border border-outline-variant rounded-lg overflow-hidden flex flex-col group">
+<div class="relative aspect-square bg-surface-container-low overflow-hidden">
+<img alt="Ağıllı saatlar topdansatış" class="w-full h-full object-cover" data-alt="A macro product photograph of several smartwatches arranged in a neat row against a pure white backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWeaD5lD9xX_3PFmJCdBcXsRLsL8GnTV7SY8JdiIluS8Od_ksOIIwmdQw-A8GNiChPBOUZcJx3nK7d06HgIJvAPHY6BWx5xA5C-YsWiTmlSiOaR8UtAdWnfv3FPCXdwYzczZuqbvNVkLotj1hLSo5XAxWO4SbHxQ9Lkizp3WOG7U8UmYDBqGpbBAJWYWdCBWZ8T6_pq_Y6_QyZK5z0Q5d19t3m8Gdzqn5710PPObTsDb7mDXByKB0uIBhcqcpH7PgVaQR5Bj7mkz4"/>
+</div>
+<div class="p-2 flex flex-col flex-1">
+<h3 class="font-body-sm text-[12px] text-on-surface font-semibold mb-1 line-clamp-2">Ağıllı saatlar X-Series (Minimum sifariş: 50)</h3>
+<div class="font-price-display text-[14px] text-primary-container mb-2">Razılaşma yolu ilə</div>
+<div class="mt-auto space-y-1">
+<div class="flex items-center gap-1 text-on-surface-variant text-[10px]">
+<span class="material-symbols-outlined text-[12px]">storefront</span>
+<span class="truncate">TechWholesale AZ</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant text-[10px]">
+<span class="material-symbols-outlined text-[12px]">location_on</span>
+<span>Bakı</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 mt-2 pt-2 border-t border-outline-variant/50">
+<button class="w-full bg-whatsapp text-white py-1.5 rounded text-[10px] font-medium flex items-center justify-center gap-1">
+                 WhatsApp ilə yaz
+              </button>
+<button class="w-full border border-primary-container text-primary-container py-1.5 rounded text-[10px] font-medium">
+                Məhsula bax
+              </button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="bg-white border border-outline-variant rounded-lg overflow-hidden flex flex-col group">
+<div class="relative aspect-square bg-surface-container-low overflow-hidden">
+<img alt="İnşaat ləvazimatları" class="w-full h-full object-cover" data-alt="A perfectly lit, isolated photograph of professional-grade power tools, specifically a pair of cordless drills, placed on a light gray seamless surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBefxERDrpMcgdLHlZM5ZBRmvSfONTu9lnKczAbGJhWHSp3FCOZ9kNcDEeLwcoQitLoobS3HixTcAC6fYbiT2rT5Q9EbL6BJpFOuO_KI4JXlrcY4GcjXNMVTyjajNPZYGxOuSuGVfdxCeBtYR2p_H8SKs60bjUS2Btx1PijXYmI7eMdqxRROtNbgODf2s5ieDQibOrc3y-huAyhhP1PkA8gy5Y2iaEkuHAYCD-pSSKvpsVrFJKrQWB3_wg-2nQra6U28udsfmIx87w"/>
+</div>
+<div class="p-2 flex flex-col flex-1">
+<h3 class="font-body-sm text-[12px] text-on-surface font-semibold mb-1 line-clamp-2">Akkumulyatorlu drel dəsti (Topdan satış)</h3>
+<div class="font-price-display text-[14px] text-primary-container mb-2">Razılaşma yolu ilə</div>
+<div class="mt-auto space-y-1">
+<div class="flex items-center gap-1 text-on-surface-variant text-[10px]">
+<span class="material-symbols-outlined text-[12px]">storefront</span>
+<span class="truncate">Mega İnşaat Supply</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant text-[10px]">
+<span class="material-symbols-outlined text-[12px]">location_on</span>
+<span>Gəncə</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 mt-2 pt-2 border-t border-outline-variant/50">
+<button class="w-full bg-whatsapp text-white py-1.5 rounded text-[10px] font-medium flex items-center justify-center gap-1">
+                 WhatsApp ilə yaz
+              </button>
+<button class="w-full border border-primary-container text-primary-container py-1.5 rounded text-[10px] font-medium">
+                Məhsula bax
+              </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Popular Stores Mobile -->
+<section class="px-4 py-8 bg-surface-container-low md:hidden border-t border-outline-variant">
+<div class="flex justify-between items-end mb-4">
+<h2 class="font-h3 text-[20px] text-on-surface">Populyar mağazalar</h2>
+<a class="font-body-sm text-primary-container hover:underline flex items-center gap-1" href="#">Bütün mağazalar <span class="material-symbols-outlined text-[16px]">arrow_forward</span></a>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Store Card 1 -->
+<div class="bg-white border border-outline-variant rounded-lg p-4 hover:shadow-md transition-shadow flex flex-col">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-12 h-12 bg-surface-container rounded-full flex items-center justify-center border border-outline-variant overflow-hidden shrink-0">
+<span class="font-h3 text-[16px] text-primary-container">BT</span>
+</div>
+<div>
+<div class="flex items-center gap-1">
+<h3 class="font-body-md font-semibold text-on-surface">Baku Textile MMC</h3>
+<span class="material-symbols-outlined text-secondary text-[16px]">verified</span>
+</div>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Geyim və tekstil</p>
+</div>
+</div>
+<div class="flex justify-between items-center bg-surface-container-low p-2 rounded mb-3">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">Məhsul sayı</span>
+<span class="font-body-sm font-semibold text-on-surface">1,250+</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-label-caps text-[10px] text-on-surface-variant">Şəhər</span>
+<span class="font-body-sm font-semibold text-on-surface">Bakı</span>
+</div>
+</div>
+<button class="w-full border border-primary-container text-primary-container py-2 rounded text-[12px] font-semibold hover:bg-primary-container hover:text-white transition-colors">
+            Mağazaya bax
+          </button>
+</div>
+<!-- Store Card 2 -->
+<div class="bg-white border border-outline-variant rounded-lg p-4 hover:shadow-md transition-shadow flex flex-col">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-12 h-12 bg-surface-container rounded-full flex items-center justify-center border border-outline-variant overflow-hidden shrink-0">
+<span class="font-h3 text-[16px] text-primary-container">SI</span>
+</div>
+<div>
+<div class="flex items-center gap-1">
+<h3 class="font-body-md font-semibold text-on-surface">Shoes Import Trade</h3>
+<span class="material-symbols-outlined text-secondary text-[16px]">verified</span>
+</div>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Ayaqqabı və dəri məmulatları</p>
+</div>
+</div>
+<div class="flex justify-between items-center bg-surface-container-low p-2 rounded mb-3">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">Məhsul sayı</span>
+<span class="font-body-sm font-semibold text-on-surface">840+</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-label-caps text-[10px] text-on-surface-variant">Şəhər</span>
+<span class="font-body-sm font-semibold text-on-surface">Sumqayıt</span>
+</div>
+</div>
+<button class="w-full border border-primary-container text-primary-container py-2 rounded text-[12px] font-semibold hover:bg-primary-container hover:text-white transition-colors">
+            Mağazaya bax
+          </button>
+</div>
+<!-- Store Card 3 -->
+<div class="bg-white border border-outline-variant rounded-lg p-4 hover:shadow-md transition-shadow flex flex-col">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-12 h-12 bg-surface-container rounded-full flex items-center justify-center border border-outline-variant overflow-hidden shrink-0">
+<span class="font-h3 text-[16px] text-primary-container">TW</span>
+</div>
+<div>
+<div class="flex items-center gap-1">
+<h3 class="font-body-md font-semibold text-on-surface">TechWholesale AZ</h3>
+<span class="material-symbols-outlined text-secondary text-[16px]">verified</span>
+</div>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Elektronika və aksesuarlar</p>
+</div>
+</div>
+<div class="flex justify-between items-center bg-surface-container-low p-2 rounded mb-3">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">Məhsul sayı</span>
+<span class="font-body-sm font-semibold text-on-surface">3,100+</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-label-caps text-[10px] text-on-surface-variant">Şəhər</span>
+<span class="font-body-sm font-semibold text-on-surface">Bakı</span>
+</div>
+</div>
+<button class="w-full border border-primary-container text-primary-container py-2 rounded text-[12px] font-semibold hover:bg-primary-container hover:text-white transition-colors">
+            Mağazaya bax
+          </button>
+</div>
+</div>
+</section>
+<!-- Verified Stores Mobile -->
+<section class="px-4 py-8 md:hidden border-t border-outline-variant">
+<div class="mb-4">
+<h2 class="font-h3 text-[20px] text-on-surface mb-1">Təsdiqlənmiş mağazalar</h2>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Yoxlanılmış topdansatıcı mağazalarla daha etibarlı əlaqə qurun.</p>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Large Featured Store -->
+<div class="relative rounded-lg overflow-hidden h-[250px] border border-outline-variant">
+<img alt="Large warehouse" class="absolute inset-0 w-full h-full object-cover" data-alt="A wide-angle shot of a massive, meticulously organized modern warehouse interior." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcx0x_PZbGz0SbS8WRO-oBPY4EHHSbyhdawxCzgtXXjkmKAun6Kbp1DaulYu6QYxbqJ8PMHTLoRFFBKymySf7zK54OEkowPV2ncjGMlQu5Ncc2SApIFbyG9CFE3cpJku3Zom9axUd1rNJZ2fAH1gNwv9mXDDCLDm-VTIx2etxH9PGtCheJzPufrg4C_cLmwS7-4b-1iD214fZ1JmSmwMjp_55AcRJGlDOECULhs0DK4Mh6xMPXIw4H9H8QIMNztpEDuz4dQma8wpQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-4 w-full">
+<div class="flex items-center gap-1 mb-1">
+<span class="bg-secondary text-white px-1.5 py-0.5 rounded-sm font-label-caps text-[8px] uppercase tracking-wider flex items-center gap-0.5"><span class="material-symbols-outlined text-[10px]">verified</span> Təsdiqlənmiş</span>
+</div>
+<h3 class="font-h3 text-[18px] text-white mb-1 drop-shadow-md">Mega İnşaat Supply</h3>
+<p class="text-white/80 font-body-sm text-[10px] mb-3 line-clamp-2">Azərbaycanın ən böyük inşaat materialları topdansatış mərkəzi.</p>
+<button class="bg-white text-on-background px-4 py-1.5 rounded text-[12px] font-semibold w-full">Mağazaya bax</button>
+</div>
+</div>
+<!-- Medium Store 1 -->
+<div class="bg-primary-container rounded-lg p-4 flex flex-col items-center text-center gap-2 border border-primary-container">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm mb-1">
+<span class="font-h3 text-[16px] text-primary-container">KT</span>
+</div>
+<div>
+<div class="flex items-center justify-center gap-1">
+<h3 class="font-body-md font-semibold text-white">Kosmetika Topdan</h3>
+<span class="material-symbols-outlined text-secondary-fixed text-[16px]">verified</span>
+</div>
+<p class="text-white/80 font-body-sm text-[10px] mb-2">Parfümeriya və kosmetika</p>
+<div class="flex items-center justify-center gap-3 text-white/90 font-label-caps text-[10px]">
+<span><span class="font-bold">4.5K+</span> Məhsul</span>
+<span><span class="font-bold">Bakı</span></span>
+</div>
+</div>
+</div>
+<!-- Small Stores Grid -->
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-3 flex flex-col justify-center items-center text-center">
+<div class="w-10 h-10 bg-white rounded-full flex items-center justify-center border border-outline-variant mb-2">
+<span class="font-h3 text-[14px] text-on-surface">EM</span>
+</div>
+<h3 class="font-body-sm font-semibold text-on-surface mb-0.5 flex items-center justify-center gap-0.5 text-[12px]">Ev Moda <span class="material-symbols-outlined text-secondary text-[12px]">verified</span></h3>
+<p class="font-body-sm text-on-surface-variant text-[10px]">Ev tekstili</p>
+</div>
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-3 flex flex-col justify-center items-center text-center">
+<div class="w-10 h-10 bg-white rounded-full flex items-center justify-center border border-outline-variant mb-2">
+<span class="font-h3 text-[14px] text-on-surface">QP</span>
+</div>
+<h3 class="font-body-sm font-semibold text-on-surface mb-0.5 flex items-center justify-center gap-0.5 text-[12px]">Qida Plus <span class="material-symbols-outlined text-secondary text-[12px]">verified</span></h3>
+<p class="font-body-sm text-on-surface-variant text-[10px]">Qida məhsulları</p>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Mobile -->
+<section class="px-4 py-8 md:hidden text-center mb-8">
+<div class="bg-primary-container text-on-primary rounded-xl p-6 shadow-lg relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+<div class="relative z-10">
+<h2 class="font-h3 mb-2 text-[20px]">Topdansatış mağazanızı onlayn kataloqa əlavə edin</h2>
+<p class="font-body-sm text-[12px] opacity-90 mb-6">Məhsullarınızı nümayiş etdirin, yeni alıcılara çatın və müraciətləri bir paneldən izləyin.</p>
+<div class="flex flex-col gap-3">
+<button class="bg-surface-container-lowest text-primary-container font-body-md font-bold py-2.5 px-6 rounded-lg w-full hover:opacity-90 transition-opacity">Mağaza aç</button>
+<button class="border border-white/30 text-white font-body-md py-2.5 px-6 rounded-lg w-full hover:bg-white/10 transition-colors">Daha ətraflı</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-bright text-primary-container font-body-sm full-width border-t mt-8 border-outline-variant flat no shadows">
+<div class="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 py-8 px-4">
+<!-- Brand Column -->
+<div class="col-span-1">
+<div class="text-[20px] font-bold text-primary-container mb-2">TopdanBazar</div>
+<p class="text-on-surface-variant mb-4 leading-relaxed text-[12px]">Azərbaycanın B2B topdansatış platforması. Biznesinizi bizimlə böyüdün.</p>
+<div class="flex gap-4">
+<a class="text-outline hover:text-primary-container transition-colors" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span></a>
+<a class="text-outline hover:text-primary-container transition-colors" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="call">call</span></a>
+</div>
+</div>
+<!-- Links Columns -->
+<div class="col-span-1">
+<h4 class="font-label-caps text-on-surface mb-3">Məlumat</h4>
+<ul class="space-y-2">
+<li><a class="text-outline hover:text-primary-container underline decoration-2 underline-offset-4 transition-all opacity-100 hover:opacity-80" href="#">Haqqımızda</a></li>
+<li><a class="text-outline hover:text-primary-container underline decoration-2 underline-offset-4 transition-all opacity-100 hover:opacity-80" href="#">İstifadəçi qaydaları</a></li>
+<li><a class="text-outline hover:text-primary-container underline decoration-2 underline-offset-4 transition-all opacity-100 hover:opacity-80" href="#">Məxfilik siyasəti</a></li>
+</ul>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-caps text-on-surface mb-3">Müştərilər üçün</h4>
+<ul class="space-y-2">
+<li><a class="text-outline hover:text-primary-container underline decoration-2 underline-offset-4 transition-all opacity-100 hover:opacity-80" href="#">Yardım</a></li>
+<li><a class="text-outline hover:text-primary-container underline decoration-2 underline-offset-4 transition-all opacity-100 hover:opacity-80" href="#">Əlaqə</a></li>
+<li><a class="text-primary-container font-bold underline decoration-2 underline-offset-4 transition-all opacity-100 hover:opacity-80" href="#">Mağaza aç</a></li>
+</ul>
+</div>
+<div class="col-span-1 md:col-span-4 mt-4 pt-4 border-t border-outline-variant text-center text-outline text-[12px]">
+<p>© 2024 TopdanBazar. Azərbaycanın B2B topdansatış platforması.</p>
+</div>
+</div>
+</footer>
+</body></html>

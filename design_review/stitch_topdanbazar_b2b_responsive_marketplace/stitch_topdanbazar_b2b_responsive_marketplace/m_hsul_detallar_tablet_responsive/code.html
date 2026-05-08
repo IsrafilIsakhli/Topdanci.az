@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TopdanBazar - Məhsul detalları</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#00201a",
+                        "on-primary": "#ffffff",
+                        "primary": "#00342b",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error": "#ffffff",
+                        "primary-container": "#004d40",
+                        "on-secondary": "#ffffff",
+                        "outline": "#707975",
+                        "surface": "#f8f9ff",
+                        "secondary-container": "#5dfd8a",
+                        "on-secondary-container": "#007232",
+                        "surface-variant": "#d3e4fe",
+                        "on-tertiary-fixed": "#370e04",
+                        "on-tertiary-container": "#e89f8c",
+                        "tertiary-fixed": "#ffdbd1",
+                        "surface-container": "#e5eeff",
+                        "secondary": "#006d2f",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#213145",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "primary-fixed-dim": "#94d3c1",
+                        "on-secondary-fixed": "#002109",
+                        "inverse-primary": "#94d3c1",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#66ff8e",
+                        "on-primary-container": "#7ebdac",
+                        "surface-container-highest": "#d3e4fe",
+                        "error": "#ba1a1a",
+                        "background": "#f8f9ff",
+                        "surface-container-high": "#dce9ff",
+                        "tertiary-container": "#693527",
+                        "on-primary-fixed-variant": "#065043",
+                        "on-background": "#0b1c30",
+                        "secondary-fixed-dim": "#3de273",
+                        "on-surface": "#0b1c30",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#3f4945",
+                        "outline-variant": "#bfc9c4",
+                        "on-secondary-fixed-variant": "#005322",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#29695b",
+                        "tertiary": "#4e2013",
+                        "surface-bright": "#f8f9ff",
+                        "surface-dim": "#cbdbf5",
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "primary-fixed": "#afefdd",
+                        "surface-container-low": "#eff4ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "container-max": "1280px",
+                        "xxl": "64px",
+                        "lg": "24px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "xl": "40px",
+                        "sm": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "price-display": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h2": ["Inter"],
+                        "h3": ["Inter"]
+                    },
+                    "fontSize": {
+                        "price-display": ["20px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-white/95 dark:bg-slate-950/95 backdrop-blur-md text-teal-900 dark:text-teal-400 font-inter text-sm font-medium tracking-tight docked full-width top-0 sticky border-b border-slate-200 dark:border-slate-800 shadow-sm z-50">
+<div class="flex justify-between items-center w-full px-6 h-20 max-w-7xl mx-auto">
+<div class="flex items-center gap-xl">
+<a class="text-2xl font-black text-teal-900 dark:text-white tracking-tighter" href="#">TopdanBazar</a>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 transition-colors hover:bg-slate-50 dark:hover:bg-slate-900 rounded-md p-2" href="#">Ana səhifə</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 transition-colors hover:bg-slate-50 dark:hover:bg-slate-900 rounded-md p-2" href="#">Kateqoriyalar</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 transition-colors hover:bg-slate-50 dark:hover:bg-slate-900 rounded-md p-2" href="#">Mağazalar</a>
+<a class="text-teal-900 dark:text-teal-400 border-b-2 border-teal-900 dark:border-teal-400 pb-1 px-2" href="#">Məhsullar</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 transition-colors hover:bg-slate-50 dark:hover:bg-slate-900 rounded-md p-2" href="#">Əlaqə</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden md:block">
+<input class="w-64 h-10 pl-10 pr-4 rounded border border-outline-variant bg-surface focus:ring-1 focus:ring-surface-tint focus:border-surface-tint focus:bg-white transition-colors text-body-sm text-on-surface placeholder:text-outline" placeholder="Məhsul və ya kateqoriya axtar..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[20px]">search</span>
+</div>
+<button class="text-primary font-label-caps hover:bg-surface-container px-4 py-2 rounded transition-colors hidden md:block">Daxil ol</button>
+<button class="bg-primary text-on-primary font-label-caps px-4 py-2 rounded hover:opacity-90 transition-opacity">Mağaza aç</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-6 py-xl">
+<!-- Breadcrumb -->
+<nav aria-label="Breadcrumb" class="flex text-body-sm text-outline mb-lg">
+<ol class="inline-flex items-center space-x-1 md:space-x-2">
+<li class="inline-flex items-center">
+<a class="inline-flex items-center hover:text-primary transition-colors" href="#">Ana səhifə</a>
+</li>
+<li>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Tikinti materialları</a>
+</div>
+</li>
+<li>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Metal məmulatları</a>
+</div>
+</li>
+<li aria-current="page">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<span class="text-on-surface font-medium">Armatur 12mm A500C</span>
+</div>
+</li>
+</ol>
+</nav>
+<!-- Product Hero Section -->
+<div class="flex flex-col md:flex-row gap-xl mb-xxl">
+<!-- Image Gallery -->
+<div class="w-full md:w-1/2 flex flex-col gap-md">
+<div class="w-full aspect-square bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden relative">
+<img alt="Armatur 12mm" class="w-full h-full object-cover" data-alt="A detailed, high-resolution photograph of stacked 12mm A500C steel rebar. The rebar is neatly arranged in a professional wholesale warehouse setting. The lighting is bright and clean, emphasizing the texture and structural integrity of the metal against a neutral, minimalist background. The color palette is dominated by steely grays and subtle metallic reflections, aligning with a corporate, professional B2B aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3gxq2dJG3B40uP4qpgTWKsq0qcNObryLcH-ifBRg_Z0NzAy7v0OuVqkLQ0xS7Z7XRWsFskSfFWaBR0GhND4kblKlnhNoR0ZKnggBWl5OA5rPgtVoYzFCS8DufhCAPLRfk8NCr1OXdU3r_-XovI0D5kfHhJvFmBmYwlEHH_zm-V-SKROpxtIf3kgFiGazifb_orK4Shn3XwDoKYXEszhhnmndLz6tcug0726XJ-lkwwWj7_lePHS7_Linn9BCyV6rBHUpmGQDHqlw"/>
+<div class="absolute top-4 left-4 flex gap-sm">
+<span class="bg-secondary-container text-on-secondary-container font-label-caps px-2 py-1 rounded">Topdan satış</span>
+<span class="bg-primary-container text-on-primary-container font-label-caps px-2 py-1 rounded">Stokda var</span>
+</div>
+</div>
+<div class="flex gap-md overflow-x-auto pb-2">
+<button class="w-20 h-20 flex-shrink-0 bg-surface-container-lowest border-2 border-primary rounded overflow-hidden">
+<img alt="Thumbnail 1" class="w-full h-full object-cover" data-alt="A close-up shot of the ribbed surface of a single piece of 12mm A500C steel rebar. The texture is sharply focused under bright, cool-toned warehouse lighting. The background is a stark, clean white to isolate the product for a professional catalog presentation. The mood is industrial, precise, and high-quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4pgINfYqoRHWYw21v7WRTGTW2o3Vowgymtl1RB9vGZOLYq48j3WOdXrZ3PEuwaaKuUoteWSODIWHbVDlxBm3zhZWLgQ0sT_TpsNf607LmkYCjrkYr1GQLmcyCx5wfhlzN3uE3BmJeKQFDBkshTdS3sQmjmYycOPKLP3ufgmlJUyyfZWLOqR2SDyOGw0t2Z8eujkdPWP2lKVwO1qqrOtS_jKHsJLg0uSrMk5oB1Zg3k--WZuTSip7yURAY2lZPDpPPIBk9hRsz9CY"/>
+</button>
+<button class="w-20 h-20 flex-shrink-0 bg-surface-container-lowest border border-outline-variant rounded overflow-hidden opacity-70 hover:opacity-100 transition-opacity">
+<img alt="Thumbnail 2" class="w-full h-full object-cover" data-alt="A wide shot showing massive bundles of steel rebar stacked symmetrically in a vast, modern storage facility. The lighting is even and bright, showcasing the scale of wholesale availability. The color palette features cool grays, concrete textures, and bright white highlights, creating a highly professional and organized B2B environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMiGHPqj75EalZ_k3s0WNaWXg9U_RXgi-XqgpML9QaUvCqxlnuOjYUIOUzpRzPRDPKq7RxDPzPNf-mGF86x2DLD1yaJh8DyntC4eTqe_n35byWmrwZht2uI0R_u1lNfGgGj5lr36jawMur5y4ui4D5_beh2PpvYYZxfHk0gZxhvW9R2nwqw4p_c11V7c1FI9xxFpt1-_GQFyHpp6y0TofPTqCMfmb2SbG8rGgWKhMKyv1cDGwWyi_gCE2qP1fqTt2bERH7C6A4V40"/>
+</button>
+</div>
+</div>
+<!-- Product Info Panel -->
+<div class="w-full md:w-1/2 flex flex-col">
+<h1 class="font-h2 text-h2 text-on-surface mb-2">Armatur 12mm A500C</h1>
+<p class="font-body-md text-body-md text-outline mb-md">Kodu: AR-12-500</p>
+<div class="mb-lg">
+<span class="font-price-display text-price-display text-primary">Razılaşma yolu ilə</span>
+<p class="font-body-sm text-body-sm text-outline mt-1">Minimum sifariş: 5 ton</p>
+</div>
+<div class="w-full h-[1px] bg-outline-variant mb-lg"></div>
+<!-- Seller Card -->
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-lg mb-lg flex items-start gap-md">
+<div class="w-12 h-12 rounded bg-surface-container flex items-center justify-center flex-shrink-0 border border-outline-variant">
+<span class="material-symbols-outlined text-primary text-[24px]">storefront</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-h3 text-[18px] font-semibold text-on-surface mb-1">Baku Build &amp; Supply MMC</h3>
+<div class="flex items-center gap-1 text-outline font-body-sm mb-2">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span>Bakı, Binəqədi şossesi</span>
+</div>
+<a class="text-primary font-body-sm hover:underline" href="#">Mağazanın digər məhsulları</a>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-sm mt-auto">
+<button class="w-full bg-[#25D366] hover:bg-[#1EBE5A] text-white font-label-caps text-[14px] py-4 rounded flex items-center justify-center gap-2 transition-colors shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat</span>
+                        WhatsApp ilə yaz
+                    </button>
+<button class="w-full bg-transparent border border-primary text-primary hover:bg-surface-container font-label-caps text-[14px] py-4 rounded flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined">call</span>
+                        Telefonu göstər
+                    </button>
+</div>
+</div>
+</div>
+<!-- Details Section -->
+<div class="flex flex-col md:flex-row gap-xl mb-xxl">
+<div class="w-full md:w-2/3">
+<h2 class="font-h3 text-h3 text-on-surface mb-md">Məhsul haqqında</h2>
+<div class="prose max-w-none font-body-md text-on-surface-variant mb-xl">
+<p class="mb-4">Yüksək keyfiyyətli A500C markalı poladdan hazırlanmış 12mm diametrli armatur. Tikinti və konstruksiya işlərində etibarlı istifadə üçün nəzərdə tutulmuşdur. Məhsul beynəlxalq standartlara cavab verir və yüksək möhkəmlik göstəricilərinə malikdir.</p>
+<p>Əsas üstünlükləri: yüksək plastiklik, əla qaynaq olunma qabiliyyəti və korroziyaya qarşı davamlılıq. Binaların bünövrələrində, monolit konstruksiyalarda və dəmir-beton məmulatlarının istehsalında geniş tətbiq olunur.</p>
+</div>
+<h2 class="font-h3 text-h3 text-on-surface mb-md">Texniki məlumatlar</h2>
+<div class="border border-outline-variant rounded overflow-hidden">
+<table class="w-full text-left font-body-md">
+<tbody class="divide-y divide-outline-variant">
+<tr class="bg-surface-container-lowest">
+<td class="py-3 px-4 text-outline w-1/3">Diametr</td>
+<td class="py-3 px-4 text-on-surface font-medium">12 mm</td>
+</tr>
+<tr class="bg-surface-container-low">
+<td class="py-3 px-4 text-outline">Poladın markası</td>
+<td class="py-3 px-4 text-on-surface font-medium">A500C</td>
+</tr>
+<tr class="bg-surface-container-lowest">
+<td class="py-3 px-4 text-outline">Uzunluq</td>
+<td class="py-3 px-4 text-on-surface font-medium">11.7 m - 12 m</td>
+</tr>
+<tr class="bg-surface-container-low">
+<td class="py-3 px-4 text-outline">Standart</td>
+<td class="py-3 px-4 text-on-surface font-medium">QOST 34028-2016</td>
+</tr>
+<tr class="bg-surface-container-lowest">
+<td class="py-3 px-4 text-outline">İstehsalçı ölkə</td>
+<td class="py-3 px-4 text-on-surface font-medium">Rusiya</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="w-full md:w-1/3">
+<!-- Empty sidebar space for layout balance on tablet/desktop as per requirement -->
+<div class="bg-surface-container-low rounded-lg p-lg border border-outline-variant">
+<h3 class="font-h3 text-[18px] text-on-surface mb-md">Sifariş şərtləri</h3>
+<ul class="space-y-3 font-body-sm text-on-surface-variant">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">local_shipping</span>
+<span>Çatdırılma: Bakı daxili pulsuz (10 tondan yuxarı), digər ərazilərə ödənişli.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">payments</span>
+<span>Ödəniş: Köçürmə yolu ilə və ya nəğd. ƏDV daxildir.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">verified</span>
+<span>Sertifikatlar məhsulla birlikdə təqdim olunur.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Similar Products -->
+<div>
+<div class="flex justify-between items-center mb-lg">
+<h2 class="font-h2 text-[24px] text-on-surface">Oxşar məhsullar</h2>
+<a class="text-primary font-body-sm hover:underline flex items-center gap-1" href="#">
+                    Hamısına bax <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Product Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden group hover:-translate-y-1 hover:shadow-lg hover:border-primary-fixed-dim transition-all duration-300 flex flex-col">
+<div class="aspect-[4/3] bg-surface relative overflow-hidden">
+<img alt="Armatur 14mm" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A stack of 14mm steel rebar in a wholesale construction materials depot. The lighting is bright and even, casting soft shadows to emphasize the thickness and ribbed texture of the metal rods. The background is a clean, out-of-focus warehouse environment, maintaining a professional, corporate minimalism suited for a B2B catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEp2KaodWTsquUP6v8GQPd9suEJ86_lDs9Y8N2S9mbyo-San536KdTiKcmm2CZBEhg1aUO6b3mD-tsqbaVpy2nCJkclryaeZQ3OV-CUwKDXbkoUgHeZONvxXPMuWoPxVD6i10vfaI9VtMmJpcfqNpKvB6QxhbCB9J1BylFj9Fvtnyw2AMxtV7TbjIqv6eXrac2SV9HAgl9OW3XBHVjx__UlswEaxT15XZGOFpxAUVopG1lH-J4RkH1BPw5Hob79zyJsEkG2fMlsUU"/>
+<div class="absolute top-3 left-3 flex flex-col gap-1">
+<span class="bg-secondary-container text-on-secondary-container font-label-caps text-[10px] px-2 py-0.5 rounded w-max">Topdan satış</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<p class="font-body-sm text-outline mb-1">Metal məmulatları</p>
+<h3 class="font-body-lg text-on-surface font-semibold mb-2 line-clamp-2">Armatur 14mm A500C</h3>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<span class="font-price-display text-[18px] text-primary">Razılaşma yolu ilə</span>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden group hover:-translate-y-1 hover:shadow-lg hover:border-primary-fixed-dim transition-all duration-300 flex flex-col">
+<div class="aspect-[4/3] bg-surface relative overflow-hidden">
+<img alt="Armatur 16mm" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Thick 16mm steel rebar bundles viewed from an angle in a well-lit storage facility. The metallic sheen of the raw steel is captured in high detail against a pristine white concrete floor. The image is highly structured, geometrically precise, and adheres to a high-end minimalist B2B visual language with cool, neutral tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU900C6DFZKH8VQnbgW9TuvgWy8u3os9wSdNC802A5JATYJ6h27cEHLkp41PFiJ7qMu9uoyJG4KJPNIjZqLAtWI0SF9fqYTjUqTZ2RVQ7OpoP6WQGVPm8NlO-mVBUNrHspq6M4J8YYefSkEWrmR_ysxKztt0tof90V2tOttYKICblkv6ospk9TR0bYLuZ7QKF1lGQX7D11dhdlrK2_lcNFOu4OQjlpAqxAZ6hfOwiK81hDZQILo312TWLvlGQXK3_kBFe1RBtHVik"/>
+<div class="absolute top-3 left-3 flex flex-col gap-1">
+<span class="bg-secondary-container text-on-secondary-container font-label-caps text-[10px] px-2 py-0.5 rounded w-max">Topdan satış</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<p class="font-body-sm text-outline mb-1">Metal məmulatları</p>
+<h3 class="font-body-lg text-on-surface font-semibold mb-2 line-clamp-2">Armatur 16mm A500C</h3>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<span class="font-price-display text-[18px] text-primary">Razılaşma yolu ilə</span>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden group hover:-translate-y-1 hover:shadow-lg hover:border-primary-fixed-dim transition-all duration-300 flex flex-col">
+<div class="aspect-[4/3] bg-surface relative overflow-hidden">
+<img alt="Katanqa məftil" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Coils of steel wire rod (Katanka) resting on wooden pallets in a modern distribution center. The circular forms of the wire coils create a strong geometric pattern. The lighting is diffused and professional, eliminating harsh shadows. The color palette focuses on steely grays, white, and pale industrial blues, perfectly suited for a premium wholesale catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbByouS7TcVPsjELDfnZvHqSsUEYopFbbIH-btNMRHfMQColsXkpM6RIIdbqGjkUwMjFz_hcsrkUD8-v6WnWE2oDGDWD5n45iw2qTVGiD7BtPQwU9m-Vpc8CGp6ijvmG0HVlIjG3XLztLSc-IpxjEdj6KZ5hUCJI-i0G8O4tbJ5wa7F0KqXgFjmnCo_P4uTWWTu_0rPT9BdQvblJ2p14LhcG2AoToICvocKYDtCzugaRk5H1wk7UiOBwvpdo3BJETsDC6YlwmZ4aU"/>
+<div class="absolute top-3 left-3 flex flex-col gap-1">
+<span class="bg-secondary-container text-on-secondary-container font-label-caps text-[10px] px-2 py-0.5 rounded w-max">Topdan satış</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<p class="font-body-sm text-outline mb-1">Metal məmulatları</p>
+<h3 class="font-body-lg text-on-surface font-semibold mb-2 line-clamp-2">Katanqa (məftil) 6mm</h3>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<span class="font-price-display text-[18px] text-primary">Razılaşma yolu ilə</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-50 dark:bg-slate-900 text-teal-900 dark:text-teal-400 font-inter text-sm leading-relaxed full-width py-12 border-t border-slate-200 dark:border-slate-800 flat no shadows mt-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-7xl mx-auto px-6">
+<div class="col-span-1 md:col-span-1">
+<div class="text-xl font-bold text-teal-900 dark:text-white mb-4">TopdanBazar</div>
+<p class="text-slate-500 dark:text-slate-400">© 2024 TopdanBazar B2B Marketplace. Bütün hüquqlar qorunur.</p>
+</div>
+<div class="flex flex-col gap-2">
+<a class="text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 hover:underline transition-all" href="#">Haqqımızda</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 hover:underline transition-all" href="#">İstifadəçi razılaşması</a>
+</div>
+<div class="flex flex-col gap-2">
+<a class="text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 hover:underline transition-all" href="#">Vakansiyalar</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 hover:underline transition-all" href="#">Yardım</a>
+</div>
+<div class="flex flex-col gap-2">
+<a class="text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 hover:underline transition-all" href="#">FAQ</a>
+</div>
+</div>
+</footer>
+</body></html>

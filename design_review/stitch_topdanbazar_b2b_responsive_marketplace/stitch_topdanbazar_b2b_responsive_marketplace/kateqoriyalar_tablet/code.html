@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TopdanBazar - Kateqoriyalar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#94d3c1",
+                        "primary-fixed": "#afefdd",
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "secondary-container": "#5dfd8a",
+                        "secondary-fixed-dim": "#3de273",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#f8f9ff",
+                        "surface-dim": "#cbdbf5",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#ffdbd1",
+                        "on-background": "#0b1c30",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "surface-container": "#e5eeff",
+                        "inverse-primary": "#94d3c1",
+                        "secondary-fixed": "#66ff8e",
+                        "tertiary": "#4e2013",
+                        "on-surface": "#0b1c30",
+                        "on-tertiary-fixed": "#370e04",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#d3e4fe",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-primary-fixed-variant": "#065043",
+                        "on-tertiary-container": "#e89f8c",
+                        "on-secondary-fixed": "#002109",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#007232",
+                        "on-primary-fixed": "#00201a",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#005322",
+                        "surface-container-high": "#dce9ff",
+                        "on-primary-container": "#7ebdac",
+                        "surface-container-highest": "#d3e4fe",
+                        "inverse-surface": "#213145",
+                        "surface-tint": "#29695b",
+                        "background": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "surface": "#f8f9ff",
+                        "on-surface-variant": "#3f4945",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#693527",
+                        "secondary": "#006d2f",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#004d40",
+                        "outline": "#707975",
+                        "primary": "#00342b",
+                        "outline-variant": "#bfc9c4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xxl": "64px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "40px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "price-display": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "h2": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "price-display": ["20px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="bg-white dark:bg-slate-900 font-['Inter'] antialiased text-sm font-medium tracking-wide docked full-width top-0 z-50 border-b border-b border-slate-200 dark:border-slate-800 shadow-sm hidden md:flex sticky">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between w-full">
+<!-- Brand -->
+<div class="flex items-center gap-xl">
+<a class="text-2xl font-black tracking-tight text-teal-900 dark:text-teal-500" href="#">
+                    TopdanBazar
+                </a>
+<!-- Search (Left) -->
+<div class="relative w-64 lg:w-96 hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface border border-outline-variant rounded-full text-body-sm text-on-surface focus:outline-none focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim transition-all" placeholder="Məhsul və ya kateqoriya axtar..." type="text"/>
+</div>
+</div>
+<!-- Navigation Links -->
+<ul class="flex items-center gap-lg">
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-teal-800 dark:hover:text-teal-300 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-[0.98] duration-200 ease-in-out px-3 py-2 rounded-md" href="#">Ana səhifə</a></li>
+<li><a class="text-teal-900 dark:text-teal-400 border-b-2 border-teal-900 dark:border-teal-400 pb-1 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-[0.98] duration-200 ease-in-out px-3 py-2" href="#">Kateqoriyalar</a></li>
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-teal-800 dark:hover:text-teal-300 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-[0.98] duration-200 ease-in-out px-3 py-2 rounded-md" href="#">Mağazalar</a></li>
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-teal-800 dark:hover:text-teal-300 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-[0.98] duration-200 ease-in-out px-3 py-2 rounded-md" href="#">Məhsullar</a></li>
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-teal-800 dark:hover:text-teal-300 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-[0.98] duration-200 ease-in-out px-3 py-2 rounded-md" href="#">Əlaqə</a></li>
+</ul>
+<!-- Actions -->
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm text-teal-900 dark:text-teal-400">
+<button class="p-2 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full transition-all active:scale-[0.98] duration-200 ease-in-out"><span class="material-symbols-outlined">search</span></button>
+<button class="p-2 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full transition-all active:scale-[0.98] duration-200 ease-in-out"><span class="material-symbols-outlined">shopping_cart</span></button>
+<button class="p-2 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full transition-all active:scale-[0.98] duration-200 ease-in-out"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+<div class="hidden lg:flex items-center gap-md">
+<button class="font-body-md text-body-md text-primary hover:text-primary-container px-4 py-2 font-medium transition-colors">Daxil ol</button>
+<button class="font-body-md text-body-md bg-primary text-on-primary px-6 py-2 rounded-lg font-medium hover:bg-primary-container transition-colors shadow-sm">Mağaza aç</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="max-w-container-max mx-auto px-gutter py-xl">
+<!-- Hero / Search Section -->
+<section class="text-center mb-xxl max-w-3xl mx-auto">
+<h1 class="font-h1 text-h1 text-on-background mb-md">Bütün Kateqoriyalar</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-xl">İhtiyacınız olan topdan məhsulları minlərlə çeşid arasından asanlıqla tapın.</p>
+<div class="relative w-full max-w-2xl mx-auto shadow-sm">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-2xl">search</span>
+<input class="w-full pl-14 pr-4 py-4 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary-fixed-dim focus:ring-2 focus:ring-primary-fixed-dim transition-all shadow-sm" placeholder="Spesifik bir kateqoriya axtarın..." type="text"/>
+</div>
+</section>
+<!-- Main Categories Bento Grid -->
+<section class="mb-xxl">
+<h2 class="font-h2 text-h2 text-on-background mb-lg">Əsas Sektorlar</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden group cursor-pointer hover:-translate-y-1 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,52,43,0.08)] hover:border-primary">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A brightly lit, modern wholesale clothing showroom featuring racks of neatly organized garments in neutral and pastel tones. The minimalist aesthetic highlights the high quality of the textiles, conveying a professional B2B catalog environment. Soft, ambient lighting creates a clean, pristine look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTaZ7q08iPntzyawrP30OegWxX7W1NILGjRiJprMg8gfK-I9A7LPxLqSyTQ9p_fVtLZzbT5bqIXx99RKzPgrFYRfQG4acL96fmvc6gTT3w0ouiD6zxdD1mjAmVRM_Og7MxE7Av4mDkEIv1qd7iZGcwgXwYEVrRqOnhhsmZYBjngPgQfIIQuj7eG4fFYQaYkk2m0rstw8f4W_DOyi_IyNh0FBmOcvM0KNlCamD7HtfpLJsqHm4IkIaBHNBNrgdM_hpzqy3yb3ciRUg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+<h3 class="font-h3 text-h3 text-white">Geyim və Tekstil</h3>
+<span class="bg-white/20 backdrop-blur-md text-white font-label-caps text-label-caps px-3 py-1 rounded-full">1200+ MƏHSUL</span>
+</div>
+</div>
+<div class="p-lg">
+<ul class="space-y-sm font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span> Qadın Geyimləri</li>
+<li class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span> Kişi Geyimləri</li>
+<li class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span> Uşaq Geyimləri</li>
+<li class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span> Ev Tekstili</li>
+</ul>
+<div class="mt-md pt-md border-t border-outline-variant/50 text-primary font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                            Hamısına bax <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden group cursor-pointer hover:-translate-y-1 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,52,43,0.08)] hover:border-primary">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sleek, highly organized display of modern electronics, including laptops, tablets, and smartphones, set against a clean white background. The high-key, sophisticated lighting emphasizes the premium quality of the devices, perfectly suited for a professional B2B electronics catalog. The scene is sharp, clear, and perfectly aligned." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPnxR0Nlk5zKTxNOmISMr-o_LGLLFU7glzzflP3ku4eaiO4gV6PSmWiO0cQIp7Yb-xYeJli3gpxCjsn0dDc802AIws3DxFpE0XfUh6S_SEKoZ-1nLncMEJNUhzRc7nW_kJjDy4rRqDLogwNHz6FGoJm4AL-ufqSvBAYGZfgGLHfmCk9fTQv2ujiJwWJNWZf2CJPamz7xiGpk-1smUbzzus6cTockyQYXn_NvCKpbVaUAgXm719OEZRgfHIQRe166z07yNrzpkdUF4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+<h3 class="font-h3 text-h3 text-white">Elektronika</h3>
+<span class="bg-white/20 backdrop-blur-md text-white font-label-caps text-label-caps px-3 py-1 rounded-full">850+ MƏHSUL</span>
+</div>
+</div>
+<div class="p-lg">
+<ul class="space-y-sm font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span> Smartfonlar və Aksesuarlar</li>
+<li class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span> Kompüterlər</li>
+<li class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span> Məişət Texnikası</li>
+<li class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span> Audio və Video</li>
+</ul>
+<div class="mt-md pt-md border-t border-outline-variant/50 text-primary font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                            Hamısına bax <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden group cursor-pointer hover:-translate-y-1 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,52,43,0.08)] hover:border-primary">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A pristine, brightly lit warehouse setting showcasing pristine rows of packaged food and beverage products on minimalist metal shelving. The lighting is crisp and even, highlighting the cleanliness and scale of the wholesale operation. The color palette is neutral with subtle brand accents, conveying trust and efficiency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWLGFIpkbmkjYEYmgRDHU5a-Ggby2DU0F228wKKrlAB9CF3gXfygjFl0mq054h6YccChBbrxcpkUyFDQHN15zsw56yIpmoyjT27veGFGjA7TAQVdqrr8Zfyw7WkWTfjlL-bPWhAynENZ0tA8_rMD9vO5WM_liwd1Q-6W-auhKvc2yqN9OUciMLVn5RW9aeGMTlUE8sTfqrLVe0Mu5a-pdshfrqw2KMFJi4h05pPgYui9xDNvxKi8EqixQS1H1BSdPxC9HcRCnEFqc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+<h3 class="font-h3 text-h3 text-white">Qida və İçkilər</h3>
+<span class="bg-white/20 backdrop-blur-md text-white font-label-caps text-label-caps px-3 py-1 rounded-full">2300+ MƏHSUL</span>
+</div>
+</div>
+<div class="p-lg">
+<ul class="space-y-sm font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span> Quru Qidalar</li>
+<li class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span> Konservlər</li>
+<li class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span> Şirniyyatlar</li>
+<li class="flex items-center gap-2 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span> İçkilər</li>
+</ul>
+<div class="mt-md pt-md border-t border-outline-variant/50 text-primary font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                            Hamısına bax <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-slate-950 font-['Inter'] text-sm text-slate-500 dark:text-slate-400 full-width border-t mt-16 border-t border-slate-100 dark:border-slate-900 flat">
+<div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="col-span-1 md:col-span-1">
+<span class="text-xl font-bold text-teal-900 dark:text-teal-500 mb-4 block">TopdanBazar</span>
+<p class="mb-4">Peşəkar topdansatış mərkəzi. Biznesiniz üçün ən yaxşı təkliflər.</p>
+<p>© 2024 TopdanBazar. Bütün hüquqlar qorunur.</p>
+</div>
+<div class="col-span-1 md:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-8">
+<div>
+<h4 class="text-teal-900 dark:text-teal-400 font-semibold mb-4">Şirkət</h4>
+<ul class="space-y-2">
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-teal-700 dark:hover:text-teal-300 hover:underline transition-all opacity-80 hover:opacity-100" href="#">Haqqımızda</a></li>
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-teal-700 dark:hover:text-teal-300 hover:underline transition-all opacity-80 hover:opacity-100" href="#">Əlaqə</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-teal-900 dark:text-teal-400 font-semibold mb-4">Məlumat</h4>
+<ul class="space-y-2">
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-teal-700 dark:hover:text-teal-300 hover:underline transition-all opacity-80 hover:opacity-100" href="#">Şərtlər və Qaydalar</a></li>
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-teal-700 dark:hover:text-teal-300 hover:underline transition-all opacity-80 hover:opacity-100" href="#">Məxfilik Siyasəti</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-teal-900 dark:text-teal-400 font-semibold mb-4">Kömək</h4>
+<ul class="space-y-2">
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-teal-700 dark:hover:text-teal-300 hover:underline transition-all opacity-80 hover:opacity-100" href="#">Yardım Mərkəzi</a></li>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

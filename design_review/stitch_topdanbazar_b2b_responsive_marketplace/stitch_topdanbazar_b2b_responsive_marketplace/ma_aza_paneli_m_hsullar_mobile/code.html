@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Məhsullar - TopdanBazar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#3f4945",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-container": "#007232",
+                        "surface-bright": "#f8f9ff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "tertiary-container": "#693527",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#f8f9ff",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#004d40",
+                        "inverse-on-surface": "#eaf1ff",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "on-secondary-fixed-variant": "#005322",
+                        "inverse-surface": "#213145",
+                        "on-secondary-fixed": "#002109",
+                        "surface-container": "#e5eeff",
+                        "primary-fixed-dim": "#94d3c1",
+                        "on-background": "#0b1c30",
+                        "outline": "#707975",
+                        "on-surface": "#0b1c30",
+                        "secondary-container": "#5dfd8a",
+                        "tertiary": "#4e2013",
+                        "outline-variant": "#bfc9c4",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed": "#00201a",
+                        "on-primary-fixed-variant": "#065043",
+                        "secondary-fixed": "#66ff8e",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#7ebdac",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-fixed-dim": "#3de273",
+                        "surface-dim": "#cbdbf5",
+                        "on-tertiary-container": "#e89f8c",
+                        "primary-fixed": "#afefdd",
+                        "primary": "#00342b",
+                        "tertiary-fixed": "#ffdbd1",
+                        "secondary": "#006d2f",
+                        "surface-tint": "#29695b",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#94d3c1",
+                        "on-tertiary-fixed": "#370e04",
+                        "surface-variant": "#d3e4fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "xxl": "64px",
+                        "xl": "40px",
+                        "base": "4px",
+                        "gutter": "24px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "container-max": "1280px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "h3": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "price-display": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h1": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "price-display": ["20px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background m-0 p-0 flex h-screen overflow-hidden">
+<!-- SideNavBar (Hidden on Mobile md:hidden, visible on md:flex) -->
+<nav class="hidden md:flex flex-col h-full py-lg px-md bg-surface-container-lowest dark:bg-inverse-surface h-screen w-64 fixed left-0 top-0 border-r border-outline-variant z-50">
+<div class="mb-xl px-sm">
+<h1 class="font-h3 text-h3 font-bold text-primary dark:text-primary-fixed">TopdanBazar</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Satıcı Paneli</p>
+</div>
+<div class="flex-1 overflow-y-auto space-y-sm">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors" href="#">
+<span aria-hidden="true" class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Panel</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-secondary font-bold border-r-4 border-secondary bg-secondary-container/10 opacity-80 transition-all" href="#">
+<span aria-hidden="true" class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-body-md text-body-md">Məhsullar</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors" href="#">
+<span aria-hidden="true" class="material-symbols-outlined">add_box</span>
+<span class="font-body-md text-body-md">Məhsul əlavə et</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors" href="#">
+<span aria-hidden="true" class="material-symbols-outlined">storefront</span>
+<span class="font-body-md text-body-md">Mağaza profili</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors" href="#">
+<span aria-hidden="true" class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Ayarlar</span>
+</a>
+</div>
+<div class="mt-auto pt-xl border-t border-outline-variant space-y-md">
+<button class="w-full flex justify-center items-center gap-sm px-md py-sm bg-primary text-on-primary rounded-lg font-body-md text-body-md hover:bg-primary-container transition-colors">
+<span aria-hidden="true" class="material-symbols-outlined">support_agent</span>
+                Dəstək
+            </button>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors" href="#">
+<span aria-hidden="true" class="material-symbols-outlined">logout</span>
+<span class="font-body-md text-body-md">Çıxış</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col md:ml-64 w-full h-screen overflow-hidden">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center h-16 px-gutter bg-surface-bright dark:bg-on-background border-b border-outline-variant shadow-sm docked full-width top-0 sticky z-40">
+<!-- Mobile Menu Toggle & Brand -->
+<div class="flex items-center gap-md md:hidden">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[28px]">menu</span>
+</button>
+<span class="font-h3 text-h3 font-bold text-primary dark:text-primary-fixed">TopdanBazar</span>
+</div>
+<!-- Search Bar (Desktop) -->
+<div class="hidden md:flex flex-1 max-w-md mx-gutter">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-xl pr-md py-sm bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all" placeholder="Məhsul və ya kateqoriya axtar..." type="text"/>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-md ml-auto">
+<button class="text-on-surface-variant hover:text-secondary transition-colors md:hidden">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors hidden sm:block">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden ml-sm border border-outline-variant cursor-pointer">
+<img alt="Satıcı Profili" class="w-full h-full object-cover" data-alt="A close-up portrait of a professional business person serving as a user avatar placeholder. The lighting is bright and corporate, matching a clean, modern wholesale application UI. Minimalist background to ensure focus on the avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA8pRlO5l4se0aenmwQAzH48jwR9Eb3nzHgwAJm1mmIzC2ZQBAkCoIe2K4gredTqjk7_PemfeFeClc2LUpn77v-z3agvY48glVFYCtpmBex805JHgCnvBmNY6OEj6I0zkRPoLmSI26XthCCQQJhUJXV0uX7zcQs9OFLunmSLPuEusJ_n0S5NcaxhiGFKfMCZVlNk80ha2T6fADFay8DV_rF7-NZdfp_PSInhmkN-x9lL-Q2TzYzTNVOvlWh76Oe5Vt0-2kqhsSpH4"/>
+</div>
+</div>
+</header>
+<!-- Page Canvas -->
+<div class="flex-1 overflow-y-auto p-gutter bg-surface">
+<!-- Header & Actions -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-md mb-xl">
+<h2 class="font-h2 text-h2 text-on-background">Məhsullar</h2>
+<button class="flex items-center justify-center gap-sm px-lg py-sm bg-primary text-on-primary rounded-lg font-body-md text-body-md hover:bg-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                    Məhsul əlavə et
+                </button>
+</div>
+<!-- Mobile Search & Filters (Visible mainly on mobile, blends into desktop flow) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-md mb-xl">
+<div class="relative md:hidden col-span-1 sm:col-span-2">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-xl pr-md py-sm bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm focus:outline-none focus:border-primary transition-all" placeholder="Axtarış..." type="text"/>
+</div>
+<select class="w-full px-md py-sm bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm focus:outline-none focus:border-primary appearance-none">
+<option>Bütün kateqoriyalar</option>
+<option>Elektronika</option>
+<option>Geyim</option>
+</select>
+<select class="w-full px-md py-sm bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm focus:outline-none focus:border-primary appearance-none">
+<option>Stok vəziyyəti</option>
+<option>Stokda var</option>
+<option>Bitib</option>
+</select>
+</div>
+<!-- Product Card List (Mobile & Desktop) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter pb-xxl">
+<!-- Product Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col shadow-sm">
+<div class="aspect-[4/3] bg-surface-container-low relative overflow-hidden">
+<img alt="Məhsul Şəkli" class="w-full h-full object-cover" data-alt="High-quality professional product photography of premium wireless headphones on a clean, bright white background. The lighting is studio-quality, emphasizing the product's texture and modern design. The composition is centered and minimalist, fitting perfectly within a sleek wholesale catalog UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiWGsjuuMKtODCBKWPIli-j7fqA2411PFIU3XmqL21P_RCk4kD7zySzUzvROCqGlKOh4q9ZZPjpmr0U8ZFj3NA685uOwirHjMZRUCrEqQPRO0TBxy9UoosrwcYXzcA_pq1sVtHxPzYjo5MLziOY_aH-_beMP5ftgaDT-3Eg32ZxXQcUVJp5ohL0HC3VjVBJU-Dz3tquBwVJDj04ajY4Asa-Yq_Z5C_t-_f8whOHDW8x_Zmo91mpps1BSg6B7AO2FhmFJhCpDbthmc"/>
+<div class="absolute top-sm right-sm flex gap-xs">
+<span class="px-sm py-xs bg-secondary-container text-on-secondary-container font-label-caps text-label-caps rounded">Yeni</span>
+</div>
+</div>
+<div class="p-md flex flex-col flex-1">
+<h3 class="font-body-lg text-body-lg font-bold text-on-background line-clamp-2 mb-xs">Premium Simsiz Qulaqlıq S-200</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Kod: EL-0042 • Elektronika</p>
+<div class="mt-auto flex items-end justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Topdan satış</p>
+<p class="font-price-display text-price-display text-primary">45.00 ₼</p>
+</div>
+<div class="flex gap-xs">
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-error-container/20 hover:bg-error-container/50 text-error transition-colors border border-error/20">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-sm pt-sm border-t border-outline-variant flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Stokda var: 150 ədəd</span>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col shadow-sm">
+<div class="aspect-[4/3] bg-surface-container-low relative overflow-hidden">
+<img alt="Məhsul Şəkli" class="w-full h-full object-cover" data-alt="Sleek smartwatch displayed prominently on a minimalist, off-white background. The lighting highlights the metallic finish and digital screen. Professional commercial photography designed for a high-end wholesale tech catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB89UMlysz9rhZxN9zoknrLAoQS67DxjfyIGVTCDEUlAysjhGiBNnrIovJoP-PlJfryv6vGcNYPu93Rx3DyYLk9bZObJ69mdVvSSr27pLWq3ViZVCAxzT7_m-a9yTi7ShpHoj1T3S2-dsGwh-2jPtCdNXDXPZr2kdQJTSUc0WXe-eTYV5n0wzCeFtPzWzq1F08pQLTo0jNg8n51AsgZMenk_TUXLG3WXkgAWjii00PfLP3z7XOg0BeCY8sEFzPWqPApPeGHsVMAivI"/>
+</div>
+<div class="p-md flex flex-col flex-1">
+<h3 class="font-body-lg text-body-lg font-bold text-on-background line-clamp-2 mb-xs">Ağıllı Saat Pro Max</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Kod: EL-0088 • Elektronika</p>
+<div class="mt-auto flex items-end justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Topdan satış</p>
+<p class="font-price-display text-price-display text-primary">85.00 ₼</p>
+</div>
+<div class="flex gap-xs">
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-error-container/20 hover:bg-error-container/50 text-error transition-colors border border-error/20">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-sm pt-sm border-t border-outline-variant flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Stokda var: 42 ədəd</span>
+</div>
+</div>
+</div>
+<!-- Product Card 3 (Out of stock) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col shadow-sm opacity-80">
+<div class="aspect-[4/3] bg-surface-container-low relative overflow-hidden">
+<img alt="Məhsul Şəkli" class="w-full h-full object-cover grayscale opacity-60" data-alt="A single, vibrant red athletic shoe shown against a stark white backdrop. The focus is sharp, capturing the texture of the fabric and sole. Clean, bright commercial photography suited for a professional inventory list." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMKnn8k4uDz6hsdYuGrgll49G0EHzATCV66YKpJSduLeBKJoOfSW1NcAdZOSas34jsWQYZJqbCtePKZAQWFTb1Dqf-vsHb86yrPTWhJ_8kgcy5ghEUbRFINrRn5lGP18UtiP1QjF2d6QNh3FAlf4dmwKM6COwL6cS5o1AoBryRnqGbYr--25L69qVD_BbaHy_orn9ft28XdTs8YkD6QjqLt-9R3liF_jsnOs2N2dGsThlb1fszcrpjTyPqJqaYmM9pPnQnU3eHZng"/>
+<div class="absolute inset-0 bg-surface/10 flex items-center justify-center backdrop-blur-[1px]">
+<span class="px-md py-sm bg-surface-container-highest text-on-surface font-label-caps text-label-caps rounded shadow-sm border border-outline-variant">Tükənib</span>
+</div>
+</div>
+<div class="p-md flex flex-col flex-1">
+<h3 class="font-body-lg text-body-lg font-bold text-on-background line-clamp-2 mb-xs">İdman Ayaqqabısı X-Runner</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Kod: GY-102 • Geyim</p>
+<div class="mt-auto flex items-end justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Topdan satış</p>
+<p class="font-price-display text-price-display text-primary">32.50 ₼</p>
+</div>
+<div class="flex gap-xs">
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-error-container/20 hover:bg-error-container/50 text-error transition-colors border border-error/20">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-sm pt-sm border-t border-outline-variant flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-body-sm text-body-sm text-error">Stokda yoxdur</span>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col shadow-sm">
+<div class="aspect-[4/3] bg-surface-container-low relative overflow-hidden">
+<img alt="Məhsul Şəkli" class="w-full h-full object-cover" data-alt="Classic instant camera positioned symmetrically on a bright, minimalist surface. Soft, even lighting highlights the camera's retro design details. High-resolution product shot intended for an e-commerce platform's wholesale dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXWEjB8_nTBA-C4XtFERKHf4F7hdreS7MrQJLV8gZg0nsWawvu6Q8ZdWgTLXCDy6GE1cRCvp3I3RTA4mVIkbuh8uoAWe_vyqSrwNxRK1ETzP2nLRpdw3nG4520p8n-iFdALfwWmkjfhytQOwbpxRX6Vv5MuGFnW4PQK9fiIDJxXVLCekPbC0xu8vqgdP1Q1uE_dmfgUFntjumtRQjT4Q8sm5Q4A3nUWE6nj-G8BPLvkK9AeAGs_joF3tdNVb7ya7jpp7p3yQ58KmU"/>
+<div class="absolute top-sm right-sm flex gap-xs">
+<span class="px-sm py-xs bg-primary-fixed text-on-primary-fixed font-label-caps text-label-caps rounded">-15%</span>
+</div>
+</div>
+<div class="p-md flex flex-col flex-1">
+<h3 class="font-body-lg text-body-lg font-bold text-on-background line-clamp-2 mb-xs">Retro Fotoaparat K-10</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Kod: EL-0220 • Foto</p>
+<div class="mt-auto flex items-end justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Topdan satış</p>
+<div class="flex items-baseline gap-sm">
+<p class="font-price-display text-price-display text-primary">110.00 ₼</p>
+<p class="text-xs text-outline line-through">130.00 ₼</p>
+</div>
+</div>
+<div class="flex gap-xs">
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-error-container/20 hover:bg-error-container/50 text-error transition-colors border border-error/20">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+<div class="mt-sm pt-sm border-t border-outline-variant flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Stokda var: 18 ədəd</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

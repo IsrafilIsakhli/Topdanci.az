@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mağaza Detalları - Admin Paneli</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#006d2f",
+                        "tertiary-fixed": "#ffdbd1",
+                        "on-tertiary-container": "#e89f8c",
+                        "primary-fixed-dim": "#94d3c1",
+                        "on-background": "#0b1c30",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "outline-variant": "#bfc9c4",
+                        "primary": "#00342b",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#005322",
+                        "on-secondary-fixed": "#002109",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#065043",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-fixed-dim": "#3de273",
+                        "on-error-container": "#93000a",
+                        "background": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#7ebdac",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#5dfd8a",
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "tertiary-container": "#693527",
+                        "surface-variant": "#d3e4fe",
+                        "surface-tint": "#29695b",
+                        "inverse-surface": "#213145",
+                        "surface-bright": "#f8f9ff",
+                        "inverse-primary": "#94d3c1",
+                        "on-primary-fixed": "#00201a",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#afefdd",
+                        "primary-container": "#004d40",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-container": "#e5eeff",
+                        "surface": "#f8f9ff",
+                        "on-surface-variant": "#3f4945",
+                        "on-surface": "#0b1c30",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#4e2013",
+                        "outline": "#707975",
+                        "on-tertiary-fixed": "#370e04",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-fixed": "#66ff8e",
+                        "on-secondary-container": "#007232",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "xl": "40px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xxl": "64px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "md": "16px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "h3": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "price-display": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "price-display": ["20px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- Top AppBar (Mobile/Tablet replacement for Sidebar/TopNav for contextual pages) -->
+<header class="bg-surface-container-low shadow-sm sticky top-0 z-50 flex justify-between items-center px-lg py-sm w-full">
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:bg-primary hover:text-on-primary transition-all duration-300 p-sm rounded-full">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-h2 text-h2 text-primary font-bold">Mağaza Detalları</h1>
+</div>
+<!-- Actions (Tablet friendly, icons only for secondary actions if tight, full buttons for primary) -->
+<div class="flex items-center gap-sm">
+<button aria-label="Dayandır" class="hidden md:flex items-center justify-center p-sm text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">pause_circle</span>
+</button>
+<button class="px-md py-sm border border-primary text-primary bg-transparent rounded hover:bg-surface-variant transition-colors font-body-md">
+                Rədd et
+            </button>
+<button class="px-md py-sm bg-primary text-on-primary rounded font-body-md shadow-[0_4px_14px_0_rgba(0,52,43,0.1)] hover:shadow-[0_6px_20px_rgba(0,52,43,0.15)] transition-all transform hover:-translate-y-[2px]">
+                Təsdiqlə
+            </button>
+<!-- Mobile Menu Trigger -->
+<button class="md:hidden flex items-center justify-center p-sm text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas (Tablet optimized 1-column) -->
+<main class="max-w-container-max mx-auto px-lg py-lg md:py-xl flex flex-col gap-lg md:gap-xl">
+<!-- Top Status Banner -->
+<div class="bg-surface-container rounded-lg p-md flex items-center gap-md border border-outline-variant">
+<span class="material-symbols-outlined text-secondary-container bg-primary rounded-full p-[2px]">pending</span>
+<div class="flex-1">
+<h3 class="font-h3 text-h3 text-primary mb-xs">Təsdiq gözləyir</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Bu mağaza yeni qeydiyyatdan keçib və moderasiya tərəfindən təsdiq gözləyir. Zəhmət olmasa, məlumatları yoxlayıb qərar verin.</p>
+</div>
+</div>
+<!-- Store Info & Owner Info Cards (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Store Profile -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden group hover:border-primary transition-colors duration-300">
+<div class="flex items-start justify-between mb-lg">
+<div class="flex items-center gap-md">
+<div class="w-16 h-16 bg-surface-variant rounded-full flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="Mağaza Logosu" class="w-full h-full object-cover" data-alt="A professional close up shot of a generic corporate logo sign on a bright white wall in a modern office space. The lighting is soft and even, creating a clean, high-end minimalist corporate aesthetic. The overall mood is reliable and trustworthy, using deep green and white tones suitable for a wholesale marketplace platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuAmOREmzacuFdEApVkqfQPaiNuUrCBW_WoiNriSPYh6w4UyoFdDp--ny9Iw_hj3Jx9djZ7c6z4_eL8DOdoGFBcrrmoHXVjBRhbJC1owPhrGsZkIXndE3BskyxfmS61LqNiW5fKyKVjcmYcUkwIeC7q1E1maNM7AZ-RZko1MvVgoFendz7fephnl4lZNDuo6DInDyhr0Uqe1XJ8jEnW6YuIOsOTa5Lrw7kfFza4YvsbGaNYnMlM5NvaDteCQdsuz8lE-BB1vxb23A"/>
+</div>
+<div>
+<h2 class="font-h3 text-h3 text-primary">TechBazaar MMC</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Qeydiyyat: 12 Okt 2023</p>
+</div>
+</div>
+<span class="px-sm py-[2px] bg-surface-variant text-on-surface-variant font-label-caps text-label-caps rounded uppercase">Texnologiya</span>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between py-xs border-b border-surface-container">
+<span class="font-body-sm text-body-sm text-on-surface-variant">VÖEN:</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-background">1234567890</span>
+</div>
+<div class="flex justify-between py-xs border-b border-surface-container">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Ünvan:</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-background text-right">Bakı ş., Nərimanov r., Əhməd Rəcəbli 22</span>
+</div>
+<div class="flex justify-between py-xs border-b border-surface-container">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Bank hesabı:</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-background">AZ01NABZ0123456789012345678</span>
+</div>
+<div class="flex justify-between py-xs">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Təsvir:</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-background text-right max-w-[200px] truncate">Elektronika və kompüter avadanlıqlarının topdan satışı...</span>
+</div>
+</div>
+</div>
+<!-- Owner Profile -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden group hover:border-primary transition-colors duration-300">
+<div class="flex items-start justify-between mb-lg">
+<div class="flex items-center gap-md">
+<div class="w-16 h-16 bg-surface-variant rounded-full flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="Sahib Portreti" class="w-full h-full object-cover" data-alt="A professional headshot of a confident businessman in his late 30s wearing a modern, tailored navy suit. The background is a clean, bright white office environment with subtle, high-key lighting. The aesthetic is corporate, reliable, and minimalist, perfectly aligned with a high-end wholesale B2B platform. Deep green accents subtly reflect in the ambient light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6M2miFBBAMsA5jTNiLVbxl6jvj1IoMJ8srO79P8cqWjY_L5XhrieYLr4M3XntqjIAju2iEgGgs5LCSC_SBVLNMIUcMkxrdjltGer-TP1nh5OeoXdXiftlxOcjoTQAqzkFxrVtzA77Az0ZPRVDHorcF2-tivdmQDfqBUwTtgcXaBNLlSBYJiRyliQrYfST73aybsE5Q82CTsfxyOV8R-9uo1mcug7ZsEPs9xT5lYvXOFqYFt95zNZJm3ajzroexTZFbiER3R03fRQ"/>
+</div>
+<div>
+<h2 class="font-h3 text-h3 text-primary">Elçin Məmmədov</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Direktor / Təsisçi</p>
+</div>
+</div>
+<button aria-label="Əlaqə" class="text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">chat</span>
+</button>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between py-xs border-b border-surface-container">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Telefon:</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-background">+994 50 123 45 67</span>
+</div>
+<div class="flex justify-between py-xs border-b border-surface-container">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Email:</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-background">elchin.m@techbazaar.az</span>
+</div>
+<div class="flex justify-between py-xs border-b border-surface-container">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Şəxsiyyət vəsiqəsi:</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-background text-secondary cursor-pointer hover:underline flex items-center gap-xs">AZE1234567 <span class="material-symbols-outlined text-[16px]">visibility</span></span>
+</div>
+<div class="flex justify-between py-xs">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Son aktivlik:</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-background">10 dəqiqə əvvəl</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Documents / Verification -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+<h3 class="font-h3 text-h3 text-primary mb-md">Sənədlər və Doğrulama</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="border border-surface-container p-md rounded flex flex-col items-center justify-center text-center hover:bg-surface-container transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[40px] text-outline-variant group-hover:text-primary mb-sm transition-colors">description</span>
+<h4 class="font-body-md text-body-md font-semibold text-on-background">VÖEN Çıxarışı</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">PDF • 1.2 MB</p>
+</div>
+<div class="border border-surface-container p-md rounded flex flex-col items-center justify-center text-center hover:bg-surface-container transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[40px] text-outline-variant group-hover:text-primary mb-sm transition-colors">business</span>
+<h4 class="font-body-md text-body-md font-semibold text-on-background">Obyektin İcarə Müqaviləsi</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">PDF • 3.4 MB</p>
+</div>
+<div class="border border-surface-container p-md rounded flex flex-col items-center justify-center text-center hover:bg-surface-container transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[40px] text-outline-variant group-hover:text-primary mb-sm transition-colors">id_card</span>
+<h4 class="font-body-md text-body-md font-semibold text-on-background">Direktorun Ş.V.</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">JPG • 800 KB</p>
+</div>
+</div>
+</div>
+<!-- Initial Products Sample -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-h3 text-h3 text-primary">Təklif Edilən Məhsullar (Nümunə)</h3>
+<button class="text-secondary font-body-sm text-body-sm font-semibold hover:underline">Hamısına bax (45)</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant">
+<th class="py-sm px-xs font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Məhsul</th>
+<th class="py-sm px-xs font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Kateqoriya</th>
+<th class="py-sm px-xs font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider text-right">Topdan Qiymət</th>
+<th class="py-sm px-xs font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider text-right">Min. Sifariş</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-surface-container hover:bg-surface-container-low transition-colors">
+<td class="py-md px-xs font-body-md text-body-md font-semibold text-on-background">Lenovo ThinkPad E15</td>
+<td class="py-md px-xs font-body-sm text-body-sm text-on-surface-variant">Noutbuklar</td>
+<td class="py-md px-xs font-price-display text-price-display text-primary text-right">950 ₼</td>
+<td class="py-md px-xs font-body-sm text-body-sm text-on-surface-variant text-right">5 ədəd</td>
+</tr>
+<tr class="border-b border-surface-container hover:bg-surface-container-low transition-colors">
+<td class="py-md px-xs font-body-md text-body-md font-semibold text-on-background">Logitech MX Master 3S</td>
+<td class="py-md px-xs font-body-sm text-body-sm text-on-surface-variant">Aksesuarlar</td>
+<td class="py-md px-xs font-price-display text-price-display text-primary text-right">180 ₼</td>
+<td class="py-md px-xs font-body-sm text-body-sm text-on-surface-variant text-right">20 ədəd</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-md px-xs font-body-md text-body-md font-semibold text-on-background">Samsung 27" Monitor</td>
+<td class="py-md px-xs font-body-sm text-body-sm text-on-surface-variant">Monitorlar</td>
+<td class="py-md px-xs font-price-display text-price-display text-primary text-right">240 ₼</td>
+<td class="py-md px-xs font-body-sm text-body-sm text-on-surface-variant text-right">10 ədəd</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</body></html>

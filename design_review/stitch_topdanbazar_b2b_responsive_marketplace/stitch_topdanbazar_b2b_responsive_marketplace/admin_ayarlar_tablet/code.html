@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TopdanBazar - Admin Ayarlar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#66ff8e",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#213145",
+                        "surface": "#f8f9ff",
+                        "primary-fixed": "#afefdd",
+                        "secondary-fixed-dim": "#3de273",
+                        "on-error": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-container-high": "#dce9ff",
+                        "on-surface-variant": "#3f4945",
+                        "on-primary-container": "#7ebdac",
+                        "tertiary": "#4e2013",
+                        "on-secondary-fixed": "#002109",
+                        "primary-container": "#004d40",
+                        "primary": "#00342b",
+                        "surface-tint": "#29695b",
+                        "primary-fixed-dim": "#94d3c1",
+                        "background": "#f8f9ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "tertiary-container": "#693527",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#007232",
+                        "outline-variant": "#bfc9c4",
+                        "on-tertiary-container": "#e89f8c",
+                        "surface-container": "#e5eeff",
+                        "on-primary-fixed": "#00201a",
+                        "inverse-primary": "#94d3c1",
+                        "outline": "#707975",
+                        "on-primary-fixed-variant": "#065043",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#cbdbf5",
+                        "on-tertiary-fixed": "#370e04",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "secondary": "#006d2f",
+                        "surface-bright": "#f8f9ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-fixed-variant": "#005322",
+                        "surface-container-low": "#eff4ff",
+                        "on-surface": "#0b1c30",
+                        "surface-variant": "#d3e4fe",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#5dfd8a",
+                        "tertiary-fixed": "#ffdbd1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "xl": "40px",
+                        "container-max": "1280px",
+                        "xxl": "64px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Inter"],
+                        "h2": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "price-display": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "price-display": ["20px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen">
+<!-- Top NavBar -->
+<header class="bg-surface text-primary font-body-md text-body-md fixed top-0 right-0 w-[calc(100%-80px)] md:w-[calc(100%-256px)] border-b border-outline-variant z-50">
+<div class="flex justify-between items-center h-16 px-gutter">
+<div class="flex items-center gap-md">
+<!-- Search Bar (on_left logic, simplified for mobile/tablet) -->
+<div class="relative w-full max-w-xs hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="Məhsul və ya kateqoriya axtar..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<button class="text-on-surface-variant hover:text-primary transition-all p-2 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-all p-2 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Side NavBar -->
+<nav class="bg-primary-container text-primary-fixed font-body-md text-body-md h-full w-20 md:w-64 fixed left-0 top-0 border-r border-outline-variant shadow-sm z-50">
+<div class="flex flex-col h-full py-lg px-xs md:px-md">
+<!-- Logo Section -->
+<div class="flex items-center justify-center md:justify-start mb-xl px-2">
+<span class="material-symbols-outlined text-[32px] text-on-primary md:hidden" data-icon="store">store</span>
+<div class="hidden md:block">
+<h1 class="font-h3 text-h3 font-bold text-on-primary">TopdanBazar</h1>
+<p class="font-label-caps text-label-caps text-on-primary-container mt-1">Admin Panel</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<ul class="flex flex-col gap-sm flex-1">
+<li>
+<a class="flex items-center justify-center md:justify-start gap-md p-3 rounded-lg text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="hidden md:inline">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center justify-center md:justify-start gap-md p-3 rounded-lg text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="hidden md:inline">Mağazalar</span>
+</a>
+</li>
+<li>
+<a class="flex items-center justify-center md:justify-start gap-md p-3 rounded-lg text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="hidden md:inline">Məhsullar</span>
+</a>
+</li>
+<li>
+<a class="flex items-center justify-center md:justify-start gap-md p-3 rounded-lg text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="hidden md:inline">İstifadəçilər</span>
+</a>
+</li>
+<li>
+<a class="flex items-center justify-center md:justify-start gap-md p-3 rounded-lg text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="hidden md:inline">Kateqoriyalar</span>
+</a>
+</li>
+<li>
+<a class="flex items-center justify-center md:justify-start gap-md p-3 rounded-lg text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+<span class="hidden md:inline">Müraciətlər</span>
+</a>
+</li>
+<li>
+<a class="flex items-center justify-center md:justify-start gap-md p-3 rounded-lg text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="report_problem">report_problem</span>
+<span class="hidden md:inline">Şikayətlər</span>
+</a>
+</li>
+<li>
+<a class="flex items-center justify-center md:justify-start gap-md p-3 rounded-lg text-on-primary-fixed-variant hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="hidden md:inline">Audit log</span>
+</a>
+</li>
+<li>
+<a class="flex items-center justify-center md:justify-start gap-md p-3 rounded-lg text-secondary-fixed font-bold bg-primary-fixed-dim/10 hover:bg-primary/50 transition-colors scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="settings" data-weight="fill" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="hidden md:inline">Ayarlar</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-20 md:ml-64 pt-16 min-h-screen bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto p-gutter sm:p-xl">
+<!-- Page Header -->
+<div class="mb-xl">
+<h2 class="font-h2 text-h2 text-on-background">Ayarlar</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">Platformanın ümumi tənzimləmələrini buradan idarə edin.</p>
+</div>
+<!-- Bento Grid Layout for Settings -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-lg">
+<!-- General Settings Card -->
+<div class="bg-surface rounded-xl border border-outline-variant p-lg shadow-sm">
+<div class="flex items-center gap-md mb-lg border-b border-outline-variant pb-md">
+<span class="material-symbols-outlined text-primary" data-icon="tune">tune</span>
+<h3 class="font-h3 text-h3 text-on-background">Ümumi Məlumatlar</h3>
+</div>
+<div class="space-y-md">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Platforma Adı</label>
+<input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" type="text" value="TopdanBazar"/>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Əlaqə E-poçtu</label>
+<input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" type="email" value="admin@topdanbazar.az"/>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Dəstək Nömrəsi</label>
+<input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" type="text" value="+994 50 123 45 67"/>
+</div>
+</div>
+</div>
+<!-- Notifications & Security Card -->
+<div class="flex flex-col gap-lg">
+<!-- Notifications -->
+<div class="bg-surface rounded-xl border border-outline-variant p-lg shadow-sm flex-1">
+<div class="flex items-center gap-md mb-lg border-b border-outline-variant pb-md">
+<span class="material-symbols-outlined text-primary" data-icon="notifications_active">notifications_active</span>
+<h3 class="font-h3 text-h3 text-on-background">Bildirişlər</h3>
+</div>
+<div class="space-y-md">
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant/50">
+<div>
+<p class="font-body-md text-body-md font-semibold">Sistem Bildirişləri</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Yeni qeydiyyatlar və xətalar barədə</p>
+</div>
+<!-- Toggle -->
+<button class="w-12 h-6 bg-primary rounded-full relative flex items-center px-1 cursor-pointer transition-colors">
+<div class="w-4 h-4 bg-on-primary rounded-full translate-x-6 transition-transform"></div>
+</button>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant/50">
+<div>
+<p class="font-body-md text-body-md font-semibold">Email Hesabatları</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Həftəlik satış və istifadəçi statistikası</p>
+</div>
+<!-- Toggle -->
+<button class="w-12 h-6 bg-outline-variant rounded-full relative flex items-center px-1 cursor-pointer transition-colors">
+<div class="w-4 h-4 bg-surface rounded-full translate-x-0 transition-transform"></div>
+</button>
+</div>
+</div>
+</div>
+<!-- Regional Settings -->
+<div class="bg-surface rounded-xl border border-outline-variant p-lg shadow-sm">
+<div class="flex items-center gap-md mb-md border-b border-outline-variant pb-sm">
+<span class="material-symbols-outlined text-primary" data-icon="public">public</span>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-background">Regional Tənzimləmələr</h3>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Valyuta</label>
+<select class="w-full px-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary appearance-none">
+<option>AZN (₼)</option>
+<option>USD ($)</option>
+<option>EUR (€)</option>
+</select>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Saat Qurşağı</label>
+<select class="w-full px-3 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary appearance-none">
+<option>Baku (GMT+4)</option>
+<option>Istanbul (GMT+3)</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="mt-xl flex justify-end gap-md border-t border-outline-variant pt-lg">
+<button class="px-6 py-3 rounded-lg border border-primary text-primary font-body-md text-body-md font-semibold hover:bg-primary/5 transition-colors">
+                    Ləğv et
+                </button>
+<button class="px-6 py-3 rounded-lg bg-primary text-on-primary font-body-md text-body-md font-semibold shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="save">save</span>
+                    Yadda saxla
+                </button>
+</div>
+</div>
+</main>
+</body></html>

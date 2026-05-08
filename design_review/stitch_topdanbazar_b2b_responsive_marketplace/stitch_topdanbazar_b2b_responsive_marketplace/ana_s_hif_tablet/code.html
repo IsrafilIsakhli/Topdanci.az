@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="light" lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TopdanBazar - B2B Topdansatış Platforması</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#00201a",
+                        "outline": "#707975",
+                        "inverse-surface": "#213145",
+                        "on-tertiary-fixed": "#370e04",
+                        "surface-tint": "#29695b",
+                        "inverse-primary": "#94d3c1",
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#004d40",
+                        "surface-variant": "#d3e4fe",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed-variant": "#005322",
+                        "on-surface-variant": "#3f4945",
+                        "on-secondary-container": "#007232",
+                        "primary-fixed-dim": "#94d3c1",
+                        "primary": "#00342b",
+                        "secondary": "#006d2f",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#d3e4fe",
+                        "background": "#f8f9ff",
+                        "secondary-fixed-dim": "#3de273",
+                        "surface": "#f8f9ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-primary-container": "#7ebdac",
+                        "primary-fixed": "#afefdd",
+                        "error": "#ba1a1a",
+                        "on-surface": "#0b1c30",
+                        "tertiary-container": "#693527",
+                        "tertiary": "#4e2013",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#66ff8e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#e89f8c",
+                        "tertiary-fixed": "#ffdbd1",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "on-secondary-fixed": "#002109",
+                        "outline-variant": "#bfc9c4",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#065043",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-container": "#5dfd8a",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#cbdbf5",
+                        "surface-container": "#e5eeff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "xl": "40px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xxl": "64px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Inter"],
+                        "h3": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "price-display": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "price-display": ["20px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-white dark:bg-slate-900 font-['Inter'] text-sm font-medium docked full-width top-0 border-b border-slate-100 dark:border-slate-800 shadow-sm sticky z-50">
+<div class="max-w-[1280px] mx-auto flex justify-between items-center px-6 h-20">
+<!-- Brand -->
+<a class="text-2xl font-black text-[#004D40] dark:text-white tracking-tighter hover:opacity-80 transition-all duration-200 active:scale-[0.98] transition-transform" href="#">TopdanBazar</a>
+<!-- Navigation Links (Hidden on tablet/mobile if needed, but keeping for tablet compact view) -->
+<ul class="hidden md:flex items-center gap-6">
+<li><a class="text-[#004D40] dark:text-teal-400 border-b-2 border-[#004D40] dark:border-teal-400 pb-1 hover:opacity-80 transition-all duration-200 active:scale-[0.98] transition-transform" href="#">Ana səhifə</a></li>
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-[#004D40] dark:hover:text-teal-400 hover:opacity-80 transition-all duration-200 active:scale-[0.98] transition-transform" href="#">Kateqoriyalar</a></li>
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-[#004D40] dark:hover:text-teal-400 hover:opacity-80 transition-all duration-200 active:scale-[0.98] transition-transform" href="#">Mağazalar</a></li>
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-[#004D40] dark:hover:text-teal-400 hover:opacity-80 transition-all duration-200 active:scale-[0.98] transition-transform" href="#">Məhsullar</a></li>
+<li><a class="text-slate-600 dark:text-slate-400 hover:text-[#004D40] dark:hover:text-teal-400 hover:opacity-80 transition-all duration-200 active:scale-[0.98] transition-transform" href="#">Əlaqə</a></li>
+</ul>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<button class="hidden lg:block text-[#004D40] dark:text-teal-500 font-medium hover:opacity-80 transition-all duration-200 active:scale-[0.98] transition-transform">Daxil ol</button>
+<button class="bg-[#004D40] text-white px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-all duration-200 active:scale-[0.98] transition-transform">Mağaza aç</button>
+<button class="text-slate-600 hover:text-[#004D40] transition-colors md:hidden">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-[1280px] mx-auto px-6 py-xl flex flex-col gap-xxl">
+<!-- Hero Section -->
+<section class="flex flex-col items-center text-center gap-lg bg-surface-container-lowest p-xl rounded-xl border border-outline-variant/30 shadow-[0_20px_40px_-15px_rgba(0,77,64,0.05)]">
+<h1 class="font-h1 text-h1 text-on-surface max-w-3xl">B2B Ticarət Üçün <br/> <span class="text-primary-container">Etibarlı Platforma</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Minlərlə topdansatış məhsulunu kəşf edin, birbaşa istehsalçılar və böyük təchizatçılarla əlaqə qurun.</p>
+<!-- Global Search Bar -->
+<div class="w-full max-w-2xl relative mt-md">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full h-14 pl-12 pr-4 rounded-lg border border-outline-variant bg-surface focus:ring-2 focus:ring-primary-container focus:border-primary-container outline-none transition-all font-body-md text-on-surface" placeholder="Məhsul və ya kateqoriya axtar..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-container text-on-primary px-6 py-2 rounded-md font-medium hover:bg-primary transition-colors">Axtar</button>
+</div>
+</section>
+<!-- Popular Categories (Bento/Grid) -->
+<section class="flex flex-col gap-lg">
+<div class="flex justify-between items-end border-b border-outline-variant/30 pb-sm">
+<h2 class="font-h2 text-h2 text-on-surface">Populyar Kateqoriyalar</h2>
+<a class="font-body-sm text-body-sm text-primary-container hover:underline font-medium flex items-center gap-xs" href="#">Bütün kateqoriyalar <span class="material-symbols-outlined text-[16px]">arrow_forward</span></a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<!-- Category 1 -->
+<a class="group relative h-40 bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden flex flex-col items-center justify-center gap-sm hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(0,77,64,0.1)] hover:border-primary-container/30 transition-all duration-300" href="#">
+<div class="w-16 h-16 rounded-full bg-surface-variant text-primary-container flex items-center justify-center group-hover:bg-primary-container group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[32px]">inventory_2</span>
+</div>
+<span class="font-body-md text-body-md font-medium text-on-surface">Qida Məhsulları</span>
+</a>
+<!-- Category 2 -->
+<a class="group relative h-40 bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden flex flex-col items-center justify-center gap-sm hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(0,77,64,0.1)] hover:border-primary-container/30 transition-all duration-300" href="#">
+<div class="w-16 h-16 rounded-full bg-surface-variant text-primary-container flex items-center justify-center group-hover:bg-primary-container group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[32px]">checkroom</span>
+</div>
+<span class="font-body-md text-body-md font-medium text-on-surface">Geyim &amp; Tekstil</span>
+</a>
+<!-- Category 3 -->
+<a class="group relative h-40 bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden flex flex-col items-center justify-center gap-sm hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(0,77,64,0.1)] hover:border-primary-container/30 transition-all duration-300" href="#">
+<div class="w-16 h-16 rounded-full bg-surface-variant text-primary-container flex items-center justify-center group-hover:bg-primary-container group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[32px]">devices</span>
+</div>
+<span class="font-body-md text-body-md font-medium text-on-surface">Elektronika</span>
+</a>
+<!-- Category 4 -->
+<a class="group relative h-40 bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden flex flex-col items-center justify-center gap-sm hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(0,77,64,0.1)] hover:border-primary-container/30 transition-all duration-300" href="#">
+<div class="w-16 h-16 rounded-full bg-surface-variant text-primary-container flex items-center justify-center group-hover:bg-primary-container group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[32px]">construction</span>
+</div>
+<span class="font-body-md text-body-md font-medium text-on-surface">Tikinti Materialları</span>
+</a>
+</div>
+</section>
+<!-- New Products (Catalog Cards) -->
+<section class="flex flex-col gap-lg">
+<div class="flex justify-between items-end border-b border-outline-variant/30 pb-sm">
+<h2 class="font-h2 text-h2 text-on-surface">Yeni Məhsullar</h2>
+<a class="font-body-sm text-body-sm text-primary-container hover:underline font-medium flex items-center gap-xs" href="#">Bütün məhsullar <span class="material-symbols-outlined text-[16px]">arrow_forward</span></a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-lg">
+<!-- Product 1 -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,77,64,0.08)] hover:border-outline transition-all duration-300 group">
+<div class="relative h-48 bg-surface-container flex items-center justify-center overflow-hidden">
+<div class="absolute top-3 left-3 bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps px-2 py-1 rounded-sm z-10">YENİ</div>
+<img alt="Qırmızı idman ayaqqabısı" class="w-full h-full object-cover mix-blend-multiply opacity-90 group-hover:scale-105 transition-transform duration-500" data-alt="A clean, professional product photography shot of a single bright red athletic shoe sitting on a pristine white backdrop. The lighting is high-key, soft, and even, casting almost no shadow to maintain a sterile catalog aesthetic. The focus is entirely on the shoe's texture and modern design, suitable for a high-end wholesale e-commerce platform. The overall mood is crisp and commercial." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChuoI_yU2kXM-tUkaKcjJFEs1-X7zQ_DEyF9xvIHscT81Oj6wnmAIhs6R6EsFQaDfK8Geuho1jvQTJno8R2FXz9yR68C8BLjrGqG_UqOcmyGjdG5zQnP-GLtOHjfJ4cP9-sycs7CY7EKMPWvcqfA9cF4bK6qvxEJK6hFr7Zs0ejIG92A8Apll7_LMTdwrcDrYhIJSUMv7zfDXGJUQgAUXwByhfgT9IQR_-JKlfRTa5cuhhjMWzUh24AOQ6AFXu4MCJWNVgxNXVwCE"/>
+</div>
+<div class="p-4 flex flex-col gap-sm flex-grow">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-outline">Geyim &amp; Tekstil</span>
+<span class="font-label-caps text-label-caps text-primary-container bg-surface-variant px-2 py-0.5 rounded-sm">Stokda var</span>
+</div>
+<h3 class="font-body-md text-body-md font-medium text-on-surface line-clamp-2 mt-xs">Premium İdman Ayaqqabısı "RunFast Pro"</h3>
+<div class="mt-auto pt-sm flex justify-between items-end border-t border-outline-variant/30">
+<div>
+<span class="block font-label-caps text-label-caps text-outline mb-1">Topdan satış</span>
+<span class="font-price-display text-price-display text-primary-container">45.00 ₼</span>
+<span class="font-body-sm text-body-sm text-outline">/ ədəd</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline">Min: 50 ədəd</span>
+</div>
+</div>
+</div>
+<!-- Product 2 -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,77,64,0.08)] hover:border-outline transition-all duration-300 group">
+<div class="relative h-48 bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="Qara simsiz qulaqlıq" class="w-full h-full object-cover mix-blend-multiply opacity-90 group-hover:scale-105 transition-transform duration-500" data-alt="A minimalist, professional product shot of sleek black wireless over-ear headphones resting on a bright, slightly cool-toned light gray surface. The studio lighting highlights the matte texture and premium build quality of the device. The composition is highly structured and clean, designed for a high-end wholesale electronics catalog. The mood is modern, functional, and authoritative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwQPRKPLujmZWMKRQD3McjwNcC6rgLaLzc-pfBA35d1TTjOWroibF14h8XE-HZcZzloJ9ufEJXpSR-AiqwsWkhyn99wYKp4pP4XfsEy_5QgDOVkSpdY-spg46WXu8DDH9upPQ13Ct9aSyphPUEvQ0V-ByzhhEPM7dJtKBCjDh5VFpWSsjLFAgqxIPFHqO6RZ1XBY2CHid58W9IfXBb5kL_x01XFAs_ybgZHWjkJ0mbIsmqH1hujR9A6arM78zIk0Zrfby-wzUeVGs"/>
+</div>
+<div class="p-4 flex flex-col gap-sm flex-grow">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-outline">Elektronika</span>
+<span class="font-label-caps text-label-caps text-primary-container bg-surface-variant px-2 py-0.5 rounded-sm">Stokda var</span>
+</div>
+<h3 class="font-body-md text-body-md font-medium text-on-surface line-clamp-2 mt-xs">Simsiz Qulaqlıq "SoundMax V2" Bluetooth 5.0</h3>
+<div class="mt-auto pt-sm flex justify-between items-end border-t border-outline-variant/30">
+<div>
+<span class="block font-label-caps text-label-caps text-outline mb-1">Topdan satış</span>
+<span class="font-price-display text-price-display text-primary-container">32.50 ₼</span>
+<span class="font-body-sm text-body-sm text-outline">/ ədəd</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline">Min: 20 ədəd</span>
+</div>
+</div>
+</div>
+<!-- Product 3 -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,77,64,0.08)] hover:border-outline transition-all duration-300 group hidden md:flex">
+<div class="relative h-48 bg-surface-container flex items-center justify-center overflow-hidden">
+<div class="absolute top-3 left-3 bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps px-2 py-1 rounded-sm z-10">ENDİRİM</div>
+<img alt="Kağız paket" class="w-full h-full object-cover mix-blend-multiply opacity-90 group-hover:scale-105 transition-transform duration-500" data-alt="A clean, minimalist product shot showing a stack of premium, eco-friendly brown kraft paper shopping bags on a stark white background. The lighting is soft and professional, emphasizing the texture and sturdiness of the packaging material. The image looks like it belongs in a sophisticated B2B wholesale packaging supply catalog. The aesthetic is clean, sustainable, and purely functional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkrtsebJ0JAR0tBfgyrq60KI-96j-3Cpg6chWxNUYf2P6H4VIi59CP_j3ZYw8SYJHLztsDpwoLLnnWqEtoBzwtKpbVwjWzi2s5tKO3QGCOFi40H6pwy4G3t2J2YEd1g4SgjbLt6khYP4DocarScnWq-aL-j5pTWbbpgZxQVKY0NGnoaDvN69koFdCJXkWZbQHO5vlNjuQFL2lAZihGu4GpbJalRUiDFaFeBZPLmCLH6-R0HiT4UTvthr7X1mko96Yd_YrJ76Y79VA"/>
+</div>
+<div class="p-4 flex flex-col gap-sm flex-grow">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-outline">Qablaşdırma</span>
+<span class="font-label-caps text-label-caps text-primary-container bg-surface-variant px-2 py-0.5 rounded-sm">Stokda var</span>
+</div>
+<h3 class="font-body-md text-body-md font-medium text-on-surface line-clamp-2 mt-xs">Eko Kağız Çanta (Kraft, 25x30 sm)</h3>
+<div class="mt-auto pt-sm flex justify-between items-end border-t border-outline-variant/30">
+<div>
+<span class="block font-label-caps text-label-caps text-outline mb-1">Topdan satış</span>
+<span class="font-price-display text-price-display text-primary-container">0.45 ₼</span>
+<span class="font-body-sm text-body-sm text-outline">/ ədəd</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline">Min: 1000 ədəd</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-50 dark:bg-slate-950 font-['Inter'] text-sm leading-relaxed full-width border-t mt-16 border-slate-200 dark:border-slate-800">
+<div class="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 py-16 px-6">
+<!-- Brand Column -->
+<div class="flex flex-col gap-4">
+<div class="text-xl font-bold text-[#004D40] dark:text-white">TopdanBazar</div>
+<p class="text-slate-500 dark:text-slate-400">© 2024 TopdanBazar. Azərbaycanın B2B topdansatış platforması.</p>
+</div>
+<!-- Links Column 1 -->
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-on-surface mb-2">Platforma</h4>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#004D40] dark:hover:text-teal-400 underline decoration-2 underline-offset-4 transition-all opacity-100 hover:opacity-80" href="#">Haqqımızda</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#004D40] dark:hover:text-teal-400 underline decoration-2 underline-offset-4 transition-all opacity-100 hover:opacity-80" href="#">İstifadəçi qaydaları</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#004D40] dark:hover:text-teal-400 underline decoration-2 underline-offset-4 transition-all opacity-100 hover:opacity-80" href="#">Məxfilik siyasəti</a>
+</div>
+<!-- Links Column 2 -->
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-on-surface mb-2">Dəstək</h4>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#004D40] dark:hover:text-teal-400 underline decoration-2 underline-offset-4 transition-all opacity-100 hover:opacity-80" href="#">Yardım</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#004D40] dark:hover:text-teal-400 underline decoration-2 underline-offset-4 transition-all opacity-100 hover:opacity-80" href="#">Əlaqə</a>
+</div>
+<!-- Links Column 3 -->
+<div class="flex flex-col gap-3">
+<h4 class="font-bold text-on-surface mb-2">Biznes</h4>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#004D40] dark:hover:text-teal-400 underline decoration-2 underline-offset-4 transition-all opacity-100 hover:opacity-80 font-bold" href="#">Mağaza aç</a>
+</div>
+</div>
+</footer>
+</body></html>

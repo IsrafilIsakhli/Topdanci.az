@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html class="light" lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Şikayətlər - Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#dce9ff",
+                    "on-tertiary-fixed-variant": "#6d382a",
+                    "tertiary-container": "#693527",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#f8f9ff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-secondary-container": "#007232",
+                    "surface-bright": "#f8f9ff",
+                    "on-error-container": "#93000a",
+                    "on-surface-variant": "#3f4945",
+                    "surface-container": "#e5eeff",
+                    "on-secondary-fixed": "#002109",
+                    "tertiary-fixed-dim": "#ffb5a1",
+                    "on-secondary-fixed-variant": "#005322",
+                    "inverse-surface": "#213145",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#004d40",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-container": "#5dfd8a",
+                    "outline": "#707975",
+                    "on-surface": "#0b1c30",
+                    "primary-fixed-dim": "#94d3c1",
+                    "on-background": "#0b1c30",
+                    "surface": "#f8f9ff",
+                    "on-primary-fixed": "#00201a",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#bfc9c4",
+                    "on-error": "#ffffff",
+                    "tertiary": "#4e2013",
+                    "on-primary-container": "#7ebdac",
+                    "secondary-fixed": "#66ff8e",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#065043",
+                    "primary-fixed": "#afefdd",
+                    "surface-dim": "#cbdbf5",
+                    "on-tertiary-container": "#e89f8c",
+                    "secondary-fixed-dim": "#3de273",
+                    "surface-container-low": "#eff4ff",
+                    "surface-tint": "#29695b",
+                    "tertiary-fixed": "#ffdbd1",
+                    "secondary": "#006d2f",
+                    "primary": "#00342b",
+                    "on-tertiary-fixed": "#370e04",
+                    "surface-variant": "#d3e4fe",
+                    "inverse-primary": "#94d3c1",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "xxl": "64px",
+                    "xl": "40px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "container-max": "1280px",
+                    "lg": "24px",
+                    "base": "4px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "label-caps": [
+                            "Inter"
+                    ],
+                    "h3": [
+                            "Inter"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "price-display": [
+                            "Inter"
+                    ],
+                    "body-sm": [
+                            "Inter"
+                    ],
+                    "h2": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "h1": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "1",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "h3": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "price-display": [
+                            "20px",
+                            {
+                                    "lineHeight": "1",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "h2": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "h1": [
+                            "40px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+            }
+          }
+        }
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md text-body-md min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 shadow-sm sticky top-0 z-40 w-full max-w-[1280px] mx-auto flex items-center justify-between px-6 h-20">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-[#004D40] dark:text-teal-400">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<a class="text-2xl font-black text-[#004D40] dark:text-white tracking-tighter" href="#">TopdanBazar</a>
+</div>
+<nav class="hidden md:flex items-center gap-6 font-['Inter'] text-sm font-medium tracking-tight">
+<a class="text-gray-600 dark:text-gray-400 hover:text-[#004D40] dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 ease-in-out px-3 py-2" href="#">Ana səhifə</a>
+<a class="text-gray-600 dark:text-gray-400 hover:text-[#004D40] dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 ease-in-out px-3 py-2" href="#">Kateqoriyalar</a>
+<a class="text-gray-600 dark:text-gray-400 hover:text-[#004D40] dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 ease-in-out px-3 py-2" href="#">Mağazalar</a>
+<a class="text-gray-600 dark:text-gray-400 hover:text-[#004D40] dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-200 ease-in-out px-3 py-2" href="#">Məhsullar</a>
+<a class="text-[#004D40] dark:text-teal-400 border-b-2 border-[#004D40] dark:border-teal-400 pb-1 px-3 py-2" href="#">Admin</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center justify-center bg-primary text-on-primary px-4 py-2 rounded-lg font-label-caps text-label-caps hover:bg-opacity-90 transition-opacity">Mağaza aç</button>
+<button class="hidden md:flex items-center justify-center border border-primary text-primary px-4 py-2 rounded-lg font-label-caps text-label-caps hover:bg-primary hover:text-on-primary transition-colors">Daxil ol</button>
+<div class="md:hidden text-[#004D40] dark:text-teal-400">
+<span class="material-symbols-outlined">search</span>
+</div>
+</div>
+</header>
+<main class="max-w-[1280px] mx-auto px-4 py-6 md:py-8 lg:px-6">
+<div class="mb-6 flex justify-between items-center">
+<h1 class="font-h1 text-h1 text-on-background">Şikayətlər</h1>
+<button class="md:hidden flex items-center justify-center bg-surface-container text-on-surface p-2 rounded-lg">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+<!-- Stat Cards (Scrollable on mobile, Grid on desktop) -->
+<div class="flex overflow-x-auto md:grid md:grid-cols-4 gap-4 pb-4 mb-6 snap-x -mx-4 px-4 md:mx-0 md:px-0 hide-scrollbar">
+<div class="min-w-[200px] flex-shrink-0 bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm snap-start">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">YENİ</span>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">error</span>
+</div>
+<div class="font-h2 text-h2 text-on-background">12</div>
+</div>
+<div class="min-w-[200px] flex-shrink-0 bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm snap-start">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Baxılır</span>
+<span class="material-symbols-outlined text-surface-tint">pending</span>
+</div>
+<div class="font-h2 text-h2 text-on-background">5</div>
+</div>
+<div class="min-w-[200px] flex-shrink-0 bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm snap-start">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Həll olundu</span>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="font-h2 text-h2 text-on-background">28</div>
+</div>
+<div class="min-w-[200px] flex-shrink-0 bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm snap-start">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Ləğv edildi</span>
+<span class="material-symbols-outlined text-error">cancel</span>
+</div>
+<div class="font-h2 text-h2 text-on-background">3</div>
+</div>
+</div>
+<!-- Filters (Desktop) -->
+<div class="hidden md:flex gap-4 mb-6">
+<div class="flex-1 relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-sm text-body-sm text-on-background" placeholder="Şikayət axtar..." type="text"/>
+</div>
+<select class="bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2 font-body-sm text-body-sm text-on-background focus:outline-none focus:border-primary">
+<option>Bütün statuslar</option>
+<option>Yeni</option>
+<option>Baxılır</option>
+<option>Həll olundu</option>
+</select>
+</div>
+<!-- Complaint Cards List -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex flex-col gap-4 hover:-translate-y-1 transition-transform duration-200">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-1">Şikayətçi</span>
+<span class="font-body-md text-body-md font-semibold text-on-background">TechStore MMC</span>
+</div>
+<span class="bg-error-container text-on-error-container px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Yeni</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-1">Mövzu</span>
+<span class="font-body-md text-body-md text-on-background">Sifarişin gecikməsi</span>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-1">Səbəb</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Sifariş #12345 qeyd olunan vaxtdan 3 gün gecikib və satıcı əlaqəyə çıxmır.</p>
+</div>
+<div class="flex items-center gap-2 mt-2 pt-4 border-t border-outline-variant">
+<button class="flex-1 flex items-center justify-center gap-2 bg-primary text-on-primary py-2 rounded-lg font-label-caps text-label-caps hover:bg-opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">visibility</span> Bax
+                    </button>
+<button class="flex-1 flex items-center justify-center gap-2 border border-primary text-primary py-2 rounded-lg font-label-caps text-label-caps hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span> Edit
+                    </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex flex-col gap-4 hover:-translate-y-1 transition-transform duration-200">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-1">Şikayətçi</span>
+<span class="font-body-md text-body-md font-semibold text-on-background">Baku Market</span>
+</div>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Baxılır</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-1">Mövzu</span>
+<span class="font-body-md text-body-md text-on-background">Yanlış məhsul</span>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-1">Səbəb</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Sifariş edilən "Qırmızı alma" əvəzinə "Yaşıl alma" göndərilib.</p>
+</div>
+<div class="flex items-center gap-2 mt-2 pt-4 border-t border-outline-variant">
+<button class="flex-1 flex items-center justify-center gap-2 bg-primary text-on-primary py-2 rounded-lg font-label-caps text-label-caps hover:bg-opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">visibility</span> Bax
+                    </button>
+<button class="flex-1 flex items-center justify-center gap-2 border border-primary text-primary py-2 rounded-lg font-label-caps text-label-caps hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span> Edit
+                    </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex flex-col gap-4 hover:-translate-y-1 transition-transform duration-200">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-1">Şikayətçi</span>
+<span class="font-body-md text-body-md font-semibold text-on-background">Mega Store</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Həll olundu</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-1">Mövzu</span>
+<span class="font-body-md text-body-md text-on-background">Keyfiyyət problemi</span>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-1">Səbəb</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Məhsulların 20%-i zədəli vəziyyətdə çatdırılıb.</p>
+</div>
+<div class="flex items-center gap-2 mt-2 pt-4 border-t border-outline-variant">
+<button class="flex-1 flex items-center justify-center gap-2 bg-primary text-on-primary py-2 rounded-lg font-label-caps text-label-caps hover:bg-opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">visibility</span> Bax
+                    </button>
+<button class="flex-1 flex items-center justify-center gap-2 border border-primary text-primary py-2 rounded-lg font-label-caps text-label-caps hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span> Edit
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 border-t border-t border-gray-100 dark:border-gray-800 shadow-[0_-4px_12px_rgba(0,0,0,0.03)] bg-white/90 dark:bg-gray-900/90 backdrop-blur-md fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 md:hidden">
+<a class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 active:bg-gray-100 dark:active:bg-gray-800 scale-95 active:scale-90 transition-transform font-['Inter'] text-[10px] font-semibold uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+            Ana səhifə
+        </a>
+<a class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 active:bg-gray-100 dark:active:bg-gray-800 scale-95 active:scale-90 transition-transform font-['Inter'] text-[10px] font-semibold uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined mb-1">grid_view</span>
+            Kateqoriyalar
+        </a>
+<a class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 active:bg-gray-100 dark:active:bg-gray-800 scale-95 active:scale-90 transition-transform font-['Inter'] text-[10px] font-semibold uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined mb-1">shopping_bag</span>
+            Sifarişlər
+        </a>
+<a class="flex flex-col items-center justify-center text-[#004D40] dark:text-teal-400 bg-teal-50/50 dark:bg-teal-900/20 rounded-xl px-4 py-1 active:bg-gray-100 dark:active:bg-gray-800 scale-95 active:scale-90 transition-transform font-['Inter'] text-[10px] font-semibold uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">person</span>
+            Profil
+        </a>
+</nav>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

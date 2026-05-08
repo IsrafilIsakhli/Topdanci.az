@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html lang="az"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Məhsul Detalları - TopdanBazar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#00201a",
+                        "on-primary": "#ffffff",
+                        "primary": "#00342b",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error": "#ffffff",
+                        "primary-container": "#004d40",
+                        "on-secondary": "#ffffff",
+                        "outline": "#707975",
+                        "surface": "#f8f9ff",
+                        "secondary-container": "#5dfd8a",
+                        "on-secondary-container": "#007232",
+                        "surface-variant": "#d3e4fe",
+                        "on-tertiary-fixed": "#370e04",
+                        "on-tertiary-container": "#e89f8c",
+                        "tertiary-fixed": "#ffdbd1",
+                        "surface-container": "#e5eeff",
+                        "secondary": "#006d2f",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#213145",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "primary-fixed-dim": "#94d3c1",
+                        "on-secondary-fixed": "#002109",
+                        "inverse-primary": "#94d3c1",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#66ff8e",
+                        "on-primary-container": "#7ebdac",
+                        "surface-container-highest": "#d3e4fe",
+                        "error": "#ba1a1a",
+                        "background": "#f8f9ff",
+                        "surface-container-high": "#dce9ff",
+                        "tertiary-container": "#693527",
+                        "on-primary-fixed-variant": "#065043",
+                        "on-background": "#0b1c30",
+                        "secondary-fixed-dim": "#3de273",
+                        "on-surface": "#0b1c30",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#3f4945",
+                        "outline-variant": "#bfc9c4",
+                        "on-secondary-fixed-variant": "#005322",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#29695b",
+                        "tertiary": "#4e2013",
+                        "surface-bright": "#f8f9ff",
+                        "surface-dim": "#cbdbf5",
+                        "on-tertiary-fixed-variant": "#6d382a",
+                        "primary-fixed": "#afefdd",
+                        "surface-container-low": "#eff4ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "container-max": "1280px",
+                        "xxl": "64px",
+                        "lg": "24px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "xl": "40px",
+                        "sm": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "price-display": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h2": ["Inter"],
+                        "h3": ["Inter"]
+                    },
+                    "fontSize": {
+                        "price-display": ["20px", { "lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased pb-[80px]">
+<!-- TopNavBar (Mobile Optimized - using desktop structure as base but adjusted for mobile view) -->
+<nav class="bg-white/95 dark:bg-slate-950/95 backdrop-blur-md docked full-width top-0 sticky border-b border-slate-200 shadow-sm z-50">
+<div class="flex justify-between items-center w-full px-4 h-16 max-w-7xl mx-auto md:h-20 md:px-6">
+<div class="flex items-center gap-4">
+<a class="md:hidden text-primary" href="#">
+<span class="material-symbols-outlined">arrow_back</span>
+</a>
+<a class="text-xl font-black text-primary tracking-tighter md:text-2xl" href="#">TopdanBazar</a>
+</div>
+<div class="hidden md:flex flex-1 justify-center gap-6">
+<a class="font-inter text-sm font-medium tracking-tight text-slate-600 hover:text-primary transition-colors" href="#">Ana səhifə</a>
+<a class="font-inter text-sm font-medium tracking-tight text-slate-600 hover:text-primary transition-colors" href="#">Kateqoriyalar</a>
+<a class="font-inter text-sm font-medium tracking-tight text-slate-600 hover:text-primary transition-colors" href="#">Mağazalar</a>
+<a class="font-inter text-sm font-medium tracking-tight text-primary border-b-2 border-primary pb-1" href="#">Məhsullar</a>
+<a class="font-inter text-sm font-medium tracking-tight text-slate-600 hover:text-primary transition-colors" href="#">Əlaqə</a>
+</div>
+<div class="flex items-center gap-2 md:gap-4">
+<button class="text-primary hover:bg-slate-50 p-2 rounded-md transition-all">
+<span class="material-symbols-outlined">search</span>
+</button>
+<div class="hidden md:flex gap-4 items-center">
+<button class="font-inter text-sm font-medium tracking-tight text-primary">Daxil ol</button>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-md font-inter text-sm font-medium tracking-tight">Mağaza aç</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-container-max mx-auto md:px-6">
+<!-- Breadcrumb (Mobile: Qısa, Desktop: Tam) -->
+<div class="px-4 py-3 md:py-6 overflow-x-auto whitespace-nowrap scrollbar-hide">
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm">
+<a class="hover:text-primary transition-colors" href="#">Məhsullar</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Tikinti Materialları</a>
+<span class="material-symbols-outlined text-sm hidden md:inline">chevron_right</span>
+<span class="text-on-surface font-medium hidden md:inline truncate">Premium Sement M500 (50kg)</span>
+</div>
+</div>
+<!-- Product Details Grid (Mobile: Stacked, Desktop: 2-col) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-0 md:gap-lg lg:gap-xl">
+<!-- Left Col: Image Gallery -->
+<div class="col-span-1 lg:col-span-7 flex flex-col gap-sm md:gap-md">
+<!-- Main Image (Swipeable on mobile) -->
+<div class="w-full aspect-square md:aspect-[4/3] bg-white md:rounded-xl md:border border-outline-variant overflow-hidden relative group">
+<img alt="Tikinti materialı sement kisəsi" class="w-full h-full object-cover" data-alt="A high-quality product photograph of a premium cement bag (50kg) isolated on a bright, pristine white background. The lighting is studio-quality, casting very soft, diffused shadows that ground the object without cluttering the minimalist aesthetic. The bag itself has a clean, corporate design with subtle deep green accents, fitting perfectly within a professional B2B wholesale catalog environment. The overall mood is sterile, reliable, and highly detailed." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY5R5TgXxdqKfP_vvdZVIxz6nl0tx0MxFKdcwZCL7iUa62Elq2A_1D49Ns9b6XvkIAa5qdV6wGtYO_ViWQL7bMAcOUVZTcJUikQmtahLszlHyRy3p9XjGwxr4YU7psp-gyfBSlzYWRBxGyZUeLNEqdkyEImRC2YW_HwcZO5VVT_fumxFdywyNf-2gFgZf7aq8bSm5eCjGBKcrP6XheiQtyToH3j5x3mS_k9XPtEJ-5smHQmPrfMAj7D3kQElpCsf0FE1YqD0HE77E"/>
+<!-- Badges -->
+<div class="absolute top-4 left-4 flex flex-col gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded font-label-caps inline-block w-max">Topdan satış</span>
+<span class="bg-surface-variant text-on-surface px-2 py-1 rounded font-label-caps inline-block w-max">Stokda var</span>
+</div>
+<!-- Desktop Navigation Arrows -->
+<button class="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-on-surface p-2 rounded-full shadow-sm backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-on-surface p-2 rounded-full shadow-sm backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Thumbnails (Desktop mostly, small scrollable on mobile) -->
+<div class="px-4 md:px-0 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+<div class="w-16 h-16 md:w-24 md:h-24 shrink-0 rounded-lg border-2 border-primary bg-white overflow-hidden cursor-pointer">
+<img alt="Sement 1" class="w-full h-full object-cover" data-alt="Detailed close up of cement bag texture on white background, studio lighting, professional catalog style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj6vB3Hjk4gP8GUZCkCBduxL4OEib9yA9iZr69w674Yos9VxxpTm65IlJqbWgVradFrHxxQwISyGn8kt6s2xkhMIq-0p1jGlin7o0baPf3b0CV8vdU6KF2_pba3nCYwutAjfZsYze9d6DC8hrlAcpzYX0Ku3fGYBNUAGMB_xVUfzBtx7pfm4urTSYouCsa3T981PW7Flx5KRNca4GIvz_xLoIUm04y_HAL4-cdybW2Pi-kDHXJzNFVMQ147oYJJHK-G2TYNGX6hso"/>
+</div>
+<div class="w-16 h-16 md:w-24 md:h-24 shrink-0 rounded-lg border border-outline-variant bg-white overflow-hidden cursor-pointer hover:border-primary transition-colors opacity-70 hover:opacity-100">
+<img alt="Sement 2" class="w-full h-full object-cover" data-alt="Pallet of cement bags stacked in a bright, clean warehouse setting, soft lighting, professional B2B mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjGgkFym5h7o1KQTkUBd69vih6XycbWf3ZfFu51vYbubbnO5XKg5gHFxAE_q9BcmyBYxV3wMoSexQyCRWFEs4qiEp3JB8buGWS4wpZ49sdbppBE4BTicP-xXWVkgQ2aSSlM6qFMKZMxhRlKt2lTAT7dwRAypF3MulFYdi_7Yafjn9pLe8pQDAW3rjW2-RV148qvK_koQ4ShgwIedRKnRttnQWGPAnTtGCndKJ3iH1b_TvSlBRXDt5GMRbQ9Fp0ra_2_7IAvA7K49c"/>
+</div>
+<div class="w-16 h-16 md:w-24 md:h-24 shrink-0 rounded-lg border border-outline-variant bg-white overflow-hidden cursor-pointer hover:border-primary transition-colors opacity-70 hover:opacity-100">
+<img alt="Sement 3" class="w-full h-full object-cover" data-alt="Close up of raw grey cement powder texture in a clean environment, highly detailed, soft neutral lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq338a5AFWxehD1WPQZGsguahh2zSnyPPBya6b5-jROOQrb3AHhP6OP7VJm0oIgpKAdarqZeCH-kjM6gGtOrLY_bziHQ0T_2J8h4BovdYmUBgVtAz8auqomuTCXMS_lu0z9jG___QA3BpohxBGRA3s63H5k3fgqWY67HOyzxNH3d_esXWgpz9MqreCRsQYWCDKZupYeTLIYlSYAKDyiAcW9Jdo6w6Vc6bR__yfSYTtl2gNSqrq0vwi7Gzp73JO2qiIVPTU4M5G-Gg"/>
+</div>
+</div>
+</div>
+<!-- Right Col: Product Info & Actions -->
+<div class="col-span-1 lg:col-span-5 px-4 md:px-0 flex flex-col gap-lg pb-xl">
+<!-- Title & Price -->
+<div class="flex flex-col gap-sm pt-4 md:pt-0">
+<div class="flex justify-between items-start">
+<h1 class="font-h3 text-on-surface md:font-h2">Premium Sement M500 (50kg)</h1>
+<button class="text-outline hover:text-primary transition-colors shrink-0 pt-1">
+<span class="material-symbols-outlined">favorite_border</span>
+</button>
+</div>
+<div class="flex items-end gap-3 mt-2">
+<span class="font-price-display text-primary text-2xl md:text-3xl">Razılaşma yolu ilə</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mt-1">Minimum sifariş: 100 ədəd (1 palet)</p>
+</div>
+<!-- Divider -->
+<hr class="border-outline-variant"/>
+<!-- Vendor Card -->
+<div class="bg-surface border border-outline-variant rounded-xl p-4 flex flex-col gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-white border border-outline-variant flex items-center justify-center shrink-0 overflow-hidden">
+<img alt="Baku Construction MMC Logo" class="w-full h-full object-cover" data-alt="Minimalist corporate logo of a construction materials company on a white background, flat design, professional style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNqvJjqyBuqVIcuBKnmSj9iCfTVgtCI4BfCuuXhysQSjgT7ciQ1jaUehdqygHaHl76N3N66nx4bNjUtzhnqSS_xkrWFmWonhw6p23bzv-r1JAAthw_1a9PkrPAs6kDR1Uc0wNZsx5OWy1RuxegiDoDxEJ3l9dITQ_BRl3AD9gWc69YD_49_mlLz26Otkm3gDW_7rl-oVZ2RlvvkxDD6EMriWOWSRM2bmwUBYovrSRPsURFyMW41nXC7o-dPGmJOfUhTYQ83jv87ZE"/>
+</div>
+<div class="flex-1">
+<h3 class="font-body-md font-semibold text-on-surface">Baku Construction MMC</h3>
+<div class="flex items-center gap-1 text-on-surface-variant mt-1">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span class="font-body-sm">Təsdiqlənmiş Təchizatçı</span>
+</div>
+</div>
+<span class="bg-surface-container-high text-on-surface px-2 py-1 rounded font-label-caps">4.8 ★</span>
+</div>
+<!-- Desktop Actions (Hidden on mobile sticky) -->
+<div class="hidden md:flex gap-3 mt-2">
+<button class="flex-1 bg-secondary-fixed text-on-secondary-fixed font-body-sm font-semibold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-secondary-fixed-dim transition-colors">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+                            Məsləhət alın
+                        </button>
+<button class="flex-1 border border-primary text-primary font-body-sm font-semibold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">call</span>
+                            Zəng edin
+                        </button>
+</div>
+</div>
+<!-- Product Specifications (Accordion style) -->
+<div class="border border-outline-variant rounded-xl overflow-hidden mt-4">
+<div class="bg-surface-container-low px-4 py-3 flex justify-between items-center cursor-pointer border-b border-outline-variant">
+<h4 class="font-body-md font-semibold text-on-surface">Məhsul haqqında</h4>
+<span class="material-symbols-outlined text-outline">expand_less</span>
+</div>
+<div class="p-4 bg-white font-body-sm text-on-surface-variant flex flex-col gap-3">
+<p>Yüksək keyfiyyətli M500 markalı portlandsement. Sənaye və mülki tikintidə monolit beton və dəmir-beton konstruksiyaların istehsalı üçün nəzərdə tutulmuşdur.</p>
+<ul class="flex flex-col gap-2 mt-2">
+<li class="flex justify-between border-b border-outline-variant pb-1">
+<span>İstehsalçı:</span>
+<span class="font-medium text-on-surface">Norm Sement</span>
+</li>
+<li class="flex justify-between border-b border-outline-variant pb-1">
+<span>Çəki:</span>
+<span class="font-medium text-on-surface">50 kg</span>
+</li>
+<li class="flex justify-between border-b border-outline-variant pb-1">
+<span>Marka:</span>
+<span class="font-medium text-on-surface">M500</span>
+</li>
+<li class="flex justify-between border-b border-outline-variant pb-1">
+<span>Bağlama:</span>
+<span class="font-medium text-on-surface">Kağız kisə</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- Related Products (2 columns on mobile) -->
+<div class="px-4 md:px-0 py-xl mt-8 border-t border-outline-variant">
+<h2 class="font-h3 text-on-surface mb-6">Oxşar məhsullar</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+<!-- Card 1 -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden hover:shadow-sm transition-all group flex flex-col">
+<div class="aspect-square bg-surface relative overflow-hidden">
+<img alt="M400 Sement" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, professional product shot of a 40kg cement bag on a pristine white background. High key lighting, sharp details, minimalist corporate wholesale aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcr-kC4_11IGO7QMeqnZLvNqLAQGPIixGfMYK09Vr554UZJtDEdxDgHqdwIPtvZqDGHuhAB_iaw3PtfNB_Zt8XYy22UsobKpk-WsYoGons-OOWryrhNNxFeBWzJwb741DBvnh_0B9kmAFBQ3tJwAisqVZVgxxAU4lw9w4z0jyUbzUTW-RasX-NOzQW06prnyK9zIcC_WSaAxvkhFpHv4qQ9UyTRS_O65sekBnoUUiGaGQmnZXyJ9Ef6D-Q03bC20OwzwNQ2boGrD0"/>
+</div>
+<div class="p-3 flex flex-col flex-1 gap-1">
+<span class="font-label-caps text-outline">Tikinti materialları</span>
+<h4 class="font-body-sm font-medium text-on-surface line-clamp-2">Standart Sement M400 (40kg)</h4>
+<div class="mt-auto pt-2">
+<span class="font-price-display text-primary text-lg block">Razılaşma yolu ilə</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden hover:shadow-sm transition-all group flex flex-col">
+<div class="aspect-square bg-surface relative overflow-hidden">
+<img alt="Gips" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A bulk pallet of industrial cement bags wrapped in clear plastic, photographed in a well-lit, clean studio environment. Professional B2B catalog style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjEiH3lb3538SNTUildlpW_L4_hF4xUWzvI3lsaRiHmyKZDP-CLKWYUKOcKYEfFrBAE8zVEnTk39e-rrqHcmjzk_iaEoRd6zwcAM1f7evuwtleBe7jxOyR7NKrVryvUAbBawMCEoAotbtd0NhVb3OygEKzVc_xd_1k1h477_meoDyoqayCtpsEqt692D5GkLIbMfWQo2n6TkqHWq5yfrFVTf9xPWeakdHCYySAXLHDYCfEBz81es_M2mOJsuHqV-0G7nvz0IJg70Q"/>
+</div>
+<div class="p-3 flex flex-col flex-1 gap-1">
+<span class="font-label-caps text-outline">Quru qarışıqlar</span>
+<h4 class="font-body-sm font-medium text-on-surface line-clamp-2">Ağ Gips (Astar) 30kg</h4>
+<div class="mt-auto pt-2">
+<span class="font-price-display text-primary text-lg block">Razılaşma yolu ilə</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Sticky Action Bar (Fixed to bottom, hidden on desktop) -->
+<div class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-outline-variant p-4 z-40 flex gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+<button class="flex-[2] bg-secondary-fixed text-on-secondary-fixed font-body-sm font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-secondary-fixed-dim transition-colors">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+            Sifariş üçün yazın
+        </button>
+<button class="flex-1 border border-primary text-primary font-body-sm font-bold py-3 rounded-lg flex items-center justify-center gap-1 hover:bg-surface-variant transition-colors bg-white">
+<span class="material-symbols-outlined">call</span>
+            Zəng
+        </button>
+</div>
+<!-- Footer (Desktop mostly, hidden or simplified on mobile if needed, but included based on JSON) -->
+<footer class="bg-slate-50 dark:bg-slate-900 full-width py-12 border-t border-slate-200 dark:border-slate-800 flat no shadows mt-12 md:pb-12 pb-24">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-7xl mx-auto px-6">
+<div class="col-span-1 md:col-span-1 flex flex-col gap-4">
+<a class="text-xl font-bold text-teal-900 dark:text-white" href="#">TopdanBazar</a>
+<p class="font-inter text-sm leading-relaxed text-slate-500 dark:text-slate-400">© 2024 TopdanBazar B2B Marketplace. Bütün hüquqlar qorunur.</p>
+</div>
+<div class="col-span-1 md:col-span-3 flex flex-wrap gap-x-8 gap-y-4 md:justify-end font-inter text-sm leading-relaxed">
+<a class="text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 hover:underline transition-all" href="#">Haqqımızda</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 hover:underline transition-all" href="#">İstifadəçi razılaşması</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 hover:underline transition-all" href="#">Vakansiyalar</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 hover:underline transition-all" href="#">Yardım</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-teal-200 hover:underline transition-all" href="#">FAQ</a>
+</div>
+</div>
+</footer>
+</body></html>
