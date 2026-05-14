@@ -11,6 +11,7 @@ npm run prisma:deploy
 npm run prisma:seed
 npm run typecheck
 npm run test
+npm run test:e2e
 npm run build
 npm audit --omit=dev --audit-level=high
 ```
@@ -42,6 +43,14 @@ npm audit --omit=dev --audit-level=high
 - Run migrations in staging first.
 - Take a PostgreSQL backup before production migrations.
 - Verify restore on staging before relying on a backup procedure.
+- Keep SonarCloud quality gate passing on production source before frontend-heavy or launch work.
+
+## SonarCloud Quality Gate
+
+- SonarCloud must analyze `apps` and `packages` as production source.
+- `design_review` is design reference material and must stay excluded from SonarCloud analysis.
+- Review security hotspots manually; do not mark them safe without checking the code path.
+- If SonarCloud reports high duplication, first confirm generated, design, lockfile, and migration files are excluded before refactoring production code.
 
 ## Rollback Defaults
 

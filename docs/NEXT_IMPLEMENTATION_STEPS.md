@@ -45,6 +45,8 @@ stable and does not turn into a fragile prototype.
 
 ## 6. Production Hardening
 
+- Keep SonarCloud quality gate computed and passing for production source only.
+- Review remaining Sonar reliability, security hotspot, and duplication findings after the design reference exclusion is applied.
 - Add alerting.
 - Add broader e2e smoke tests for public and private routes.
 - Run backup/restore drills for PostgreSQL.

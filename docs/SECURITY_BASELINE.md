@@ -31,6 +31,8 @@ adding e-commerce concepts.
 
 ## Remaining Launch Blockers
 
+- SonarCloud must compute a quality gate against production source only; design references and generated/build artifacts must stay excluded from analysis.
+- Review every remaining SonarCloud security hotspot manually before launch.
 - Wire production alert destinations for API errors, DB/Redis readiness, and media queue failures.
 - Add broader API e2e coverage before the first public launch.
 - Backup and restore drills must be tested before production launch.
