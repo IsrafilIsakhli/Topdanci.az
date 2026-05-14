@@ -16,6 +16,7 @@
     "lint": "npm run lint --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
+    "test:e2e": "npm run test:e2e --workspace @topdanbazar/api",
     "prisma:generate": "npm run prisma:generate --workspace @topdanbazar/api",
     "prisma:validate": "npm run prisma:validate --workspace @topdanbazar/api",
     "prisma:deploy": "prisma migrate deploy --schema apps/api/prisma/schema.prisma",

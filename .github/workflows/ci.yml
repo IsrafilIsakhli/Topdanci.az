@@ -72,6 +72,9 @@ jobs:
       - name: Tests
         run: npm run test
 
+      - name: API e2e smoke tests
+        run: npm run test:e2e
+
       - name: Build
         run: npm run build
 
