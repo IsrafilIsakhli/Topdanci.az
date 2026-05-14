@@ -18,6 +18,7 @@
     "test": "npm run test --workspaces --if-present",
     "prisma:generate": "npm run prisma:generate --workspace @topdanbazar/api",
     "prisma:validate": "npm run prisma:validate --workspace @topdanbazar/api",
+    "prisma:deploy": "prisma migrate deploy --schema apps/api/prisma/schema.prisma",
     "prisma:migrate": "npm run prisma:migrate --workspace @topdanbazar/api",
     "prisma:seed": "npm run prisma:seed --workspace @topdanbazar/api",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md,css}\""
@@ -27,7 +28,11 @@
     "npm": ">=10.0.0"
   },
   "devDependencies": {
+    "@nestjs/testing": "^11.1.19",
+    "@types/supertest": "^7.2.0",
     "prettier": "^3.3.3",
-    "typescript": "^5.6.3"
+    "supertest": "^7.2.2",
+    "typescript": "^5.6.3",
+    "vitest": "^4.1.5"
   }
 }

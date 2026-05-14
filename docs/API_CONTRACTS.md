@@ -57,7 +57,7 @@ Returns:
 ```json
 {
   "data": {
-    "accessToken": "...",
+    "authenticated": true,
     "user": {
       "id": "...",
       "email": "user@example.com",
@@ -67,9 +67,20 @@ Returns:
 }
 ```
 
+Sets httpOnly `tb_access` and `tb_refresh` cookies plus readable `tb_csrf`.
+Private mutations must send `x-csrf-token` with the `tb_csrf` value.
+
 ### POST /auth/logout
 
 Invalidates session/token where applicable.
+
+### POST /auth/logout-all
+
+Revokes all active refresh sessions for the current user.
+
+### POST /auth/setup-password
+
+Completes one-time seller account setup from a hashed setup token.
 
 ### POST /auth/forgot-password
 
@@ -262,7 +273,7 @@ Submits product for moderation.
 
 ## 9. Media
 
-### POST /media/signed-upload-url
+### POST /media/upload-url
 
 Creates signed upload URL.
 
@@ -270,9 +281,10 @@ Body:
 
 ```json
 {
+  "productId": "product_...",
   "fileName": "image.jpg",
   "contentType": "image/jpeg",
-  "size": 123456
+  "sizeBytes": 123456
 }
 ```
 
@@ -282,9 +294,9 @@ Rules:
 - MIME allowed list
 - Short expiration
 
-### POST /seller/products/:id/images
+### POST /media/product-images/:id/complete
 
-Attaches uploaded image metadata to product.
+Queues uploaded image validation and optimized variant generation.
 
 ## 10. Seller Analytics
 
@@ -306,6 +318,22 @@ Paginated leads.
 ### GET /admin/summary
 
 Dashboard stats.
+
+### GET /admin/store-applications
+
+Pending/approved/rejected seller application list.
+
+### GET /admin/store-applications/:id
+
+Seller application detail.
+
+### POST /admin/store-applications/:id/approve
+
+Creates or links seller user, creates store, creates owner membership, and returns one-time setup link.
+
+### POST /admin/store-applications/:id/reject
+
+Rejects seller application with review note.
 
 ### GET /admin/stores
 
@@ -343,9 +371,9 @@ Approves product.
 
 Rejects product with reason.
 
-### POST /admin/products/:id/deactivate
+### POST /admin/products/:id/suspend
 
-Deactivates product.
+Suspends product.
 
 ### GET /admin/categories
 
@@ -381,7 +409,7 @@ Audit log list.
 
 Returns service health.
 
-### GET /health/readiness
+### GET /health/ready
 
 Checks dependencies:
 
@@ -389,3 +417,6 @@ Checks dependencies:
 - Redis
 - Queue
 
+### GET /health/metrics
+
+Returns request counters and media worker queue metrics.

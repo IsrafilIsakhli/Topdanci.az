@@ -7,9 +7,12 @@ Run before pushing meaningful backend or frontend changes:
 ```bash
 npm run prisma:generate
 npm run prisma:validate
+npm run prisma:deploy
+npm run prisma:seed
 npm run typecheck
+npm run test
 npm run build
-npm audit --omit=dev
+npm audit --omit=dev --audit-level=high
 ```
 
 ## Database Rules
@@ -22,8 +25,23 @@ npm audit --omit=dev
 ## Production Health
 
 - `/api/v1/health` checks API process health.
-- `/api/v1/health/ready` checks database readiness.
-- Future readiness checks should include Redis and S3 when those become required dependencies.
+- `/api/v1/health/ready` checks database and Redis readiness.
+- `/api/v1/health/metrics` exposes in-process request and media worker queue metrics.
+- S3 readiness is validated by media signing and worker processing paths.
+
+## Local Data Services
+
+- PostgreSQL runs on host port `55432`.
+- Redis runs on host port `6379`.
+- pgAdmin connection: host `127.0.0.1`, port `55432`, database/user/password `topdanbazar`.
+- Seed users: `admin@topdanci.az` and `seller@topdanci.az`.
+
+## Deployment Discipline
+
+- Production schema changes use `prisma migrate deploy`, never manual table edits.
+- Run migrations in staging first.
+- Take a PostgreSQL backup before production migrations.
+- Verify restore on staging before relying on a backup procedure.
 
 ## Rollback Defaults
 

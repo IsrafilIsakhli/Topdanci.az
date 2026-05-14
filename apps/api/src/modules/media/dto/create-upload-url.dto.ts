@@ -2,6 +2,10 @@ import { IsInt, IsString, Max, MaxLength, Min } from 'class-validator';
 
 export class CreateUploadUrlDto {
   @IsString()
+  @MaxLength(64)
+  productId!: string;
+
+  @IsString()
   @MaxLength(180)
   fileName!: string;
 

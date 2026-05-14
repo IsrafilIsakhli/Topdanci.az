@@ -1,6 +1,7 @@
 import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { REQUEST_ID_HEADER } from '../constants/request-context';
+import { MetricsService } from '../metrics/metrics.service';
 
 type HttpRequest = {
   method: string;
@@ -16,6 +17,8 @@ type HttpResponse = {
 @Injectable()
 export class RequestLoggingInterceptor implements NestInterceptor {
   private readonly logger = new Logger(RequestLoggingInterceptor.name);
+
+  constructor(private readonly metrics?: MetricsService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     const startedAt = Date.now();
@@ -41,6 +44,7 @@ export class RequestLoggingInterceptor implements NestInterceptor {
     const durationMs = Date.now() - startedAt;
     const requestId = response.getHeader(REQUEST_ID_HEADER);
     const statusCode = fallbackStatusCode ?? response.statusCode;
+    this.metrics?.recordRequest(statusCode, durationMs);
     const message = JSON.stringify({
       requestId,
       method: request.method,

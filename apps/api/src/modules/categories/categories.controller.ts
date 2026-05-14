@@ -1,9 +1,11 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Public } from '../../common/decorators/public.decorator';
 import { ListCategoriesQueryDto } from './dto/list-categories-query.dto';
 import { CategoriesService } from './categories.service';
 
 @ApiTags('categories')
+@Public()
 @Controller({
   path: 'categories',
   version: '1',

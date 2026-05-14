@@ -9,6 +9,7 @@ import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { RequestLoggingInterceptor } from './common/interceptors/request-logging.interceptor';
 import { RequestIdInterceptor } from './common/interceptors/request-id.interceptor';
+import { MetricsService } from './common/metrics/metrics.service';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {
@@ -19,13 +20,14 @@ async function bootstrap(): Promise<void> {
   const webOrigin = config.get<string>('WEB_ORIGIN', 'http://localhost:3000');
 
   app.setGlobalPrefix('api');
+  app.enableShutdownHooks();
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',
   });
 
   app.useGlobalFilters(new AllExceptionsFilter());
-  app.useGlobalInterceptors(new RequestIdInterceptor(), new RequestLoggingInterceptor());
+  app.useGlobalInterceptors(new RequestIdInterceptor(), new RequestLoggingInterceptor(app.get(MetricsService)));
 
   app.use(
     helmet({

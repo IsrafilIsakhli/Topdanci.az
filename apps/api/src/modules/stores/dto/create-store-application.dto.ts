@@ -26,6 +26,10 @@ export class CreateStoreApplicationDto {
   taxNumber?: string;
 
   @IsString()
+  @IsOptional()
+  categoryId?: string;
+
+  @IsString()
   @MaxLength(80)
   city!: string;
 

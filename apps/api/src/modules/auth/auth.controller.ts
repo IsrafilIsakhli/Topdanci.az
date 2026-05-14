@@ -1,5 +1,20 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Headers, HttpCode, Ip, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { Public } from '../../common/decorators/public.decorator';
+import type { AuthenticatedRequest, AuthenticatedUser } from '../../common/auth/authenticated-user';
+import {
+  ACCESS_COOKIE_NAME,
+  applyAuthCookies,
+  clearAuthCookies,
+  type CookieResponse,
+  parseCookieHeader,
+  REFRESH_COOKIE_NAME,
+} from './domain/auth-cookies';
+import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
+import { SetupPasswordDto } from './dto/setup-password.dto';
 
 @ApiTags('auth')
 @Controller({
@@ -7,12 +22,84 @@ import { ApiTags } from '@nestjs/swagger';
   version: '1',
 })
 export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+
+  @Post('login')
+  @Public()
+  @HttpCode(200)
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  async login(
+    @Body() dto: LoginDto,
+    @Ip() ipAddress: string,
+    @Headers('user-agent') userAgent: string | undefined,
+    @Res({ passthrough: true }) response: CookieResponse,
+  ) {
+    const result = await this.authService.login(dto, {
+      ipAddress,
+      ...(userAgent ? { userAgent } : {}),
+    });
+    applyAuthCookies(response, result.tokens, this.authService.cookieConfig());
+
+    return result.data;
+  }
+
+  @Post('refresh')
+  @Public()
+  @HttpCode(200)
+  @Throttle({ default: { limit: 30, ttl: 60_000 } })
+  async refresh(
+    @Req() request: AuthenticatedRequest,
+    @Ip() ipAddress: string,
+    @Headers('user-agent') userAgent: string | undefined,
+    @Res({ passthrough: true }) response: CookieResponse,
+  ) {
+    const cookies = parseCookieHeader(request.headers?.cookie);
+    const result = await this.authService.refresh(cookies[REFRESH_COOKIE_NAME], {
+      ipAddress,
+      ...(userAgent ? { userAgent } : {}),
+    });
+    applyAuthCookies(response, result.tokens, this.authService.cookieConfig());
+
+    return result.data;
+  }
+
+  @Post('logout')
+  @HttpCode(200)
+  async logout(
+    @Req() request: AuthenticatedRequest,
+    @CurrentUser() user: AuthenticatedUser | undefined,
+    @Res({ passthrough: true }) response: CookieResponse,
+  ) {
+    const cookies = parseCookieHeader(request.headers?.cookie);
+    const result = await this.authService.logout(cookies[REFRESH_COOKIE_NAME], user);
+    clearAuthCookies(response);
+
+    return result;
+  }
+
+  @Post('logout-all')
+  @HttpCode(200)
+  async logoutAll(
+    @CurrentUser() user: AuthenticatedUser,
+    @Res({ passthrough: true }) response: CookieResponse,
+  ) {
+    const result = await this.authService.logoutAll(user);
+    clearAuthCookies(response);
+
+    return result;
+  }
+
+  @Post('setup-password')
+  @Public()
+  @HttpCode(200)
+  setupPassword(@Body() dto: SetupPasswordDto) {
+    return this.authService.setupPassword(dto);
+  }
+
   @Get('session')
-  session() {
-    return {
-      data: {
-        authenticated: false,
-      },
-    };
+  @Public()
+  session(@Req() request: AuthenticatedRequest) {
+    const cookies = parseCookieHeader(request.headers?.cookie);
+    return this.authService.session(cookies[ACCESS_COOKIE_NAME]);
   }
 }

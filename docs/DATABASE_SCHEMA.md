@@ -8,6 +8,8 @@ Core domain:
 
 ```txt
 User
+  -> AccountSetupToken
+  -> RefreshSession
   -> StoreMember
       -> Store
           -> Product
@@ -140,6 +142,9 @@ Fields:
 - minimumOrderQuantity
 - originCountry
 - status
+- reviewNote
+- reviewedAt
+- reviewedById
 - publishedAt
 - viewCount
 - leadCount
@@ -166,12 +171,14 @@ Fields:
 
 - id
 - productId
-- originalKey
-- thumbnailUrl
-- mediumUrl
-- largeUrl
+- storageKey
+- cdnUrl
+- variants
+- failureReason
 - width
 - height
+- mimeType
+- sizeBytes
 - sortOrder
 - status
 - createdAt
@@ -263,6 +270,25 @@ Indexes:
 - storeId
 - productId
 - createdAt
+
+### AccountSetupToken
+
+Stores one-time seller onboarding tokens as hashes only.
+
+Fields:
+
+- id
+- userId
+- tokenHash
+- expiresAt
+- usedAt
+- createdAt
+
+Rules:
+
+- Raw setup token is returned only once to admin approval flow.
+- DB stores only hash.
+- Expired or used tokens cannot set passwords.
 
 ## 3. Enums
 
@@ -494,4 +520,3 @@ Early mitigation:
 - Hash IPs for privacy
 - Paginate admin logs
 - Archive old analytics later
-

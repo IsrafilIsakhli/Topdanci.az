@@ -1,11 +1,13 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
+import { Public } from '../../common/decorators/public.decorator';
 import { CreateStoreApplicationDto } from './dto/create-store-application.dto';
 import { ListStoresQueryDto } from './dto/list-stores-query.dto';
 import { StoresService } from './stores.service';
 
 @ApiTags('stores')
+@Public()
 @Controller({
   path: 'stores',
   version: '1',

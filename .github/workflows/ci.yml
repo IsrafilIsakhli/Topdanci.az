@@ -10,8 +10,36 @@ jobs:
   verify:
     name: Typecheck, build, and validate schema
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: topdanbazar
+          POSTGRES_PASSWORD: topdanbazar
+          POSTGRES_DB: topdanbazar
+        ports:
+          - 55432:5432
+        options: >-
+          --health-cmd "pg_isready -U topdanbazar -d topdanbazar"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     env:
-      DATABASE_URL: postgresql://topdanci:topdanci@localhost:5432/topdanci?schema=public
+      NODE_ENV: test
+      DATABASE_URL: postgresql://topdanbazar:topdanbazar@localhost:55432/topdanbazar?schema=public
+      REDIS_URL: redis://localhost:6379
+      JWT_ACCESS_SECRET: test-access-secret-with-more-than-32-characters
+      JWT_REFRESH_SECRET: test-refresh-secret-with-more-than-32-characters
+      LEAD_HASH_SALT: test-lead-hash-salt-with-more-than-32-characters
 
     steps:
       - name: Checkout
@@ -32,8 +60,17 @@ jobs:
       - name: Validate Prisma schema
         run: npm run prisma:validate
 
+      - name: Apply database migrations
+        run: npm run prisma:deploy
+
+      - name: Seed database
+        run: npm run prisma:seed
+
       - name: Typecheck
         run: npm run typecheck
+
+      - name: Tests
+        run: npm run test
 
       - name: Build
         run: npm run build

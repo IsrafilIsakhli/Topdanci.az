@@ -1,6 +1,18 @@
-const { PrismaClient, PriceType, ProductStatus, ProductUnit, StoreStatus } = require('@prisma/client');
+const {
+  PrismaClient,
+  ApplicationStatus,
+  PriceType,
+  ProductStatus,
+  ProductUnit,
+  StoreRole,
+  StoreStatus,
+  UserRole,
+  UserStatus,
+} = require('@prisma/client');
 
 const prisma = new PrismaClient();
+const adminPasswordHash = '$2a$10$31WD4STobdOzFNQ8bJLzJOrZu..w/J21gnUtKtH14NayDTmVTQCZ2';
+const sellerPasswordHash = '$2a$10$dQsja4DxBdEcr6aOWskOrOVaF/Yl2VctnnPXBIFa9V6hXNcLeIKIW';
 
 const categories = [
   { slug: 'geyim', name: 'Geyim', icon: 'shirt', sortOrder: 10 },
@@ -27,9 +39,41 @@ async function main() {
   const shoesCategory = await prisma.category.findUniqueOrThrow({ where: { slug: 'ayaqqabi' } });
   const constructionCategory = await prisma.category.findUniqueOrThrow({ where: { slug: 'insaat-materiallari' } });
 
+  await prisma.user.upsert({
+    where: { email: 'admin@topdanci.az' },
+    create: {
+      email: 'admin@topdanci.az',
+      fullName: 'Topdanci Admin',
+      passwordHash: adminPasswordHash,
+      role: UserRole.ADMIN,
+      status: UserStatus.ACTIVE,
+    },
+    update: {
+      role: UserRole.ADMIN,
+      status: UserStatus.ACTIVE,
+    },
+  });
+
+  const sellerUser = await prisma.user.upsert({
+    where: { email: 'seller@topdanci.az' },
+    create: {
+      email: 'seller@topdanci.az',
+      phone: '+994501234500',
+      fullName: 'Baku Tekstil Seller',
+      passwordHash: sellerPasswordHash,
+      role: UserRole.SELLER,
+      status: UserStatus.ACTIVE,
+    },
+    update: {
+      role: UserRole.SELLER,
+      status: UserStatus.ACTIVE,
+    },
+  });
+
   const bakuTextile = await prisma.store.upsert({
     where: { slug: 'baku-tekstil-mmc' },
     create: {
+      ownerUserId: sellerUser.id,
       slug: 'baku-tekstil-mmc',
       name: 'Baku Tekstil MMC',
       legalName: 'Baku Tekstil MMC',
@@ -42,6 +86,7 @@ async function main() {
       phone: '+994501234567',
     },
     update: {
+      ownerUserId: sellerUser.id,
       categoryId: textileCategory.id,
       status: StoreStatus.ACTIVE,
       verifiedAt: new Date(),
@@ -112,6 +157,23 @@ async function main() {
       status: StoreStatus.ACTIVE,
       verifiedAt: new Date(),
       publishedAt: new Date(),
+    },
+  });
+
+  await prisma.storeMember.upsert({
+    where: {
+      storeId_userId: {
+        storeId: bakuTextile.id,
+        userId: sellerUser.id,
+      },
+    },
+    create: {
+      storeId: bakuTextile.id,
+      userId: sellerUser.id,
+      role: StoreRole.OWNER,
+    },
+    update: {
+      role: StoreRole.OWNER,
     },
   });
 
@@ -204,6 +266,50 @@ async function main() {
       publishedAt: new Date(),
     },
   });
+
+  await prisma.product.upsert({
+    where: { slug: 'baku-tekstil-yeni-mehsul-review' },
+    create: {
+      storeId: bakuTextile.id,
+      categoryId: textileCategory.id,
+      slug: 'baku-tekstil-yeni-mehsul-review',
+      title: 'Baku Tekstil Yeni Mehsul Review',
+      description: 'Admin moderation testleri ucun pending review mehsulu.',
+      priceType: PriceType.NEGOTIABLE,
+      unit: ProductUnit.PIECE,
+      minOrderQuantity: 25,
+      status: ProductStatus.PENDING_REVIEW,
+    },
+    update: {
+      status: ProductStatus.PENDING_REVIEW,
+      publishedAt: null,
+    },
+  });
+
+  const existingApplication = await prisma.storeApplication.findFirst({
+    where: {
+      companyName: 'Pending Wholesale MMC',
+      status: ApplicationStatus.PENDING,
+    },
+    select: { id: true },
+  });
+
+  if (!existingApplication) {
+    await prisma.storeApplication.create({
+      data: {
+        contactName: 'Pending Seller',
+        contactPhone: '+994501112299',
+        contactEmail: 'pending-seller@topdanci.az',
+        companyName: 'Pending Wholesale MMC',
+        taxNumber: '9900112233',
+        categoryId: constructionCategory.id,
+        city: 'Baki',
+        district: 'Nerimanov',
+        description: 'Admin approval flow ucun seed magazasi.',
+        status: ApplicationStatus.PENDING,
+      },
+    });
+  }
 }
 
 main()

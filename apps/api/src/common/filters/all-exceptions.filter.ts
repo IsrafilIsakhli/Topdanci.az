@@ -33,7 +33,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     if (status >= 500) {
       this.logger.error(
-        `Unhandled request failure ${request.method} ${request.url}`,
+        `Unhandled request failure ${request.method} ${request.url.split('?')[0]}`,
         exception instanceof Error ? exception.stack : String(exception),
       );
     }

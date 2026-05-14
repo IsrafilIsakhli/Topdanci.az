@@ -1,14 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PriceType, Prisma, ProductStatus, StoreStatus } from '@prisma/client';
+import { cacheKey } from '../../common/cache/cache-key';
 import { toCursorPagination } from '../../common/pagination/cursor-pagination';
 import { ListProductsQueryDto } from './dto/list-products-query.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class ProductsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
+  ) {}
 
   async listPublicProducts(query: ListProductsQueryDto) {
+    const key = cacheKey('products:list', query);
+    const cached = await this.redis.getJson(key);
+
+    if (cached) {
+      return cached;
+    }
+
     const where = publicProductWhere(query);
     const { take, cursor, skip } = toCursorPagination(query);
     const [products, total] = await Promise.all([
@@ -24,16 +36,26 @@ export class ProductsService {
     ]);
     const page = products.slice(0, take);
 
-    return {
+    const response = {
       data: page.map(mapPublicProduct),
       meta: {
         total,
         nextCursor: products.length > take ? page.at(-1)?.id ?? null : null,
       },
     };
+    await this.redis.setJson(key, response, 60);
+
+    return response;
   }
 
   async getPublicProduct(slug: string) {
+    const key = cacheKey('products:detail', { slug });
+    const cached = await this.redis.getJson(key);
+
+    if (cached) {
+      return cached;
+    }
+
     const product = await this.prisma.product.findFirst({
       where: {
         slug,
@@ -47,7 +69,10 @@ export class ProductsService {
       throw new NotFoundException('Product not found');
     }
 
-    return { data: mapPublicProduct(product) };
+    const response = { data: mapPublicProduct(product) };
+    await this.redis.setJson(key, response, 300);
+
+    return response;
   }
 }
 
@@ -90,6 +115,7 @@ const publicProductSelect = {
       altText: true,
       width: true,
       height: true,
+      variants: true,
       blurHash: true,
     },
   },

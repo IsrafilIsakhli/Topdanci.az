@@ -1,13 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CategoryStatus, ProductStatus, StoreStatus } from '@prisma/client';
+import { cacheKey } from '../../common/cache/cache-key';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 import { ListCategoriesQueryDto } from './dto/list-categories-query.dto';
 
 @Injectable()
 export class CategoriesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
+  ) {}
 
   async listPublicCategories(query: ListCategoriesQueryDto) {
+    const key = cacheKey('categories:list', query);
+    const cached = await this.redis.getJson(key);
+
+    if (cached) {
+      return cached;
+    }
+
     const where = {
       status: CategoryStatus.ACTIVE,
       ...(query.q
@@ -45,7 +57,7 @@ export class CategoriesService {
       },
     });
 
-    return {
+    const response = {
       data: categories.map((category) => ({
         id: category.id,
         slug: category.slug,
@@ -59,9 +71,19 @@ export class CategoriesService {
         total: categories.length,
       },
     };
+    await this.redis.setJson(key, response, 300);
+
+    return response;
   }
 
   async getPublicCategory(slug: string) {
+    const key = cacheKey('categories:detail', { slug });
+    const cached = await this.redis.getJson(key);
+
+    if (cached) {
+      return cached;
+    }
+
     const category = await this.prisma.category.findFirst({
       where: {
         slug,
@@ -93,7 +115,7 @@ export class CategoriesService {
       throw new NotFoundException('Category not found');
     }
 
-    return {
+    const response = {
       data: {
         id: category.id,
         slug: category.slug,
@@ -104,5 +126,8 @@ export class CategoriesService {
         storeCount: category._count.stores,
       },
     };
+    await this.redis.setJson(key, response, 300);
+
+    return response;
   }
 }

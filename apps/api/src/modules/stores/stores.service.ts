@@ -1,15 +1,27 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ApplicationStatus, Prisma, ProductStatus, StoreStatus } from '@prisma/client';
+import { cacheKey } from '../../common/cache/cache-key';
 import { toCursorPagination } from '../../common/pagination/cursor-pagination';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 import { CreateStoreApplicationDto } from './dto/create-store-application.dto';
 import { ListStoresQueryDto } from './dto/list-stores-query.dto';
 
 @Injectable()
 export class StoresService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
+  ) {}
 
   async listPublicStores(query: ListStoresQueryDto) {
+    const key = cacheKey('stores:list', query);
+    const cached = await this.redis.getJson(key);
+
+    if (cached) {
+      return cached;
+    }
+
     const where = publicStoreWhere(query);
     const { take, cursor, skip } = toCursorPagination(query);
     const [stores, total] = await Promise.all([
@@ -25,16 +37,26 @@ export class StoresService {
     ]);
     const page = stores.slice(0, take);
 
-    return {
+    const response = {
       data: page.map(mapPublicStore),
       meta: {
         total,
         nextCursor: stores.length > take ? page.at(-1)?.id ?? null : null,
       },
     };
+    await this.redis.setJson(key, response, 60);
+
+    return response;
   }
 
   async getPublicStore(slug: string) {
+    const key = cacheKey('stores:detail', { slug });
+    const cached = await this.redis.getJson(key);
+
+    if (cached) {
+      return cached;
+    }
+
     const store = await this.prisma.store.findFirst({
       where: {
         slug,
@@ -47,7 +69,10 @@ export class StoresService {
       throw new NotFoundException('Store not found');
     }
 
-    return { data: mapPublicStore(store) };
+    const response = { data: mapPublicStore(store) };
+    await this.redis.setJson(key, response, 300);
+
+    return response;
   }
 
   async createApplication(dto: CreateStoreApplicationDto) {
@@ -58,6 +83,7 @@ export class StoresService {
         companyName: dto.companyName,
         city: dto.city,
         status: ApplicationStatus.PENDING,
+        ...(dto.categoryId ? { categoryId: dto.categoryId } : {}),
         ...(dto.contactEmail ? { contactEmail: dto.contactEmail } : {}),
         ...(dto.taxNumber ? { taxNumber: dto.taxNumber } : {}),
         ...(dto.district ? { district: dto.district } : {}),

@@ -1,10 +1,12 @@
 import { Body, Controller, Headers, Ip, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
+import { Public } from '../../common/decorators/public.decorator';
 import { CreateLeadEventDto } from './dto/create-lead-event.dto';
 import { LeadsService } from './leads.service';
 
 @ApiTags('leads')
+@Public()
 @Controller({
   path: 'leads',
   version: '1',

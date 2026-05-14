@@ -1,9 +1,11 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Public } from '../../common/decorators/public.decorator';
 import { ListProductsQueryDto } from './dto/list-products-query.dto';
 import { ProductsService } from './products.service';
 
 @ApiTags('products')
+@Public()
 @Controller({
   path: 'products',
   version: '1',

@@ -3,73 +3,52 @@
 The foundation is ready. From here, build in this order so the platform stays
 stable and does not turn into a fragile prototype.
 
-## 1. Real Database Integration
+## Completed Foundation
 
-- Replace fixture arrays in `categories`, `stores`, and `products` services with
-  Prisma queries.
-- Add repository files per module only when query logic becomes non-trivial.
-- Keep public list endpoints cursor-paginated.
-- Add indexes before adding expensive filters.
+- Public catalog uses Prisma-backed category, store, and product queries.
+- Auth foundation uses httpOnly cookies, access tokens, hashed refresh sessions, role guards, and seller scope checks.
+- Redis-backed throttling/cache is wired for public read-heavy endpoints.
+- S3 pre-signed product image upload URLs are protected by seller ownership checks.
+- CI runs Prisma validation, typecheck, tests, build, and high-severity production audit.
 
-## 2. Authentication And Roles
+## 1. Frontend Contract Integration
 
-- Implement seller/admin login.
-- Add JWT access and refresh token flow.
-- Add `Public`, `Roles`, and auth guards.
-- Add store-member checks for seller dashboard routes.
+- Wire login forms to cookie auth and persist CSRF token handling in API client requests.
+- Build admin screens against store application and product moderation APIs.
+- Build seller product management screens against the scoped seller APIs.
+- Keep all private mutations sending `x-csrf-token`.
 
-## 3. Store Application Flow
+## 2. Image Upload UX
 
-- Persist `StoreApplication` records.
-- Admin approves/rejects applications.
-- Approval creates store, owner user, and store membership.
-- Keep moderation audit logs for all admin decisions.
-
-## 4. Product Management
-
-- Seller creates product as `DRAFT`.
-- Seller sends product to `PENDING_REVIEW`.
-- Admin approves to `ACTIVE`.
-- Public catalog shows only active products from active stores.
-
-## 5. Image Pipeline
-
-- API returns pre-signed S3 upload URLs.
+- Browser requests `/media/upload-url`.
 - Browser uploads directly to S3.
-- Worker validates image, generates variants, and marks `ProductImage.READY`.
-- CDN serves only optimized variants.
+- Browser calls `/media/product-images/:id/complete`.
+- UI shows processing, ready, and failed image states.
 
-## 6. Lead Tracking
+## 3. Search And Catalog Polish
+
+- Improve PostgreSQL search ranking.
+- Add category/store/product filters expected by the final design.
+- Add SEO metadata for public catalog pages.
+
+## 4. Remaining Admin Operations
+
+- Suspend store/product/user actions.
+- Report review flow.
+- Admin audit log viewer.
+
+## 5. Lead Tracking
 
 - Track `PRODUCT_VIEW`, `STORE_VIEW`, `WHATSAPP_CLICK`, and `PHONE_REVEAL`.
 - Hash IP/user-agent for abuse protection without storing sensitive raw data.
 - Deduplicate repeated clicks per anonymous/session window.
 
-## 7. Search
+## 6. Production Hardening
 
-- Start with PostgreSQL full-text search.
-- Move to Meilisearch or OpenSearch when catalog/search traffic justifies it.
-- Keep search indexing async through a queue.
-
-## 8. Caching
-
-- CDN caches public pages and images.
-- Redis caches hot category/store/product read models.
-- Never cache seller/admin private data without user scoping.
-
-## 9. Production Hardening
-
-- Add structured logging.
-- Add request metrics.
-- Add smoke tests for public routes.
-- Add backup/restore procedure for PostgreSQL.
-- Add rate limits for auth, lead tracking, and media upload endpoints.
+- Add alerting.
+- Add broader e2e smoke tests for public and private routes.
+- Run backup/restore drills for PostgreSQL.
 
 ## Immediate Next Coding Task
 
-Implement real Prisma-backed public catalog:
-
-1. `CategoriesService.listPublicCategories`
-2. `StoresService.listPublicStores`
-3. `ProductsService.listPublicProducts`
-4. Seed script validation with local Docker Postgres
+Start frontend integration only after validating the API foundation locally with PostgreSQL, Redis, and the media worker enabled.
