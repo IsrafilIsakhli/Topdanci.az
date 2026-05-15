@@ -47,6 +47,8 @@ stable and does not turn into a fragile prototype.
 
 - Keep SonarCloud quality gate computed and passing for production source only.
 - Review remaining Sonar reliability, security hotspot, and duplication findings after the design reference exclusion is applied.
+- Keep `npm run verify` green before merging platform-level changes.
+- Run `npm run verify:local` before frontend integration whenever backend contracts change.
 - Add alerting.
 - Add broader e2e smoke tests for public and private routes.
 - Run backup/restore drills for PostgreSQL.

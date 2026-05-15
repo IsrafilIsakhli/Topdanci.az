@@ -419,4 +419,4 @@ Checks dependencies:
 
 ### GET /health/metrics
 
-Returns request counters and media worker queue metrics.
+Returns request counters and media worker queue metrics. When `METRICS_TOKEN` is configured, callers must send `x-metrics-token`.

@@ -16,6 +16,19 @@ npm run build
 npm audit --omit=dev --audit-level=high
 ```
 
+For local foundation verification with PostgreSQL and Redis already running:
+
+```bash
+npm run verify:local
+```
+
+If local services are not ready:
+
+```bash
+docker compose up -d postgres redis
+npm run check:local-services
+```
+
 ## Database Rules
 
 - Use Prisma migrations for schema changes.
@@ -44,6 +57,22 @@ npm audit --omit=dev --audit-level=high
 - Take a PostgreSQL backup before production migrations.
 - Verify restore on staging before relying on a backup procedure.
 - Keep SonarCloud quality gate passing on production source before frontend-heavy or launch work.
+
+## Backup And Restore Commands
+
+Create a PostgreSQL backup from the configured `DATABASE_URL`:
+
+```bash
+npm run db:backup
+```
+
+Restore only against staging or an explicitly approved recovery target:
+
+```bash
+BACKUP_FILE=backups/topdanci-example.dump RESTORE_CONFIRM=I_UNDERSTAND_THIS_RESTORES_DATABASE npm run db:restore:staging
+```
+
+Never run restore against production unless a recovery incident has been approved and the target backup has already been verified on staging.
 
 ## SonarCloud Quality Gate
 

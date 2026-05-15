@@ -24,6 +24,9 @@ yarn-error.log*
 pnpm-debug.log*
 .logs/
 
+# local database backup artifacts
+backups/
+
 # OS / editors
 .DS_Store
 Thumbs.db

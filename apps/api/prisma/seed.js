@@ -9,6 +9,15 @@ const {
   UserRole,
   UserStatus,
 } = require('@prisma/client');
+const { existsSync } = require('node:fs');
+const { resolve } = require('node:path');
+const dotenv = require('dotenv');
+
+for (const envPath of [resolve(process.cwd(), '.env'), resolve(process.cwd(), '../../.env'), resolve(__dirname, '../../../.env')]) {
+  if (existsSync(envPath)) {
+    dotenv.config({ path: envPath, override: false, quiet: true });
+  }
+}
 
 const prisma = new PrismaClient();
 const adminPasswordHash = '$2a$10$31WD4STobdOzFNQ8bJLzJOrZu..w/J21gnUtKtH14NayDTmVTQCZ2';

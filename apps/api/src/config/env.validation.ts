@@ -11,6 +11,9 @@ export type AppEnvironment = Environment & {
   API_ORIGIN: string;
   RATE_LIMIT_TTL_MS: string;
   RATE_LIMIT_MAX: string;
+  API_BODY_LIMIT: string;
+  REQUEST_TIMEOUT_MS: string;
+  METRICS_TOKEN: string;
   JWT_ACCESS_SECRET: string;
   JWT_REFRESH_SECRET: string;
   LEAD_HASH_SALT: string;
@@ -44,6 +47,7 @@ export function validateEnv(env: Environment): AppEnvironment {
     assertProductionSecret('JWT_ACCESS_SECRET', env.JWT_ACCESS_SECRET);
     assertProductionSecret('JWT_REFRESH_SECRET', env.JWT_REFRESH_SECRET);
     assertRequiredProductionValue('REDIS_URL', env.REDIS_URL);
+    assertRequiredProductionValue('METRICS_TOKEN', env.METRICS_TOKEN);
     assertRequiredProductionValue('AWS_REGION', env.AWS_REGION);
     assertRequiredProductionValue('AWS_S3_BUCKET', env.AWS_S3_BUCKET);
     assertRequiredProductionValue('CDN_BASE_URL', env.CDN_BASE_URL);
@@ -59,6 +63,9 @@ export function validateEnv(env: Environment): AppEnvironment {
     API_ORIGIN: env.API_ORIGIN ?? 'http://localhost:4000',
     RATE_LIMIT_TTL_MS: env.RATE_LIMIT_TTL_MS ?? '60000',
     RATE_LIMIT_MAX: env.RATE_LIMIT_MAX ?? '120',
+    API_BODY_LIMIT: env.API_BODY_LIMIT ?? '256kb',
+    REQUEST_TIMEOUT_MS: env.REQUEST_TIMEOUT_MS ?? '15000',
+    METRICS_TOKEN: env.METRICS_TOKEN ?? '',
     JWT_ACCESS_SECRET: env.JWT_ACCESS_SECRET!,
     JWT_REFRESH_SECRET: env.JWT_REFRESH_SECRET!,
     LEAD_HASH_SALT: env.LEAD_HASH_SALT ?? env.JWT_ACCESS_SECRET!,

@@ -19,6 +19,9 @@ adding e-commerce concepts.
 - Seller/admin APIs are protected by JWT and role guards, with store-level checks available through `RequireStoreMember`.
 - Media upload signing validates product ownership before creating S3 pre-signed URLs.
 - Media completion is queued for worker validation and optimized image variant generation.
+- API request bodies are capped by `API_BODY_LIMIT`; large product images must never pass through the API process.
+- API requests are bounded by `REQUEST_TIMEOUT_MS` so slow dependencies cannot leave request workers hanging indefinitely.
+- `/health/metrics` must use `x-metrics-token` when `METRICS_TOKEN` is configured; production requires this token.
 
 ## Rules For New Work
 
@@ -28,6 +31,7 @@ adding e-commerce concepts.
 - Public APIs must paginate list responses and avoid unbounded database queries.
 - API must never proxy large product images; browsers upload directly to S3 using pre-signed URLs.
 - Swagger must remain disabled in production.
+- Metrics endpoints must not be publicly readable in production.
 
 ## Remaining Launch Blockers
 

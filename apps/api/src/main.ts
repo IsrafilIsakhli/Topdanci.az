@@ -4,34 +4,56 @@ import helmet from 'helmet';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { RequestLoggingInterceptor } from './common/interceptors/request-logging.interceptor';
 import { RequestIdInterceptor } from './common/interceptors/request-id.interceptor';
+import { RequestTimeoutInterceptor } from './common/interceptors/request-timeout.interceptor';
 import { MetricsService } from './common/metrics/metrics.service';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
+    bodyParser: false,
   });
 
   const config = app.get(ConfigService);
   const webOrigin = config.get<string>('WEB_ORIGIN', 'http://localhost:3000');
+  const apiBodyLimit = config.get<string>('API_BODY_LIMIT', '256kb');
 
   app.setGlobalPrefix('api');
   app.enableShutdownHooks();
+  app.useBodyParser('json', { limit: apiBodyLimit });
+  app.useBodyParser('urlencoded', { extended: true, limit: apiBodyLimit });
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',
   });
 
   app.useGlobalFilters(new AllExceptionsFilter());
-  app.useGlobalInterceptors(new RequestIdInterceptor(), new RequestLoggingInterceptor(app.get(MetricsService)));
+  app.useGlobalInterceptors(
+    new RequestIdInterceptor(),
+    new RequestTimeoutInterceptor(config),
+    new RequestLoggingInterceptor(app.get(MetricsService)),
+  );
 
   app.use(
     helmet({
+      contentSecurityPolicy:
+        config.get('NODE_ENV') === 'production'
+          ? {
+              directives: {
+                defaultSrc: ["'none'"],
+                baseUri: ["'none'"],
+                frameAncestors: ["'none'"],
+              },
+            }
+          : false,
       crossOriginResourcePolicy: { policy: 'cross-origin' },
+      hsts: config.get('NODE_ENV') === 'production',
+      referrerPolicy: { policy: 'no-referrer' },
     }),
   );
 
