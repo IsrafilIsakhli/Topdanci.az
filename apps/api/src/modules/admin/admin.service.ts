@@ -17,6 +17,7 @@ import { toCursorPagination } from '../../common/pagination/cursor-pagination';
 import { hashSensitiveValue } from '../../common/security/hash-ip';
 import { slugify } from '../../common/slug/slugify';
 import { PrismaService } from '../prisma/prisma.service';
+import type { ListAdminProductsQueryDto } from './dto/list-admin-products-query.dto';
 import type { ListStoreApplicationsQueryDto } from './dto/list-store-applications-query.dto';
 import type { RejectProductDto, SuspendProductDto } from './dto/review-product.dto';
 import type {
@@ -179,6 +180,7 @@ export class AdminService {
           metadata: {
             storeId: store.id,
             sellerUserId: seller.id,
+            reviewNote: dto.reviewNote ?? null,
           },
         },
       });
@@ -236,6 +238,9 @@ export class AdminService {
         action: 'ADMIN_STORE_APPLICATION_REJECTED',
         resourceType: 'StoreApplication',
         resourceId: id,
+        metadata: {
+          reviewNote: dto.reviewNote,
+        },
       },
       select: { id: true },
     });
@@ -243,16 +248,31 @@ export class AdminService {
     return { data: reviewed };
   }
 
-  async listPendingProducts() {
-    const products = await this.prisma.product.findMany({
-      where: { status: ProductStatus.PENDING_REVIEW },
-      orderBy: [{ updatedAt: 'asc' }, { id: 'asc' }],
-      select: moderationProductSelect,
-    });
+  async listPendingProducts(query: ListAdminProductsQueryDto) {
+    const { take, cursor, skip } = toCursorPagination(query);
+    const where: Prisma.ProductWhereInput = {
+      status: ProductStatus.PENDING_REVIEW,
+      ...(query.storeId ? { storeId: query.storeId } : {}),
+    };
+    const [products, total] = await Promise.all([
+      this.prisma.product.findMany({
+        where,
+        take: take + 1,
+        ...(cursor ? { cursor } : {}),
+        ...(skip ? { skip } : {}),
+        orderBy: [{ updatedAt: 'asc' }, { id: 'asc' }],
+        select: moderationProductSelect,
+      }),
+      this.prisma.product.count({ where }),
+    ]);
+    const page = products.slice(0, take);
 
     return {
-      data: products.map(mapModerationProduct),
-      meta: { total: products.length },
+      data: page.map(mapModerationProduct),
+      meta: {
+        total,
+        nextCursor: products.length > take ? page.at(-1)?.id ?? null : null,
+      },
     };
   }
 
@@ -270,7 +290,9 @@ export class AdminService {
       select: moderationProductSelect,
     });
 
-    await this.recordProductModeration(admin, 'ADMIN_PRODUCT_APPROVED', id);
+    await this.recordProductModeration(admin, 'ADMIN_PRODUCT_APPROVED', updated, {
+      status: ProductStatus.ACTIVE,
+    });
     await this.cache.invalidateProducts();
 
     return { data: mapModerationProduct(updated) };
@@ -290,7 +312,10 @@ export class AdminService {
       select: moderationProductSelect,
     });
 
-    await this.recordProductModeration(admin, 'ADMIN_PRODUCT_REJECTED', id);
+    await this.recordProductModeration(admin, 'ADMIN_PRODUCT_REJECTED', updated, {
+      status: ProductStatus.REJECTED,
+      reviewNote: dto.reviewNote,
+    });
     await this.cache.invalidateProducts();
 
     return { data: mapModerationProduct(updated) };
@@ -322,7 +347,10 @@ export class AdminService {
       select: moderationProductSelect,
     });
 
-    await this.recordProductModeration(admin, 'ADMIN_PRODUCT_SUSPENDED', id);
+    await this.recordProductModeration(admin, 'ADMIN_PRODUCT_SUSPENDED', updated, {
+      status: ProductStatus.PASSIVE,
+      reviewNote: dto.reviewNote ?? null,
+    });
     await this.cache.invalidateProducts();
 
     return { data: mapModerationProduct(updated) };
@@ -415,14 +443,19 @@ export class AdminService {
   private async recordProductModeration(
     admin: AuthenticatedUser,
     action: string,
-    productId: string,
+    product: ModerationProduct,
+    metadata: Record<string, unknown>,
   ): Promise<void> {
     await this.prisma.auditLog.create({
       data: {
         actorId: admin.id,
         action,
         resourceType: 'Product',
-        resourceId: productId,
+        resourceId: product.id,
+        metadata: {
+          ...metadata,
+          storeId: product.store.id,
+        },
       },
       select: { id: true },
     });

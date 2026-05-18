@@ -7,10 +7,8 @@ export default function HelpPage() {
       <SiteHeader />
       <section className="section">
         <div className="container panel">
-          <h1>Yardim</h1>
-          <p className="lead">
-            Magaza acmaq, mehsul elave etmek ve muraciet statistikasini izlemek ucun destek merkezi.
-          </p>
+          <h1>Yardım</h1>
+          <p className="lead">Mağaza açmaq, məhsul əlavə etmək və müraciət statistikasını izləmək üçün dəstək mərkəzi.</p>
         </div>
       </section>
       <SiteFooter />

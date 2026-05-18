@@ -4,26 +4,26 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
-        <div className="footer-col">
+        <div className="footer-col footer-brand-col">
           <strong className="brand">TopdanBazar</strong>
-          <span>Azerbaycan B2B topdansatis platformasi.</span>
-          <span>© 2026 TopdanBazar. Butun huquqlar qorunur.</span>
+          <span>Azərbaycan B2B topdansatış əlaqə platforması.</span>
+          <span>© 2026 TopdanBazar. Bütün hüquqlar qorunur.</span>
         </div>
         <div className="footer-col">
           <strong>Platforma</strong>
-          <Link href="/about">Haqqimizda</Link>
-          <Link href="/stores">Magazalar</Link>
-          <Link href="/open-store">Magaza ac</Link>
+          <Link href="/about">Haqqımızda</Link>
+          <Link href="/stores">Mağazalar</Link>
+          <Link href="/open-store">Mağaza aç</Link>
         </div>
         <div className="footer-col">
-          <strong>Huquqi</strong>
-          <Link href="/terms">Istifadeci qaydalari</Link>
-          <Link href="/privacy">Mexfilik siyaseti</Link>
+          <strong>Hüquqi</strong>
+          <Link href="/terms">İstifadəçi qaydaları</Link>
+          <Link href="/privacy">Məxfilik siyasəti</Link>
         </div>
         <div className="footer-col">
-          <strong>Destek</strong>
-          <Link href="/help">Yardim</Link>
-          <Link href="/contact">Elaqe</Link>
+          <strong>Dəstək</strong>
+          <Link href="/help">Yardım</Link>
+          <Link href="/contact">Əlaqə</Link>
         </div>
       </div>
     </footer>

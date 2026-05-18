@@ -7,12 +7,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  allowedDevOrigins: ['*.ngrok-free.dev'],
   outputFileTracingRoot: path.join(__dirname, '../..'),
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
       },
     ],
   },

@@ -37,10 +37,20 @@ export class CategoriesService {
       orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
       select: {
         id: true,
+        parentId: true,
         slug: true,
         name: true,
         description: true,
         icon: true,
+        children: {
+          where: { status: CategoryStatus.ACTIVE },
+          orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
+          select: {
+            id: true,
+            slug: true,
+            name: true,
+          },
+        },
         _count: {
           select: {
             products: {
@@ -60,10 +70,12 @@ export class CategoriesService {
     const response = {
       data: categories.map((category) => ({
         id: category.id,
+        parentId: category.parentId,
         slug: category.slug,
         name: category.name,
         description: category.description,
         icon: category.icon,
+        children: category.children,
         productCount: category._count.products,
         storeCount: category._count.stores,
       })),
@@ -91,10 +103,20 @@ export class CategoriesService {
       },
       select: {
         id: true,
+        parentId: true,
         slug: true,
         name: true,
         description: true,
         icon: true,
+        children: {
+          where: { status: CategoryStatus.ACTIVE },
+          orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
+          select: {
+            id: true,
+            slug: true,
+            name: true,
+          },
+        },
         _count: {
           select: {
             products: {
@@ -118,10 +140,12 @@ export class CategoriesService {
     const response = {
       data: {
         id: category.id,
+        parentId: category.parentId,
         slug: category.slug,
         name: category.name,
         description: category.description,
         icon: category.icon,
+        children: category.children,
         productCount: category._count.products,
         storeCount: category._count.stores,
       },

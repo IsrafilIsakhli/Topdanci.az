@@ -26,9 +26,14 @@ export default async function CategoryDetailPage({ params }: PageProps) {
             <Link href="/categories">Kateqoriyalar</Link>
           </p>
           <h1>{category.name}</h1>
-          <p className="lead">
-            {category.name} uzre topdansatis mehsullarini ve aktiv magazalari kesf edin.
-          </p>
+          <p className="lead">{category.name} üzrə topdansatış məhsullarını, alt kateqoriyaları və aktiv mağazaları kəşf edin.</p>
+          {category.children?.length ? (
+            <div className="category-children category-detail-children">
+              {category.children.map((child) => (
+                <span key={child}>{child}</span>
+              ))}
+            </div>
+          ) : null}
         </div>
       </section>
       <section className="section section-muted">

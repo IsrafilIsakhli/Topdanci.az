@@ -6,23 +6,23 @@ import { SiteHeader } from '../../components/site-header';
 const benefits = [
   {
     icon: PackageCheck,
-    title: 'Mehsullarinizi numayis etdirin',
-    text: 'Butun mehsullarinizi vahid ve professional vitrinde teqdim edin.',
+    title: 'Məhsullarınızı nümayiş etdirin',
+    text: 'Bütün məhsullarınızı vahid və professional vitrində təqdim edin.',
   },
   {
     icon: Store,
-    title: 'Yeni alicilara catin',
-    text: 'Azerbaycanin her yerinden topdan alicilar sizi asanliqla tapsin.',
+    title: 'Yeni alıcılara çatın',
+    text: 'Azərbaycanın hər yerindən topdan alıcılar sizi asanlıqla tapsın.',
   },
   {
     icon: MessageSquare,
-    title: 'WhatsApp kliklerini izleyin',
-    text: 'Musterilerle birbasa elaqe yaradib muraciet statistikasini gorun.',
+    title: 'WhatsApp kliklərini izləyin',
+    text: 'Müştərilərlə birbaşa əlaqə yaradıb müraciət statistikasını görün.',
   },
   {
     icon: BarChart3,
-    title: 'Magaza panelinden idare edin',
-    text: 'Mehsullari, qiymetleri ve gorunurluyu tek panelden idare edin.',
+    title: 'Mağaza panelindən idarə edin',
+    text: 'Məhsulları, qiymətləri və görünürlüğü tək paneldən idarə edin.',
   },
 ];
 
@@ -33,10 +33,9 @@ export default function OpenStorePage() {
       <section className="section">
         <div className="container open-store-layout">
           <aside>
-            <h1>Magazanizi TopdanBazar-da acin</h1>
+            <h1>Mağazanızı TopdanBazar-da açın</h1>
             <p className="lead">
-              Mehsullarinizi onlayn kataloqda numayis etdirin, yeni alicilara catin ve muracietleri
-              bir panelden izleyin.
+              Məhsullarınızı onlayn kataloqda nümayiş etdirin, yeni alıcılara çatın və müraciətləri bir paneldən izləyin.
             </p>
             <div className="benefit-list">
               {benefits.map((benefit) => {
@@ -57,14 +56,14 @@ export default function OpenStorePage() {
           </aside>
 
           <form className="panel">
-            <h2>Magaza muracieti</h2>
+            <h2>Mağaza müraciəti</h2>
             <div className="field-grid">
               <label className="field">
-                <span>Ad ve soyad</span>
-                <input placeholder="Adinizi daxil edin" />
+                <span>Ad və soyad</span>
+                <input placeholder="Adınızı daxil edin" />
               </label>
               <label className="field">
-                <span>E-poct</span>
+                <span>E-poçt</span>
                 <input placeholder="numune@email.com" type="email" />
               </label>
               <label className="field">
@@ -72,28 +71,31 @@ export default function OpenStorePage() {
                 <input placeholder="+994 (__) ___-__-__" />
               </label>
               <label className="field">
-                <span>Magaza adi</span>
-                <input placeholder="Sirket ve ya magaza adi" />
+                <span>Mağaza adı</span>
+                <input placeholder="Şirkət və ya mağaza adı" />
               </label>
               <label className="field">
-                <span>Esas kateqoriya</span>
+                <span>Əsas kateqoriya</span>
                 <select>
-                  <option>Kateqoriya secin</option>
+                  <option>Kateqoriya seçin</option>
                   <option>Geyim</option>
                   <option>Elektronika</option>
-                  <option>Insaat materiallari</option>
+                  <option>İnşaat materialları</option>
                 </select>
               </label>
               <label className="field">
-                <span>Qisa magaza tesviri</span>
-                <textarea placeholder="Magazaniz ve mehsullariniz haqqinda qisa melumat" />
+                <span>Qısa mağaza təsviri</span>
+                <textarea placeholder="Mağazanız və məhsullarınız haqqında qısa məlumat" />
               </label>
             </div>
             <button className="button button-primary button-full" type="submit">
-              Muracieti gonder
+              Müraciəti göndər
             </button>
             <p className="card-meta">
-              Artiq hesabiniz var? <Link className="card-link" href="/login">Daxil ol</Link>
+              Artıq hesabınız var?{' '}
+              <Link className="card-link" href="/login">
+                Daxil ol
+              </Link>
             </p>
           </form>
         </div>

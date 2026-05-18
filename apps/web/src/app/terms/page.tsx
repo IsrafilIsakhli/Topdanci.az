@@ -7,10 +7,10 @@ export default function TermsPage() {
       <SiteHeader />
       <section className="section">
         <div className="container panel">
-          <h1>Istifadeci qaydalari</h1>
+          <h1>İstifadəçi qaydaları</h1>
           <p className="lead">
-            TopdanBazar elaqe vasitesi kimi fealiyyet gosterir. Qiymet razilashmasi ve biznes danisiqlari
-            alici ile magaza arasinda platformadan kenarda aparilir.
+            TopdanBazar əlaqə vasitəsi kimi fəaliyyət göstərir. Qiymət razılaşması və biznes danışıqları alıcı ilə mağaza
+            arasında platformadan kənarda aparılır.
           </p>
         </div>
       </section>

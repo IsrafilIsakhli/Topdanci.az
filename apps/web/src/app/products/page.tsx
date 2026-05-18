@@ -11,11 +11,11 @@ export default function ProductsPage() {
         <div className="container">
           <div className="section-title-row">
             <div>
-              <h1>Mehsullar</h1>
-              <p className="lead">Topdansatis mehsullari arashdirin ve satici ile birbasa elaqe saxlayin.</p>
+              <h1>Məhsullar</h1>
+              <p className="lead">Topdansatış məhsulları araşdırın və satıcı ilə birbaşa əlaqə saxlayın.</p>
             </div>
-            <select className="button" aria-label="Sirala">
-              <option>En yeniler</option>
+            <select className="button" aria-label="Sırala">
+              <option>Ən yenilər</option>
               <option>Populyar</option>
             </select>
           </div>

@@ -15,6 +15,7 @@ import { AuditService } from '../audit/audit.service';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   isAllowedProductImageMimeType,
+  isFileNameAllowedForMimeType,
   maxProductImageSizeBytes,
   productImageObjectKey,
 } from './domain/media-policy';
@@ -34,6 +35,10 @@ export class MediaService {
   async createUploadUrl(dto: CreateUploadUrlDto, user: AuthenticatedUser) {
     if (!isAllowedProductImageMimeType(dto.contentType)) {
       throw new BadRequestException('Unsupported image content type');
+    }
+
+    if (!isFileNameAllowedForMimeType(dto.fileName, dto.contentType)) {
+      throw new BadRequestException('Image extension does not match content type');
     }
 
     if (dto.sizeBytes > maxProductImageSizeBytes()) {

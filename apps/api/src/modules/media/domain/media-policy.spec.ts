@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   isAllowedProductImageMimeType,
+  isFileNameAllowedForMimeType,
   maxProductImageSizeBytes,
   productImageObjectKey,
 } from './media-policy';
@@ -22,5 +23,15 @@ describe('media-policy', () => {
     expect(productImageObjectKey('store-1', 'product-1', 'My Image (Final).PNG')).toMatch(
       /^stores\/store-1\/products\/product-1\/\d+-my-image-final-.png$/,
     );
+  });
+
+  it('requires image extensions to match MIME types', () => {
+    expect(isFileNameAllowedForMimeType('photo.jpg', 'image/jpeg')).toBe(true);
+    expect(isFileNameAllowedForMimeType('photo.jpeg', 'image/jpeg')).toBe(true);
+    expect(isFileNameAllowedForMimeType('photo.png', 'image/png')).toBe(true);
+    expect(isFileNameAllowedForMimeType('photo.webp', 'image/webp')).toBe(true);
+    expect(isFileNameAllowedForMimeType('photo.jpg', 'image/png')).toBe(false);
+    expect(isFileNameAllowedForMimeType('photo.svg', 'image/svg+xml')).toBe(false);
+    expect(isFileNameAllowedForMimeType('photo', 'image/jpeg')).toBe(false);
   });
 });

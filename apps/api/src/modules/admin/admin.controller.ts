@@ -5,6 +5,7 @@ import type { AuthenticatedUser } from '../../common/auth/authenticated-user';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { AdminService } from './admin.service';
+import { ListAdminProductsQueryDto } from './dto/list-admin-products-query.dto';
 import { ListStoreApplicationsQueryDto } from './dto/list-store-applications-query.dto';
 import { RejectProductDto, SuspendProductDto } from './dto/review-product.dto';
 import { ApproveStoreApplicationDto, RejectStoreApplicationDto } from './dto/review-store-application.dto';
@@ -52,8 +53,8 @@ export class AdminController {
   }
 
   @Get('products/pending')
-  listPendingProducts() {
-    return this.adminService.listPendingProducts();
+  listPendingProducts(@Query() query: ListAdminProductsQueryDto) {
+    return this.adminService.listPendingProducts(query);
   }
 
   @Post('products/:id/approve')

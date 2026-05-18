@@ -1,24 +1,24 @@
 import { Eye, MessageSquare, PackageCheck, Store } from 'lucide-react';
 
 const stats = [
-  { label: 'Toplam mehsul', value: '142', icon: PackageCheck },
-  { label: 'Aktiv mehsul', value: '138', icon: Store },
-  { label: 'WhatsApp klikleri', value: '845', icon: MessageSquare },
-  { label: 'Magaza baxislari', value: '3,240', icon: Eye },
+  { label: 'Toplam məhsul', value: '142', icon: PackageCheck },
+  { label: 'Aktiv məhsul', value: '138', icon: Store },
+  { label: 'WhatsApp klikləri', value: '845', icon: MessageSquare },
+  { label: 'Mağaza baxışları', value: '3,240', icon: Eye },
 ];
 
 export default function SellerDashboardPage() {
   return (
     <main className="dashboard-shell">
       <aside className="dashboard-sidebar">
-        <strong className="brand">Magaza Paneli</strong>
-        <p className="card-meta">Satici merkezi</p>
+        <strong className="brand">Mağaza Paneli</strong>
+        <p className="card-meta">Satıcı mərkəzi</p>
       </aside>
       <section className="dashboard-main">
         <div className="section-title-row">
           <div>
-            <h1>Idareetme Paneli</h1>
-            <p className="lead">Magazanizin gorunurluyunu ve muracietlerini izleyin.</p>
+            <h1>İdarəetmə Paneli</h1>
+            <p className="lead">Mağazanızın görünürlüğünü və müraciətlərini izləyin.</p>
           </div>
         </div>
         <div className="stat-grid">

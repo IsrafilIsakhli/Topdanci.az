@@ -1,39 +1,51 @@
 import Link from 'next/link';
-import { Eye, MessageSquare, MapPin, Store } from 'lucide-react';
+import { Eye, MapPin, MessageCircle, PackageCheck, Store } from 'lucide-react';
+import type { ProductPreview } from '../lib/catalog-data';
 
 type ProductCardProps = {
-  product: {
-    slug: string;
-    title: string;
-    store: string;
-    city: string;
-    price: string;
-    art: string;
-  };
+  product: ProductPreview;
 };
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
     <article className="card product-card">
-      <div className={`product-art ${product.art}`} aria-hidden="true" />
+      <Link className="product-image-frame" href={`/products/${product.slug}`} aria-label={`${product.title} bax`}>
+        <span
+          className="product-photo"
+          role="img"
+          aria-label={product.imageAlt}
+          style={{ backgroundImage: `url(${product.imageUrl})` }}
+        />
+        <span className="product-image-shade" aria-hidden="true" />
+        <span className="product-badge">{product.badge}</span>
+      </Link>
+
       <div className="product-body">
-        <div>
-          <div className="product-title">{product.title}</div>
-          <div className="price">{product.price}</div>
+        <div className="product-kicker">{product.category}</div>
+        <Link className="product-title" href={`/products/${product.slug}`}>
+          {product.title}
+        </Link>
+
+        <div className="price-row">
+          <span className="price">{product.price}</span>
+          <span className="min-order">
+            <PackageCheck size={14} />
+            {product.minOrder}
+          </span>
         </div>
 
-        <div className="card-meta">
-          <div>
+        <div className="card-meta product-meta">
+          <span>
             <Store size={14} /> {product.store}
-          </div>
-          <div>
+          </span>
+          <span>
             <MapPin size={14} /> {product.city}
-          </div>
+          </span>
         </div>
 
         <div className="product-actions">
           <Link className="button button-success" href={`/products/${product.slug}`}>
-            <MessageSquare size={17} />
+            <MessageCircle size={17} />
             WhatsApp
           </Link>
           <Link className="button" href={`/products/${product.slug}`} aria-label={`${product.title} bax`}>

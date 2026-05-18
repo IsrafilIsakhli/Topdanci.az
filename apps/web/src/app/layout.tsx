@@ -3,11 +3,14 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'TopdanBazar | B2B Topdansatis Platformasi',
+    default: 'TopdanBazar | B2B Topdansatış Platforması',
     template: '%s | TopdanBazar',
   },
   description:
-    'Topdansatici magazalari, mehsullari ve birbasa elaqe imkanlarini bir yerde kesf edin.',
+    'Topdansatıcı mağazaları, məhsulları və birbaşa əlaqə imkanlarını bir yerdə kəşf edin.',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export const viewport: Viewport = {

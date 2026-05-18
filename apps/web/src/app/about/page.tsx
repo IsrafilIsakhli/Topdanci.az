@@ -7,10 +7,10 @@ export default function AboutPage() {
       <SiteHeader />
       <section className="section">
         <div className="container panel">
-          <h1>Haqqimizda</h1>
+          <h1>Haqqımızda</h1>
           <p className="lead">
-            TopdanBazar topdansatici magazalarla alicilari bir araya getiren B2B lead-generation
-            platformasidir. Platforma satis emeliyyati aparmir.
+            TopdanBazar topdansatıcı mağazalarla alıcıları bir araya gətirən B2B lead-generation platformasıdır.
+            Platforma satış əməliyyatı aparmır.
           </p>
         </div>
       </section>

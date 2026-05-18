@@ -1,26 +1,33 @@
+'use client';
+
 import Link from 'next/link';
-import { Menu, Search, Store } from 'lucide-react';
+import { Menu, Search, Store, X } from 'lucide-react';
+import { useState } from 'react';
 
 const navItems = [
-  { href: '/', label: 'Ana sehife' },
+  { href: '/', label: 'Ana səhifə' },
   { href: '/categories', label: 'Kateqoriyalar' },
-  { href: '/stores', label: 'Magazalar' },
-  { href: '/products', label: 'Mehsullar' },
-  { href: '/contact', label: 'Elaqe' },
+  { href: '/stores', label: 'Mağazalar' },
+  { href: '/products', label: 'Məhsullar' },
+  { href: '/contact', label: 'Əlaqə' },
 ];
 
 export function SiteHeader() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const closeMenu = () => setIsMenuOpen(false);
+
   return (
     <header className="site-header">
       <div className="container site-header-inner">
-        <Link href="/" className="brand" aria-label="TopdanBazar ana sehife">
+        <Link href="/" className="brand" aria-label="TopdanBazar ana səhifə" onClick={closeMenu}>
           <span className="brand-mark">
             <Store size={17} />
           </span>
           TopdanBazar
         </Link>
 
-        <nav className="nav" aria-label="Esas menyu">
+        <nav className="nav" aria-label="Əsas menyu">
           {navItems.map((item) => (
             <Link key={item.href} href={item.href}>
               {item.label}
@@ -29,7 +36,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="header-actions">
-          <button className="button" type="button" aria-label="Axtaris">
+          <button className="button icon-button" type="button" aria-label="Axtarış">
             <Search size={18} />
           </button>
           <Link className="button" href="/login">
@@ -37,13 +44,39 @@ export function SiteHeader() {
           </Link>
           <Link className="button button-primary" href="/open-store">
             <Store size={17} />
-            Magaza ac
+            Mağaza aç
           </Link>
         </div>
 
-        <button className="button mobile-menu-button" type="button" aria-label="Menyunu ac">
-          <Menu size={20} />
+        <button
+          className="button mobile-menu-button"
+          type="button"
+          aria-label={isMenuOpen ? 'Menyunu bağla' : 'Menyunu aç'}
+          aria-controls="mobile-navigation"
+          aria-expanded={isMenuOpen}
+          onClick={() => setIsMenuOpen((value) => !value)}
+        >
+          {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
+      </div>
+
+      <div id="mobile-navigation" className={`mobile-drawer${isMenuOpen ? ' is-open' : ''}`}>
+        <nav className="mobile-drawer-nav" aria-label="Mobil menyu">
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href} onClick={closeMenu}>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="mobile-drawer-actions">
+          <Link className="button" href="/login" onClick={closeMenu}>
+            Daxil ol
+          </Link>
+          <Link className="button button-primary" href="/open-store" onClick={closeMenu}>
+            <Store size={16} />
+            Mağaza aç
+          </Link>
+        </div>
       </div>
     </header>
   );

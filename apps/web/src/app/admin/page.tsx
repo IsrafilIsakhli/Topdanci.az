@@ -1,10 +1,10 @@
 import { AlertTriangle, Eye, MessageSquare, Store } from 'lucide-react';
 
 const stats = [
-  { label: 'Toplam magaza', value: '1,245', icon: Store },
-  { label: 'Bugunku baxislari', value: '28,901', icon: Eye },
-  { label: 'WhatsApp klikleri', value: '3,421', icon: MessageSquare },
-  { label: 'Sikayetler', value: '12', icon: AlertTriangle },
+  { label: 'Toplam mağaza', value: '1,245', icon: Store },
+  { label: 'Bugünkü baxışlar', value: '28,901', icon: Eye },
+  { label: 'WhatsApp klikləri', value: '3,421', icon: MessageSquare },
+  { label: 'Şikayətlər', value: '12', icon: AlertTriangle },
 ];
 
 export default function AdminDashboardPage() {
@@ -12,13 +12,13 @@ export default function AdminDashboardPage() {
     <main className="dashboard-shell">
       <aside className="dashboard-sidebar">
         <strong className="brand">Admin Paneli</strong>
-        <p className="card-meta">Platforma idareetmesi</p>
+        <p className="card-meta">Platforma idarəetməsi</p>
       </aside>
       <section className="dashboard-main">
         <div className="section-title-row">
           <div>
-            <h1>Umumi Baxis</h1>
-            <p className="lead">Sistemin cari veziyyeti ve moderator gozleyen qeydlere baxin.</p>
+            <h1>Ümumi Baxış</h1>
+            <p className="lead">Sistemin cari vəziyyəti və moderator gözləyən qeydlərə baxın.</p>
           </div>
         </div>
         <div className="stat-grid">

@@ -4,6 +4,7 @@ import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { RedisService } from './modules/redis/redis.service';
 
 describe('TopdanBazar API smoke e2e', () => {
   let app: INestApplication;
@@ -29,6 +30,7 @@ describe('TopdanBazar API smoke e2e', () => {
       }),
     );
     await app.init();
+    await app.get(RedisService).deleteByPrefix('auth:login:');
   });
 
   afterAll(async () => {
@@ -60,6 +62,21 @@ describe('TopdanBazar API smoke e2e', () => {
       .expect(403);
   });
 
+  it('prevents a seller from mutating another store product', async () => {
+    const seller = await loginAs('seller@topdanci.az', 'Seller12345!');
+    const products = await request(app.getHttpServer())
+      .get('/api/v1/products?store=techwholesale-az')
+      .expect(200);
+    const foreignProductId = products.body.data[0].id;
+
+    await request(app.getHttpServer())
+      .patch(`/api/v1/seller/products/${foreignProductId}`)
+      .set('Cookie', seller.cookies)
+      .set('x-csrf-token', seller.csrfToken)
+      .send({ description: 'Seller must not be able to edit a foreign store product' })
+      .expect(403);
+  });
+
   it('rejects private mutations without csrf token', async () => {
     const seller = await loginAs('seller@topdanci.az', 'Seller12345!');
 
@@ -75,6 +92,75 @@ describe('TopdanBazar API smoke e2e', () => {
     const titles = response.body.data.map((product: { title: string }) => product.title);
 
     expect(titles).not.toContain('Baku Tekstil Yeni Mehsul Review');
+  });
+
+  it('runs seller product review lifecycle through admin approval', async () => {
+    const seller = await loginAs('seller@topdanci.az', 'Seller12345!');
+    const sellerProducts = await request(app.getHttpServer())
+      .get('/api/v1/seller/products')
+      .set('Cookie', seller.cookies)
+      .expect(200);
+    const baseProduct = sellerProducts.body.data[0];
+    const title = `E2E Wholesale Product ${Date.now()}`;
+
+    const created = await request(app.getHttpServer())
+      .post('/api/v1/seller/products')
+      .set('Cookie', seller.cookies)
+      .set('x-csrf-token', seller.csrfToken)
+      .send({
+        storeId: baseProduct.store.id,
+        categoryId: baseProduct.category.id,
+        title,
+        description: 'Created by e2e to verify seller product workflow.',
+        minOrderQuantity: 10,
+      })
+      .expect(201);
+
+    expect(created.body.data.status).toBe('DRAFT');
+
+    await request(app.getHttpServer())
+      .patch(`/api/v1/seller/products/${created.body.data.id}`)
+      .set('Cookie', seller.cookies)
+      .set('x-csrf-token', seller.csrfToken)
+      .send({})
+      .expect(400);
+
+    await request(app.getHttpServer())
+      .patch(`/api/v1/seller/products/${created.body.data.id}`)
+      .set('Cookie', seller.cookies)
+      .set('x-csrf-token', seller.csrfToken)
+      .send({ stockStatus: 'Hazir anbarda' })
+      .expect(200);
+
+    const submitted = await request(app.getHttpServer())
+      .post(`/api/v1/seller/products/${created.body.data.id}/submit-review`)
+      .set('Cookie', seller.cookies)
+      .set('x-csrf-token', seller.csrfToken)
+      .expect(201);
+
+    expect(submitted.body.data.status).toBe('PENDING_REVIEW');
+
+    const admin = await loginAs('admin@topdanci.az', 'Admin12345!');
+    const pending = await request(app.getHttpServer())
+      .get(`/api/v1/admin/products/pending?storeId=${baseProduct.store.id}&limit=100`)
+      .set('Cookie', admin.cookies)
+      .expect(200);
+
+    expect(pending.body.data.some((product: { id: string }) => product.id === created.body.data.id)).toBe(true);
+
+    const approved = await request(app.getHttpServer())
+      .post(`/api/v1/admin/products/${created.body.data.id}/approve`)
+      .set('Cookie', admin.cookies)
+      .set('x-csrf-token', admin.csrfToken)
+      .expect(201);
+
+    expect(approved.body.data.status).toBe('ACTIVE');
+
+    const publicProduct = await request(app.getHttpServer())
+      .get(`/api/v1/products/${created.body.data.slug}`)
+      .expect(200);
+
+    expect(publicProduct.body.data.title).toBe(title);
   });
 
   it('rejects invalid media MIME for an owned seller product', async () => {

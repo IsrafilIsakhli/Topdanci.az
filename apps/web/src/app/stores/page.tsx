@@ -10,8 +10,8 @@ export default function StoresPage() {
       <SiteHeader />
       <section className="section">
         <div className="container">
-          <h1>Magazalar</h1>
-          <p className="lead">Yoxlanilmis topdansatici magazalara baxin.</p>
+          <h1>Mağazalar</h1>
+          <p className="lead">Yoxlanılmış topdansatıcı mağazalara baxın.</p>
           <div className="grid store-grid" style={{ marginTop: 28 }}>
             {stores.map((store) => (
               <Link className="card store-card" href={`/stores/${store.slug}`} key={store.slug}>
@@ -23,7 +23,7 @@ export default function StoresPage() {
                   <span className="card-meta">{store.category}</span>
                 </div>
                 <span className="card-meta">
-                  <MapPin size={14} /> {store.city} · {store.productCount} mehsul
+                  <MapPin size={14} /> {store.city} · {store.productCount} məhsul
                 </span>
               </Link>
             ))}

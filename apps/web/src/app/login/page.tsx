@@ -3,10 +3,10 @@ import { CheckCircle2, Lock, Store } from 'lucide-react';
 import { SiteHeader } from '../../components/site-header';
 
 const benefits = [
-  '400+ tesdiqlenmis magaza',
-  '200K+ topdansatis mehsulu',
-  'WhatsApp ve telefon klik statistikasi',
-  'Guvenli magaza paneli',
+  '400+ təsdiqlənmiş mağaza',
+  '200K+ topdansatış məhsulu',
+  'WhatsApp və telefon klik statistikası',
+  'Güvənli mağaza paneli',
 ];
 
 export default function LoginPage() {
@@ -18,8 +18,8 @@ export default function LoginPage() {
           <div className="auth-benefits">
             <Store size={34} />
             <div>
-              <h1>TopdanBazar-a xos gelmisiniz</h1>
-              <p>Magazanizi ve mehsullarinizi idare etmek ucun hesabinizla daxil olun.</p>
+              <h1>TopdanBazar-a xoş gəlmisiniz</h1>
+              <p>Mağazanızı və məhsullarınızı idarə etmək üçün hesabınızla daxil olun.</p>
             </div>
             <div className="field-grid">
               {benefits.map((benefit) => (
@@ -33,15 +33,15 @@ export default function LoginPage() {
           <form className="auth-card">
             <div>
               <h2>Daxil ol</h2>
-              <p className="card-meta">Hesabiniza daxil olun ve magaza panelinizi idare edin.</p>
+              <p className="card-meta">Hesabınıza daxil olun və mağaza panelinizi idarə edin.</p>
             </div>
             <div className="field-grid">
               <label className="field">
-                <span>E-poct ve ya telefon</span>
-                <input type="text" placeholder="numune@email.com ve ya +994..." autoComplete="username" />
+                <span>E-poçt və ya telefon</span>
+                <input type="text" placeholder="numune@email.com və ya +994..." autoComplete="username" />
               </label>
               <label className="field">
-                <span>Sifre</span>
+                <span>Şifrə</span>
                 <input type="password" placeholder="********" autoComplete="current-password" />
               </label>
             </div>
@@ -50,7 +50,10 @@ export default function LoginPage() {
               <Lock size={16} />
             </button>
             <p className="card-meta">
-              Magazaniz yoxdur? <Link className="card-link" href="/open-store">Magaza ac</Link>
+              Mağazanız yoxdur?{' '}
+              <Link className="card-link" href="/open-store">
+                Mağaza aç
+              </Link>
             </p>
           </form>
         </div>

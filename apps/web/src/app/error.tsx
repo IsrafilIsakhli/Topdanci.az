@@ -9,10 +9,10 @@ export default function ErrorPage({ reset }: ErrorPageProps) {
   return (
     <main className="section">
       <div className="container panel">
-        <h1>Sehife yuklenmedi</h1>
-        <p className="lead">Texniki problem yarandi. Bir az sonra yeniden yoxlayin.</p>
+        <h1>Səhifə yüklənmədi</h1>
+        <p className="lead">Texniki problem yarandı. Bir az sonra yenidən yoxlayın.</p>
         <button className="button button-primary" type="button" onClick={reset}>
-          Yeniden cehd et
+          Yenidən cəhd et
         </button>
       </div>
     </main>

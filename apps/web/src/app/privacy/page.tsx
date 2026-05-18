@@ -7,10 +7,10 @@ export default function PrivacyPage() {
       <SiteHeader />
       <section className="section">
         <div className="container panel">
-          <h1>Mexfilik siyaseti</h1>
+          <h1>Məxfilik siyasəti</h1>
           <p className="lead">
-            Istifadeci, magaza ve lead analitikasi melumatlari yalniz platformanin tehlukesizliyi ve
-            xidmet keyfiyyeti ucun emal olunur.
+            İstifadəçi, mağaza və lead analitikası məlumatları yalnız platformanın təhlükəsizliyi və xidmət keyfiyyəti
+            üçün emal olunur.
           </p>
         </div>
       </section>

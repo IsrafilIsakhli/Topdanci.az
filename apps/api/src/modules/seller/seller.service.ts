@@ -157,6 +157,7 @@ export class SellerService {
 
   async updateProduct(user: AuthenticatedUser, id: string, dto: UpdateSellerProductDto) {
     const existing = await this.requireProductAccess(user, id);
+    this.ensurePatchHasChanges(dto);
     await this.ensureCategoryExists(dto.categoryId);
 
     if (existing.status === ProductStatus.DELETED) {
@@ -262,7 +263,16 @@ export class SellerService {
   private async scopedStoreIds(user: AuthenticatedUser, requestedStoreId?: string): Promise<string[]> {
     if (user.role === UserRole.ADMIN || user.role === UserRole.SUPER_ADMIN) {
       if (requestedStoreId) {
-        return [requestedStoreId];
+        const store = await this.prisma.store.findUnique({
+          where: { id: requestedStoreId },
+          select: { id: true },
+        });
+
+        if (!store) {
+          throw new NotFoundException('Store not found');
+        }
+
+        return [store.id];
       }
 
       const stores = await this.prisma.store.findMany({ select: { id: true } });
@@ -361,6 +371,14 @@ export class SellerService {
 
     if (!category) {
       throw new BadRequestException('Category not found');
+    }
+  }
+
+  private ensurePatchHasChanges(dto: UpdateSellerProductDto): void {
+    const hasDefinedValue = Object.values(dto).some((value) => value !== undefined);
+
+    if (!hasDefinedValue) {
+      throw new BadRequestException('At least one product field must be provided');
     }
   }
 
