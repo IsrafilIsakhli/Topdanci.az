@@ -4,10 +4,12 @@ import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { PrismaService } from './modules/prisma/prisma.service';
 import { RedisService } from './modules/redis/redis.service';
 
 describe('TopdanBazar API smoke e2e', () => {
   let app: INestApplication;
+  let prisma: PrismaService;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -30,6 +32,7 @@ describe('TopdanBazar API smoke e2e', () => {
       }),
     );
     await app.init();
+    prisma = app.get(PrismaService);
     await app.get(RedisService).deleteByPrefix('auth:login:');
   });
 
@@ -92,6 +95,82 @@ describe('TopdanBazar API smoke e2e', () => {
     const titles = response.body.data.map((product: { title: string }) => product.title);
 
     expect(titles).not.toContain('Baku Tekstil Yeni Mehsul Review');
+  });
+
+  it('tracks only active public lead targets and deduplicates repeated views', async () => {
+    const products = await request(app.getHttpServer()).get('/api/v1/products').expect(200);
+    const product = products.body.data[0];
+    const anonymousId = `lead-${Date.now()}`;
+
+    const tracked = await request(app.getHttpServer())
+      .post('/api/v1/leads')
+      .set('User-Agent', 'topdanbazar-e2e-lead-agent')
+      .send({
+        type: 'PRODUCT_VIEW',
+        storeId: product.store.id,
+        productId: product.id,
+        anonymousId,
+        source: 'e2e',
+      })
+      .expect(201);
+
+    expect(tracked.body.data.accepted).toBe(true);
+
+    const duplicate = await request(app.getHttpServer())
+      .post('/api/v1/leads')
+      .set('User-Agent', 'topdanbazar-e2e-lead-agent')
+      .send({
+        type: 'PRODUCT_VIEW',
+        storeId: product.store.id,
+        productId: product.id,
+        anonymousId,
+        source: 'e2e',
+      })
+      .expect(201);
+
+    expect(duplicate.body.data.deduplicated).toBe(true);
+
+    const storedLead = await prisma.leadEvent.findFirstOrThrow({
+      where: { anonymousId },
+      orderBy: { createdAt: 'desc' },
+      select: { ipHash: true, userAgentHash: true },
+    });
+    expect(storedLead.ipHash).toMatch(/^[a-f0-9]{64}$/);
+    expect(storedLead.userAgentHash).toMatch(/^[a-f0-9]{64}$/);
+    expect(storedLead.userAgentHash).not.toContain('topdanbazar-e2e-lead-agent');
+
+    const seller = await loginAs('seller@topdanci.az', 'Seller12345!');
+    const sellerProducts = await request(app.getHttpServer())
+      .get('/api/v1/seller/products')
+      .set('Cookie', seller.cookies)
+      .expect(200);
+    const baseProduct = sellerProducts.body.data[0];
+    const draft = await request(app.getHttpServer())
+      .post('/api/v1/seller/products')
+      .set('Cookie', seller.cookies)
+      .set('x-csrf-token', seller.csrfToken)
+      .send({
+        storeId: baseProduct.store.id,
+        categoryId: baseProduct.category.id,
+        title: `Draft Lead Guard Product ${Date.now()}`,
+        description: 'This draft must never be accepted as a public lead target.',
+      })
+      .expect(201);
+
+    const rejectedDraftLead = await request(app.getHttpServer())
+      .post('/api/v1/leads')
+      .send({
+        type: 'PRODUCT_VIEW',
+        storeId: baseProduct.store.id,
+        productId: draft.body.data.id,
+        anonymousId: `draft-lead-${Date.now()}`,
+      })
+      .expect(201);
+
+    expect(rejectedDraftLead.body.data).toEqual({
+      accepted: false,
+      reason: 'PRODUCT_NOT_FOUND',
+    });
   });
 
   it('runs seller product review lifecycle through admin approval', async () => {

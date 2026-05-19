@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Prisma, StoreStatus } from '@prisma/client';
-import { hashIpAddress } from '../../common/security/hash-ip';
+import { Prisma, ProductStatus, StoreStatus } from '@prisma/client';
+import { hashIpAddress, hashSensitiveValue } from '../../common/security/hash-ip';
 import { PrismaService } from '../prisma/prisma.service';
 import { shouldDeduplicateLead } from './domain/lead-event.policy';
 import { CreateLeadEventDto } from './dto/create-lead-event.dto';
@@ -21,20 +21,14 @@ export class LeadsService {
   async track(dto: CreateLeadEventDto, context: LeadRequestContext) {
     const salt = this.config.get<string>('LEAD_HASH_SALT', this.config.get<string>('JWT_ACCESS_SECRET', 'local-dev'));
     const ipHash = context.ipAddress ? hashIpAddress(context.ipAddress, salt) : undefined;
-    const userAgentHash = context.userAgent ? hashIpAddress(context.userAgent, salt) : undefined;
-    const store = await this.prisma.store.findFirst({
-      where: {
-        id: dto.storeId,
-        status: StoreStatus.ACTIVE,
-      },
-      select: { id: true },
-    });
+    const userAgentHash = context.userAgent ? hashSensitiveValue(context.userAgent, salt) : undefined;
+    const target = await this.resolveLeadTarget(dto);
 
-    if (!store) {
+    if (!target.accepted) {
       return {
         data: {
           accepted: false,
-          reason: 'STORE_NOT_FOUND',
+          reason: target.reason,
         },
       };
     }
@@ -70,7 +64,49 @@ export class LeadsService {
       },
     };
   }
+
+  private async resolveLeadTarget(dto: CreateLeadEventDto): Promise<LeadTargetResult> {
+    if (dto.type === 'PRODUCT_VIEW' && !dto.productId) {
+      return { accepted: false, reason: 'PRODUCT_REQUIRED' };
+    }
+
+    if (dto.productId) {
+      const product = await this.prisma.product.findFirst({
+        where: {
+          id: dto.productId,
+          storeId: dto.storeId,
+          status: ProductStatus.ACTIVE,
+          store: { status: StoreStatus.ACTIVE },
+        },
+        select: { id: true },
+      });
+
+      if (!product) {
+        return { accepted: false, reason: 'PRODUCT_NOT_FOUND' };
+      }
+
+      return { accepted: true };
+    }
+
+    const store = await this.prisma.store.findFirst({
+      where: {
+        id: dto.storeId,
+        status: StoreStatus.ACTIVE,
+      },
+      select: { id: true },
+    });
+
+    if (!store) {
+      return { accepted: false, reason: 'STORE_NOT_FOUND' };
+    }
+
+    return { accepted: true };
+  }
 }
+
+type LeadTargetResult =
+  | { accepted: true }
+  | { accepted: false; reason: 'STORE_NOT_FOUND' | 'PRODUCT_NOT_FOUND' | 'PRODUCT_REQUIRED' };
 
 function buildDedupeWhere(dto: CreateLeadEventDto, ipHash?: string): Prisma.LeadEventWhereInput | null {
   if (!shouldDeduplicateLead(dto.type) || (!dto.anonymousId && !ipHash)) {

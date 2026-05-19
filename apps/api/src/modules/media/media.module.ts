@@ -8,6 +8,6 @@ import { MediaWorkerService } from './media-worker.service';
 @Module({
   controllers: [MediaController],
   providers: [MediaService, MediaQueueService, MediaWorkerService, PublicCacheService],
-  exports: [MediaService],
+  exports: [MediaService, MediaQueueService],
 })
 export class MediaModule {}

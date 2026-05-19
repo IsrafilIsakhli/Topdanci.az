@@ -1,8 +1,9 @@
-import { Controller, Get, Headers, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Headers, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { Public } from '../../common/decorators/public.decorator';
 import { MetricsService } from '../../common/metrics/metrics.service';
+import { MediaQueueService } from '../media/media-queue.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 
@@ -15,6 +16,7 @@ import { RedisService } from '../redis/redis.service';
 export class HealthController {
   constructor(
     private readonly config: ConfigService,
+    private readonly mediaQueue: MediaQueueService,
     private readonly metrics: MetricsService,
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
@@ -34,14 +36,19 @@ export class HealthController {
   async ready() {
     await this.prisma.$queryRaw`SELECT 1`;
     await this.redis.ping();
+    await this.mediaQueue.refreshMetrics();
+    const metrics = this.metrics.snapshot();
+    this.assertWorkerReadiness(metrics.worker);
 
     return {
       status: 'ready',
       dependencies: {
         database: 'ok',
         redis: 'ok',
+        mediaQueue: metrics.worker.queueReady ? 'ok' : 'disabled',
+        mediaWorker: metrics.worker.workerReady ? 'ok' : 'disabled',
       },
-      metrics: this.metrics.snapshot(),
+      metrics,
       timestamp: new Date().toISOString(),
     };
   }
@@ -65,6 +72,16 @@ export class HealthController {
 
     if (metricsToken !== expectedToken) {
       throw new UnauthorizedException('Metrics token is required');
+    }
+  }
+
+  private assertWorkerReadiness(worker: { queueReady: boolean; workerReady: boolean }): void {
+    const workerRequired =
+      this.config.get('NODE_ENV') === 'production' &&
+      this.config.get('MEDIA_WORKER_ENABLED', 'true') !== 'false';
+
+    if (workerRequired && (!worker.queueReady || !worker.workerReady)) {
+      throw new ServiceUnavailableException('Media worker is not ready');
     }
   }
 }

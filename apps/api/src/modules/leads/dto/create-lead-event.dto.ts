@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export enum LeadEventTypeDto {
   WHATSAPP_CLICK = 'WHATSAPP_CLICK',
@@ -13,17 +13,21 @@ export class CreateLeadEventDto {
   type!: LeadEventTypeDto;
 
   @IsString()
+  @MaxLength(64)
   storeId!: string;
 
   @IsString()
   @IsOptional()
+  @MaxLength(64)
   productId?: string;
 
   @IsString()
   @IsOptional()
+  @MaxLength(80)
   source?: string;
 
   @IsString()
   @IsOptional()
+  @MaxLength(120)
   anonymousId?: string;
 }

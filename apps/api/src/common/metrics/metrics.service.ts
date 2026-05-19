@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
 type WorkerMetrics = {
-  ready: boolean;
+  queueReady: boolean;
+  workerReady: boolean;
   waiting: number;
   active: number;
   failed: number;
@@ -13,7 +14,8 @@ export class MetricsService {
   private errorCount = 0;
   private totalDurationMs = 0;
   private worker: WorkerMetrics = {
-    ready: false,
+    queueReady: false,
+    workerReady: false,
     waiting: 0,
     active: 0,
     failed: 0,

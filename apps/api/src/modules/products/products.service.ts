@@ -152,7 +152,7 @@ function mapPublicProduct(product: PublicProductRecord) {
     description: product.description,
     price: product.price ? product.price.toString() : null,
     priceType: product.priceType,
-    priceLabel: product.priceType === PriceType.NEGOTIABLE || !product.price ? 'Razilasma yolu ile' : `${product.price} ${product.currency}`,
+    priceLabel: product.priceType === PriceType.NEGOTIABLE || !product.price ? 'Razılaşma yolu ilə' : `${product.price} ${product.currency}`,
     currency: product.currency,
     unit: product.unit,
     minOrderQuantity: product.minOrderQuantity?.toString() ?? null,

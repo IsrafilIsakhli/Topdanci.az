@@ -293,7 +293,7 @@ export class AdminService {
     await this.recordProductModeration(admin, 'ADMIN_PRODUCT_APPROVED', updated, {
       status: ProductStatus.ACTIVE,
     });
-    await this.cache.invalidateProducts();
+    await this.cache.invalidateCatalog();
 
     return { data: mapModerationProduct(updated) };
   }
@@ -316,7 +316,7 @@ export class AdminService {
       status: ProductStatus.REJECTED,
       reviewNote: dto.reviewNote,
     });
-    await this.cache.invalidateProducts();
+    await this.cache.invalidateCatalog();
 
     return { data: mapModerationProduct(updated) };
   }
@@ -351,7 +351,7 @@ export class AdminService {
       status: ProductStatus.PASSIVE,
       reviewNote: dto.reviewNote ?? null,
     });
-    await this.cache.invalidateProducts();
+    await this.cache.invalidateCatalog();
 
     return { data: mapModerationProduct(updated) };
   }
@@ -521,7 +521,7 @@ function mapModerationProduct(product: ModerationProduct) {
     minOrderQuantity: product.minOrderQuantity?.toString() ?? null,
     priceLabel:
       product.priceType === PriceType.NEGOTIABLE || !product.price
-        ? 'Razilasma yolu ile'
+        ? 'Razılaşma yolu ilə'
         : `${product.price} ${product.currency}`,
   };
 }

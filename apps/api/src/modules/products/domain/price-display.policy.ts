@@ -8,7 +8,7 @@ type PriceDisplayInput = {
 
 export function formatLeadMarketplacePrice(input: PriceDisplayInput): string {
   if (input.priceType === 'NEGOTIABLE' || input.price === null) {
-    return 'Razilasma yolu ile';
+    return 'Razılaşma yolu ilə';
   }
 
   return `${input.price} ${input.currency ?? 'AZN'}`;

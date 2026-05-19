@@ -34,7 +34,7 @@ export class MediaQueueService implements OnModuleInit, OnModuleDestroy {
     this.queue = new Queue<ProductImageJobData>(MEDIA_IMAGE_QUEUE, {
       connection: this.connection,
     });
-    this.metrics.setWorkerMetrics({ ready: true });
+    this.metrics.setWorkerMetrics({ queueReady: true });
   }
 
   async addProductImageJob(imageId: string): Promise<void> {
@@ -57,13 +57,13 @@ export class MediaQueueService implements OnModuleInit, OnModuleDestroy {
 
   async refreshMetrics(): Promise<void> {
     if (!this.queue) {
-      this.metrics.setWorkerMetrics({ ready: false });
+      this.metrics.setWorkerMetrics({ queueReady: false });
       return;
     }
 
     const counts = await this.queue.getJobCounts('waiting', 'active', 'failed');
     this.metrics.setWorkerMetrics({
-      ready: true,
+      queueReady: true,
       waiting: counts.waiting ?? 0,
       active: counts.active ?? 0,
       failed: counts.failed ?? 0,

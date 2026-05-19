@@ -192,7 +192,7 @@ export class SellerService {
       resourceId: product.id,
       metadata: { storeId: existing.storeId },
     });
-    await this.cache.invalidateProducts();
+    await this.cache.invalidateCatalog();
 
     return { data: mapSellerProduct(product) };
   }
@@ -227,7 +227,7 @@ export class SellerService {
       resourceId: product.id,
       metadata: { storeId: existing.storeId },
     });
-    await this.cache.invalidateProducts();
+    await this.cache.invalidateCatalog();
 
     return { data: mapSellerProduct(product) };
   }
@@ -255,7 +255,7 @@ export class SellerService {
       resourceId: id,
       metadata: { storeId: existing.storeId },
     });
-    await this.cache.invalidateProducts();
+    await this.cache.invalidateCatalog();
 
     return { data: { id, status: ProductStatus.DELETED } };
   }
@@ -450,7 +450,7 @@ function mapSellerProduct(product: SellerProduct) {
     minOrderQuantity: product.minOrderQuantity?.toString() ?? null,
     priceLabel:
       product.priceType === PriceType.NEGOTIABLE || !product.price
-        ? 'Razilasma yolu ile'
+        ? 'Razılaşma yolu ilə'
         : `${product.price} ${product.currency}`,
   };
 }

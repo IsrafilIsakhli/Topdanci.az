@@ -6,6 +6,7 @@ import { ImageStatus } from '@prisma/client';
 import { Worker } from 'bullmq';
 import Redis from 'ioredis';
 import sharp from 'sharp';
+import { PublicCacheService } from '../../common/cache/public-cache.service';
 import { MetricsService } from '../../common/metrics/metrics.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
@@ -21,6 +22,7 @@ export class MediaWorkerService implements OnModuleInit, OnModuleDestroy {
   private worker?: Worker<ProductImageJobData>;
 
   constructor(
+    private readonly cache: PublicCacheService,
     private readonly config: ConfigService,
     private readonly metrics: MetricsService,
     private readonly prisma: PrismaService,
@@ -47,9 +49,9 @@ export class MediaWorkerService implements OnModuleInit, OnModuleDestroy {
       },
     );
 
-    this.worker.on('completed', () => this.metrics.setWorkerMetrics({ ready: true }));
+    this.worker.on('completed', () => this.metrics.setWorkerMetrics({ workerReady: true }));
     this.worker.on('failed', (_job, error) => {
-      this.metrics.setWorkerMetrics({ ready: true });
+      this.metrics.setWorkerMetrics({ workerReady: true });
       this.logger.warn(
         JSON.stringify({
           event: 'media_image_job_failed',
@@ -57,7 +59,7 @@ export class MediaWorkerService implements OnModuleInit, OnModuleDestroy {
         }),
       );
     });
-    this.metrics.setWorkerMetrics({ ready: true });
+    this.metrics.setWorkerMetrics({ workerReady: true });
   }
 
   async processProductImage(imageId: string): Promise<void> {
@@ -144,6 +146,7 @@ export class MediaWorkerService implements OnModuleInit, OnModuleDestroy {
         },
         select: { id: true },
       });
+      await this.invalidateProductImageCache(image.productId);
     } catch (error) {
       await this.prisma.productImage.update({
         where: { id: image.id },
@@ -153,6 +156,7 @@ export class MediaWorkerService implements OnModuleInit, OnModuleDestroy {
         },
         select: { id: true },
       });
+      await this.invalidateProductImageCache(image.productId);
       throw error;
     }
   }
@@ -176,6 +180,18 @@ export class MediaWorkerService implements OnModuleInit, OnModuleDestroy {
             },
           }
         : {}),
+    });
+  }
+
+  private async invalidateProductImageCache(productId: string): Promise<void> {
+    await this.cache.invalidateProducts().catch((error: unknown) => {
+      this.logger.warn(
+        JSON.stringify({
+          event: 'media_image_cache_invalidation_failed',
+          productId,
+          message: error instanceof Error ? error.message : 'Cache invalidation failed',
+        }),
+      );
     });
   }
 }
