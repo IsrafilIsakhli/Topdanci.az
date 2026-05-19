@@ -18,13 +18,18 @@ import {
 import { ProductCard } from '../components/product-card';
 import { SiteFooter } from '../components/site-footer';
 import { SiteHeader } from '../components/site-header';
-import { categories, heroImage, products, stats, stores } from '../lib/catalog-data';
+import { getCategories, getProducts, getStores, heroImage, stats } from '../lib/catalog-data';
 
-const premiumStores = stores.slice(0, 3);
-const featuredProducts = products.slice(0, 4);
-const spotlightCategories = categories.slice(0, 8);
+export default async function HomePage() {
+  const [categories, products, stores] = await Promise.all([
+    getCategories({ rootsOnly: true }),
+    getProducts({ limit: 8 }),
+    getStores({ limit: 6 }),
+  ]);
+  const premiumStores = stores.slice(0, 3);
+  const featuredProducts = products.slice(0, 4);
+  const spotlightCategories = categories.slice(0, 8);
 
-export default function HomePage() {
   return (
     <main className="site-shell">
       <SiteHeader />
@@ -132,7 +137,7 @@ export default function HomePage() {
           </div>
 
           <div className="premium-store-grid">
-            {premiumStores.map((store, index) => (
+            {premiumStores.length ? premiumStores.map((store, index) => (
               <Link className="premium-store-card" href={`/stores/${store.slug}`} key={store.slug}>
                 <div className="premium-store-cover" style={{ backgroundImage: `url(${store.coverImageUrl})` }}>
                   <span className="sponsored-pill">
@@ -157,7 +162,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </Link>
-            ))}
+            )) : <p className="empty-state">Hazırda göstəriləcək mağaza yoxdur.</p>}
           </div>
         </div>
       </section>
@@ -174,9 +179,9 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="grid product-grid featured-product-grid">
-            {featuredProducts.map((product) => (
+            {featuredProducts.length ? featuredProducts.map((product) => (
               <ProductCard key={product.slug} product={product} />
-            ))}
+            )) : <p className="empty-state">Hazırda göstəriləcək məhsul yoxdur.</p>}
           </div>
         </div>
       </section>

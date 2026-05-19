@@ -1,9 +1,21 @@
 import { ProductCard } from '../../components/product-card';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
-import { products } from '../../lib/catalog-data';
+import { getProducts } from '../../lib/catalog-data';
 
-export default function ProductsPage() {
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ q?: string; category?: string; city?: string }>;
+}) {
+  const query = await searchParams;
+  const products = await getProducts({
+    q: query?.q,
+    category: query?.category,
+    city: query?.city,
+    limit: 48,
+  });
+
   return (
     <main className="site-shell">
       <SiteHeader />
@@ -20,9 +32,9 @@ export default function ProductsPage() {
             </select>
           </div>
           <div className="grid product-grid">
-            {products.map((product) => (
+            {products.length ? products.map((product) => (
               <ProductCard key={product.slug} product={product} />
-            ))}
+            )) : <p className="empty-state">Axtarışa uyğun aktiv məhsul tapılmadı.</p>}
           </div>
         </div>
       </section>

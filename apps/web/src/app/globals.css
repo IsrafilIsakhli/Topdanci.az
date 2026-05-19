@@ -2007,6 +2007,18 @@ textarea:focus-visible {
   gap: 6px;
 }
 
+.empty-state {
+  grid-column: 1 / -1;
+  margin: 0;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--color-muted);
+  font-weight: 800;
+  padding: 18px;
+  text-align: center;
+}
+
 .product-meta span {
   display: inline-flex;
   align-items: center;

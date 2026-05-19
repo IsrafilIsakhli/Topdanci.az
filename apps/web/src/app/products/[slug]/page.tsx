@@ -15,7 +15,7 @@ import {
 import { ProductCard } from '../../../components/product-card';
 import { SiteFooter } from '../../../components/site-footer';
 import { SiteHeader } from '../../../components/site-header';
-import { products } from '../../../lib/catalog-data';
+import { getProduct, getProducts } from '../../../lib/catalog-data';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -39,17 +39,21 @@ const benefitCards = [
 
 export default async function ProductDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const product = products.find((item) => item.slug === slug);
+  const product = await getProduct(slug);
 
   if (!product) {
     notFound();
   }
 
-  const galleryImages = [product.imageUrl, ...products.filter((item) => item.slug !== product.slug).map((item) => item.imageUrl)].slice(0, 4);
-  const relatedProducts = products.filter((item) => item.slug !== product.slug);
-  const sameStoreProducts = products.filter((item) => item.store === product.store && item.slug !== product.slug);
+  const [categoryProducts, storeProductsFromApi] = await Promise.all([
+    getProducts({ category: product.categorySlug, limit: 8 }),
+    product.storeSlug ? getProducts({ store: product.storeSlug, limit: 8 }) : Promise.resolve([]),
+  ]);
+  const galleryImages = [product.imageUrl, ...categoryProducts.filter((item) => item.slug !== product.slug).map((item) => item.imageUrl)].slice(0, 4);
+  const relatedProducts = categoryProducts.filter((item) => item.slug !== product.slug);
+  const sameStoreProducts = storeProductsFromApi.filter((item) => item.slug !== product.slug);
   const storeProducts = sameStoreProducts.length ? sameStoreProducts : relatedProducts;
-  const storeSlug = product.store.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const storeSlug = product.storeSlug ?? product.store.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
   const technicalRows = [
     ['Kateqoriya', product.category],
@@ -206,9 +210,9 @@ export default async function ProductDetailPage({ params }: PageProps) {
             </Link>
           </div>
           <div className="grid product-grid">
-            {storeProducts.map((item) => (
+            {storeProducts.length ? storeProducts.map((item) => (
               <ProductCard key={item.slug} product={item} />
-            ))}
+            )) : <p className="empty-state">Bu mağazadan əlavə aktiv məhsul tapılmadı.</p>}
           </div>
         </div>
       </section>
@@ -219,9 +223,9 @@ export default async function ProductDetailPage({ params }: PageProps) {
             <h2>Oxşar məhsullar</h2>
           </div>
           <div className="grid product-grid">
-            {relatedProducts.map((item) => (
+            {relatedProducts.length ? relatedProducts.map((item) => (
               <ProductCard key={item.slug} product={item} />
-            ))}
+            )) : <p className="empty-state">Oxşar aktiv məhsul tapılmadı.</p>}
           </div>
         </div>
       </section>

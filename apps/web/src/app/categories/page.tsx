@@ -2,9 +2,16 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
-import { categories } from '../../lib/catalog-data';
+import { getCategories } from '../../lib/catalog-data';
 
-export default function CategoriesPage() {
+export default async function CategoriesPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ q?: string }>;
+}) {
+  const query = await searchParams;
+  const categories = await getCategories({ q: query?.q, rootsOnly: true });
+
   return (
     <main className="site-shell">
       <SiteHeader />
@@ -30,7 +37,7 @@ export default function CategoriesPage() {
         <div className="container">
           <h2>Bütün kateqoriyalar</h2>
           <div className="grid category-tree-grid" style={{ marginTop: 24 }}>
-            {categories.map((category) => {
+            {categories.length ? categories.map((category) => {
               const Icon = category.icon;
               const visibleChildren = category.children?.slice(0, 2) ?? [];
               const hiddenChildrenCount = Math.max((category.children?.length ?? 0) - visibleChildren.length, 0);
@@ -60,7 +67,7 @@ export default function CategoriesPage() {
                   </span>
                 </Link>
               );
-            })}
+            }) : <p className="empty-state">Axtarışa uyğun kateqoriya tapılmadı.</p>}
           </div>
         </div>
       </section>

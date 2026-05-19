@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { SiteFooter } from '../../../components/site-footer';
 import { SiteHeader } from '../../../components/site-header';
-import { products, stores } from '../../../lib/catalog-data';
+import { getProducts, getStore } from '../../../lib/catalog-data';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -26,17 +26,13 @@ const tabs = ['Məhsullar', 'Mağaza haqqında', 'Əlaqə', 'Statistikalar'];
 
 export default async function StoreDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const store = stores.find((item) => item.slug === slug);
+  const store = await getStore(slug);
 
   if (!store) {
     notFound();
   }
 
-  const storeProducts = products.map((product) => ({
-    ...product,
-    store: store.name,
-    city: store.city,
-  }));
+  const storeProducts = await getProducts({ store: store.slug, limit: 48 });
 
   return (
     <main className="site-shell store-profile-page">
@@ -127,7 +123,7 @@ export default async function StoreDetailPage({ params }: PageProps) {
             </div>
 
             <div className="store-product-grid">
-              {storeProducts.map((product) => (
+              {storeProducts.length ? storeProducts.map((product) => (
                 <article className="store-product-card" key={product.slug}>
                   <Link className="store-product-image" href={`/products/${product.slug}`}>
                     <span style={{ backgroundImage: `url(${product.imageUrl})` }} role="img" aria-label={product.imageAlt} />
@@ -154,7 +150,7 @@ export default async function StoreDetailPage({ params }: PageProps) {
                     </div>
                   </div>
                 </article>
-              ))}
+              )) : <p className="empty-state">Bu mağazada aktiv məhsul tapılmadı.</p>}
             </div>
 
             <div className="store-load-more">

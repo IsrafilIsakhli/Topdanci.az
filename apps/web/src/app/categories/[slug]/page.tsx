@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { SiteFooter } from '../../../components/site-footer';
 import { SiteHeader } from '../../../components/site-header';
-import { categories, products } from '../../../lib/catalog-data';
+import { getCategory, getProducts } from '../../../lib/catalog-data';
 import { ProductCard } from '../../../components/product-card';
 
 type PageProps = {
@@ -11,11 +11,12 @@ type PageProps = {
 
 export default async function CategoryDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const category = categories.find((item) => item.slug === slug);
+  const category = await getCategory(slug);
 
   if (!category) {
     notFound();
   }
+  const products = await getProducts({ category: category.slug, limit: 48 });
 
   return (
     <main className="site-shell">
@@ -38,9 +39,9 @@ export default async function CategoryDetailPage({ params }: PageProps) {
       </section>
       <section className="section section-muted">
         <div className="container grid product-grid">
-          {products.map((product) => (
+          {products.length ? products.map((product) => (
             <ProductCard key={product.slug} product={product} />
-          ))}
+          )) : <p className="empty-state">Bu kateqoriyada aktiv məhsul tapılmadı.</p>}
         </div>
       </section>
       <SiteFooter />

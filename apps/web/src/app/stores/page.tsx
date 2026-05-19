@@ -2,9 +2,21 @@ import Link from 'next/link';
 import { MapPin, Store } from 'lucide-react';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
-import { stores } from '../../lib/catalog-data';
+import { getStores } from '../../lib/catalog-data';
 
-export default function StoresPage() {
+export default async function StoresPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ q?: string; category?: string; city?: string }>;
+}) {
+  const query = await searchParams;
+  const stores = await getStores({
+    q: query?.q,
+    category: query?.category,
+    city: query?.city,
+    limit: 48,
+  });
+
   return (
     <main className="site-shell">
       <SiteHeader />
@@ -13,7 +25,7 @@ export default function StoresPage() {
           <h1>Mağazalar</h1>
           <p className="lead">Yoxlanılmış topdansatıcı mağazalara baxın.</p>
           <div className="grid store-grid" style={{ marginTop: 28 }}>
-            {stores.map((store) => (
+            {stores.length ? stores.map((store) => (
               <Link className="card store-card" href={`/stores/${store.slug}`} key={store.slug}>
                 <div>
                   <span className="icon-badge">
@@ -26,7 +38,7 @@ export default function StoresPage() {
                   <MapPin size={14} /> {store.city} · {store.productCount} məhsul
                 </span>
               </Link>
-            ))}
+            )) : <p className="empty-state">Axtarışa uyğun aktiv mağaza tapılmadı.</p>}
           </div>
         </div>
       </section>
