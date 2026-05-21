@@ -13,6 +13,7 @@ const {
 const { existsSync } = require('node:fs');
 const { resolve } = require('node:path');
 const dotenv = require('dotenv');
+const bcrypt = require('bcryptjs');
 
 for (const envPath of [resolve(process.cwd(), '.env'), resolve(process.cwd(), '../../.env'), resolve(__dirname, '../../../.env')]) {
   if (existsSync(envPath)) {
@@ -23,6 +24,7 @@ for (const envPath of [resolve(process.cwd(), '.env'), resolve(process.cwd(), '.
 const prisma = new PrismaClient();
 const adminPasswordHash = '$2a$10$31WD4STobdOzFNQ8bJLzJOrZu..w/J21gnUtKtH14NayDTmVTQCZ2';
 const sellerPasswordHash = '$2a$10$dQsja4DxBdEcr6aOWskOrOVaF/Yl2VctnnPXBIFa9V6hXNcLeIKIW';
+const demoSellerPasswordHash = bcrypt.hashSync('SellerDemo123!', 10);
 
 const categoryTree = [
   {
@@ -300,6 +302,25 @@ async function main() {
     },
   });
 
+  const demoSellerUser = await prisma.user.upsert({
+    where: { email: 'seller-demo@topdanci.az' },
+    create: {
+      email: 'seller-demo@topdanci.az',
+      phone: '+994501119900',
+      fullName: 'Demo Seller',
+      passwordHash: demoSellerPasswordHash,
+      role: UserRole.SELLER,
+      status: UserStatus.ACTIVE,
+    },
+    update: {
+      phone: '+994501119900',
+      fullName: 'Demo Seller',
+      passwordHash: demoSellerPasswordHash,
+      role: UserRole.SELLER,
+      status: UserStatus.ACTIVE,
+    },
+  });
+
   const bakuTextile = await prisma.store.upsert({
     where: { slug: 'baku-tekstil-mmc' },
     create: {
@@ -390,6 +411,50 @@ async function main() {
     },
   });
 
+  const demoStore = await prisma.store.upsert({
+    where: { slug: 'demo-topdan-market' },
+    create: {
+      ownerUserId: demoSellerUser.id,
+      slug: 'demo-topdan-market',
+      name: 'Demo Topdan Market MMC',
+      legalName: 'Demo Topdan Market MMC',
+      categoryId: constructionCategory.id,
+      city: 'Baki',
+      district: 'Nerimanov',
+      address: 'Ataturk prospekti 12',
+      description: 'Demo seller paneli ucun test magazasi.',
+      status: StoreStatus.ACTIVE,
+      verifiedAt: new Date(),
+      publishedAt: new Date(),
+      whatsappNumber: '+994501119900',
+      phone: '+994501119900',
+      email: 'seller-demo@topdanci.az',
+      workingHours: {
+        workdays: '09:00 - 18:00',
+        saturday: '10:00 - 15:00',
+        sunday: 'Baglidir',
+      },
+    },
+    update: {
+      ownerUserId: demoSellerUser.id,
+      categoryId: constructionCategory.id,
+      city: 'Baki',
+      district: 'Nerimanov',
+      description: 'Demo seller paneli ucun test magazasi.',
+      status: StoreStatus.ACTIVE,
+      verifiedAt: new Date(),
+      publishedAt: new Date(),
+      whatsappNumber: '+994501119900',
+      phone: '+994501119900',
+      email: 'seller-demo@topdanci.az',
+      workingHours: {
+        workdays: '09:00 - 18:00',
+        saturday: '10:00 - 15:00',
+        sunday: 'Baglidir',
+      },
+    },
+  });
+
   await prisma.storeMember.upsert({
     where: {
       storeId_userId: {
@@ -400,6 +465,23 @@ async function main() {
     create: {
       storeId: bakuTextile.id,
       userId: sellerUser.id,
+      role: StoreRole.OWNER,
+    },
+    update: {
+      role: StoreRole.OWNER,
+    },
+  });
+
+  await prisma.storeMember.upsert({
+    where: {
+      storeId_userId: {
+        storeId: demoStore.id,
+        userId: demoSellerUser.id,
+      },
+    },
+    create: {
+      storeId: demoStore.id,
+      userId: demoSellerUser.id,
       role: StoreRole.OWNER,
     },
     update: {
@@ -516,6 +598,101 @@ async function main() {
     },
     update: {
       categoryId: textileCategory.id,
+      status: ProductStatus.PENDING_REVIEW,
+      publishedAt: null,
+    },
+  });
+
+  await prisma.product.upsert({
+    where: { slug: 'demo-sement-m400-50kg' },
+    create: {
+      storeId: demoStore.id,
+      categoryId: constructionCategory.id,
+      slug: 'demo-sement-m400-50kg',
+      title: 'Demo Sement M-400 50 kq',
+      description: 'Demo seller paneli ucun aktiv mehsul. Minimum sifaris 100 eded.',
+      price: 8.5,
+      priceType: PriceType.FIXED,
+      currency: 'AZN',
+      unit: ProductUnit.PIECE,
+      minOrderQuantity: 100,
+      stockStatus: 'IN_STOCK',
+      status: ProductStatus.ACTIVE,
+      publishedAt: new Date(),
+    },
+    update: {
+      storeId: demoStore.id,
+      categoryId: constructionCategory.id,
+      price: 8.5,
+      priceType: PriceType.FIXED,
+      status: ProductStatus.ACTIVE,
+      publishedAt: new Date(),
+    },
+  });
+
+  await prisma.product.upsert({
+    where: { slug: 'demo-armatur-12mm-topdan' },
+    create: {
+      storeId: demoStore.id,
+      categoryId: constructionCategory.id,
+      slug: 'demo-armatur-12mm-topdan',
+      title: 'Demo Armatur 12mm Topdan',
+      description: 'Topdan tikinti materiallari ucun demo aktiv mehsul.',
+      priceType: PriceType.NEGOTIABLE,
+      unit: ProductUnit.TON,
+      minOrderQuantity: 10,
+      stockStatus: 'IN_STOCK',
+      status: ProductStatus.ACTIVE,
+      publishedAt: new Date(),
+    },
+    update: {
+      storeId: demoStore.id,
+      categoryId: constructionCategory.id,
+      priceType: PriceType.NEGOTIABLE,
+      status: ProductStatus.ACTIVE,
+      publishedAt: new Date(),
+    },
+  });
+
+  await prisma.product.upsert({
+    where: { slug: 'demo-qaralama-mehsul' },
+    create: {
+      storeId: demoStore.id,
+      categoryId: constructionCategory.id,
+      slug: 'demo-qaralama-mehsul',
+      title: 'Demo Qaralama Mehsul',
+      description: 'Seller panelinde redakte ve draft yoxlamasi ucun qaralama.',
+      priceType: PriceType.NEGOTIABLE,
+      unit: ProductUnit.PIECE,
+      minOrderQuantity: 20,
+      stockStatus: 'PREORDER',
+      status: ProductStatus.DRAFT,
+    },
+    update: {
+      storeId: demoStore.id,
+      categoryId: constructionCategory.id,
+      status: ProductStatus.DRAFT,
+      publishedAt: null,
+    },
+  });
+
+  await prisma.product.upsert({
+    where: { slug: 'demo-yoxlamada-mehsul' },
+    create: {
+      storeId: demoStore.id,
+      categoryId: constructionCategory.id,
+      slug: 'demo-yoxlamada-mehsul',
+      title: 'Demo Yoxlamada Mehsul',
+      description: 'Admin moderation flow ucun pending review demo mehsulu.',
+      priceType: PriceType.NEGOTIABLE,
+      unit: ProductUnit.PACKAGE,
+      minOrderQuantity: 30,
+      stockStatus: 'IN_STOCK',
+      status: ProductStatus.PENDING_REVIEW,
+    },
+    update: {
+      storeId: demoStore.id,
+      categoryId: constructionCategory.id,
       status: ProductStatus.PENDING_REVIEW,
       publishedAt: null,
     },

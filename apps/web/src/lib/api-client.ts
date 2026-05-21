@@ -38,6 +38,38 @@ export async function apiPost<T>(path: string, body: unknown, options: ApiClient
   );
 }
 
+export async function apiPatch<T>(path: string, body: unknown, options: ApiClientOptions = {}): Promise<T> {
+  const csrfToken = options.csrfToken ?? getBrowserCookie('tb_csrf');
+
+  return apiRequest<T>(
+    path,
+    {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+        ...(csrfToken ? { 'x-csrf-token': csrfToken } : {}),
+      },
+      body: JSON.stringify(body),
+    },
+    options,
+  );
+}
+
+export async function apiDelete<T>(path: string, options: ApiClientOptions = {}): Promise<T> {
+  const csrfToken = options.csrfToken ?? getBrowserCookie('tb_csrf');
+
+  return apiRequest<T>(
+    path,
+    {
+      method: 'DELETE',
+      headers: {
+        ...(csrfToken ? { 'x-csrf-token': csrfToken } : {}),
+      },
+    },
+    options,
+  );
+}
+
 async function apiRequest<T>(path: string, init: RequestInit, options: ApiClientOptions): Promise<T> {
   const baseUrl =
     options.baseUrl ??

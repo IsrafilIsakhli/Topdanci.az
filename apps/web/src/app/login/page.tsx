@@ -1,12 +1,13 @@
-import Link from 'next/link';
-import { CheckCircle2, Lock, Store } from 'lucide-react';
+import { Suspense } from 'react';
+import { CheckCircle2, Store } from 'lucide-react';
 import { SiteHeader } from '../../components/site-header';
+import { LoginForm } from './login-form';
 
 const benefits = [
-  '400+ təsdiqlənmiş mağaza',
-  '200K+ topdansatış məhsulu',
-  'WhatsApp və telefon klik statistikası',
-  'Güvənli mağaza paneli',
+  'Məhsullarınızı real vaxtda idarə edin',
+  'WhatsApp və telefon kliklərini izləyin',
+  'Yoxlamaya göndərilən məhsulları görün',
+  'Təhlükəsiz mağaza panelinə daxil olun',
 ];
 
 export default function LoginPage() {
@@ -30,32 +31,9 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <form className="auth-card">
-            <div>
-              <h2>Daxil ol</h2>
-              <p className="card-meta">Hesabınıza daxil olun və mağaza panelinizi idarə edin.</p>
-            </div>
-            <div className="field-grid">
-              <label className="field">
-                <span>E-poçt və ya telefon</span>
-                <input type="text" placeholder="numune@email.com və ya +994..." autoComplete="username" />
-              </label>
-              <label className="field">
-                <span>Şifrə</span>
-                <input type="password" placeholder="********" autoComplete="current-password" />
-              </label>
-            </div>
-            <button className="button button-primary button-full" type="submit">
-              Daxil ol
-              <Lock size={16} />
-            </button>
-            <p className="card-meta">
-              Mağazanız yoxdur?{' '}
-              <Link className="card-link" href="/open-store">
-                Mağaza aç
-              </Link>
-            </p>
-          </form>
+          <Suspense fallback={<div className="auth-card">Giriş formu hazırlanır...</div>}>
+            <LoginForm />
+          </Suspense>
         </div>
       </section>
     </main>

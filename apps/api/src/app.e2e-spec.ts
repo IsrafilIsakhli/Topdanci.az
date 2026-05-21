@@ -1,5 +1,6 @@
 import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { LeadType } from '@prisma/client';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { AppModule } from './app.module';
@@ -101,6 +102,14 @@ describe('TopdanBazar API smoke e2e', () => {
     const products = await request(app.getHttpServer()).get('/api/v1/products').expect(200);
     const product = products.body.data[0];
     const anonymousId = `lead-${Date.now()}`;
+
+    await prisma.leadEvent.deleteMany({
+      where: {
+        type: LeadType.PRODUCT_VIEW,
+        storeId: product.store.id,
+        productId: product.id,
+      },
+    });
 
     const tracked = await request(app.getHttpServer())
       .post('/api/v1/leads')

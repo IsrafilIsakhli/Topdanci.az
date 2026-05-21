@@ -6,6 +6,14 @@ export class ListSellerProductsQueryDto {
   @IsOptional()
   storeId?: string;
 
+  @IsString()
+  @IsOptional()
+  q?: string;
+
+  @IsString()
+  @IsOptional()
+  categoryId?: string;
+
   @IsEnum(ProductStatus)
   @IsOptional()
   status?: ProductStatus;

@@ -6,8 +6,7 @@ export const metadata: Metadata = {
     default: 'TopdanBazar | B2B Topdansatış Platforması',
     template: '%s | TopdanBazar',
   },
-  description:
-    'Topdansatıcı mağazaları, məhsulları və birbaşa əlaqə imkanlarını bir yerdə kəşf edin.',
+  description: 'Topdansatıcı mağazaları, məhsulları və birbaşa əlaqə imkanlarını bir yerdə kəşf edin.',
   icons: {
     icon: '/favicon.svg',
   },

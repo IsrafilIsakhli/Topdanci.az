@@ -5,6 +5,8 @@ import type { AuthenticatedUser } from '../../common/auth/authenticated-user';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { ListSellerProductsQueryDto } from './dto/list-seller-products-query.dto';
+import { ListSellerLeadsQueryDto, SellerAnalyticsQueryDto } from './dto/seller-analytics-query.dto';
+import { UpdateSellerStoreDto } from './dto/update-seller-store.dto';
 import { CreateSellerProductDto, UpdateSellerProductDto } from './dto/write-product.dto';
 import { SellerService } from './seller.service';
 
@@ -22,9 +24,43 @@ export class SellerController {
     return this.sellerService.overview(user);
   }
 
+  @Get('stores')
+  listStores(@CurrentUser() user: AuthenticatedUser) {
+    return this.sellerService.listStores(user);
+  }
+
+  @Get('stores/:id')
+  getStore(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    return this.sellerService.getStore(user, id);
+  }
+
+  @Patch('stores/:id')
+  updateStore(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+    @Body() dto: UpdateSellerStoreDto,
+  ) {
+    return this.sellerService.updateStore(user, id, dto);
+  }
+
+  @Get('analytics')
+  analytics(@CurrentUser() user: AuthenticatedUser, @Query() query: SellerAnalyticsQueryDto) {
+    return this.sellerService.analytics(user, query);
+  }
+
+  @Get('leads')
+  leads(@CurrentUser() user: AuthenticatedUser, @Query() query: ListSellerLeadsQueryDto) {
+    return this.sellerService.listLeads(user, query);
+  }
+
   @Get('products')
   listProducts(@CurrentUser() user: AuthenticatedUser, @Query() query: ListSellerProductsQueryDto) {
     return this.sellerService.listProducts(user, query);
+  }
+
+  @Get('products/:id')
+  getProduct(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    return this.sellerService.getProduct(user, id);
   }
 
   @Post('products')

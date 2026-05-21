@@ -1,5 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { PriceType, Prisma, ProductStatus, StoreStatus, UserRole } from '@prisma/client';
+import { LeadType, PriceType, Prisma, ProductStatus, StoreStatus, UserRole } from '@prisma/client';
 import type { AuthenticatedUser } from '../../common/auth/authenticated-user';
 import { PublicCacheService } from '../../common/cache/public-cache.service';
 import { toCursorPagination } from '../../common/pagination/cursor-pagination';
@@ -7,6 +7,8 @@ import { slugify } from '../../common/slug/slugify';
 import { AuditService } from '../audit/audit.service';
 import { PrismaService } from '../prisma/prisma.service';
 import type { ListSellerProductsQueryDto } from './dto/list-seller-products-query.dto';
+import type { ListSellerLeadsQueryDto, SellerAnalyticsQueryDto } from './dto/seller-analytics-query.dto';
+import type { UpdateSellerStoreDto } from './dto/update-seller-store.dto';
 import type { CreateSellerProductDto, UpdateSellerProductDto } from './dto/write-product.dto';
 
 @Injectable()
@@ -18,71 +20,270 @@ export class SellerService {
   ) {}
 
   async overview(user: AuthenticatedUser) {
-    if (user.role === UserRole.ADMIN || user.role === UserRole.SUPER_ADMIN) {
+    const storeIds = await this.scopedStoreIds(user);
+
+    if (storeIds.length === 0) {
       return {
         data: {
           totalProducts: 0,
           activeProducts: 0,
           pendingProducts: 0,
+          draftProducts: 0,
           whatsappClicksToday: 0,
           storeViewsToday: 0,
-          adminScoped: true,
-        },
-      };
-    }
-
-    const storeIds = await this.prisma.storeMember.findMany({
-      where: { userId: user.id },
-      select: { storeId: true },
-    });
-    const scopedStoreIds = storeIds.map((store) => store.storeId);
-
-    if (scopedStoreIds.length === 0) {
-      return {
-        data: {
-          totalProducts: 0,
-          activeProducts: 0,
-          pendingProducts: 0,
-          whatsappClicksToday: 0,
-          storeViewsToday: 0,
+          stores: [],
+          recentLeads: [],
+          topProducts: [],
         },
       };
     }
 
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
-    const [totalProducts, activeProducts, pendingProducts, whatsappClicksToday, storeViewsToday] =
-      await Promise.all([
-        this.prisma.product.count({ where: { storeId: { in: scopedStoreIds } } }),
-        this.prisma.product.count({
-          where: { storeId: { in: scopedStoreIds }, status: ProductStatus.ACTIVE },
-        }),
-        this.prisma.product.count({
-          where: { storeId: { in: scopedStoreIds }, status: ProductStatus.PENDING_REVIEW },
-        }),
-        this.prisma.leadEvent.count({
-          where: {
-            storeId: { in: scopedStoreIds },
-            type: 'WHATSAPP_CLICK',
-            createdAt: { gte: startOfToday },
+
+    const [
+      stores,
+      totalProducts,
+      activeProducts,
+      pendingProducts,
+      draftProducts,
+      whatsappClicksToday,
+      storeViewsToday,
+      recentLeads,
+      topProductGroups,
+    ] = await Promise.all([
+      this.prisma.store.findMany({
+        where: { id: { in: storeIds } },
+        orderBy: [{ updatedAt: 'desc' }, { id: 'desc' }],
+        select: sellerStoreSelect,
+      }),
+      this.prisma.product.count({ where: { storeId: { in: storeIds }, status: { not: ProductStatus.DELETED } } }),
+      this.prisma.product.count({ where: { storeId: { in: storeIds }, status: ProductStatus.ACTIVE } }),
+      this.prisma.product.count({
+        where: { storeId: { in: storeIds }, status: ProductStatus.PENDING_REVIEW },
+      }),
+      this.prisma.product.count({ where: { storeId: { in: storeIds }, status: ProductStatus.DRAFT } }),
+      this.prisma.leadEvent.count({
+        where: {
+          storeId: { in: storeIds },
+          type: LeadType.WHATSAPP_CLICK,
+          createdAt: { gte: startOfToday },
+        },
+      }),
+      this.prisma.leadEvent.count({
+        where: {
+          storeId: { in: storeIds },
+          type: LeadType.STORE_VIEW,
+          createdAt: { gte: startOfToday },
+        },
+      }),
+      this.prisma.leadEvent.findMany({
+        where: { storeId: { in: storeIds } },
+        take: 8,
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        select: sellerLeadSelect,
+      }),
+      this.prisma.leadEvent.groupBy({
+        by: ['productId'],
+        where: {
+          storeId: { in: storeIds },
+          productId: { not: null },
+        },
+        _count: { _all: true },
+        orderBy: { _count: { productId: 'desc' } },
+        take: 5,
+      }),
+    ]);
+
+    const topProductIds = topProductGroups
+      .map((item) => item.productId)
+      .filter((productId): productId is string => Boolean(productId));
+    const topProducts = topProductIds.length
+      ? await this.prisma.product.findMany({
+          where: { id: { in: topProductIds } },
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            status: true,
+            images: {
+              orderBy: { sortOrder: 'asc' },
+              take: 1,
+              select: {
+                id: true,
+                cdnUrl: true,
+                status: true,
+                sortOrder: true,
+              },
+            },
           },
-        }),
-        this.prisma.leadEvent.count({
-          where: {
-            storeId: { in: scopedStoreIds },
-            type: 'STORE_VIEW',
-            createdAt: { gte: startOfToday },
-          },
-        }),
-      ]);
+        })
+      : [];
 
     return {
       data: {
         totalProducts,
         activeProducts,
         pendingProducts,
+        draftProducts,
         whatsappClicksToday,
         storeViewsToday,
+        stores: stores.map(mapSellerStore),
+        recentLeads: recentLeads.map(mapSellerLead),
+        topProducts: topProductGroups.map((group) => {
+          const product = topProducts.find((item) => item.id === group.productId);
+          return {
+            id: group.productId,
+            title: product?.title ?? 'Məhsul',
+            slug: product?.slug ?? null,
+            status: product?.status ?? null,
+            leadCount: group._count._all,
+            image: product?.images?.[0] ?? null,
+          };
+        }),
+      },
+    };
+  }
+
+  async listStores(user: AuthenticatedUser) {
+    const storeIds = await this.scopedStoreIds(user);
+    const stores = await this.prisma.store.findMany({
+      where: { id: { in: storeIds } },
+      orderBy: [{ updatedAt: 'desc' }, { id: 'desc' }],
+      select: sellerStoreSelect,
+    });
+
+    return {
+      data: stores.map(mapSellerStore),
+      meta: {
+        total: stores.length,
+      },
+    };
+  }
+
+  async getStore(user: AuthenticatedUser, id: string) {
+    await this.requireStoreAccess(user, id);
+    const store = await this.prisma.store.findUnique({
+      where: { id },
+      select: sellerStoreSelect,
+    });
+
+    if (!store) {
+      throw new NotFoundException('Store not found');
+    }
+
+    return { data: mapSellerStore(store) };
+  }
+
+  async updateStore(user: AuthenticatedUser, id: string, dto: UpdateSellerStoreDto) {
+    await this.requireStoreAccess(user, id);
+    this.ensurePatchHasChanges(dto);
+
+    const data: Prisma.StoreUpdateInput = {};
+
+    if (dto.name !== undefined) data.name = dto.name;
+    if (dto.legalName !== undefined) data.legalName = dto.legalName;
+    if (dto.description !== undefined) data.description = dto.description;
+    if (dto.city !== undefined) data.city = dto.city;
+    if (dto.district !== undefined) data.district = dto.district;
+    if (dto.address !== undefined) data.address = dto.address;
+    if (dto.phone !== undefined) data.phone = dto.phone;
+    if (dto.whatsappNumber !== undefined) data.whatsappNumber = dto.whatsappNumber;
+    if (dto.email !== undefined) data.email = dto.email;
+    if (dto.logoKey !== undefined) data.logoKey = dto.logoKey;
+    if (dto.bannerKey !== undefined) data.bannerKey = dto.bannerKey;
+    if (dto.workingHours !== undefined) data.workingHours = dto.workingHours as Prisma.InputJsonValue;
+
+    const store = await this.prisma.store.update({
+      where: { id },
+      data,
+      select: sellerStoreSelect,
+    });
+
+    await this.audit.record({
+      actorId: user.id,
+      action: 'SELLER_STORE_UPDATED',
+      resourceType: 'Store',
+      resourceId: store.id,
+    });
+    await this.cache.invalidateStores();
+
+    return { data: mapSellerStore(store) };
+  }
+
+  async analytics(user: AuthenticatedUser, query: SellerAnalyticsQueryDto) {
+    const storeIds = await this.scopedStoreIds(user, query.storeId);
+    const since = rangeStartDate(query.range);
+
+    const [leadGroups, productGroups, totalLeads] = await Promise.all([
+      this.prisma.leadEvent.groupBy({
+        by: ['type'],
+        where: { storeId: { in: storeIds }, createdAt: { gte: since } },
+        _count: { _all: true },
+      }),
+      this.prisma.product.groupBy({
+        by: ['status'],
+        where: { storeId: { in: storeIds } },
+        _count: { _all: true },
+      }),
+      this.prisma.leadEvent.count({
+        where: { storeId: { in: storeIds }, createdAt: { gte: since } },
+      }),
+    ]);
+
+    const leadCounts = Object.fromEntries(leadGroups.map((item) => [item.type, item._count._all]));
+    const productCounts = Object.fromEntries(productGroups.map((item) => [item.status, item._count._all]));
+
+    return {
+      data: {
+        range: query.range,
+        totalLeads,
+        leadCounts: {
+          productViews: leadCounts[LeadType.PRODUCT_VIEW] ?? 0,
+          storeViews: leadCounts[LeadType.STORE_VIEW] ?? 0,
+          whatsappClicks: leadCounts[LeadType.WHATSAPP_CLICK] ?? 0,
+          phoneReveals: leadCounts[LeadType.PHONE_REVEAL] ?? 0,
+          emailClicks: leadCounts[LeadType.EMAIL_CLICK] ?? 0,
+        },
+        productCounts: {
+          draft: productCounts[ProductStatus.DRAFT] ?? 0,
+          pendingReview: productCounts[ProductStatus.PENDING_REVIEW] ?? 0,
+          active: productCounts[ProductStatus.ACTIVE] ?? 0,
+          passive: productCounts[ProductStatus.PASSIVE] ?? 0,
+          rejected: productCounts[ProductStatus.REJECTED] ?? 0,
+          deleted: productCounts[ProductStatus.DELETED] ?? 0,
+        },
+      },
+    };
+  }
+
+  async listLeads(user: AuthenticatedUser, query: ListSellerLeadsQueryDto) {
+    const storeIds = await this.scopedStoreIds(user, query.storeId);
+    const since = rangeStartDate(query.range);
+    const { take, cursor, skip } = toCursorPagination(query);
+    const where: Prisma.LeadEventWhereInput = {
+      storeId: { in: storeIds },
+      createdAt: { gte: since },
+      ...(query.type ? { type: query.type } : {}),
+    };
+    const [leads, total] = await Promise.all([
+      this.prisma.leadEvent.findMany({
+        where,
+        take: take + 1,
+        ...(cursor ? { cursor } : {}),
+        ...(skip ? { skip } : {}),
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        select: sellerLeadSelect,
+      }),
+      this.prisma.leadEvent.count({ where }),
+    ]);
+    const page = leads.slice(0, take);
+
+    return {
+      data: page.map(mapSellerLead),
+      meta: {
+        total,
+        nextCursor: leads.length > take ? page.at(-1)?.id ?? null : null,
       },
     };
   }
@@ -93,6 +294,15 @@ export class SellerService {
     const where: Prisma.ProductWhereInput = {
       storeId: { in: storeIds },
       ...(query.status ? { status: query.status } : {}),
+      ...(query.categoryId ? { categoryId: query.categoryId } : {}),
+      ...(query.q
+        ? {
+            OR: [
+              { title: { contains: query.q, mode: 'insensitive' } },
+              { description: { contains: query.q, mode: 'insensitive' } },
+            ],
+          }
+        : {}),
     };
     const [products, total] = await Promise.all([
       this.prisma.product.findMany({
@@ -114,6 +324,20 @@ export class SellerService {
         nextCursor: products.length > take ? page.at(-1)?.id ?? null : null,
       },
     };
+  }
+
+  async getProduct(user: AuthenticatedUser, id: string) {
+    await this.requireProductAccess(user, id);
+    const product = await this.prisma.product.findUnique({
+      where: { id },
+      select: sellerProductSelect,
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    return { data: mapSellerProduct(product) };
   }
 
   async createProduct(user: AuthenticatedUser, dto: CreateSellerProductDto) {
@@ -374,11 +598,11 @@ export class SellerService {
     }
   }
 
-  private ensurePatchHasChanges(dto: UpdateSellerProductDto): void {
-    const hasDefinedValue = Object.values(dto).some((value) => value !== undefined);
+  private ensurePatchHasChanges(dto: object): void {
+    const hasDefinedValue = Object.values(dto as Record<string, unknown>).some((value) => value !== undefined);
 
     if (!hasDefinedValue) {
-      throw new BadRequestException('At least one product field must be provided');
+      throw new BadRequestException('At least one field must be provided');
     }
   }
 
@@ -400,6 +624,48 @@ export class SellerService {
     throw new BadRequestException('Product slug could not be generated');
   }
 }
+
+const sellerStoreSelect = {
+  id: true,
+  slug: true,
+  name: true,
+  legalName: true,
+  taxNumber: true,
+  description: true,
+  status: true,
+  logoKey: true,
+  bannerKey: true,
+  phone: true,
+  whatsappNumber: true,
+  email: true,
+  city: true,
+  district: true,
+  address: true,
+  workingHours: true,
+  verifiedAt: true,
+  publishedAt: true,
+  updatedAt: true,
+  category: {
+    select: {
+      id: true,
+      slug: true,
+      name: true,
+    },
+  },
+  members: {
+    select: {
+      role: true,
+      userId: true,
+    },
+  },
+  _count: {
+    select: {
+      products: {
+        where: { status: { not: ProductStatus.DELETED } },
+      },
+    },
+  },
+} satisfies Prisma.StoreSelect;
 
 const sellerProductSelect = {
   id: true,
@@ -441,7 +707,40 @@ const sellerProductSelect = {
   },
 } satisfies Prisma.ProductSelect;
 
+const sellerLeadSelect = {
+  id: true,
+  type: true,
+  source: true,
+  createdAt: true,
+  store: {
+    select: {
+      id: true,
+      slug: true,
+      name: true,
+    },
+  },
+  product: {
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+    },
+  },
+} satisfies Prisma.LeadEventSelect;
+
+type SellerStore = Prisma.StoreGetPayload<{ select: typeof sellerStoreSelect }>;
 type SellerProduct = Prisma.ProductGetPayload<{ select: typeof sellerProductSelect }>;
+type SellerLead = Prisma.LeadEventGetPayload<{ select: typeof sellerLeadSelect }>;
+
+function mapSellerStore(store: SellerStore) {
+  const { _count, ...publicStore } = store;
+
+  return {
+    ...publicStore,
+    productCount: _count.products,
+    verified: Boolean(store.verifiedAt),
+  };
+}
 
 function mapSellerProduct(product: SellerProduct) {
   return {
@@ -453,4 +752,24 @@ function mapSellerProduct(product: SellerProduct) {
         ? 'Razılaşma yolu ilə'
         : `${product.price} ${product.currency}`,
   };
+}
+
+function mapSellerLead(lead: SellerLead) {
+  return {
+    id: lead.id,
+    type: lead.type,
+    source: lead.source,
+    createdAt: lead.createdAt,
+    store: lead.store,
+    product: lead.product,
+  };
+}
+
+function rangeStartDate(range: '7d' | '30d' | '90d' = '30d'): Date {
+  const daysByRange = {
+    '7d': 7,
+    '30d': 30,
+    '90d': 90,
+  };
+  return new Date(Date.now() - daysByRange[range] * 24 * 60 * 60 * 1000);
 }
