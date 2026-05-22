@@ -23,6 +23,7 @@ for (const envPath of [resolve(process.cwd(), '.env'), resolve(process.cwd(), '.
 
 const prisma = new PrismaClient();
 const adminPasswordHash = '$2a$10$31WD4STobdOzFNQ8bJLzJOrZu..w/J21gnUtKtH14NayDTmVTQCZ2';
+const superAdminPasswordHash = bcrypt.hashSync('SuperAdmin123!', 10);
 const sellerPasswordHash = '$2a$10$dQsja4DxBdEcr6aOWskOrOVaF/Yl2VctnnPXBIFa9V6hXNcLeIKIW';
 const demoSellerPasswordHash = bcrypt.hashSync('SellerDemo123!', 10);
 
@@ -279,6 +280,23 @@ async function main() {
       fullName: 'Topdanci Admin',
       passwordHash: adminPasswordHash,
       role: UserRole.ADMIN,
+      status: UserStatus.ACTIVE,
+    },
+  });
+
+  await prisma.user.upsert({
+    where: { email: 'superadmin@topdanci.az' },
+    create: {
+      email: 'superadmin@topdanci.az',
+      fullName: 'Topdanci Super Admin',
+      passwordHash: superAdminPasswordHash,
+      role: UserRole.SUPER_ADMIN,
+      status: UserStatus.ACTIVE,
+    },
+    update: {
+      fullName: 'Topdanci Super Admin',
+      passwordHash: superAdminPasswordHash,
+      role: UserRole.SUPER_ADMIN,
       status: UserStatus.ACTIVE,
     },
   });

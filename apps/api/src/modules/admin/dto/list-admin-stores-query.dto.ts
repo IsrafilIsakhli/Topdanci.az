@@ -1,19 +1,20 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
-import { ProductStatus } from '@prisma/client';
+import { StoreStatus } from '@prisma/client';
 
-export class ListAdminProductsQueryDto {
-  @IsEnum(ProductStatus)
+export class ListAdminStoresQueryDto {
+  @IsEnum(StoreStatus)
   @IsOptional()
-  status?: ProductStatus;
-
-  @IsString()
-  @IsOptional()
-  storeId?: string;
+  status?: StoreStatus;
 
   @IsString()
   @IsOptional()
   categoryId?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(80)
+  city?: string;
 
   @IsString()
   @IsOptional()

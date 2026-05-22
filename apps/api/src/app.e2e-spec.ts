@@ -1,6 +1,6 @@
 import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { LeadType } from '@prisma/client';
+import { LeadType, StoreStatus, UserRole, UserStatus } from '@prisma/client';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { AppModule } from './app.module';
@@ -11,6 +11,7 @@ import { RedisService } from './modules/redis/redis.service';
 describe('TopdanBazar API smoke e2e', () => {
   let app: INestApplication;
   let prisma: PrismaService;
+  const sessionCache = new Map<string, { cookies: string[]; csrfToken: string; userId: string }>();
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -307,7 +308,91 @@ describe('TopdanBazar API smoke e2e', () => {
       .expect(400);
   });
 
-  async function loginAs(identifier: string, password: string): Promise<{ cookies: string[]; csrfToken: string }> {
+  it('enforces admin and superadmin operation boundaries', async () => {
+    const admin = await loginAs('admin@topdanci.az', 'Admin12345!');
+
+    await request(app.getHttpServer()).get('/api/v1/admin/users').set('Cookie', admin.cookies).expect(403);
+    await request(app.getHttpServer()).get('/api/v1/admin/categories/tree').set('Cookie', admin.cookies).expect(403);
+    await request(app.getHttpServer()).get('/api/v1/admin/system').set('Cookie', admin.cookies).expect(403);
+
+    const superAdmin = await loginAs('superadmin@topdanci.az', 'SuperAdmin123!');
+
+    await request(app.getHttpServer()).get('/api/v1/admin/users').set('Cookie', superAdmin.cookies).expect(200);
+    await request(app.getHttpServer()).get('/api/v1/admin/categories/tree').set('Cookie', superAdmin.cookies).expect(200);
+    await request(app.getHttpServer()).get('/api/v1/admin/system').set('Cookie', superAdmin.cookies).expect(200);
+
+    const tempUser = await prisma.user.create({
+      data: {
+        email: `superadmin-boundary-${Date.now()}@topdanci.az`,
+        role: UserRole.BUYER,
+        status: UserStatus.ACTIVE,
+      },
+      select: { id: true },
+    });
+
+    const promoted = await request(app.getHttpServer())
+      .patch(`/api/v1/admin/users/${tempUser.id}/role`)
+      .set('Cookie', superAdmin.cookies)
+      .set('x-csrf-token', superAdmin.csrfToken)
+      .send({ role: UserRole.ADMIN })
+      .expect(200);
+
+    expect(promoted.body.data.role).toBe(UserRole.ADMIN);
+
+    const suspended = await request(app.getHttpServer())
+      .patch(`/api/v1/admin/users/${tempUser.id}/status`)
+      .set('Cookie', superAdmin.cookies)
+      .set('x-csrf-token', superAdmin.csrfToken)
+      .send({ status: UserStatus.SUSPENDED })
+      .expect(200);
+
+    expect(suspended.body.data.status).toBe(UserStatus.SUSPENDED);
+
+    await request(app.getHttpServer())
+      .patch(`/api/v1/admin/users/${superAdmin.userId}/status`)
+      .set('Cookie', superAdmin.cookies)
+      .set('x-csrf-token', superAdmin.csrfToken)
+      .send({ status: UserStatus.SUSPENDED })
+      .expect(403);
+  });
+
+  it('removes suspended stores from the public catalog and restores them after reactivation', async () => {
+    const superAdmin = await loginAs('superadmin@topdanci.az', 'SuperAdmin123!');
+    const activeStore = await prisma.store.findFirst({
+      where: {
+        status: StoreStatus.ACTIVE,
+        products: { some: { status: 'ACTIVE' } },
+      },
+      select: { id: true, slug: true },
+    });
+
+    expect(activeStore).toBeTruthy();
+
+    await request(app.getHttpServer())
+      .post(`/api/v1/admin/stores/${activeStore!.id}/suspend`)
+      .set('Cookie', superAdmin.cookies)
+      .set('x-csrf-token', superAdmin.csrfToken)
+      .send({ reviewNote: 'Suspended by superadmin e2e test' })
+      .expect(201);
+
+    await request(app.getHttpServer()).get(`/api/v1/stores/${activeStore!.slug}`).expect(404);
+
+    await request(app.getHttpServer())
+      .post(`/api/v1/admin/stores/${activeStore!.id}/reactivate`)
+      .set('Cookie', superAdmin.cookies)
+      .set('x-csrf-token', superAdmin.csrfToken)
+      .expect(201);
+
+    await request(app.getHttpServer()).get(`/api/v1/stores/${activeStore!.slug}`).expect(200);
+  });
+
+  async function loginAs(identifier: string, password: string): Promise<{ cookies: string[]; csrfToken: string; userId: string }> {
+    const cached = sessionCache.get(identifier);
+
+    if (cached) {
+      return cached;
+    }
+
     const response = await request(app.getHttpServer())
       .post('/api/v1/auth/login')
       .send({ identifier, password })
@@ -316,7 +401,10 @@ describe('TopdanBazar API smoke e2e', () => {
     const cookies = Array.isArray(setCookie) ? setCookie : setCookie ? [setCookie] : [];
     const csrfToken = parseCookie(cookies, 'tb_csrf');
 
-    return { cookies, csrfToken };
+    const session = { cookies, csrfToken, userId: response.body.user.id };
+    sessionCache.set(identifier, session);
+
+    return session;
   }
 });
 

@@ -1,19 +1,15 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
-import { ProductStatus } from '@prisma/client';
+import { UserRole, UserStatus } from '@prisma/client';
 
-export class ListAdminProductsQueryDto {
-  @IsEnum(ProductStatus)
+export class ListAdminUsersQueryDto {
+  @IsEnum(UserRole)
   @IsOptional()
-  status?: ProductStatus;
+  role?: UserRole;
 
-  @IsString()
+  @IsEnum(UserStatus)
   @IsOptional()
-  storeId?: string;
-
-  @IsString()
-  @IsOptional()
-  categoryId?: string;
+  status?: UserStatus;
 
   @IsString()
   @IsOptional()
@@ -30,4 +26,14 @@ export class ListAdminProductsQueryDto {
   @IsString()
   @IsOptional()
   cursor?: string;
+}
+
+export class UpdateUserRoleDto {
+  @IsEnum(UserRole)
+  role!: UserRole;
+}
+
+export class UpdateUserStatusDto {
+  @IsEnum(UserStatus)
+  status!: UserStatus;
 }
