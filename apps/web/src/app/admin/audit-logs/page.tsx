@@ -48,7 +48,9 @@ export default function AdminAuditLogsPage() {
               <article key={log.id}>
                 <span>{formatDate(log.createdAt)}</span>
                 <strong>{log.action}</strong>
-                <small>{log.resourceType} · {log.resourceId}</small>
+                <small>
+                  {log.resourceType} · {log.resourceId}
+                </small>
                 <code>{JSON.stringify(log.metadata ?? {}, null, 2)}</code>
               </article>
             ))}

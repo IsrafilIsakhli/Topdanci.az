@@ -5358,13 +5358,13 @@ body {
 
 .admin-topbar h1 {
   margin: 2px 0 0;
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .admin-kicker {
   color: var(--color-brand);
-  font-size: 12px;
-  font-weight: 950;
+  font-size: 11px;
+  font-weight: 900;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -5379,7 +5379,7 @@ body {
   background: #f8fbfd;
   color: #334155;
   font-size: 12px;
-  font-weight: 950;
+  font-weight: 850;
   line-height: 1;
   padding: 8px 10px;
   white-space: nowrap;
@@ -5397,8 +5397,9 @@ body {
 
 .admin-page-header h2 {
   margin: 6px 0;
-  font-size: clamp(28px, 4vw, 44px);
+  font-size: clamp(24px, 3vw, 34px);
   letter-spacing: 0;
+  line-height: 1.15;
 }
 
 .admin-page-header p,
@@ -5479,7 +5480,7 @@ body {
 
 .admin-panel h3 {
   margin: 0 0 14px;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .admin-panel-head {
@@ -5496,7 +5497,7 @@ body {
 .admin-table a,
 .admin-detail-list a {
   color: var(--color-brand);
-  font-weight: 900;
+  font-weight: 800;
   text-decoration: none;
 }
 
@@ -5586,8 +5587,8 @@ body {
 
 .admin-table th {
   color: #64748b;
-  font-size: 12px;
-  font-weight: 950;
+  font-size: 11px;
+  font-weight: 850;
   text-transform: uppercase;
 }
 
@@ -5901,7 +5902,7 @@ body {
   }
 
   .admin-page-header h2 {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .admin-stat-grid,

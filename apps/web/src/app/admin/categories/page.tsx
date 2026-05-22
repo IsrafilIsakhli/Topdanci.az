@@ -59,7 +59,7 @@ export default function AdminCategoriesPage() {
   }
 
   async function rename(category: AdminCategory) {
-    const name = window.prompt('Yeni kategoriya adı:', category.name);
+    const name = window.prompt('Yeni kateqoriya adı:', category.name);
     if (!name?.trim()) return;
     setIsBusy(true);
     setMessage(null);
@@ -170,7 +170,9 @@ function CategoryNode({
       <div>
         <span>{category.icon ?? 'folder'}</span>
         <strong>{category.name}</strong>
-        <small>{category.counts.products} məhsul · {category.counts.children} alt kateqoriya</small>
+        <small>
+          {category.counts.products} məhsul · {category.counts.children} alt kateqoriya
+        </small>
       </div>
       <AdminStatusBadge status={category.status} />
       <button className="admin-link-button" type="button" disabled={disabled} onClick={() => onRename(category)}>
