@@ -8,8 +8,8 @@ import {
   GraduationCap,
   Headphones,
   House,
-  PawPrint,
   Package,
+  PawPrint,
   Shirt,
   Smartphone,
   Store,
@@ -20,18 +20,18 @@ import {
 import { apiGet } from './api-client';
 
 export type CategoryCard = {
-  id?: string;
-  parentId?: string | null;
+  id?: string | undefined;
+  parentId?: string | null | undefined;
   slug: string;
   name: string;
   productCount: string;
   storeCount: string;
   icon: LucideIcon;
-  children?: string[];
+  children?: string[] | undefined;
 };
 
 export type ProductPreview = {
-  id?: string;
+  id?: string | undefined;
   slug: string;
   title: string;
   description?: string | null | undefined;
@@ -46,20 +46,26 @@ export type ProductPreview = {
   badge: string;
   imageUrl: string;
   imageAlt: string;
+  phone?: string | null | undefined;
+  whatsappNumber?: string | null | undefined;
+  email?: string | null | undefined;
 };
 
 export type StorePreview = {
-  id?: string;
+  id?: string | undefined;
   slug: string;
   name: string;
   category: string;
-  categorySlug?: string;
+  categorySlug?: string | undefined;
   productCount: string;
   city: string;
   views: string;
   coverImageUrl: string;
   description: string;
   verified: boolean;
+  phone?: string | null | undefined;
+  whatsappNumber?: string | null | undefined;
+  email?: string | null | undefined;
 };
 
 type ApiListResponse<T> = {
@@ -106,6 +112,9 @@ type ApiProduct = {
     city?: string | null;
     district?: string | null;
     verified?: boolean;
+    phone?: string | null;
+    whatsappNumber?: string | null;
+    email?: string | null;
   } | null;
   images?: Array<{
     id: string;
@@ -123,6 +132,9 @@ type ApiStore = {
   description?: string | null;
   logoKey?: string | null;
   bannerKey?: string | null;
+  phone?: string | null;
+  whatsappNumber?: string | null;
+  email?: string | null;
   city?: string | null;
   district?: string | null;
   verified: boolean;
@@ -135,14 +147,14 @@ type ProductQuery = {
   category?: string | undefined;
   city?: string | undefined;
   store?: string | undefined;
-  limit?: number;
+  limit?: number | undefined;
 };
 
 type StoreQuery = {
   q?: string | undefined;
   category?: string | undefined;
   city?: string | undefined;
-  limit?: number;
+  limit?: number | undefined;
 };
 
 export const heroImage =
@@ -159,6 +171,7 @@ const productImageFallbacks = [
 ] as const;
 
 const iconBySlug: Record<string, LucideIcon> = {
+  'son-elanlar': Package,
   neqliyyat: Car,
   elektronika: Headphones,
   'ev-ve-bag-ucun': House,
@@ -176,139 +189,29 @@ const iconBySlug: Record<string, LucideIcon> = {
 };
 
 export const categories: CategoryCard[] = [
+  { id: 'son-elanlar', slug: 'son-elanlar', name: 'Son elanlar', productCount: '200K+', storeCount: '400+', icon: Package },
+  { id: 'neqliyyat', parentId: 'son-elanlar', slug: 'neqliyyat', name: 'Nəqliyyat', productCount: '28K+', storeCount: '210', icon: Car },
+  { id: 'elektronika', parentId: 'son-elanlar', slug: 'elektronika', name: 'Elektronika', productCount: '50K+', storeCount: '150', icon: Headphones },
+  { id: 'ev-ve-bag-ucun', parentId: 'son-elanlar', slug: 'ev-ve-bag-ucun', name: 'Ev və bağ üçün', productCount: '46K+', storeCount: '180', icon: House },
   {
-    slug: 'neqliyyat',
-    name: 'Nəqliyyat',
-    productCount: '28K+',
-    storeCount: '210',
-    icon: Car,
-    children: [
-      'Ehtiyat hissələri və aksesuarlar',
-      'Avtomobillər',
-      'Tikinti texnikası',
-      'Motosikletlər və mopedlər',
-      'Yük maşınları və qoşqular',
-      'Qeydiyyat nişanları',
-      'Aqrotexnika',
-      'Su nəqliyyatı',
-      'Avtobuslar',
-    ],
-  },
-  {
-    slug: 'elektronika',
-    name: 'Elektronika',
-    productCount: '50K+',
-    storeCount: '150',
-    icon: Headphones,
-    children: [
-      'Telefonlar',
-      'Audio və video',
-      'Noutbuklar və netbuklar',
-      'Komponentlər və monitorlar',
-      'Kompüter aksesuarları',
-      'Oyunlar, pultlar və proqramlar',
-      'Televizorlar və aksesuarlar',
-      'Şəbəkə və server avadanlığı',
-      'Nömrələr və SIM-kartlar',
-      'Ofis avadanlığı və istehlak materialları',
-      'Fototexnika',
-      'Planşet və elektron kitablar',
-      'Smart saat və qolbaqlar',
-      'Masaüstü kompüterlər',
-    ],
-  },
-  {
-    slug: 'ev-ve-bag-ucun',
-    name: 'Ev və bağ üçün',
-    productCount: '46K+',
-    storeCount: '180',
-    icon: House,
-    children: [
-      'Məişət texnikası',
-      'Mebellər',
-      'Təmir və tikinti',
-      'Qab-qacaq və mətbəx ləvazimatları',
-      'Dekor və interyer',
-      'Bağ və bostan',
-      'Ev və bağ üçün işıqlandırma',
-      'Ev tekstili',
-      'Bitkilər',
-      'Xalçalar və aksesuarlar',
-      'Ev təsərrüfatı malları',
-      'Ərzaq',
-    ],
-  },
-  {
+    id: 'ehtiyat-hisseleri-ve-aksesuarlar',
+    parentId: 'son-elanlar',
     slug: 'ehtiyat-hisseleri-ve-aksesuarlar',
     name: 'Ehtiyat hissələri və aksesuarlar',
     productCount: '18K+',
     storeCount: '95',
     icon: Wrench,
   },
-  {
-    slug: 'dasinmaz-emlak',
-    name: 'Daşınmaz əmlak',
-    productCount: '12K+',
-    storeCount: '80',
-    icon: Building2,
-    children: ['Mənzillər', 'Həyət evləri, bağ evləri', 'Torpaq', 'Obyektlər və ofislər', 'Qarajlar', 'Xaricdə əmlak'],
-  },
-  {
-    slug: 'xidmetler-ve-biznes',
-    name: 'Xidmətlər və biznes',
-    productCount: '34K+',
-    storeCount: '260',
-    icon: BriefcaseBusiness,
-    children: [
-      'Biznes üçün avadanlıq',
-      'Təhlükəsizlik sistemləri',
-      'Təmir və tikinti',
-      'Texnika təmiri',
-      'Nəqliyyat vasitələrinin icarəsi',
-      'Avadanlığın icarəsi',
-      'Reklam, dizayn və poliqrafiya',
-      'Logistika',
-      'Təlim, hazırlıq kursları',
-      'IT, internet, telekom',
-      'Digər',
-    ],
-  },
-  {
-    slug: 'sexsi-esyalar',
-    name: 'Şəxsi əşyalar',
-    productCount: '38K+',
-    storeCount: '170',
-    icon: Shirt,
-    children: [
-      'Geyim və ayaqqabılar',
-      'Sağlamlıq və gözəllik',
-      'Saat və zinət əşyaları',
-      'Aksesuarlar',
-      'Tütün qızdırıcıları və aksesuarları',
-      'İtmiş əşyalar',
-    ],
-  },
-  {
-    slug: 'hobbi-ve-asude',
-    name: 'Hobbi və asudə',
-    productCount: '16K+',
-    storeCount: '90',
-    icon: Watch,
-    children: [
-      'İdman və asudə',
-      'Velosipedlər',
-      'Kolleksiyalar',
-      'Musiqi alətləri',
-      'Kitab və jurnallar',
-      'Kempinq, ovçuluq və balıqçılıq',
-    ],
-  },
-  { slug: 'meiset-texnikasi', name: 'Məişət texnikası', productCount: '22K+', storeCount: '120', icon: WashingMachine },
-  { slug: 'telefonlar', name: 'Telefonlar', productCount: '30K+', storeCount: '140', icon: Smartphone },
-  { slug: 'usaq-alemi', name: 'Uşaq aləmi', productCount: '20K+', storeCount: '110', icon: Baby },
-  { slug: 'heyvanlar', name: 'Heyvanlar', productCount: '11K+', storeCount: '70', icon: PawPrint },
-  { slug: 'is-elanlari', name: 'İş elanları', productCount: '9K+', storeCount: '60', icon: BriefcaseBusiness },
-  { slug: 'mektebliler-ucun', name: 'Məktəblilər üçün', productCount: '7K+', storeCount: '45', icon: GraduationCap },
+  { id: 'dasinmaz-emlak', parentId: 'son-elanlar', slug: 'dasinmaz-emlak', name: 'Daşınmaz əmlak', productCount: '12K+', storeCount: '80', icon: Building2 },
+  { id: 'xidmetler-ve-biznes', parentId: 'son-elanlar', slug: 'xidmetler-ve-biznes', name: 'Xidmətlər və biznes', productCount: '34K+', storeCount: '260', icon: BriefcaseBusiness },
+  { id: 'sexsi-esyalar', parentId: 'son-elanlar', slug: 'sexsi-esyalar', name: 'Şəxsi əşyalar', productCount: '38K+', storeCount: '170', icon: Shirt },
+  { id: 'hobbi-ve-asude', parentId: 'son-elanlar', slug: 'hobbi-ve-asude', name: 'Hobbi və asudə', productCount: '16K+', storeCount: '90', icon: Watch },
+  { id: 'meiset-texnikasi', parentId: 'son-elanlar', slug: 'meiset-texnikasi', name: 'Məişət texnikası', productCount: '22K+', storeCount: '120', icon: WashingMachine },
+  { id: 'telefonlar', parentId: 'son-elanlar', slug: 'telefonlar', name: 'Telefonlar', productCount: '30K+', storeCount: '140', icon: Smartphone },
+  { id: 'usaq-alemi', parentId: 'son-elanlar', slug: 'usaq-alemi', name: 'Uşaq aləmi', productCount: '20K+', storeCount: '110', icon: Baby },
+  { id: 'heyvanlar', parentId: 'son-elanlar', slug: 'heyvanlar', name: 'Heyvanlar', productCount: '11K+', storeCount: '70', icon: PawPrint },
+  { id: 'is-elanlari', parentId: 'son-elanlar', slug: 'is-elanlari', name: 'İş elanları', productCount: '9K+', storeCount: '60', icon: BriefcaseBusiness },
+  { id: 'mektebliler-ucun', parentId: 'son-elanlar', slug: 'mektebliler-ucun', name: 'Məktəblilər üçün', productCount: '7K+', storeCount: '45', icon: GraduationCap },
 ];
 
 export const products: ProductPreview[] = [
@@ -325,6 +228,8 @@ export const products: ProductPreview[] = [
     badge: 'Yeni',
     imageUrl: productImageFallbacks[0],
     imageAlt: 'Topdansatış geyim məhsulları',
+    whatsappNumber: '+994501234567',
+    phone: '+994501234567',
   },
   {
     slug: 'qadin-deri-cekmeleri-stok-500-cut',
@@ -339,6 +244,8 @@ export const products: ProductPreview[] = [
     badge: 'Stokda var',
     imageUrl: productImageFallbacks[1],
     imageAlt: 'Topdansatış ayaqqabı məhsulları',
+    whatsappNumber: '+994552223344',
+    phone: '+994552223344',
   },
   {
     slug: 'agilli-saatlar-x-series',
@@ -353,6 +260,8 @@ export const products: ProductPreview[] = [
     badge: 'Top seller',
     imageUrl: productImageFallbacks[2],
     imageAlt: 'Topdansatış ağıllı saat məhsulları',
+    whatsappNumber: '+994551112233',
+    phone: '+994551112233',
   },
   {
     slug: 'akkumulyatorlu-drel-desti',
@@ -360,13 +269,15 @@ export const products: ProductPreview[] = [
     store: 'Mega İnşaat Supply',
     storeSlug: 'mega-insaat-supply',
     city: 'Gəncə',
-    category: 'İnşaat materialları',
+    category: 'Təmir və tikinti',
     categorySlug: 'ev-ve-bag-ucun',
     price: 'Razılaşma yolu ilə',
     minOrder: 'Min: 20 ədəd',
     badge: 'Yeni partiya',
     imageUrl: productImageFallbacks[3],
     imageAlt: 'Topdansatış elektrik alətləri',
+    whatsappNumber: '+994703334455',
+    phone: '+994703334455',
   },
 ];
 
@@ -380,9 +291,10 @@ export const stores: StorePreview[] = [
     city: 'Bakı',
     views: '12.5K',
     coverImageUrl: heroImage,
-    description:
-      'Baku Tekstil MMC Azərbaycanda topdansatış geyim və tekstil məhsulları üzrə işləyən yoxlanılmış təchizatçılardan biridir. Mağaza alıcılarla birbaşa WhatsApp və telefon üzərindən əlaqə saxlayır.',
+    description: 'Baku Tekstil MMC Azərbaycanda topdansatış geyim və tekstil məhsulları üzrə işləyən yoxlanılmış təchizatçılardan biridir.',
     verified: true,
+    phone: '+994501234567',
+    whatsappNumber: '+994501234567',
   },
   {
     slug: 'shoes-import-trade',
@@ -393,9 +305,10 @@ export const stores: StorePreview[] = [
     city: 'Sumqayıt',
     views: '8.2K',
     coverImageUrl: categoryImageFallback,
-    description:
-      'Shoes Import Trade topdan ayaqqabı və dəri məmulatları təklif edir. Satıcı ilə qiymət, minimum sifariş və çatdırılma şərtləri platformadan kənar razılaşdırılır.',
+    description: 'Shoes Import Trade topdan ayaqqabı və dəri məmulatları təklif edir.',
     verified: true,
+    phone: '+994552223344',
+    whatsappNumber: '+994552223344',
   },
   {
     slug: 'techwholesale-az',
@@ -405,10 +318,11 @@ export const stores: StorePreview[] = [
     productCount: '3,100+',
     city: 'Bakı',
     views: '21.4K',
-    coverImageUrl: 'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=2200&q=82',
-    description:
-      'TechWholesale AZ elektronika və aksesuarların topdansatış təchizatı üçün biznes alıcılarla işləyir. Məhsul sorğuları birbaşa mağaza nümayəndəsinə yönləndirilir.',
+    coverImageUrl: categoryImageFallback,
+    description: 'TechWholesale AZ elektronika və aksesuarların topdansatış təchizatı üçün biznes alıcılarla işləyir.',
     verified: true,
+    phone: '+994551112233',
+    whatsappNumber: '+994551112233',
   },
 ];
 
@@ -419,10 +333,17 @@ export const stats = [
   { label: 'yoxlanılmış satıcı', value: '100%', icon: BadgeCheck },
 ];
 
-export async function getCategories(query?: { q?: string | undefined; rootsOnly?: boolean }): Promise<CategoryCard[]> {
+export async function getCategories(query?: { q?: string | undefined; rootsOnly?: boolean | undefined }): Promise<CategoryCard[]> {
   const response = await fetchCatalog<ApiListResponse<ApiCategory>>(`/categories${toQueryString({ q: query?.q })}`);
-  const mapped = response?.data.map(mapCategory) ?? categories;
-  return query?.rootsOnly ? mapped.filter((category) => !category.parentId) : mapped;
+  const source = response?.data;
+
+  if (!source) {
+    return fallbackAllowed() ? filterCategories(categories, query) : [];
+  }
+
+  const root = source.find((category) => category.slug === 'son-elanlar');
+  const mapped = source.map(mapCategory);
+  return query?.rootsOnly ? mapped.filter((category) => (root ? category.parentId === root.id : !category.parentId)) : mapped;
 }
 
 export async function getCategory(slug: string): Promise<CategoryCard | null> {
@@ -430,13 +351,13 @@ export async function getCategory(slug: string): Promise<CategoryCard | null> {
   if (response?.data) {
     return mapCategory(response.data);
   }
-  return categories.find((category) => category.slug === slug) ?? null;
+  return fallbackAllowed() ? categories.find((category) => category.slug === slug) ?? null : null;
 }
 
 export async function getProducts(query: ProductQuery = {}): Promise<ProductPreview[]> {
   const response = await fetchCatalog<ApiListResponse<ApiProduct>>(`/products${toQueryString(query)}`);
   if (!response?.data) {
-    return filterFallbackProducts(query);
+    return fallbackAllowed() ? filterFallbackProducts(query) : [];
   }
   return response.data.map(mapProduct);
 }
@@ -444,15 +365,15 @@ export async function getProducts(query: ProductQuery = {}): Promise<ProductPrev
 export async function getProduct(slug: string): Promise<ProductPreview | null> {
   const response = await fetchCatalog<ApiDetailResponse<ApiProduct>>(`/products/${encodeURIComponent(slug)}`);
   if (response?.data) {
-    return mapProduct(response.data);
+    return mapProduct(response.data, 0);
   }
-  return products.find((product) => product.slug === slug) ?? null;
+  return fallbackAllowed() ? products.find((product) => product.slug === slug) ?? null : null;
 }
 
 export async function getStores(query: StoreQuery = {}): Promise<StorePreview[]> {
   const response = await fetchCatalog<ApiListResponse<ApiStore>>(`/stores${toQueryString(query)}`);
   if (!response?.data) {
-    return filterFallbackStores(query);
+    return fallbackAllowed() ? filterFallbackStores(query) : [];
   }
   return response.data.map(mapStore);
 }
@@ -462,7 +383,7 @@ export async function getStore(slug: string): Promise<StorePreview | null> {
   if (response?.data) {
     return mapStore(response.data);
   }
-  return stores.find((store) => store.slug === slug) ?? null;
+  return fallbackAllowed() ? stores.find((store) => store.slug === slug) ?? null : null;
 }
 
 async function fetchCatalog<T>(path: string): Promise<T | null> {
@@ -471,6 +392,10 @@ async function fetchCatalog<T>(path: string): Promise<T | null> {
   } catch {
     return null;
   }
+}
+
+function fallbackAllowed(): boolean {
+  return process.env.NODE_ENV !== 'production';
 }
 
 function mapCategory(category: ApiCategory): CategoryCard {
@@ -486,10 +411,17 @@ function mapCategory(category: ApiCategory): CategoryCard {
   };
 }
 
-function mapProduct(product: ApiProduct, index = 0): ProductPreview {
+function mapProduct(product: ApiProduct, index: number): ProductPreview {
   const category = product.category ?? { slug: 'products', name: 'Məhsullar' };
-  const store = product.store ?? { id: undefined, slug: 'store', name: 'TopdanBazar mağazası', city: 'Bakı' };
-  const imageUrl = resolveProductImage(product, index);
+  const store = product.store ?? {
+    id: undefined,
+    slug: 'store',
+    name: 'TopdanBazar mağazası',
+    city: 'Bakı',
+    phone: undefined,
+    whatsappNumber: undefined,
+    email: undefined,
+  };
 
   return {
     id: product.id,
@@ -505,8 +437,11 @@ function mapProduct(product: ApiProduct, index = 0): ProductPreview {
     price: normalizePriceLabel(product),
     minOrder: normalizeMinOrder(product),
     badge: normalizeStockBadge(product.stockStatus),
-    imageUrl,
+    imageUrl: resolveProductImage(product, index),
     imageAlt: product.images?.[0]?.altText ?? `${product.title} məhsul şəkli`,
+    phone: store.phone,
+    whatsappNumber: store.whatsappNumber,
+    email: store.email,
   };
 }
 
@@ -525,16 +460,21 @@ function mapStore(store: ApiStore): StorePreview {
     coverImageUrl: resolveStoreImage(store),
     description: store.description ?? 'Bu mağaza topdansatış məhsullarını alıcılarla birbaşa əlaqə modeli ilə təqdim edir.',
     verified: store.verified,
+    phone: store.phone,
+    whatsappNumber: store.whatsappNumber,
+    email: store.email,
   };
 }
 
 function resolveCategoryIcon(slug: string, icon?: string | null): LucideIcon {
   const normalized = icon?.toLowerCase() ?? slug;
-  if (normalized.includes('car') || normalized.includes('transport')) return Car;
+  if (normalized.includes('car') || normalized.includes('truck') || normalized.includes('transport')) return Car;
   if (normalized.includes('phone') || normalized.includes('smart')) return Smartphone;
   if (normalized.includes('home') || normalized.includes('house')) return House;
   if (normalized.includes('tool') || normalized.includes('wrench')) return Wrench;
-  if (normalized.includes('store')) return Store;
+  if (normalized.includes('building')) return Building2;
+  if (normalized.includes('briefcase')) return BriefcaseBusiness;
+  if (normalized.includes('shirt')) return Shirt;
   return iconBySlug[slug] ?? Package;
 }
 
@@ -560,11 +500,13 @@ function getVariantUrl(variants: unknown): string | null {
   if (!variants || typeof variants !== 'object') {
     return null;
   }
+
   const values = Object.values(variants as Record<string, unknown>);
   const direct = values.find((value): value is string => typeof value === 'string' && value.startsWith('http'));
   if (direct) {
     return direct;
   }
+
   for (const value of values) {
     if (value && typeof value === 'object') {
       const nested = Object.values(value as Record<string, unknown>).find(
@@ -575,6 +517,7 @@ function getVariantUrl(variants: unknown): string | null {
       }
     }
   }
+
   return null;
 }
 
@@ -592,8 +535,20 @@ function normalizeMinOrder(product: ApiProduct): string {
   if (!product.minOrderQuantity) {
     return 'Min. razılaşma ilə';
   }
-  const unit = product.unit?.toLowerCase() ?? 'ədəd';
+  const unit = product.unit ? unitLabel(product.unit) : 'ədəd';
   return `Min: ${stripDecimalZero(product.minOrderQuantity)} ${unit}`;
+}
+
+function unitLabel(unit: string): string {
+  const labels: Record<string, string> = {
+    PIECE: 'ədəd',
+    BOX: 'qutu',
+    KG: 'kq',
+    TON: 'ton',
+    METER: 'metr',
+    PACKAGE: 'paket',
+  };
+  return labels[unit] ?? unit.toLowerCase();
 }
 
 function normalizeStockBadge(stockStatus?: string | null): string {
@@ -629,6 +584,15 @@ function toQueryString(query: Record<string, string | number | undefined>): stri
   });
   const value = params.toString();
   return value ? `?${value}` : '';
+}
+
+function filterCategories(source: CategoryCard[], query?: { q?: string | undefined; rootsOnly?: boolean | undefined }): CategoryCard[] {
+  const normalized = query?.q?.toLowerCase();
+  return source.filter((category) => {
+    const matchesRoot = query?.rootsOnly ? category.parentId === 'son-elanlar' : true;
+    const matchesSearch = normalized ? category.name.toLowerCase().includes(normalized) : true;
+    return matchesRoot && matchesSearch;
+  });
 }
 
 function filterFallbackProducts(query: ProductQuery): ProductPreview[] {

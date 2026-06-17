@@ -48,8 +48,26 @@ export function AdminMetricCard({
 }
 
 export function AdminStatusBadge({ status }: { status?: string | null }) {
-  const normalized = (status ?? 'UNKNOWN').toLowerCase().replaceAll('_', '-');
-  return <span className={`admin-status admin-status-${normalized}`}>{status ?? 'UNKNOWN'}</span>;
+  const rawStatus = status ?? 'UNKNOWN';
+  const normalized = rawStatus.toLowerCase().replaceAll('_', '-');
+  const labels: Record<string, string> = {
+    ACTIVE: 'Aktiv',
+    APPROVED: 'Təsdiqlənmiş',
+    RESOLVED: 'Həll olunub',
+    OK: 'Sağlam',
+    PENDING: 'Gözləyir',
+    PENDING_REVIEW: 'Yoxlamada',
+    IN_REVIEW: 'Baxılır',
+    REJECTED: 'Rədd edilib',
+    SUSPENDED: 'Dayandırılıb',
+    DELETED: 'Silinib',
+    FAILED: 'Xəta',
+    DRAFT: 'Qaralama',
+    PASSIVE: 'Passiv',
+    UNKNOWN: 'Naməlum',
+  };
+
+  return <span className={`admin-status admin-status-${normalized}`}>{labels[rawStatus] ?? rawStatus}</span>;
 }
 
 export function AdminLoadingBlock({ label = 'Məlumatlar yüklənir' }: { label?: string }) {

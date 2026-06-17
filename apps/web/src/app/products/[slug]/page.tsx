@@ -8,10 +8,10 @@ import {
   MapPin,
   MessageSquare,
   PackageCheck,
-  Phone,
   ShieldCheck,
   Truck,
 } from 'lucide-react';
+import { LeadViewTracker, LeadWhatsAppLink, PhoneRevealButton } from '../../../components/lead-actions';
 import { ProductCard } from '../../../components/product-card';
 import { SiteFooter } from '../../../components/site-footer';
 import { SiteHeader } from '../../../components/site-header';
@@ -49,7 +49,10 @@ export default async function ProductDetailPage({ params }: PageProps) {
     getProducts({ category: product.categorySlug, limit: 8 }),
     product.storeSlug ? getProducts({ store: product.storeSlug, limit: 8 }) : Promise.resolve([]),
   ]);
-  const galleryImages = [product.imageUrl, ...categoryProducts.filter((item) => item.slug !== product.slug).map((item) => item.imageUrl)].slice(0, 4);
+  const galleryImages = [
+    product.imageUrl,
+    ...categoryProducts.filter((item) => item.slug !== product.slug).map((item) => item.imageUrl),
+  ].slice(0, 4);
   const relatedProducts = categoryProducts.filter((item) => item.slug !== product.slug);
   const sameStoreProducts = storeProductsFromApi.filter((item) => item.slug !== product.slug);
   const storeProducts = sameStoreProducts.length ? sameStoreProducts : relatedProducts;
@@ -57,7 +60,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
   const technicalRows = [
     ['Kateqoriya', product.category],
-    ['Ölçü vahidi', product.minOrder.includes('ton') ? 'ton' : 'ədəd'],
+    ['Ölçü vahidi', product.minOrder.toLowerCase().includes('ton') ? 'ton' : 'ədəd'],
     ['Minimum sifariş', product.minOrder.replace('Min: ', '')],
     ['Şəhər', product.city],
     ['Qiymət tipi', product.price],
@@ -66,6 +69,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
   return (
     <main className="site-shell product-detail-page">
+      <LeadViewTracker productId={product.id} source="product-detail" storeId={product.storeId} type="PRODUCT_VIEW" />
       <SiteHeader />
 
       <section className="product-detail-hero">
@@ -83,17 +87,17 @@ export default async function ProductDetailPage({ params }: PageProps) {
           <div className="product-detail-grid">
             <div className="product-gallery">
               <div
+                aria-label={product.imageAlt}
                 className="product-gallery-main"
                 style={{ backgroundImage: `url(${product.imageUrl})` }}
-                aria-label={product.imageAlt}
               />
               <div className="product-thumbs" aria-label="Məhsul şəkilləri">
                 {galleryImages.map((imageUrl, index) => (
                   <span
-                    className={index === 0 ? 'product-thumb is-active' : 'product-thumb'}
-                    key={imageUrl}
-                    style={{ backgroundImage: `url(${imageUrl})` }}
                     aria-label={`Məhsul şəkli ${index + 1}`}
+                    className={index === 0 ? 'product-thumb is-active' : 'product-thumb'}
+                    key={`${imageUrl}-${index}`}
+                    style={{ backgroundImage: `url(${imageUrl})` }}
                   />
                 ))}
               </div>
@@ -135,21 +139,32 @@ export default async function ProductDetailPage({ params }: PageProps) {
                   <strong>{product.store}</strong>
                   <small>
                     <MapPin size={13} />
-                    {product.city} · 1,245 məhsul
+                    {product.city}
                   </small>
                 </span>
                 <span className="store-card-link">Mağazaya bax</span>
               </Link>
 
               <div className="detail-actions">
-                <Link className="button button-success button-full" href="/contact">
+                <LeadWhatsAppLink
+                  className="button button-success button-full"
+                  phone={product.whatsappNumber}
+                  productId={product.id}
+                  productTitle={product.title}
+                  source="product-detail"
+                  storeId={product.storeId}
+                  storeName={product.store}
+                >
                   <MessageSquare size={17} />
                   WhatsApp ilə yaz
-                </Link>
-                <button className="button button-full" type="button">
-                  <Phone size={17} />
-                  Telefonu göstər
-                </button>
+                </LeadWhatsAppLink>
+                <PhoneRevealButton
+                  className="button button-full"
+                  phone={product.phone}
+                  productId={product.id}
+                  source="product-detail"
+                  storeId={product.storeId}
+                />
               </div>
             </aside>
           </div>
@@ -163,7 +178,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
               <PackageCheck size={20} />
               Məhsul haqqında
             </h2>
-            <p>{defaultDescription}</p>
+            <p>{product.description || defaultDescription}</p>
             <ul>
               <li>Topdan sifariş üçün uyğundur.</li>
               <li>Qiymət və çatdırılma şərtləri satıcı ilə razılaşdırılır.</li>
@@ -210,9 +225,11 @@ export default async function ProductDetailPage({ params }: PageProps) {
             </Link>
           </div>
           <div className="grid product-grid">
-            {storeProducts.length ? storeProducts.map((item) => (
-              <ProductCard key={item.slug} product={item} />
-            )) : <p className="empty-state">Bu mağazadan əlavə aktiv məhsul tapılmadı.</p>}
+            {storeProducts.length ? (
+              storeProducts.map((item) => <ProductCard key={item.slug} product={item} />)
+            ) : (
+              <p className="empty-state">Bu mağazadan əlavə aktiv məhsul tapılmadı.</p>
+            )}
           </div>
         </div>
       </section>
@@ -223,9 +240,11 @@ export default async function ProductDetailPage({ params }: PageProps) {
             <h2>Oxşar məhsullar</h2>
           </div>
           <div className="grid product-grid">
-            {relatedProducts.length ? relatedProducts.map((item) => (
-              <ProductCard key={item.slug} product={item} />
-            )) : <p className="empty-state">Oxşar aktiv məhsul tapılmadı.</p>}
+            {relatedProducts.length ? (
+              relatedProducts.map((item) => <ProductCard key={item.slug} product={item} />)
+            ) : (
+              <p className="empty-state">Oxşar aktiv məhsul tapılmadı.</p>
+            )}
           </div>
         </div>
       </section>

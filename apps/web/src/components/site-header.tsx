@@ -36,9 +36,9 @@ export function SiteHeader() {
         </nav>
 
         <div className="header-actions">
-          <button className="button icon-button" type="button" aria-label="Axtarış">
+          <Link className="button icon-button" href="/products" aria-label="Axtarış">
             <Search size={18} />
-          </button>
+          </Link>
           <Link className="button" href="/login">
             Daxil ol
           </Link>

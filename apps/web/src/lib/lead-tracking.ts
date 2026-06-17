@@ -3,8 +3,9 @@ import { apiPost } from './api-client';
 type LeadEventPayload = {
   type: 'WHATSAPP_CLICK' | 'PHONE_REVEAL' | 'EMAIL_CLICK' | 'STORE_VIEW' | 'PRODUCT_VIEW';
   storeId: string;
-  productId?: string;
-  source?: string;
+  productId?: string | undefined;
+  source?: string | undefined;
+  anonymousId?: string | undefined;
 };
 
 export async function trackLeadEvent(payload: LeadEventPayload): Promise<void> {

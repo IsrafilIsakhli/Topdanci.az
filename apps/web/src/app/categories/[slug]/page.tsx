@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { ProductCard } from '../../../components/product-card';
 import { SiteFooter } from '../../../components/site-footer';
 import { SiteHeader } from '../../../components/site-header';
 import { getCategory, getProducts } from '../../../lib/catalog-data';
-import { ProductCard } from '../../../components/product-card';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -16,6 +16,7 @@ export default async function CategoryDetailPage({ params }: PageProps) {
   if (!category) {
     notFound();
   }
+
   const products = await getProducts({ category: category.slug, limit: 48 });
 
   return (
@@ -27,7 +28,9 @@ export default async function CategoryDetailPage({ params }: PageProps) {
             <Link href="/categories">Kateqoriyalar</Link>
           </p>
           <h1>{category.name}</h1>
-          <p className="lead">{category.name} üzrə topdansatış məhsullarını, alt kateqoriyaları və aktiv mağazaları kəşf edin.</p>
+          <p className="lead">
+            {category.name} üzrə topdansatış məhsullarını, alt kateqoriyaları və aktiv mağazaları kəşf edin.
+          </p>
           {category.children?.length ? (
             <div className="category-children category-detail-children">
               {category.children.map((child) => (
@@ -39,9 +42,11 @@ export default async function CategoryDetailPage({ params }: PageProps) {
       </section>
       <section className="section section-muted">
         <div className="container grid product-grid">
-          {products.length ? products.map((product) => (
-            <ProductCard key={product.slug} product={product} />
-          )) : <p className="empty-state">Bu kateqoriyada aktiv məhsul tapılmadı.</p>}
+          {products.length ? (
+            products.map((product) => <ProductCard key={product.slug} product={product} />)
+          ) : (
+            <p className="empty-state">Bu kateqoriyada aktiv məhsul tapılmadı.</p>
+          )}
         </div>
       </section>
       <SiteFooter />

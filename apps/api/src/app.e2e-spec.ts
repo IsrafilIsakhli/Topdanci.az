@@ -250,6 +250,64 @@ describe('TopdanBazar API smoke e2e', () => {
       .expect(200);
 
     expect(publicProduct.body.data.title).toBe(title);
+
+    const pulledBackToDraft = await request(app.getHttpServer())
+      .patch(`/api/v1/seller/products/${created.body.data.id}`)
+      .set('Cookie', seller.cookies)
+      .set('x-csrf-token', seller.csrfToken)
+      .send({ description: 'Seller updated an approved product, so it must return to draft.' })
+      .expect(200);
+
+    expect(pulledBackToDraft.body.data.status).toBe('DRAFT');
+
+    await request(app.getHttpServer()).get(`/api/v1/products/${created.body.data.slug}`).expect(404);
+  });
+
+  it('shows product rejection notes back to the seller', async () => {
+    const seller = await loginAs('seller@topdanci.az', 'Seller12345!');
+    const sellerProducts = await request(app.getHttpServer())
+      .get('/api/v1/seller/products')
+      .set('Cookie', seller.cookies)
+      .expect(200);
+    const baseProduct = sellerProducts.body.data[0];
+    const title = `E2E Rejected Product ${Date.now()}`;
+    const reviewNote = 'Şəkil keyfiyyəti zəifdir, məhsulu daha aydın təsvirlə yenidən göndərin.';
+
+    const created = await request(app.getHttpServer())
+      .post('/api/v1/seller/products')
+      .set('Cookie', seller.cookies)
+      .set('x-csrf-token', seller.csrfToken)
+      .send({
+        storeId: baseProduct.store.id,
+        categoryId: baseProduct.category.id,
+        title,
+        description: 'Created by e2e to verify seller rejection feedback.',
+      })
+      .expect(201);
+
+    await request(app.getHttpServer())
+      .post(`/api/v1/seller/products/${created.body.data.id}/submit-review`)
+      .set('Cookie', seller.cookies)
+      .set('x-csrf-token', seller.csrfToken)
+      .expect(201);
+
+    const admin = await loginAs('admin@topdanci.az', 'Admin12345!');
+    const rejected = await request(app.getHttpServer())
+      .post(`/api/v1/admin/products/${created.body.data.id}/reject`)
+      .set('Cookie', admin.cookies)
+      .set('x-csrf-token', admin.csrfToken)
+      .send({ reviewNote })
+      .expect(201);
+
+    expect(rejected.body.data.status).toBe('REJECTED');
+
+    const sellerView = await request(app.getHttpServer())
+      .get(`/api/v1/seller/products/${created.body.data.id}`)
+      .set('Cookie', seller.cookies)
+      .expect(200);
+
+    expect(sellerView.body.data.status).toBe('REJECTED');
+    expect(sellerView.body.data.reviewNote).toBe(reviewNote);
   });
 
   it('rejects invalid media MIME for an owned seller product', async () => {
@@ -300,12 +358,49 @@ describe('TopdanBazar API smoke e2e', () => {
     expect(approved.body.data.store.id).toBeTruthy();
     expect(approved.body.data.setup.token).toBeTruthy();
 
+    const setupPassword = 'ApprovedSeller123!';
+    await request(app.getHttpServer())
+      .post('/api/v1/auth/setup-password')
+      .send({ token: approved.body.data.setup.token, password: setupPassword })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .post('/api/v1/auth/login')
+      .send({ identifier: `e2e-${suffix}@topdanci.az`, password: setupPassword })
+      .expect(200);
+
     await request(app.getHttpServer())
       .post(`/api/v1/admin/store-applications/${applicationId}/approve`)
       .set('Cookie', admin.cookies)
       .set('x-csrf-token', admin.csrfToken)
       .send({ reviewNote: 'Duplicate approval attempt' })
       .expect(400);
+  });
+
+  it('creates public support requests without requiring auth', async () => {
+    const suffix = Date.now().toString(36);
+    const email = `support-${suffix}@topdanci.az`;
+
+    const response = await request(app.getHttpServer())
+      .post('/api/v1/support/requests')
+      .send({
+        name: 'Support Sender',
+        email,
+        phone: '+994501112233',
+        subject: 'Catalog support request',
+        message: 'This is a public support request created by the e2e smoke test.',
+      })
+      .expect(201);
+
+    expect(response.body.data.type).toBe('SUPPORT_REQUEST');
+
+    const report = await prisma.report.findUniqueOrThrow({
+      where: { id: response.body.data.id },
+      select: { message: true, status: true },
+    });
+
+    expect(report.message).toContain(email);
+    expect(report.status).toBe('OPEN');
   });
 
   it('enforces admin and superadmin operation boundaries', async () => {

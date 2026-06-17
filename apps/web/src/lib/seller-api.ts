@@ -152,6 +152,10 @@ export function login(identifier: string, password: string) {
   return apiPost<LoginResponse>('/auth/login', { identifier, password });
 }
 
+export function setupPassword(token: string, password: string) {
+  return apiPost<{ data: { completed: true } }>('/auth/setup-password', { token, password });
+}
+
 export function logout(allDevices = false) {
   return apiPost<{ data: { authenticated: false; revokedSessions?: number } }>(
     allDevices ? '/auth/logout-all' : '/auth/logout',

@@ -1,7 +1,8 @@
-import Link from 'next/link';
 import { BarChart3, MessageSquare, PackageCheck, Store } from 'lucide-react';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
+import { getCategories } from '../../lib/catalog-data';
+import { OpenStoreForm } from './open-store-form';
 
 const benefits = [
   {
@@ -17,7 +18,7 @@ const benefits = [
   {
     icon: MessageSquare,
     title: 'WhatsApp kliklərini izləyin',
-    text: 'Müştərilərlə birbaşa əlaqə yaradıb müraciət statistikasını görün.',
+    text: 'Müştərilərlə birbaşa əlaqə yaradın və müraciət statistikasını görün.',
   },
   {
     icon: BarChart3,
@@ -26,7 +27,9 @@ const benefits = [
   },
 ];
 
-export default function OpenStorePage() {
+export default async function OpenStorePage() {
+  const categories = await getCategories({ rootsOnly: true });
+
   return (
     <main className="site-shell">
       <SiteHeader />
@@ -55,49 +58,7 @@ export default function OpenStorePage() {
             </div>
           </aside>
 
-          <form className="panel">
-            <h2>Mağaza müraciəti</h2>
-            <div className="field-grid">
-              <label className="field">
-                <span>Ad və soyad</span>
-                <input placeholder="Adınızı daxil edin" />
-              </label>
-              <label className="field">
-                <span>E-poçt</span>
-                <input placeholder="numune@email.com" type="email" />
-              </label>
-              <label className="field">
-                <span>Telefon</span>
-                <input placeholder="+994 (__) ___-__-__" />
-              </label>
-              <label className="field">
-                <span>Mağaza adı</span>
-                <input placeholder="Şirkət və ya mağaza adı" />
-              </label>
-              <label className="field">
-                <span>Əsas kateqoriya</span>
-                <select>
-                  <option>Kateqoriya seçin</option>
-                  <option>Geyim</option>
-                  <option>Elektronika</option>
-                  <option>İnşaat materialları</option>
-                </select>
-              </label>
-              <label className="field">
-                <span>Qısa mağaza təsviri</span>
-                <textarea placeholder="Mağazanız və məhsullarınız haqqında qısa məlumat" />
-              </label>
-            </div>
-            <button className="button button-primary button-full" type="submit">
-              Müraciəti göndər
-            </button>
-            <p className="card-meta">
-              Artıq hesabınız var?{' '}
-              <Link className="card-link" href="/login">
-                Daxil ol
-              </Link>
-            </p>
-          </form>
+          <OpenStoreForm categories={categories.map(({ id, name, slug }) => ({ id: id ?? slug, name }))} />
         </div>
       </section>
       <SiteFooter />

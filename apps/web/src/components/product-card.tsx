@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Eye, MapPin, MessageCircle, PackageCheck, Store } from 'lucide-react';
+import { LeadWhatsAppLink } from './lead-actions';
 import type { ProductPreview } from '../lib/catalog-data';
 
 type ProductCardProps = {
@@ -44,10 +45,18 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         <div className="product-actions">
-          <Link className="button button-success" href={`/products/${product.slug}`}>
+          <LeadWhatsAppLink
+            className="button button-success"
+            phone={product.whatsappNumber}
+            productId={product.id}
+            productTitle={product.title}
+            source="product-card"
+            storeId={product.storeId}
+            storeName={product.store}
+          >
             <MessageCircle size={17} />
             WhatsApp
-          </Link>
+          </LeadWhatsAppLink>
           <Link className="button" href={`/products/${product.slug}`} aria-label={`${product.title} bax`}>
             <Eye size={17} />
             Bax

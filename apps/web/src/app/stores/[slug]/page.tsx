@@ -14,36 +14,41 @@ import {
   Search,
   Store,
 } from 'lucide-react';
+import { LeadViewTracker, LeadWhatsAppLink, PhoneRevealButton } from '../../../components/lead-actions';
 import { SiteFooter } from '../../../components/site-footer';
 import { SiteHeader } from '../../../components/site-header';
+import { ProductCard } from '../../../components/product-card';
 import { getProducts, getStore } from '../../../lib/catalog-data';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
+  searchParams?: Promise<{ q?: string }>;
 };
 
 const tabs = ['Məhsullar', 'Mağaza haqqında', 'Əlaqə', 'Statistikalar'];
 
-export default async function StoreDetailPage({ params }: PageProps) {
+export default async function StoreDetailPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
+  const query = await searchParams;
   const store = await getStore(slug);
 
   if (!store) {
     notFound();
   }
 
-  const storeProducts = await getProducts({ store: store.slug, limit: 48 });
+  const storeProducts = await getProducts({ store: store.slug, q: query?.q, limit: 48 });
 
   return (
     <main className="site-shell store-profile-page">
+      <LeadViewTracker source="store-detail" storeId={store.id} type="STORE_VIEW" />
       <SiteHeader />
 
       <section className="store-profile-hero">
         <div
-          className="store-cover"
-          style={{ backgroundImage: `url(${store.coverImageUrl})` }}
           aria-label={`${store.name} mağaza örtük şəkli`}
+          className="store-cover"
           role="img"
+          style={{ backgroundImage: `url(${store.coverImageUrl})` }}
         />
 
         <div className="container store-profile-summary">
@@ -83,14 +88,20 @@ export default async function StoreDetailPage({ params }: PageProps) {
           </div>
 
           <div className="store-summary-actions">
-            <Link className="button button-success" href="/contact">
+            <LeadWhatsAppLink
+              className="button button-success"
+              phone={store.whatsappNumber}
+              source="store-profile-hero"
+              storeId={store.id}
+              storeName={store.name}
+            >
               <MessageSquare size={18} />
               WhatsApp ilə əlaqə
-            </Link>
-            <button className="button" type="button">
+            </LeadWhatsAppLink>
+            <PhoneRevealButton className="button" phone={store.phone} source="store-profile-hero" storeId={store.id}>
               <Phone size={18} />
               Telefonu göstər
-            </button>
+            </PhoneRevealButton>
           </div>
         </div>
 
@@ -110,68 +121,50 @@ export default async function StoreDetailPage({ params }: PageProps) {
           <div className="store-products-column">
             <div className="store-products-head">
               <h2>Bütün məhsullar</h2>
-              <div className="store-filter-row">
+              <form action={`/stores/${store.slug}`} className="store-filter-row">
                 <label className="store-search-field">
                   <Search size={18} />
-                  <input placeholder="Bu mağazada məhsul axtar" aria-label="Bu mağazada məhsul axtar" />
+                  <input
+                    aria-label="Bu mağazada məhsul axtar"
+                    defaultValue={query?.q ?? ''}
+                    name="q"
+                    placeholder="Bu mağazada məhsul axtar"
+                  />
                 </label>
-                <button className="store-sort-button" type="button">
-                  Ən yenilər
+                <button className="store-sort-button" type="submit">
+                  Axtar
                   <ChevronDown size={18} />
                 </button>
-              </div>
+              </form>
             </div>
 
-            <div className="store-product-grid">
-              {storeProducts.length ? storeProducts.map((product) => (
-                <article className="store-product-card" key={product.slug}>
-                  <Link className="store-product-image" href={`/products/${product.slug}`}>
-                    <span style={{ backgroundImage: `url(${product.imageUrl})` }} role="img" aria-label={product.imageAlt} />
-                    <em>{product.badge}</em>
-                  </Link>
-
-                  <div className="store-product-body">
-                    <span className="store-product-kicker">{product.category}</span>
-                    <Link className="store-product-title" href={`/products/${product.slug}`}>
-                      {product.title}
-                    </Link>
-                    <strong className="store-product-price">{product.price}</strong>
-                    <span className="store-product-min">
-                      <PackageCheck size={16} />
-                      {product.minOrder}
-                    </span>
-                    <div className="store-product-actions">
-                      <Link className="button" href={`/products/${product.slug}`}>
-                        Məhsula bax
-                      </Link>
-                      <Link className="button button-success icon-button" href="/contact" aria-label={`${product.title} üçün WhatsApp`}>
-                        <MessageSquare size={18} />
-                      </Link>
-                    </div>
-                  </div>
-                </article>
-              )) : <p className="empty-state">Bu mağazada aktiv məhsul tapılmadı.</p>}
-            </div>
-
-            <div className="store-load-more">
-              <button className="button" type="button">
-                Daha çox məhsul yüklə
-              </button>
+            <div className="grid product-grid">
+              {storeProducts.length ? (
+                storeProducts.map((product) => <ProductCard key={product.slug} product={product} />)
+              ) : (
+                <p className="empty-state">Bu mağazada aktiv məhsul tapılmadı.</p>
+              )}
             </div>
           </div>
 
           <aside className="store-sidebar" id="store-info">
             <section className="store-side-panel contact-panel">
               <h2>Əlaqə saxla</h2>
-              <Link className="button button-success button-full" href="/contact">
+              <LeadWhatsAppLink
+                className="button button-success button-full"
+                phone={store.whatsappNumber}
+                source="store-profile-sidebar"
+                storeId={store.id}
+                storeName={store.name}
+              >
                 <MessageSquare size={18} />
                 WhatsApp ilə yaz
-              </Link>
-              <button className="button button-primary button-full" type="button">
+              </LeadWhatsAppLink>
+              <PhoneRevealButton className="button button-primary button-full" phone={store.phone} source="store-profile-sidebar" storeId={store.id}>
                 <Phone size={18} />
                 Telefonu göstər
-              </button>
-              <Link className="button button-full" href="/contact">
+              </PhoneRevealButton>
+              <Link className="button button-full" href={`/contact?store=${encodeURIComponent(store.name)}`}>
                 <Mail size={18} />
                 E-poçt göndər
               </Link>

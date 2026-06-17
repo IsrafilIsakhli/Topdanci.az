@@ -23,7 +23,12 @@ export function LoginForm() {
     try {
       const response = await login(identifier, password);
       const next = searchParams.get('next');
-      const fallback = response.user.role === 'BUYER' ? '/' : '/seller';
+      const fallback =
+        response.user.role === 'ADMIN' || response.user.role === 'SUPER_ADMIN'
+          ? '/admin'
+          : response.user.role === 'SELLER'
+            ? '/seller'
+            : '/';
       router.push(next && next.startsWith('/') ? next : fallback);
       router.refresh();
     } catch (caught) {

@@ -1,6 +1,7 @@
-import { Mail, MessageSquare, Phone } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
+import { ContactForm } from './contact-form';
 
 export default function ContactPage() {
   return (
@@ -11,8 +12,7 @@ export default function ContactPage() {
           <div>
             <h1>Əlaqə</h1>
             <p className="lead">
-              Platforma ilə bağlı sualınız varsa yazın. Məhsul qiyməti və topdan sifariş danışıqları birbaşa
-              mağazalarla aparılır.
+              Platforma ilə bağlı sualınız varsa yazın. Məhsul qiyməti və topdan sifariş danışıqları birbaşa mağazalarla aparılır.
             </p>
             <div className="benefit-list">
               <div className="benefit-item">
@@ -35,27 +35,8 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
-          <form className="panel">
-            <h2>Mesaj göndər</h2>
-            <div className="field-grid">
-              <label className="field">
-                <span>Ad</span>
-                <input placeholder="Adınız" />
-              </label>
-              <label className="field">
-                <span>E-poçt</span>
-                <input placeholder="numune@email.com" />
-              </label>
-              <label className="field">
-                <span>Mesaj</span>
-                <textarea placeholder="Mesajınızı yazın" />
-              </label>
-            </div>
-            <button className="button button-primary button-full" type="submit">
-              <MessageSquare size={17} />
-              Göndər
-            </button>
-          </form>
+
+          <ContactForm />
         </div>
       </section>
       <SiteFooter />

@@ -7,7 +7,6 @@ import {
   Crown,
   Megaphone,
   MessageCircle,
-  PackageCheck,
   Search,
   ShieldCheck,
   Sparkles,
@@ -44,8 +43,8 @@ export default async function HomePage() {
             </p>
             <h1>Topdansatıcı mağazaları və məhsulları bir yerdə kəşf edin</h1>
             <p className="lead">
-              Alıcılar məhsulları araşdırır, mağazaları yoxlayır və satıcı ilə WhatsApp və telefon üzərindən birbaşa
-              əlaqə saxlayır. Platforma satış aparmır, etibarlı əlaqəni sürətləndirir.
+              Alıcılar məhsulları araşdırır, mağazaları yoxlayır və satıcı ilə WhatsApp və telefon üzərindən birbaşa əlaqə saxlayır.
+              Platforma satış aparmır, etibarlı əlaqəni sürətləndirir.
             </p>
 
             <form className="search-panel home-search premium-search" action="/products">
@@ -137,32 +136,36 @@ export default async function HomePage() {
           </div>
 
           <div className="premium-store-grid">
-            {premiumStores.length ? premiumStores.map((store, index) => (
-              <Link className="premium-store-card" href={`/stores/${store.slug}`} key={store.slug}>
-                <div className="premium-store-cover" style={{ backgroundImage: `url(${store.coverImageUrl})` }}>
-                  <span className="sponsored-pill">
-                    <Megaphone size={13} />
-                    Sponsorlu
-                  </span>
-                </div>
-                <div className="premium-store-body">
-                  <div className="premium-store-head">
-                    <span className="store-avatar">{store.name.slice(0, 2).toUpperCase()}</span>
-                    <span className="verified-pill">
-                      <BadgeCheck size={14} />
-                      Təsdiqlənmiş
+            {premiumStores.length ? (
+              premiumStores.map((store, index) => (
+                <Link className="premium-store-card" href={`/stores/${store.slug}`} key={store.slug}>
+                  <div className="premium-store-cover" style={{ backgroundImage: `url(${store.coverImageUrl})` }}>
+                    <span className="sponsored-pill">
+                      <Megaphone size={13} />
+                      Sponsorlu
                     </span>
                   </div>
-                  <strong>{store.name}</strong>
-                  <span className="card-meta">{store.category}</span>
-                  <div className="store-metric-row">
-                    <span>{store.productCount} məhsul</span>
-                    <span>{store.city}</span>
-                    <span>{index === 0 ? 'Vitrin #1' : `${store.views} baxış`}</span>
+                  <div className="premium-store-body">
+                    <div className="premium-store-head">
+                      <span className="store-avatar">{store.name.slice(0, 2).toUpperCase()}</span>
+                      <span className="verified-pill">
+                        <BadgeCheck size={14} />
+                        Təsdiqlənmiş
+                      </span>
+                    </div>
+                    <strong>{store.name}</strong>
+                    <span className="card-meta">{store.category}</span>
+                    <div className="store-metric-row">
+                      <span>{store.productCount} məhsul</span>
+                      <span>{store.city}</span>
+                      <span>{index === 0 ? 'Vitrin #1' : `${store.views} baxış`}</span>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            )) : <p className="empty-state">Hazırda göstəriləcək mağaza yoxdur.</p>}
+                </Link>
+              ))
+            ) : (
+              <p className="empty-state">Hazırda göstəriləcək mağaza yoxdur.</p>
+            )}
           </div>
         </div>
       </section>
@@ -179,9 +182,11 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="grid product-grid featured-product-grid">
-            {featuredProducts.length ? featuredProducts.map((product) => (
-              <ProductCard key={product.slug} product={product} />
-            )) : <p className="empty-state">Hazırda göstəriləcək məhsul yoxdur.</p>}
+            {featuredProducts.length ? (
+              featuredProducts.map((product) => <ProductCard key={product.slug} product={product} />)
+            ) : (
+              <p className="empty-state">Hazırda göstəriləcək məhsul yoxdur.</p>
+            )}
           </div>
         </div>
       </section>
@@ -192,8 +197,8 @@ export default async function HomePage() {
             <p className="eyebrow">Kataloq naviqasiyası</p>
             <h2>Alıcılar üçün sürətli sektor xəritəsi</h2>
             <p className="lead">
-              Əsas kateqoriyalar sadə kart kimi yox, real topdansatış naviqasiyası kimi işləməlidir. Alıcı sektor seçir,
-              alt kateqoriyaya keçir və satıcı ilə birbaşa əlaqə saxlayır.
+              Əsas kateqoriyalar real topdansatış naviqasiyası kimi işləyir. Alıcı sektor seçir, alt kateqoriyaya keçir və
+              satıcı ilə birbaşa əlaqə saxlayır.
             </p>
             <div className="catalog-proof-list">
               <span>
@@ -288,8 +293,8 @@ export default async function HomePage() {
             <p className="eyebrow">Necə işləyir</p>
             <h2>Alıcı baxır, satıcı ilə birbaşa əlaqə saxlayır</h2>
             <p className="lead">
-              TopdanBazar satış əməliyyatı aparmır. Platforma məhsul və mağaza kəşfini sürətləndirir, əlaqəni isə
-              WhatsApp və telefon üzərindən satıcı ilə alıcı arasında saxlayır.
+              TopdanBazar satış əməliyyatı aparmır. Platforma məhsul və mağaza kəşfini sürətləndirir, əlaqəni isə WhatsApp və
+              telefon üzərindən satıcı ilə alıcı arasında saxlayır.
             </p>
           </div>
           <div className="flow-card-list">

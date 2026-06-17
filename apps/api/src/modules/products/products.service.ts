@@ -102,6 +102,9 @@ const publicProductSelect = {
       city: true,
       district: true,
       verifiedAt: true,
+      phone: true,
+      whatsappNumber: true,
+      email: true,
     },
   },
   images: {
