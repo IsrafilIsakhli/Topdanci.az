@@ -45,14 +45,10 @@ export default async function CategoriesPage({
             {categories.length ? (
               categories.map((category) => {
                 const Icon = category.icon;
-                const visibleChildren = category.children?.slice(0, 2) ?? [];
-                const hiddenChildrenCount = Math.max(
-                  (category.children?.length ?? 0) - visibleChildren.length,
-                  0,
-                );
+                const visibleChildren = category.childCategories ?? category.children?.map((name) => ({ name, slug: category.slug })) ?? [];
 
                 return (
-                  <Link className="card category-card" key={category.slug} href={`/categories/${category.slug}`}>
+                  <article className="card category-card" key={category.slug}>
                     <span className="icon-badge category-card-icon">
                       <Icon size={20} />
                     </span>
@@ -64,19 +60,18 @@ export default async function CategoriesPage({
                       {visibleChildren.length ? (
                         <span className="category-children">
                           {visibleChildren.map((child) => (
-                            <span key={child}>{child}</span>
+                            <Link className="category-child-chip" key={child.slug} href={`/categories/${child.slug}`}>
+                              {child.name}
+                            </Link>
                           ))}
-                          {hiddenChildrenCount > 0 ? (
-                            <span className="category-overflow-chip">+{hiddenChildrenCount} alt kateqoriya</span>
-                          ) : null}
                         </span>
                       ) : null}
                     </span>
-                    <span className="card-link category-card-action">
+                    <Link className="card-link category-card-action" href={`/categories/${category.slug}`}>
                       <span>Kateqoriyaya bax</span>
                       <ArrowRight size={14} />
-                    </span>
-                  </Link>
+                    </Link>
+                  </article>
                 );
               })
             ) : (

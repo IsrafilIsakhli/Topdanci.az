@@ -2,31 +2,32 @@ import Link from 'next/link';
 import {
   ArrowRight,
   BadgeCheck,
-  Building2,
-  CheckCircle2,
   Crown,
   Megaphone,
   MessageCircle,
-  Search,
-  ShieldCheck,
   Sparkles,
-  Store,
   TrendingUp,
-  Users,
 } from 'lucide-react';
-import { ProductCard } from '../components/product-card';
+import { CategorySearchForm, type CategorySearchItem } from '../components/category-search-form';
 import { SiteFooter } from '../components/site-footer';
 import { SiteHeader } from '../components/site-header';
 import { getCategories, getProducts, getStores, heroImage, stats } from '../lib/catalog-data';
 
 export default async function HomePage() {
-  const [categories, products, stores] = await Promise.all([
+  const [categories, allCategories, products, stores] = await Promise.all([
     getCategories({ rootsOnly: true }),
+    getCategories(),
     getProducts({ limit: 8 }),
     getStores({ limit: 6 }),
   ]);
-  const premiumStores = stores.slice(0, 3);
-  const featuredProducts = products.slice(0, 4);
+  const categorySearchItems: CategorySearchItem[] = allCategories.map(({ id, parentId, slug, name }) => ({
+    id,
+    parentId,
+    slug,
+    name,
+  }));
+  const premiumStores = stores.slice(0, 6);
+  const featuredProducts = products.slice(0, 8);
   const spotlightCategories = categories.slice(0, 8);
 
   return (
@@ -47,21 +48,7 @@ export default async function HomePage() {
               Platforma satış aparmır, etibarlı əlaqəni sürətləndirir.
             </p>
 
-            <form className="search-panel home-search premium-search" action="/products">
-              <input name="q" placeholder="Məhsul, mağaza və ya kateqoriya axtarın" />
-              <select name="category" aria-label="Kateqoriya">
-                <option value="">Bütün kateqoriyalar</option>
-                {categories.map((category) => (
-                  <option key={category.slug} value={category.slug}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-              <button className="button button-primary" type="submit">
-                <Search size={17} />
-                Axtar
-              </button>
-            </form>
+            <CategorySearchForm categories={categorySearchItems} />
 
             <div className="home-trust-row premium-trust-row">
               {stats.map((stat) => {
@@ -181,160 +168,24 @@ export default async function HomePage() {
               Bütün məhsullar <ArrowRight size={14} />
             </Link>
           </div>
-          <div className="grid product-grid featured-product-grid">
+          <div className="featured-product-grid sponsored-product-grid">
             {featuredProducts.length ? (
-              featuredProducts.map((product) => <ProductCard key={product.slug} product={product} />)
+              featuredProducts.map((product, index) => (
+                <Link className="sponsored-product-card" href={`/products/${product.slug}`} key={product.slug}>
+                  <span className="sponsored-product-thumb" style={{ backgroundImage: `url(${product.imageUrl})` }}>
+                    <span>{index < 3 ? 'Ödənişli' : 'Vitrin'}</span>
+                  </span>
+                  <span className="sponsored-product-info">
+                    <small>{product.category}</small>
+                    <strong>{product.title}</strong>
+                    <em>{product.price}</em>
+                    <span>{product.store} · {product.city}</span>
+                  </span>
+                </Link>
+              ))
             ) : (
               <p className="empty-state">Hazırda göstəriləcək məhsul yoxdur.</p>
             )}
-          </div>
-        </div>
-      </section>
-
-      <section className="section catalog-overview-section">
-        <div className="container catalog-overview-grid">
-          <div className="catalog-copy">
-            <p className="eyebrow">Kataloq naviqasiyası</p>
-            <h2>Alıcılar üçün sürətli sektor xəritəsi</h2>
-            <p className="lead">
-              Əsas kateqoriyalar real topdansatış naviqasiyası kimi işləyir. Alıcı sektor seçir, alt kateqoriyaya keçir və
-              satıcı ilə birbaşa əlaqə saxlayır.
-            </p>
-            <div className="catalog-proof-list">
-              <span>
-                <CheckCircle2 size={17} />
-                Aktiv mağaza və məhsul qaydası
-              </span>
-              <span>
-                <ShieldCheck size={17} />
-                Təsdiqlənmiş satıcı işarələri
-              </span>
-              <span>
-                <Users size={17} />
-                Satıcı ilə platformadan kənar əlaqə
-              </span>
-            </div>
-          </div>
-
-          <div className="catalog-feature-grid">
-            {categories.slice(0, 6).map((category) => {
-              const Icon = category.icon;
-              return (
-                <Link className="catalog-feature-card" key={category.slug} href={`/categories/${category.slug}`}>
-                  <span className="icon-badge">
-                    <Icon size={21} />
-                  </span>
-                  <strong>{category.name}</strong>
-                  <small>
-                    {category.productCount} məhsul · {category.storeCount} mağaza
-                  </small>
-                  <em>Kateqoriyaya bax</em>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="section fresh-and-popular-section">
-        <div className="container fresh-popular-grid">
-          <div>
-            <div className="section-title-row compact-title-row">
-              <div>
-                <p className="eyebrow">Son elanlar</p>
-                <h2>Yeni əlavə olunanlar</h2>
-              </div>
-              <Link className="card-link" href="/products">
-                Hamısı <ArrowRight size={14} />
-              </Link>
-            </div>
-            <div className="fresh-list">
-              {products.slice(0, 3).map((product) => (
-                <Link className="fresh-item" href={`/products/${product.slug}`} key={product.slug}>
-                  <span className="fresh-thumb" style={{ backgroundImage: `url(${product.imageUrl})` }} />
-                  <span>
-                    <strong>{product.title}</strong>
-                    <small>
-                      {product.store} · {product.city}
-                    </small>
-                  </span>
-                  <em>{product.price}</em>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <aside className="popular-store-panel">
-            <div className="section-title-row compact-title-row">
-              <div>
-                <p className="eyebrow">Organik</p>
-                <h2>Populyar mağazalar</h2>
-              </div>
-            </div>
-            {stores.map((store) => (
-              <Link className="popular-store-row" href={`/stores/${store.slug}`} key={store.slug}>
-                <span className="store-avatar">{store.name.slice(0, 2).toUpperCase()}</span>
-                <span>
-                  <strong>{store.name}</strong>
-                  <small>
-                    {store.category} · {store.productCount} məhsul
-                  </small>
-                </span>
-                <ArrowRight size={15} />
-              </Link>
-            ))}
-          </aside>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container home-flow-grid">
-          <div>
-            <p className="eyebrow">Necə işləyir</p>
-            <h2>Alıcı baxır, satıcı ilə birbaşa əlaqə saxlayır</h2>
-            <p className="lead">
-              TopdanBazar satış əməliyyatı aparmır. Platforma məhsul və mağaza kəşfini sürətləndirir, əlaqəni isə WhatsApp və
-              telefon üzərindən satıcı ilə alıcı arasında saxlayır.
-            </p>
-          </div>
-          <div className="flow-card-list">
-            <div className="flow-card">
-              <Search size={20} />
-              <strong>Məhsulu tapın</strong>
-              <span className="card-meta">Kateqoriya, mağaza və məhsul üzrə sürətli axtarış.</span>
-            </div>
-            <div className="flow-card">
-              <ShieldCheck size={20} />
-              <strong>Mağazanı yoxlayın</strong>
-              <span className="card-meta">Profil, şəhər, məhsul sayı və əlaqə kanalları görünür.</span>
-            </div>
-            <div className="flow-card">
-              <MessageCircle size={20} />
-              <strong>Birbaşa yazın</strong>
-              <span className="card-meta">Qiymət və sifariş şərtləri satıcı ilə platformadan kənar danışılır.</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <div className="cta-band home-cta-band premium-cta-band">
-            <div>
-              <p className="eyebrow">Satıcılar üçün</p>
-              <h2>Topdansatış mağazanızı onlayn kataloqa əlavə edin</h2>
-              <p className="lead">Məhsullarınızı nümayiş etdirin, müraciətləri izləyin və yeni alıcılarla əlaqə qurun.</p>
-            </div>
-            <div className="cta-actions">
-              <Link className="button" href="/open-store">
-                <Building2 size={17} />
-                Mağaza aç
-              </Link>
-              <Link className="button button-ghost-on-dark" href="/login">
-                <Store size={17} />
-                Daxil ol
-              </Link>
-            </div>
           </div>
         </div>
       </section>

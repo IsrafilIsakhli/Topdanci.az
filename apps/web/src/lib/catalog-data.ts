@@ -17,7 +17,13 @@ import {
   WashingMachine,
   Wrench,
 } from 'lucide-react';
+import { defaultCategories as defaultCategoryTree, type DefaultCategoryNode } from '@topdanbazar/shared';
 import { apiGet } from './api-client';
+
+export type CategoryChild = {
+  slug: string;
+  name: string;
+};
 
 export type CategoryCard = {
   id?: string | undefined;
@@ -28,6 +34,7 @@ export type CategoryCard = {
   storeCount: string;
   icon: LucideIcon;
   children?: string[] | undefined;
+  childCategories?: CategoryChild[] | undefined;
 };
 
 export type ProductPreview = {
@@ -172,6 +179,19 @@ const productImageFallbacks = [
 
 const iconBySlug: Record<string, LucideIcon> = {
   'son-elanlar': Package,
+  'qida-ve-icki': Package,
+  'geyim-ayaqqabi-ve-tekstil': Shirt,
+  'elektronika-ve-aksesuarlar': Headphones,
+  'meiset-texnikasi': WashingMachine,
+  'ev-bag-ve-mebel': House,
+  'tikinti-ve-temir': Wrench,
+  'avto-neqliyyat-ve-ehtiyat-hisseleri': Car,
+  'gozellik-saglamliq-ve-sexsi-qulluq': Shirt,
+  'usaq-mehsullari': Baby,
+  'qablasdirma-ve-reklam-mehsullari': Package,
+  'biznes-ve-magaza-avadanligi': BriefcaseBusiness,
+  'kend-teserrufati-ve-heyvandarliq': Package,
+  'xidmetler-ve-b2b-heller': BriefcaseBusiness,
   neqliyyat: Car,
   elektronika: Headphones,
   'ev-ve-bag-ucun': House,
@@ -180,7 +200,6 @@ const iconBySlug: Record<string, LucideIcon> = {
   'xidmetler-ve-biznes': BriefcaseBusiness,
   'sexsi-esyalar': Shirt,
   'hobbi-ve-asude': Watch,
-  'meiset-texnikasi': WashingMachine,
   telefonlar: Smartphone,
   'usaq-alemi': Baby,
   heyvanlar: PawPrint,
@@ -188,31 +207,16 @@ const iconBySlug: Record<string, LucideIcon> = {
   'mektebliler-ucun': GraduationCap,
 };
 
-export const categories: CategoryCard[] = [
-  { id: 'son-elanlar', slug: 'son-elanlar', name: 'Son elanlar', productCount: '200K+', storeCount: '400+', icon: Package },
-  { id: 'neqliyyat', parentId: 'son-elanlar', slug: 'neqliyyat', name: 'Nəqliyyat', productCount: '28K+', storeCount: '210', icon: Car },
-  { id: 'elektronika', parentId: 'son-elanlar', slug: 'elektronika', name: 'Elektronika', productCount: '50K+', storeCount: '150', icon: Headphones },
-  { id: 'ev-ve-bag-ucun', parentId: 'son-elanlar', slug: 'ev-ve-bag-ucun', name: 'Ev və bağ üçün', productCount: '46K+', storeCount: '180', icon: House },
+const fallbackCategoryTree: DefaultCategoryNode[] = [
   {
-    id: 'ehtiyat-hisseleri-ve-aksesuarlar',
-    parentId: 'son-elanlar',
-    slug: 'ehtiyat-hisseleri-ve-aksesuarlar',
-    name: 'Ehtiyat hissələri və aksesuarlar',
-    productCount: '18K+',
-    storeCount: '95',
-    icon: Wrench,
+    slug: 'son-elanlar',
+    name: 'Son elanlar',
+    icon: 'layout-list',
+    children: defaultCategoryTree as DefaultCategoryNode[],
   },
-  { id: 'dasinmaz-emlak', parentId: 'son-elanlar', slug: 'dasinmaz-emlak', name: 'Daşınmaz əmlak', productCount: '12K+', storeCount: '80', icon: Building2 },
-  { id: 'xidmetler-ve-biznes', parentId: 'son-elanlar', slug: 'xidmetler-ve-biznes', name: 'Xidmətlər və biznes', productCount: '34K+', storeCount: '260', icon: BriefcaseBusiness },
-  { id: 'sexsi-esyalar', parentId: 'son-elanlar', slug: 'sexsi-esyalar', name: 'Şəxsi əşyalar', productCount: '38K+', storeCount: '170', icon: Shirt },
-  { id: 'hobbi-ve-asude', parentId: 'son-elanlar', slug: 'hobbi-ve-asude', name: 'Hobbi və asudə', productCount: '16K+', storeCount: '90', icon: Watch },
-  { id: 'meiset-texnikasi', parentId: 'son-elanlar', slug: 'meiset-texnikasi', name: 'Məişət texnikası', productCount: '22K+', storeCount: '120', icon: WashingMachine },
-  { id: 'telefonlar', parentId: 'son-elanlar', slug: 'telefonlar', name: 'Telefonlar', productCount: '30K+', storeCount: '140', icon: Smartphone },
-  { id: 'usaq-alemi', parentId: 'son-elanlar', slug: 'usaq-alemi', name: 'Uşaq aləmi', productCount: '20K+', storeCount: '110', icon: Baby },
-  { id: 'heyvanlar', parentId: 'son-elanlar', slug: 'heyvanlar', name: 'Heyvanlar', productCount: '11K+', storeCount: '70', icon: PawPrint },
-  { id: 'is-elanlari', parentId: 'son-elanlar', slug: 'is-elanlari', name: 'İş elanları', productCount: '9K+', storeCount: '60', icon: BriefcaseBusiness },
-  { id: 'mektebliler-ucun', parentId: 'son-elanlar', slug: 'mektebliler-ucun', name: 'Məktəblilər üçün', productCount: '7K+', storeCount: '45', icon: GraduationCap },
 ];
+
+export const categories: CategoryCard[] = buildFallbackCategories(fallbackCategoryTree);
 
 export const products: ProductPreview[] = [
   {
@@ -222,7 +226,7 @@ export const products: ProductPreview[] = [
     storeSlug: 'baku-tekstil-mmc',
     city: 'Bakı',
     category: 'Geyim və Tekstil',
-    categorySlug: 'sexsi-esyalar',
+    categorySlug: 'geyim-ayaqqabi-ve-tekstil',
     price: 'Razılaşma yolu ilə',
     minOrder: 'Min: 50 ədəd',
     badge: 'Yeni',
@@ -238,7 +242,7 @@ export const products: ProductPreview[] = [
     storeSlug: 'shoes-import-trade',
     city: 'Sumqayıt',
     category: 'Ayaqqabı',
-    categorySlug: 'sexsi-esyalar',
+    categorySlug: 'geyim-ayaqqabi-ve-tekstil',
     price: 'Razılaşma yolu ilə',
     minOrder: 'Min: 100 cüt',
     badge: 'Stokda var',
@@ -254,7 +258,7 @@ export const products: ProductPreview[] = [
     storeSlug: 'techwholesale-az',
     city: 'Bakı',
     category: 'Elektronika',
-    categorySlug: 'elektronika',
+    categorySlug: 'elektronika-ve-aksesuarlar',
     price: 'Razılaşma yolu ilə',
     minOrder: 'Min: 50 ədəd',
     badge: 'Top seller',
@@ -270,7 +274,7 @@ export const products: ProductPreview[] = [
     storeSlug: 'mega-insaat-supply',
     city: 'Gəncə',
     category: 'Təmir və tikinti',
-    categorySlug: 'ev-ve-bag-ucun',
+    categorySlug: 'tikinti-ve-temir',
     price: 'Razılaşma yolu ilə',
     minOrder: 'Min: 20 ədəd',
     badge: 'Yeni partiya',
@@ -286,7 +290,7 @@ export const stores: StorePreview[] = [
     slug: 'baku-tekstil-mmc',
     name: 'Baku Tekstil MMC',
     category: 'Geyim və Tekstil',
-    categorySlug: 'sexsi-esyalar',
+    categorySlug: 'geyim-ayaqqabi-ve-tekstil',
     productCount: '1,250+',
     city: 'Bakı',
     views: '12.5K',
@@ -300,7 +304,7 @@ export const stores: StorePreview[] = [
     slug: 'shoes-import-trade',
     name: 'Shoes Import Trade',
     category: 'Ayaqqabı və dəri məmulatları',
-    categorySlug: 'sexsi-esyalar',
+    categorySlug: 'geyim-ayaqqabi-ve-tekstil',
     productCount: '840+',
     city: 'Sumqayıt',
     views: '8.2K',
@@ -314,7 +318,7 @@ export const stores: StorePreview[] = [
     slug: 'techwholesale-az',
     name: 'TechWholesale AZ',
     category: 'Elektronika və aksesuarlar',
-    categorySlug: 'elektronika',
+    categorySlug: 'elektronika-ve-aksesuarlar',
     productCount: '3,100+',
     city: 'Bakı',
     views: '21.4K',
@@ -326,6 +330,193 @@ export const stores: StorePreview[] = [
   },
 ];
 
+stores.push(
+  {
+    slug: 'absheron-food-supply',
+    name: 'Absheron Food Supply',
+    category: 'Qida və içki',
+    categorySlug: 'qida-ve-icki',
+    productCount: '4',
+    city: 'Bakı',
+    views: 'Yeni',
+    coverImageUrl: categoryImageFallback,
+    description: 'Market, restoran və kafe şəbəkələri üçün qida və içki topdan satışı.',
+    verified: true,
+    phone: '+994502101010',
+    whatsappNumber: '+994502101010',
+  },
+  {
+    slug: 'caspian-electro-hub',
+    name: 'Caspian Electro Hub',
+    category: 'Elektronika və aksesuarlar',
+    categorySlug: 'elektronika-ve-aksesuarlar',
+    productCount: '4',
+    city: 'Bakı',
+    views: 'Yeni',
+    coverImageUrl: categoryImageFallback,
+    description: 'Telefon aksesuarları, smart cihazlar və ofis texnikası üzrə topdan təklif.',
+    verified: true,
+    phone: '+994552202020',
+    whatsappNumber: '+994552202020',
+  },
+  {
+    slug: 'probuild-materials',
+    name: 'ProBuild Materials',
+    category: 'Tikinti və təmir',
+    categorySlug: 'tikinti-ve-temir',
+    productCount: '4',
+    city: 'Gəncə',
+    views: 'Yeni',
+    coverImageUrl: heroImage,
+    description: 'Tikinti briqadaları və obyektlər üçün material, boya və elektrik ləvazimatları.',
+    verified: true,
+    phone: '+994773404040',
+    whatsappNumber: '+994773404040',
+  },
+  {
+    slug: 'packline-print',
+    name: 'PackLine Print',
+    category: 'Qablaşdırma və reklam məhsulları',
+    categorySlug: 'qablasdirma-ve-reklam-mehsullari',
+    productCount: '4',
+    city: 'Bakı',
+    views: 'Yeni',
+    coverImageUrl: categoryImageFallback,
+    description: 'Brendli qablaşdırma, promo məhsullar və çap xidmətləri.',
+    verified: true,
+    phone: '+994508808080',
+    whatsappNumber: '+994508808080',
+  },
+  {
+    slug: 'agroline-b2b',
+    name: 'AgroLine B2B',
+    category: 'Kənd təsərrüfatı və heyvandarlıq',
+    categorySlug: 'kend-teserrufati-ve-heyvandarliq',
+    productCount: '4',
+    city: 'Mingəçevir',
+    views: 'Yeni',
+    coverImageUrl: heroImage,
+    description: 'Fermerlər və təsərrüfatlar üçün toxum, gübrə, yem və avadanlıq.',
+    verified: true,
+    phone: '+994559909090',
+    whatsappNumber: '+994559909090',
+  },
+);
+
+products.push(
+  {
+    slug: 'premium-un-50kg-paleti',
+    title: 'Premium un 50 kq palet',
+    store: 'Absheron Food Supply',
+    storeSlug: 'absheron-food-supply',
+    city: 'Bakı',
+    category: 'Un, şəkər və duz',
+    categorySlug: 'un-seker-ve-duz',
+    price: '32 AZN',
+    minOrder: 'Min: 20 paket',
+    badge: 'Stokda var',
+    imageUrl: productImageFallbacks[0],
+    imageAlt: 'Topdan ərzaq məhsulu',
+    whatsappNumber: '+994502101010',
+    phone: '+994502101010',
+  },
+  {
+    slug: 'qazli-icki-mix-24-lu-qutu',
+    title: 'Qazlı içki mix 24-lü qutu',
+    store: 'Absheron Food Supply',
+    storeSlug: 'absheron-food-supply',
+    city: 'Bakı',
+    category: 'Şirələr və qazlı içkilər',
+    categorySlug: 'sireler-ve-qazli-ickiler',
+    price: '18.40 AZN',
+    minOrder: 'Min: 30 qutu',
+    badge: 'Yeni',
+    imageUrl: productImageFallbacks[1],
+    imageAlt: 'Topdan içki məhsulu',
+    whatsappNumber: '+994502101010',
+    phone: '+994502101010',
+  },
+  {
+    slug: 'usb-c-kabel-100-ededlik-paket',
+    title: 'USB-C kabel 100 ədədlik paket',
+    store: 'Caspian Electro Hub',
+    storeSlug: 'caspian-electro-hub',
+    city: 'Bakı',
+    category: 'Adapter və kabellər',
+    categorySlug: 'adapter-ve-kabeller',
+    price: '145 AZN',
+    minOrder: 'Min: 5 paket',
+    badge: 'Top seller',
+    imageUrl: productImageFallbacks[2],
+    imageAlt: 'Topdan elektronika aksesuarı',
+    whatsappNumber: '+994552202020',
+    phone: '+994552202020',
+  },
+  {
+    slug: 'powerbank-10000mah-topdan-partiya',
+    title: 'Powerbank 10000mAh topdan partiya',
+    store: 'Caspian Electro Hub',
+    storeSlug: 'caspian-electro-hub',
+    city: 'Bakı',
+    category: 'Powerbanklar',
+    categorySlug: 'powerbanklar',
+    price: 'Razılaşma yolu ilə',
+    minOrder: 'Min: 50 ədəd',
+    badge: 'Stokda var',
+    imageUrl: productImageFallbacks[3],
+    imageAlt: 'Topdan powerbank məhsulu',
+    whatsappNumber: '+994552202020',
+    phone: '+994552202020',
+  },
+  {
+    slug: 'sement-m500-50kg-topdan',
+    title: 'Sement M500 50 kq topdan',
+    store: 'ProBuild Materials',
+    storeSlug: 'probuild-materials',
+    city: 'Gəncə',
+    category: 'Sement və qum',
+    categorySlug: 'sement-ve-qum',
+    price: '9.20 AZN',
+    minOrder: 'Min: 120 ədəd',
+    badge: 'Stokda var',
+    imageUrl: productImageFallbacks[0],
+    imageAlt: 'Topdan tikinti materialı',
+    whatsappNumber: '+994773404040',
+    phone: '+994773404040',
+  },
+  {
+    slug: 'karton-qutu-40x30x30-500-eded',
+    title: 'Karton qutu 40x30x30 500 ədəd',
+    store: 'PackLine Print',
+    storeSlug: 'packline-print',
+    city: 'Bakı',
+    category: 'Karton qutular',
+    categorySlug: 'karton-qutular',
+    price: '0.72 AZN',
+    minOrder: 'Min: 500 ədəd',
+    badge: 'Yeni',
+    imageUrl: productImageFallbacks[1],
+    imageAlt: 'Topdan qablaşdırma məhsulu',
+    whatsappNumber: '+994508808080',
+    phone: '+994508808080',
+  },
+  {
+    slug: 'mineral-gubre-25kg-topdan',
+    title: 'Mineral gübrə 25 kq topdan',
+    store: 'AgroLine B2B',
+    storeSlug: 'agroline-b2b',
+    city: 'Mingəçevir',
+    category: 'Mineral gübrələr',
+    categorySlug: 'mineral-gubreler',
+    price: '17.50 AZN',
+    minOrder: 'Min: 80 ədəd',
+    badge: 'Stokda var',
+    imageUrl: productImageFallbacks[2],
+    imageAlt: 'Topdan kənd təsərrüfatı məhsulu',
+    whatsappNumber: '+994559909090',
+    phone: '+994559909090',
+  },
+);
 export const stats = [
   { label: 'təsdiqlənmiş mağaza', value: '400+', icon: Store },
   { label: 'aktiv məhsul', value: '200K+', icon: Package },
@@ -334,16 +525,19 @@ export const stats = [
 ];
 
 export async function getCategories(query?: { q?: string | undefined; rootsOnly?: boolean | undefined }): Promise<CategoryCard[]> {
+  const fallback = filterCategories(categories, query);
   const response = await fetchCatalog<ApiListResponse<ApiCategory>>(`/categories${toQueryString({ q: query?.q })}`);
   const source = response?.data;
 
-  if (!source) {
-    return fallbackAllowed() ? filterCategories(categories, query) : [];
+  if (!source?.length) {
+    return fallback;
   }
 
   const root = source.find((category) => category.slug === 'son-elanlar');
   const mapped = source.map(mapCategory);
-  return query?.rootsOnly ? mapped.filter((category) => (root ? category.parentId === root.id : !category.parentId)) : mapped;
+  const visible = query?.rootsOnly ? mapped.filter((category) => (root ? category.parentId === root.id : !category.parentId)) : mapped;
+
+  return visible.length ? visible : fallback;
 }
 
 export async function getCategory(slug: string): Promise<CategoryCard | null> {
@@ -351,17 +545,17 @@ export async function getCategory(slug: string): Promise<CategoryCard | null> {
   if (response?.data) {
     return mapCategory(response.data);
   }
-  return fallbackAllowed() ? categories.find((category) => category.slug === slug) ?? null : null;
+  return categories.find((category) => category.slug === slug) ?? null;
 }
 
 export async function getProducts(query: ProductQuery = {}): Promise<ProductPreview[]> {
+  const fallback = filterFallbackProducts(query);
   const response = await fetchCatalog<ApiListResponse<ApiProduct>>(`/products${toQueryString(query)}`);
-  if (!response?.data) {
-    return fallbackAllowed() ? filterFallbackProducts(query) : [];
+  if (!response?.data?.length) {
+    return fallback;
   }
   return response.data.map(mapProduct);
 }
-
 export async function getProduct(slug: string): Promise<ProductPreview | null> {
   const response = await fetchCatalog<ApiDetailResponse<ApiProduct>>(`/products/${encodeURIComponent(slug)}`);
   if (response?.data) {
@@ -371,13 +565,13 @@ export async function getProduct(slug: string): Promise<ProductPreview | null> {
 }
 
 export async function getStores(query: StoreQuery = {}): Promise<StorePreview[]> {
+  const fallback = filterFallbackStores(query);
   const response = await fetchCatalog<ApiListResponse<ApiStore>>(`/stores${toQueryString(query)}`);
-  if (!response?.data) {
-    return fallbackAllowed() ? filterFallbackStores(query) : [];
+  if (!response?.data?.length) {
+    return fallback;
   }
   return response.data.map(mapStore);
 }
-
 export async function getStore(slug: string): Promise<StorePreview | null> {
   const response = await fetchCatalog<ApiDetailResponse<ApiStore>>(`/stores/${encodeURIComponent(slug)}`);
   if (response?.data) {
@@ -395,7 +589,24 @@ async function fetchCatalog<T>(path: string): Promise<T | null> {
 }
 
 function fallbackAllowed(): boolean {
-  return process.env.NODE_ENV !== 'production';
+  return true;
+}
+
+function buildFallbackCategories(nodes: DefaultCategoryNode[], parentId?: string): CategoryCard[] {
+  return nodes.flatMap((node) => {
+    const category: CategoryCard = {
+      id: node.slug,
+      ...(parentId ? { parentId } : {}),
+      slug: node.slug,
+      name: node.name,
+      productCount: '0',
+      storeCount: '0',
+      icon: resolveCategoryIcon(node.slug, node.icon),
+      children: node.children?.map((child) => child.name) ?? [],
+    };
+
+    return [category, ...buildFallbackCategories(node.children ?? [], node.slug)];
+  });
 }
 
 function mapCategory(category: ApiCategory): CategoryCard {
@@ -408,6 +619,7 @@ function mapCategory(category: ApiCategory): CategoryCard {
     storeCount: formatCompactCount(category.storeCount),
     icon: resolveCategoryIcon(category.slug, category.icon),
     children: category.children?.map((child) => child.name) ?? [],
+    childCategories: category.children?.map((child) => ({ slug: child.slug, name: child.name })) ?? [],
   };
 }
 
@@ -475,6 +687,9 @@ function resolveCategoryIcon(slug: string, icon?: string | null): LucideIcon {
   if (normalized.includes('building')) return Building2;
   if (normalized.includes('briefcase')) return BriefcaseBusiness;
   if (normalized.includes('shirt')) return Shirt;
+  if (normalized.includes('headphone') || normalized.includes('audio')) return Headphones;
+  if (normalized.includes('washing')) return WashingMachine;
+  if (normalized.includes('baby')) return Baby;
   return iconBySlug[slug] ?? Package;
 }
 
@@ -615,3 +830,4 @@ function filterFallbackStores(query: StoreQuery): StorePreview[] {
     return matchesCategory && matchesCity && matchesSearch;
   });
 }
+

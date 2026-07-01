@@ -35,6 +35,11 @@ export function SiteHeader() {
           ))}
         </nav>
 
+        <form className="header-search" action="/products">
+          <Search size={16} />
+          <input name="q" placeholder="Məhsul axtar" aria-label="Məhsul axtar" />
+        </form>
+
         <div className="header-actions">
           <Link className="button icon-button" href="/products" aria-label="Axtarış">
             <Search size={18} />

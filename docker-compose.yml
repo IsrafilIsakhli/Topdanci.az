@@ -70,7 +70,7 @@ services:
       - .env
     environment:
       DATABASE_URL: postgresql://topdanbazar:topdanbazar@postgres:5432/topdanbazar?schema=public
-    command: ["npx", "prisma", "migrate", "deploy", "--schema", "apps/api/prisma/schema.prisma"]
+    command: ["sh", "-c", "npx prisma migrate deploy --schema apps/api/prisma/schema.prisma && node apps/api/prisma/seed.js"]
     depends_on:
       postgres:
         condition: service_healthy
