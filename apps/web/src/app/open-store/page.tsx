@@ -31,7 +31,7 @@ export default async function OpenStorePage() {
   const categories = await getCategories({ rootsOnly: true });
 
   return (
-    <main className="site-shell">
+    <main className="site-shell open-store-shell">
       <SiteHeader />
       <section className="section open-store-page-section">
         <div className="container open-store-layout">

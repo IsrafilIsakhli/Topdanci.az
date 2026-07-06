@@ -23,6 +23,7 @@ const mobileQuickItems = [
 export function SiteHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const showMobileQuickNav = pathname !== '/open-store';
 
   const closeMenu = () => setIsMenuOpen(false);
   const isActive = (href: string) => (href === '/' ? pathname === href : pathname.startsWith(href));
@@ -96,17 +97,19 @@ export function SiteHeader() {
         </div>
       </header>
 
-      <nav className="mobile-quick-nav" aria-label="Mobil sürətli menyu">
-        {mobileQuickItems.map((item) => {
-          const Icon = item.icon;
-          return (
-            <Link aria-current={isActive(item.href) ? 'page' : undefined} href={item.href} key={item.href} onClick={closeMenu}>
-              <Icon size={18} />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
+      {showMobileQuickNav ? (
+        <nav className="mobile-quick-nav" aria-label="Mobil sürətli menyu">
+          {mobileQuickItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link aria-current={isActive(item.href) ? 'page' : undefined} href={item.href} key={item.href} onClick={closeMenu}>
+                <Icon size={18} />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      ) : null}
     </>
   );
 }
