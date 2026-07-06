@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FormEvent, useState } from 'react';
-import { Lock, Loader2 } from 'lucide-react';
+import { Lock, Loader2, ShieldCheck } from 'lucide-react';
 import { ApiClientError } from '../../lib/api-client';
 import { login } from '../../lib/seller-api';
 
@@ -40,8 +40,12 @@ export function LoginForm() {
   }
 
   return (
-    <form className="auth-card" onSubmit={handleSubmit}>
-      <div>
+    <form className="auth-card login-form-card" onSubmit={handleSubmit}>
+      <div className="login-form-head">
+        <span className="login-form-badge">
+          <ShieldCheck size={15} />
+          Təhlükəsiz giriş
+        </span>
         <h2>Daxil ol</h2>
         <p className="card-meta">Hesabınıza daxil olun və mağaza panelinizi idarə edin.</p>
       </div>
@@ -73,11 +77,19 @@ export function LoginForm() {
         </label>
       </div>
 
+      <div className="login-form-options">
+        <label>
+          <input type="checkbox" defaultChecked />
+          <span>Məni yadda saxla</span>
+        </label>
+        <Link href="/contact">Şifrə ilə bağlı kömək</Link>
+      </div>
+
       <button className="button button-primary button-full" type="submit" disabled={isSubmitting}>
         {isSubmitting ? <Loader2 className="spin-icon" size={16} /> : <Lock size={16} />}
         Daxil ol
       </button>
-      <p className="card-meta">
+      <p className="card-meta login-open-store-link">
         Mağazanız yoxdur?{' '}
         <Link className="card-link" href="/open-store">
           Mağaza aç

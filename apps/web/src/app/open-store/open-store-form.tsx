@@ -55,7 +55,7 @@ export function OpenStoreForm({ categories }: OpenStoreFormProps) {
   }
 
   return (
-    <form className="panel" onSubmit={handleSubmit}>
+    <form className="panel open-store-form-card" onSubmit={handleSubmit}>
       <h2>Mağaza müraciəti</h2>
 
       {state.type === 'success' ? <p className="form-alert form-alert-success">{state.message}</p> : null}

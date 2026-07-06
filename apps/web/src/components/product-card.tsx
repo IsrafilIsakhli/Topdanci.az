@@ -5,11 +5,14 @@ import type { ProductPreview } from '../lib/catalog-data';
 
 type ProductCardProps = {
   product: ProductPreview;
+  variant?: 'default' | 'compact';
 };
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, variant = 'default' }: ProductCardProps) {
+  const isCompact = variant === 'compact';
+
   return (
-    <article className="card product-card">
+    <article className={isCompact ? 'card product-card product-card-compact' : 'card product-card'}>
       <Link className="product-image-frame" href={`/products/${product.slug}`} aria-label={`${product.title} bax`}>
         <span
           className="product-photo"
@@ -55,7 +58,7 @@ export function ProductCard({ product }: ProductCardProps) {
             storeName={product.store}
           >
             <MessageCircle size={17} />
-            WhatsApp
+            {isCompact ? 'Yaz' : 'WhatsApp'}
           </LeadWhatsAppLink>
           <Link className="button" href={`/products/${product.slug}`} aria-label={`${product.title} bax`}>
             <Eye size={17} />

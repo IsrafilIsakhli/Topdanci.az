@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, Send } from 'lucide-react';
 import { apiPost } from '../../lib/api-client';
 
 type SubmitState =
@@ -10,6 +10,8 @@ type SubmitState =
   | { type: 'submitting' }
   | { type: 'success'; message: string }
   | { type: 'error'; message: string };
+
+const subjectOptions = ['Mağaza açmaq', 'Məhsul yerləşdirmək', 'Reklam və premium vitrin', 'Texniki problem', 'Digər müraciət'];
 
 export function ContactForm() {
   const [state, setState] = useState<SubmitState>({ type: 'idle' });
@@ -37,8 +39,13 @@ export function ContactForm() {
   }
 
   return (
-    <form className="panel" onSubmit={handleSubmit}>
-      <h2>Mesaj göndər</h2>
+    <form className="panel contact-form-card" onSubmit={handleSubmit}>
+      <span className="form-kicker">
+        <MessageSquare size={16} />
+        Mesaj göndərin
+      </span>
+      <h2>Müraciətinizi yazın</h2>
+      <p className="card-meta">Mövzunu seçin, komanda doğru istiqamətdə cavablandırsın.</p>
 
       {state.type === 'success' ? <p className="form-alert form-alert-success">{state.message}</p> : null}
       {state.type === 'error' ? <p className="form-alert form-alert-error">{state.message}</p> : null}
@@ -58,16 +65,25 @@ export function ContactForm() {
         </label>
         <label className="field">
           <span>Mövzu</span>
-          <input name="subject" placeholder="Müraciətin mövzusu" />
+          <select name="subject" defaultValue="">
+            <option disabled value="">
+              Müraciət tipi seçin
+            </option>
+            {subjectOptions.map((subject) => (
+              <option key={subject} value={subject}>
+                {subject}
+              </option>
+            ))}
+          </select>
         </label>
         <label className="field field-full">
           <span>Mesaj</span>
-          <textarea name="message" placeholder="Mesajınızı yazın" required />
+          <textarea name="message" placeholder="Qısa və aydın şəkildə yazın" required />
         </label>
       </div>
       <button className="button button-primary button-full" disabled={state.type === 'submitting'} type="submit">
-        <MessageSquare size={17} />
-        {state.type === 'submitting' ? 'Göndərilir...' : 'Göndər'}
+        <Send size={17} />
+        {state.type === 'submitting' ? 'Göndərilir...' : 'Müraciəti göndər'}
       </button>
     </form>
   );

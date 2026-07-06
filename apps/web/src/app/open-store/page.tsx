@@ -33,9 +33,9 @@ export default async function OpenStorePage() {
   return (
     <main className="site-shell">
       <SiteHeader />
-      <section className="section">
+      <section className="section open-store-page-section">
         <div className="container open-store-layout">
-          <aside>
+          <aside className="open-store-copy">
             <h1>Mağazanızı TopdanBazar-da açın</h1>
             <p className="lead">
               Məhsullarınızı onlayn kataloqda nümayiş etdirin, yeni alıcılara çatın və müraciətləri bir paneldən izləyin.

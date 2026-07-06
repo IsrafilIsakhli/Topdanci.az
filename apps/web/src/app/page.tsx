@@ -5,7 +5,6 @@ import {
   Crown,
   Megaphone,
   MessageCircle,
-  Sparkles,
   TrendingUp,
 } from 'lucide-react';
 import { CategorySearchForm, type CategorySearchItem } from '../components/category-search-form';
@@ -38,10 +37,6 @@ export default async function HomePage() {
         <div className="home-hero-aura" aria-hidden="true" />
         <div className="container home-hero-premium-grid">
           <div className="home-hero-copy">
-            <p className="eyebrow hero-eyebrow">
-              <Sparkles size={15} />
-              Azərbaycan üçün B2B topdansatış kataloqu
-            </p>
             <h1>Topdansatıcı mağazaları və məhsulları bir yerdə kəşf edin</h1>
             <p className="lead">
               Alıcılar məhsulları araşdırır, mağazaları yoxlayır və satıcı ilə WhatsApp və telefon üzərindən birbaşa əlaqə saxlayır.

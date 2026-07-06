@@ -1,4 +1,4 @@
-import { Search } from 'lucide-react';
+import { Package, Search } from 'lucide-react';
 import { ProductCard } from '../../components/product-card';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
@@ -20,12 +20,16 @@ export default async function ProductsPage({
   return (
     <main className="site-shell">
       <SiteHeader />
-      <section className="section">
+      <section className="section products-hero-section">
         <div className="container">
-          <div className="section-title-row">
+          <div className="section-title-row products-title-row">
             <div>
+              <p className="eyebrow">
+                <Package size={15} />
+                Məhsul kataloqu
+              </p>
               <h1>Məhsullar</h1>
-              <p className="lead">Topdansatış məhsulları araşdırın və satıcı ilə birbaşa əlaqə saxlayın.</p>
+              <p className="lead">Topdansatış məhsullarını daha rahat müqayisə edin və satıcı ilə birbaşa əlaqə saxlayın.</p>
             </div>
             <select className="button" aria-label="Sırala" defaultValue="newest">
               <option value="newest">Ən yenilər</option>
@@ -33,7 +37,7 @@ export default async function ProductsPage({
             </select>
           </div>
 
-          <form action="/products" className="catalog-search-panel">
+          <form action="/products" className="catalog-search-panel products-search-panel">
             <label>
               <Search size={18} />
               <input defaultValue={query?.q ?? ''} name="q" placeholder="Məhsul, mağaza və ya kateqoriya axtarın" />
@@ -44,10 +48,22 @@ export default async function ProductsPage({
               Axtar
             </button>
           </form>
+        </div>
+      </section>
 
-          <div className="grid product-grid">
+      <section className="section section-muted products-list-section">
+        <div className="container">
+          <div className="section-title-row products-list-title">
+            <div>
+              <p className="eyebrow">Aktiv elanlar</p>
+              <h2>Məhsul vitrinləri</h2>
+            </div>
+            <span>{products.length} məhsul göstərilir</span>
+          </div>
+
+          <div className="grid product-grid product-market-grid product-list-view">
             {products.length ? (
-              products.map((product) => <ProductCard key={product.slug} product={product} />)
+              products.map((product) => <ProductCard key={product.slug} product={product} variant="compact" />)
             ) : (
               <p className="empty-state">Axtarışa uyğun aktiv məhsul tapılmadı.</p>
             )}
