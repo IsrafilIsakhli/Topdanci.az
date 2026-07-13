@@ -7,11 +7,14 @@ import { Lock, Loader2, ShieldCheck } from 'lucide-react';
 import { ApiClientError } from '../../lib/api-client';
 import { login } from '../../lib/seller-api';
 
+const defaultDemoEmail = process.env.NEXT_PUBLIC_DEMO_SELLER_EMAIL || 'seller-demo@topdanci.az';
+const defaultDemoPassword = process.env.NEXT_PUBLIC_DEMO_SELLER_PASSWORD || 'SellerDemo123!';
+
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [identifier, setIdentifier] = useState('seller-demo@topdanci.az');
-  const [password, setPassword] = useState('SellerDemo123!');
+  const [identifier, setIdentifier] = useState(defaultDemoEmail);
+  const [password, setPassword] = useState(defaultDemoPassword);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 

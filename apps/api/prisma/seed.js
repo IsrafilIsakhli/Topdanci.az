@@ -22,10 +22,15 @@ for (const envPath of [resolve(process.cwd(), '.env'), resolve(process.cwd(), '.
 }
 
 const prisma = new PrismaClient();
-const adminPasswordHash = '$2a$10$31WD4STobdOzFNQ8bJLzJOrZu..w/J21gnUtKtH14NayDTmVTQCZ2';
-const superAdminPasswordHash = bcrypt.hashSync('SuperAdmin123!', 10);
-const sellerPasswordHash = '$2a$10$dQsja4DxBdEcr6aOWskOrOVaF/Yl2VctnnPXBIFa9V6hXNcLeIKIW';
-const demoSellerPasswordHash = bcrypt.hashSync('SellerDemo123!', 10);
+
+const adminEmail = process.env.TOPDANBAZAR_ADMIN_EMAIL || 'admin@topdanci.az';
+const adminPasswordHash = bcrypt.hashSync(process.env.TOPDANBAZAR_ADMIN_PASSWORD || 'Admin12345!', 10);
+const superAdminEmail = process.env.TOPDANBAZAR_SUPERADMIN_EMAIL || 'superadmin@topdanci.az';
+const superAdminPasswordHash = bcrypt.hashSync(process.env.TOPDANBAZAR_SUPERADMIN_PASSWORD || 'SuperAdmin123!', 10);
+const sellerEmail = process.env.TOPDANBAZAR_SELLER_EMAIL || 'seller@topdanci.az';
+const sellerPasswordHash = bcrypt.hashSync(process.env.TOPDANBAZAR_SELLER_PASSWORD || 'Seller12345!', 10);
+const demoSellerEmail = process.env.TOPDANBAZAR_DEMO_SELLER_EMAIL || 'seller-demo@topdanci.az';
+const demoSellerPasswordHash = bcrypt.hashSync(process.env.TOPDANBAZAR_DEMO_SELLER_PASSWORD || 'SellerDemo123!', 10);
 
 const defaultCategories = require('../../../packages/shared/src/default-categories.json');
 
@@ -490,9 +495,9 @@ async function main() {
   const constructionCategory = await prisma.category.findUniqueOrThrow({ where: { slug: 'tikinti-ve-temir' } });
 
   await prisma.user.upsert({
-    where: { email: 'admin@topdanci.az' },
+    where: { email: adminEmail },
     create: {
-      email: 'admin@topdanci.az',
+      email: adminEmail,
       fullName: 'Topdanci Admin',
       passwordHash: adminPasswordHash,
       role: UserRole.ADMIN,
@@ -507,9 +512,9 @@ async function main() {
   });
 
   await prisma.user.upsert({
-    where: { email: 'superadmin@topdanci.az' },
+    where: { email: superAdminEmail },
     create: {
-      email: 'superadmin@topdanci.az',
+      email: superAdminEmail,
       fullName: 'Topdanci Super Admin',
       passwordHash: superAdminPasswordHash,
       role: UserRole.SUPER_ADMIN,
@@ -524,9 +529,9 @@ async function main() {
   });
 
   const sellerUser = await prisma.user.upsert({
-    where: { email: 'seller@topdanci.az' },
+    where: { email: sellerEmail },
     create: {
-      email: 'seller@topdanci.az',
+      email: sellerEmail,
       phone: '+994501234500',
       fullName: 'Baku Tekstil Seller',
       passwordHash: sellerPasswordHash,
@@ -543,9 +548,9 @@ async function main() {
   });
 
   const demoSellerUser = await prisma.user.upsert({
-    where: { email: 'seller-demo@topdanci.az' },
+    where: { email: demoSellerEmail },
     create: {
-      email: 'seller-demo@topdanci.az',
+      email: demoSellerEmail,
       phone: '+994501119900',
       fullName: 'Demo Seller',
       passwordHash: demoSellerPasswordHash,
@@ -668,7 +673,7 @@ async function main() {
       publishedAt: new Date(),
       whatsappNumber: '+994501119900',
       phone: '+994501119900',
-      email: 'seller-demo@topdanci.az',
+      email: demoSellerEmail,
       workingHours: {
         workdays: '09:00 - 18:00',
         saturday: '10:00 - 15:00',
@@ -686,7 +691,7 @@ async function main() {
       publishedAt: new Date(),
       whatsappNumber: '+994501119900',
       phone: '+994501119900',
-      email: 'seller-demo@topdanci.az',
+      email: demoSellerEmail,
       workingHours: {
         workdays: '09:00 - 18:00',
         saturday: '10:00 - 15:00',
