@@ -43,6 +43,50 @@ npm run check:local-services
 - `/api/v1/health/metrics` exposes in-process request and media worker queue metrics.
 - S3 readiness is validated by media signing and worker processing paths.
 
+## Live Production Topology
+
+Use this layout for the first stable live system:
+
+- Web: Vercel project for `apps/web`.
+- API: separate NestJS container host for `apps/api` (Render, Railway, Fly.io, DigitalOcean App Platform, or VPS Docker).
+- Database: managed PostgreSQL, not a local Docker volume.
+- Cache/queues: managed Redis with TLS when the provider supports it.
+- Media: S3-compatible bucket plus public CDN base URL.
+
+Set these Vercel web variables:
+
+```bash
+NEXT_PUBLIC_API_BASE_URL=https://api.example.com/api/v1
+API_INTERNAL_BASE_URL=https://api.example.com/api/v1
+NEXT_PUBLIC_ENABLE_DEMO_FALLBACK=false
+```
+
+Set these API host variables:
+
+```bash
+NODE_ENV=production
+PORT=4000
+DATABASE_URL=postgresql://...
+REDIS_URL=rediss://...
+WEB_ORIGIN=https://topdanci-az.vercel.app
+API_ORIGIN=https://api.example.com
+JWT_ACCESS_SECRET=<32+ character random secret>
+JWT_REFRESH_SECRET=<32+ character random secret>
+LEAD_HASH_SALT=<32+ character random secret>
+METRICS_TOKEN=<private token>
+AWS_REGION=eu-central-1
+AWS_S3_BUCKET=<bucket>
+AWS_ACCESS_KEY_ID=<key>
+AWS_SECRET_ACCESS_KEY=<secret>
+CDN_BASE_URL=https://cdn.example.com
+AUTH_COOKIE_SAME_SITE=none
+AUTH_COOKIE_SECURE=true
+```
+
+When the API and web are on the same registrable domain, `AUTH_COOKIE_DOMAIN=.example.com` can be used. Keep it empty for Vercel preview domains or unrelated API domains.
+
+Production startup now refuses unsafe defaults: localhost origins, weak JWT secrets, missing Redis, missing metrics token, and missing production media/CDN settings fail fast.
+
 ## Local Data Services
 
 - PostgreSQL runs on host port `55432`.

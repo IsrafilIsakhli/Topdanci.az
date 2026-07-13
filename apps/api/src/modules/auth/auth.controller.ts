@@ -72,7 +72,7 @@ export class AuthController {
   ) {
     const cookies = parseCookieHeader(request.headers?.cookie);
     const result = await this.authService.logout(cookies[REFRESH_COOKIE_NAME], user);
-    clearAuthCookies(response);
+    clearAuthCookies(response, this.authService.cookieConfig());
 
     return result;
   }
@@ -84,7 +84,7 @@ export class AuthController {
     @Res({ passthrough: true }) response: CookieResponse,
   ) {
     const result = await this.authService.logoutAll(user);
-    clearAuthCookies(response);
+    clearAuthCookies(response, this.authService.cookieConfig());
 
     return result;
   }

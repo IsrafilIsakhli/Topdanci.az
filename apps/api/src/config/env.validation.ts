@@ -19,6 +19,9 @@ export type AppEnvironment = Environment & {
   LEAD_HASH_SALT: string;
   AUTH_ACCESS_TOKEN_TTL_SECONDS: string;
   AUTH_REFRESH_TOKEN_TTL_SECONDS: string;
+  AUTH_COOKIE_SAME_SITE: 'lax' | 'none' | 'strict';
+  AUTH_COOKIE_DOMAIN: string;
+  AUTH_COOKIE_SECURE: string;
   LOGIN_FAILURE_LIMIT: string;
   LOGIN_FAILURE_WINDOW_SECONDS: string;
   MEDIA_WORKER_ENABLED: string;
@@ -32,6 +35,8 @@ export type AppEnvironment = Environment & {
 
 export function validateEnv(env: Environment): AppEnvironment {
   const nodeEnv = env.NODE_ENV ?? 'development';
+  const authCookieSameSite = normalizeCookieSameSite(env.AUTH_COOKIE_SAME_SITE);
+  const authCookieSecure = normalizeBooleanString(env.AUTH_COOKIE_SECURE);
 
   if (!['development', 'test', 'production'].includes(nodeEnv)) {
     throw new Error(`NODE_ENV must be development, test, or production. Received: ${nodeEnv}`);
@@ -46,11 +51,19 @@ export function validateEnv(env: Environment): AppEnvironment {
   if (nodeEnv === 'production') {
     assertProductionSecret('JWT_ACCESS_SECRET', env.JWT_ACCESS_SECRET);
     assertProductionSecret('JWT_REFRESH_SECRET', env.JWT_REFRESH_SECRET);
+    assertRequiredProductionValue('WEB_ORIGIN', env.WEB_ORIGIN);
+    assertRequiredProductionValue('API_ORIGIN', env.API_ORIGIN);
     assertRequiredProductionValue('REDIS_URL', env.REDIS_URL);
     assertRequiredProductionValue('METRICS_TOKEN', env.METRICS_TOKEN);
     assertRequiredProductionValue('AWS_REGION', env.AWS_REGION);
     assertRequiredProductionValue('AWS_S3_BUCKET', env.AWS_S3_BUCKET);
     assertRequiredProductionValue('CDN_BASE_URL', env.CDN_BASE_URL);
+    assertProductionOrigin('WEB_ORIGIN', env.WEB_ORIGIN);
+    assertProductionOrigin('API_ORIGIN', env.API_ORIGIN);
+
+    if (authCookieSecure === 'false') {
+      throw new Error('AUTH_COOKIE_SECURE cannot be false in production');
+    }
   }
 
   return {
@@ -71,6 +84,9 @@ export function validateEnv(env: Environment): AppEnvironment {
     LEAD_HASH_SALT: env.LEAD_HASH_SALT ?? env.JWT_ACCESS_SECRET!,
     AUTH_ACCESS_TOKEN_TTL_SECONDS: env.AUTH_ACCESS_TOKEN_TTL_SECONDS ?? '900',
     AUTH_REFRESH_TOKEN_TTL_SECONDS: env.AUTH_REFRESH_TOKEN_TTL_SECONDS ?? '2592000',
+    AUTH_COOKIE_SAME_SITE: authCookieSameSite,
+    AUTH_COOKIE_DOMAIN: env.AUTH_COOKIE_DOMAIN ?? '',
+    AUTH_COOKIE_SECURE: authCookieSecure ?? '',
     LOGIN_FAILURE_LIMIT: env.LOGIN_FAILURE_LIMIT ?? '5',
     LOGIN_FAILURE_WINDOW_SECONDS: env.LOGIN_FAILURE_WINDOW_SECONDS ?? '900',
     MEDIA_WORKER_ENABLED: env.MEDIA_WORKER_ENABLED ?? 'true',
@@ -92,5 +108,58 @@ function assertProductionSecret(name: string, value: string | undefined): void {
 function assertRequiredProductionValue(name: string, value: string | undefined): void {
   if (!value) {
     throw new Error(`${name} is required in production`);
+  }
+}
+
+function normalizeCookieSameSite(value: string | undefined): AppEnvironment['AUTH_COOKIE_SAME_SITE'] {
+  const normalized = value?.trim().toLowerCase();
+
+  if (!normalized) {
+    return 'lax';
+  }
+
+  if (normalized === 'lax' || normalized === 'none' || normalized === 'strict') {
+    return normalized;
+  }
+
+  throw new Error('AUTH_COOKIE_SAME_SITE must be lax, none, or strict');
+}
+
+function normalizeBooleanString(value: string | undefined): 'true' | 'false' | undefined {
+  const normalized = value?.trim().toLowerCase();
+
+  if (!normalized) {
+    return undefined;
+  }
+
+  if (normalized === 'true' || normalized === 'false') {
+    return normalized;
+  }
+
+  throw new Error('AUTH_COOKIE_SECURE must be true or false when provided');
+}
+
+function assertProductionOrigin(name: string, value: string | undefined): void {
+  const origins = (value ?? '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+  for (const origin of origins) {
+    let parsed: URL;
+
+    try {
+      parsed = new URL(origin);
+    } catch {
+      throw new Error(`${name} must contain valid absolute URL origins`);
+    }
+
+    if (parsed.protocol !== 'https:') {
+      throw new Error(`${name} must use https in production`);
+    }
+
+    if (['localhost', '127.0.0.1', '0.0.0.0', '::1'].includes(parsed.hostname)) {
+      throw new Error(`${name} cannot point to localhost in production`);
+    }
   }
 }

@@ -5,18 +5,23 @@ export const CSRF_COOKIE_NAME = 'tb_csrf';
 type CookieOptions = {
   httpOnly?: boolean;
   secure?: boolean;
-  sameSite?: 'lax';
+  sameSite?: AuthCookieSameSite;
+  domain?: string;
   path?: string;
   maxAge?: number;
 };
 
 export type CookieResponse = {
   cookie(name: string, value: string, options: CookieOptions): void;
-  clearCookie(name: string, options: Pick<CookieOptions, 'path'>): void;
+  clearCookie(name: string, options: Pick<CookieOptions, 'domain' | 'path' | 'sameSite' | 'secure'>): void;
 };
+
+export type AuthCookieSameSite = 'lax' | 'none' | 'strict';
 
 export type AuthCookieConfig = {
   secure: boolean;
+  sameSite: AuthCookieSameSite;
+  domain?: string;
   accessMaxAgeMs: number;
   refreshMaxAgeMs: number;
 };
@@ -29,8 +34,9 @@ export function applyAuthCookies(
   const baseOptions = {
     httpOnly: true,
     secure: config.secure,
-    sameSite: 'lax' as const,
+    sameSite: config.sameSite,
     path: '/',
+    ...(config.domain ? { domain: config.domain } : {}),
   };
 
   response.cookie(ACCESS_COOKIE_NAME, tokens.accessToken, {
@@ -44,16 +50,24 @@ export function applyAuthCookies(
   response.cookie(CSRF_COOKIE_NAME, tokens.csrfToken, {
     httpOnly: false,
     secure: config.secure,
-    sameSite: 'lax',
+    sameSite: config.sameSite,
     path: '/',
+    ...(config.domain ? { domain: config.domain } : {}),
     maxAge: config.refreshMaxAgeMs,
   });
 }
 
-export function clearAuthCookies(response: CookieResponse): void {
-  response.clearCookie(ACCESS_COOKIE_NAME, { path: '/' });
-  response.clearCookie(REFRESH_COOKIE_NAME, { path: '/' });
-  response.clearCookie(CSRF_COOKIE_NAME, { path: '/' });
+export function clearAuthCookies(response: CookieResponse, config?: AuthCookieConfig): void {
+  const clearOptions = {
+    path: '/',
+    ...(config?.domain ? { domain: config.domain } : {}),
+    ...(config?.sameSite ? { sameSite: config.sameSite } : {}),
+    ...(typeof config?.secure === 'boolean' ? { secure: config.secure } : {}),
+  };
+
+  response.clearCookie(ACCESS_COOKIE_NAME, clearOptions);
+  response.clearCookie(REFRESH_COOKIE_NAME, clearOptions);
+  response.clearCookie(CSRF_COOKIE_NAME, clearOptions);
 }
 
 export function parseCookieHeader(cookieHeader: string | string[] | undefined): Record<string, string> {

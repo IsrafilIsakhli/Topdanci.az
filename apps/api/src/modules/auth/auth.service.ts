@@ -16,7 +16,7 @@ import { hashSensitiveValue } from '../../common/security/hash-ip';
 import { AuditService } from '../audit/audit.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
-import type { AuthCookieConfig } from './domain/auth-cookies';
+import type { AuthCookieConfig, AuthCookieSameSite } from './domain/auth-cookies';
 import { JwtTokenService } from './domain/jwt-token.service';
 import { isStrongPassword, passwordPolicyMessage } from './domain/password-policy';
 import type { LoginDto } from './dto/login.dto';
@@ -350,8 +350,15 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
   }
 
   cookieConfig(): AuthCookieConfig {
+    const sameSite = normalizeCookieSameSite(this.config.get<string>('AUTH_COOKIE_SAME_SITE', 'lax'));
+    const secureOverride = normalizeBoolean(this.config.get<string>('AUTH_COOKIE_SECURE'));
+    const secure = sameSite === 'none' ? true : secureOverride ?? (this.config.get('NODE_ENV') === 'production');
+    const domain = this.config.get<string>('AUTH_COOKIE_DOMAIN', '').trim();
+
     return {
-      secure: this.config.get('NODE_ENV') === 'production',
+      secure,
+      sameSite,
+      ...(domain ? { domain } : {}),
       accessMaxAgeMs: Number(this.config.get('AUTH_ACCESS_TOKEN_TTL_SECONDS', 900)) * 1000,
       refreshMaxAgeMs: Number(this.config.get('AUTH_REFRESH_TOKEN_TTL_SECONDS', 2_592_000)) * 1000,
     };
@@ -470,4 +477,22 @@ function toAuthenticatedUser(user: AuthUserRecord): AuthenticatedUser {
     ...(user.email ? { email: user.email } : {}),
     ...(user.phone ? { phone: user.phone } : {}),
   };
+}
+
+function normalizeCookieSameSite(value: string | undefined): AuthCookieSameSite {
+  const normalized = value?.trim().toLowerCase();
+
+  if (normalized === 'none' || normalized === 'strict') {
+    return normalized;
+  }
+
+  return 'lax';
+}
+
+function normalizeBoolean(value: string | undefined): boolean | undefined {
+  if (value === undefined || value.trim() === '') {
+    return undefined;
+  }
+
+  return value.trim().toLowerCase() === 'true';
 }
