@@ -527,10 +527,15 @@ export const stats = [
 export async function getCategories(query?: { q?: string | undefined; rootsOnly?: boolean | undefined }): Promise<CategoryCard[]> {
   const fallback = filterCategories(categories, query);
   const response = await fetchCatalog<ApiListResponse<ApiCategory>>(`/categories${toQueryString({ q: query?.q })}`);
+
+  if (!response) {
+    return fallbackAllowed() ? fallback : [];
+  }
+
   const source = response?.data;
 
   if (!source?.length) {
-    return fallback;
+    return [];
   }
 
   const root = source.find((category) => category.slug === 'son-elanlar');
@@ -551,8 +556,11 @@ export async function getCategory(slug: string): Promise<CategoryCard | null> {
 export async function getProducts(query: ProductQuery = {}): Promise<ProductPreview[]> {
   const fallback = filterFallbackProducts(query);
   const response = await fetchCatalog<ApiListResponse<ApiProduct>>(`/products${toQueryString(query)}`);
-  if (!response?.data?.length) {
-    return fallback;
+  if (!response) {
+    return fallbackAllowed() ? fallback : [];
+  }
+  if (!response.data?.length) {
+    return [];
   }
   return response.data.map(mapProduct);
 }
@@ -567,8 +575,11 @@ export async function getProduct(slug: string): Promise<ProductPreview | null> {
 export async function getStores(query: StoreQuery = {}): Promise<StorePreview[]> {
   const fallback = filterFallbackStores(query);
   const response = await fetchCatalog<ApiListResponse<ApiStore>>(`/stores${toQueryString(query)}`);
-  if (!response?.data?.length) {
-    return fallback;
+  if (!response) {
+    return fallbackAllowed() ? fallback : [];
+  }
+  if (!response.data?.length) {
+    return [];
   }
   return response.data.map(mapStore);
 }
@@ -589,7 +600,7 @@ async function fetchCatalog<T>(path: string): Promise<T | null> {
 }
 
 function fallbackAllowed(): boolean {
-  return true;
+  return process.env.NEXT_PUBLIC_ENABLE_DEMO_FALLBACK === 'true' || process.env.NODE_ENV !== 'production';
 }
 
 function buildFallbackCategories(nodes: DefaultCategoryNode[], parentId?: string): CategoryCard[] {
