@@ -20,6 +20,8 @@ import { SiteHeader } from '../../../components/site-header';
 import { ProductCard } from '../../../components/product-card';
 import { getProducts, getStore } from '../../../lib/catalog-data';
 
+export const dynamic = 'force-dynamic';
+
 type PageProps = {
   params: Promise<{ slug: string }>;
   searchParams?: Promise<{ q?: string }>;

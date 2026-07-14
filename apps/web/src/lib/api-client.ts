@@ -11,6 +11,7 @@ export class ApiClientError extends Error {
     message: string,
     readonly status?: number,
     readonly details?: unknown,
+    readonly requestId?: string,
   ) {
     super(message);
     this.name = 'ApiClientError';
@@ -88,17 +89,42 @@ async function apiRequest<T>(path: string, init: RequestInit, options: ApiClient
       signal: controller.signal,
       cache: 'no-store',
     });
-    const payload = (await response.json().catch(() => null)) as unknown;
+    const payload = (await response.json().catch(() => null)) as ApiErrorPayload | null;
 
     if (!response.ok) {
-      throw new ApiClientError('API request failed', response.status, payload);
+      const apiMessage = payload?.error?.message;
+      throw new ApiClientError(
+        typeof apiMessage === 'string' && apiMessage.trim() ? apiMessage : `API request failed with status ${response.status}`,
+        response.status,
+        payload,
+        payload?.error?.requestId,
+      );
     }
 
     return payload as T;
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      throw error;
+    }
+
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      throw new ApiClientError('Server cavabı gecikir. Bir qədər sonra yenidən cəhd edin.');
+    }
+
+    throw new ApiClientError('Serverlə əlaqə yaratmaq mümkün olmadı. İnternet bağlantısını yoxlayıb yenidən cəhd edin.');
   } finally {
     clearTimeout(timeout);
   }
 }
+
+type ApiErrorPayload = {
+  error?: {
+    code?: string;
+    message?: string;
+    requestId?: string;
+    details?: unknown;
+  };
+};
 
 function mergeHeaders(...sources: Array<HeadersInit | undefined>): Headers {
   const headers = new Headers();

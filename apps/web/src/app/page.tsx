@@ -12,6 +12,8 @@ import { SiteFooter } from '../components/site-footer';
 import { SiteHeader } from '../components/site-header';
 import { getCategories, getProducts, getStores, heroImage, stats } from '../lib/catalog-data';
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage() {
   const [categories, allCategories, products, stores] = await Promise.all([
     getCategories({ rootsOnly: true }),

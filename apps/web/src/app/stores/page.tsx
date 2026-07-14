@@ -4,6 +4,8 @@ import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
 import { getStores } from '../../lib/catalog-data';
 
+export const dynamic = 'force-dynamic';
+
 export default async function StoresPage({
   searchParams,
 }: {

@@ -18,7 +18,7 @@ import {
   Wrench,
 } from 'lucide-react';
 import { defaultCategories as defaultCategoryTree, type DefaultCategoryNode } from '@topdanbazar/shared';
-import { apiGet } from './api-client';
+import { ApiClientError, apiGet } from './api-client';
 
 export type CategoryChild = {
   slug: string;
@@ -594,8 +594,16 @@ export async function getStore(slug: string): Promise<StorePreview | null> {
 async function fetchCatalog<T>(path: string): Promise<T | null> {
   try {
     return await apiGet<T>(path, { timeoutMs: 5000 });
-  } catch {
-    return null;
+  } catch (error) {
+    if (error instanceof ApiClientError && error.status === 404) {
+      return null;
+    }
+
+    if (fallbackAllowed()) {
+      return null;
+    }
+
+    throw error;
   }
 }
 

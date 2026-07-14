@@ -4,6 +4,8 @@ import { SiteHeader } from '../../components/site-header';
 import { getCategories } from '../../lib/catalog-data';
 import { OpenStoreForm } from './open-store-form';
 
+export const dynamic = 'force-dynamic';
+
 const benefits = [
   {
     icon: PackageCheck,

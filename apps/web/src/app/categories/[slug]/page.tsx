@@ -5,6 +5,8 @@ import { SiteFooter } from '../../../components/site-footer';
 import { SiteHeader } from '../../../components/site-header';
 import { getCategory, getProducts } from '../../../lib/catalog-data';
 
+export const dynamic = 'force-dynamic';
+
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
