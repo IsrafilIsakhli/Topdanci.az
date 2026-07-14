@@ -1,4 +1,4 @@
-import { Clock3, Mail, MessageCircle, Phone, ShieldCheck } from 'lucide-react';
+import { Clock3, Mail, MessageCircle, ShieldCheck } from 'lucide-react';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
 import { ContactForm } from './contact-form';

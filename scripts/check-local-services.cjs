@@ -4,7 +4,7 @@ const checks = [
   {
     name: 'PostgreSQL',
     host: process.env.POSTGRES_HOST ?? '127.0.0.1',
-    port: Number(process.env.POSTGRES_PORT ?? 55432),
+    port: Number(process.env.POSTGRES_PORT ?? 5433),
   },
   {
     name: 'Redis',

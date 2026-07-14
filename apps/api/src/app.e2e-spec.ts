@@ -99,6 +99,41 @@ describe('TopdanBazar API smoke e2e', () => {
     expect(titles).not.toContain('Baku Tekstil Yeni Mehsul Review');
   });
 
+  it('accepts numeric pagination queries across public and guarded lists', async () => {
+    const categories = await request(app.getHttpServer()).get('/api/v1/categories').expect(200);
+    expect(categories.body.meta).toEqual({ total: expect.any(Number), nextCursor: null });
+
+    const products = await request(app.getHttpServer()).get('/api/v1/products?limit=3').expect(200);
+    expect(products.body.data.length).toBeLessThanOrEqual(3);
+    expect(products.body.meta).toMatchObject({ total: expect.any(Number) });
+    expect(products.body.meta.nextCursor === null || typeof products.body.meta.nextCursor === 'string').toBe(true);
+
+    const stores = await request(app.getHttpServer()).get('/api/v1/stores?limit=2').expect(200);
+    expect(stores.body.data.length).toBeLessThanOrEqual(2);
+    expect(stores.body.meta).toMatchObject({ total: expect.any(Number) });
+    expect(stores.body.meta.nextCursor === null || typeof stores.body.meta.nextCursor === 'string').toBe(true);
+
+    const seller = await loginAs('seller@topdanci.az', 'Seller12345!');
+    const sellerProducts = await request(app.getHttpServer())
+      .get('/api/v1/seller/products?limit=2')
+      .set('Cookie', seller.cookies)
+      .expect(200);
+    expect(sellerProducts.body.data.length).toBeLessThanOrEqual(2);
+
+    const sellerLeads = await request(app.getHttpServer())
+      .get('/api/v1/seller/leads?limit=2')
+      .set('Cookie', seller.cookies)
+      .expect(200);
+    expect(sellerLeads.body.data.length).toBeLessThanOrEqual(2);
+
+    const admin = await loginAs('admin@topdanci.az', 'Admin12345!');
+    const applications = await request(app.getHttpServer())
+      .get('/api/v1/admin/store-applications?limit=2')
+      .set('Cookie', admin.cookies)
+      .expect(200);
+    expect(applications.body.data.length).toBeLessThanOrEqual(2);
+  });
+
   it('tracks only active public lead targets and deduplicates repeated views', async () => {
     const products = await request(app.getHttpServer()).get('/api/v1/products').expect(200);
     const product = products.body.data[0];

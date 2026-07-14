@@ -43,6 +43,32 @@ npm run check:local-services
 - `/api/v1/health/metrics` exposes in-process request and media worker queue metrics.
 - S3 readiness is validated by media signing and worker processing paths.
 
+## Production Smoke Checks
+
+Run this after every production API or web deployment:
+
+```bash
+SMOKE_API_BASE_URL=https://api.example.com/api/v1 \
+SMOKE_WEB_BASE_URL=https://topdanci-az.vercel.app \
+SMOKE_SELLER_EMAIL=seller-demo@topdanci.az \
+SMOKE_SELLER_PASSWORD=... \
+SMOKE_ADMIN_EMAIL=admin@topdanci.az \
+SMOKE_ADMIN_PASSWORD=... \
+SMOKE_SUPERADMIN_EMAIL=superadmin@topdanci.az \
+SMOKE_SUPERADMIN_PASSWORD=... \
+npm run smoke:production
+```
+
+The default smoke run checks health, readiness, public catalog shape, login/session, seller access, admin access, and superadmin-only system access. It does not mutate production data.
+
+To verify the store application write path, enable the guarded write check. It creates a temporary store application and immediately rejects it through admin credentials:
+
+```bash
+SMOKE_WRITE_TESTS=true npm run smoke:production
+```
+
+Do not enable write smoke checks unless admin credentials are present and the target environment is safe for a temporary rejected application record.
+
 ## Live Production Topology
 
 Use this layout for the first stable live system:
@@ -56,8 +82,9 @@ Use this layout for the first stable live system:
 Set these Vercel web variables:
 
 ```bash
-NEXT_PUBLIC_API_BASE_URL=https://api.example.com/api/v1
+NEXT_PUBLIC_API_BASE_URL=/api/v1
 API_INTERNAL_BASE_URL=https://api.example.com/api/v1
+API_PROXY_ORIGIN=https://api.example.com
 NEXT_PUBLIC_ENABLE_DEMO_FALLBACK=false
 ```
 
@@ -79,19 +106,21 @@ AWS_S3_BUCKET=<bucket>
 AWS_ACCESS_KEY_ID=<key>
 AWS_SECRET_ACCESS_KEY=<secret>
 CDN_BASE_URL=https://cdn.example.com
-AUTH_COOKIE_SAME_SITE=none
+AUTH_COOKIE_SAME_SITE=lax
 AUTH_COOKIE_SECURE=true
 ```
 
-When the API and web are on the same registrable domain, `AUTH_COOKIE_DOMAIN=.example.com` can be used. Keep it empty for Vercel preview domains or unrelated API domains.
+With the Vercel rewrite enabled, browser calls stay on `/api/v1` and use first-party cookies. Server-side rendering calls Railway directly through `API_INTERNAL_BASE_URL`. Keep `AUTH_COOKIE_DOMAIN` empty for Vercel preview and production domains.
 
 Production startup now refuses unsafe defaults: localhost origins, weak JWT secrets, missing Redis, missing metrics token, and missing production media/CDN settings fail fast.
 
+Production seed is intentionally minimal. Set `TOPDANBAZAR_SUPERADMIN_EMAIL` and a unique `TOPDANBAZAR_SUPERADMIN_PASSWORD` of at least 16 characters, then run the seed once after migrations. It creates only the category tree and superadmin. Demo marketplace data cannot be written in production unless `ALLOW_PRODUCTION_DEMO_SEED=I_UNDERSTAND_THIS_WRITES_DEMO_DATA` is explicitly supplied.
+
 ## Local Data Services
 
-- PostgreSQL runs on host port `55432`.
+- PostgreSQL runs on host port `5433`.
 - Redis runs on host port `6379`.
-- pgAdmin connection: host `127.0.0.1`, port `55432`, database/user/password `topdanbazar`.
+- pgAdmin connection: host `127.0.0.1`, port `5433`, database/user/password `topdanbazar`.
 - Seed users: `admin@topdanci.az` and `seller@topdanci.az`.
 
 ## Deployment Discipline

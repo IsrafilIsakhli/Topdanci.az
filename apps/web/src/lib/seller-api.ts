@@ -192,7 +192,8 @@ export function createSellerProduct(payload: ProductPayload) {
 }
 
 export function updateSellerProduct(id: string, payload: Partial<ProductPayload>) {
-  const { storeId: _storeId, ...patch } = payload;
+  const patch = { ...payload };
+  delete patch.storeId;
   return apiPatch<DetailResponse<SellerProduct>>(`/seller/products/${encodeURIComponent(id)}`, patch);
 }
 

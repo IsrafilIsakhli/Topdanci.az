@@ -1,4 +1,5 @@
 import { LeadType } from '@prisma/client';
+import { Type } from 'class-transformer';
 import { IsEnum, IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class SellerAnalyticsQueryDto {
@@ -20,6 +21,7 @@ export class ListSellerLeadsQueryDto extends SellerAnalyticsQueryDto {
   @Min(1)
   @Max(100)
   @IsOptional()
+  @Type(() => Number)
   limit = 30;
 
   @IsString()

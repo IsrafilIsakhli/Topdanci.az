@@ -23,14 +23,26 @@ for (const envPath of [resolve(process.cwd(), '.env'), resolve(process.cwd(), '.
 
 const prisma = new PrismaClient();
 
+const isProduction = process.env.NODE_ENV === 'production';
+const productionDemoSeedConfirmed = process.env.ALLOW_PRODUCTION_DEMO_SEED === 'I_UNDERSTAND_THIS_WRITES_DEMO_DATA';
+const shouldSeedDemoData = !isProduction || productionDemoSeedConfirmed;
+
 const adminEmail = process.env.TOPDANBAZAR_ADMIN_EMAIL || 'admin@topdanci.az';
 const adminPasswordHash = bcrypt.hashSync(process.env.TOPDANBAZAR_ADMIN_PASSWORD || 'Admin12345!', 10);
-const superAdminEmail = process.env.TOPDANBAZAR_SUPERADMIN_EMAIL || 'superadmin@topdanci.az';
-const superAdminPasswordHash = bcrypt.hashSync(process.env.TOPDANBAZAR_SUPERADMIN_PASSWORD || 'SuperAdmin123!', 10);
+const superAdminEmail = process.env.TOPDANBAZAR_SUPERADMIN_EMAIL || (isProduction ? '' : 'superadmin@topdanci.az');
+const superAdminPassword = process.env.TOPDANBAZAR_SUPERADMIN_PASSWORD || (isProduction ? '' : 'SuperAdmin123!');
 const sellerEmail = process.env.TOPDANBAZAR_SELLER_EMAIL || 'seller@topdanci.az';
 const sellerPasswordHash = bcrypt.hashSync(process.env.TOPDANBAZAR_SELLER_PASSWORD || 'Seller12345!', 10);
 const demoSellerEmail = process.env.TOPDANBAZAR_DEMO_SELLER_EMAIL || 'seller-demo@topdanci.az';
 const demoSellerPasswordHash = bcrypt.hashSync(process.env.TOPDANBAZAR_DEMO_SELLER_PASSWORD || 'SellerDemo123!', 10);
+
+if (isProduction && (!superAdminEmail || superAdminPassword.length < 16)) {
+  throw new Error(
+    'Production seed requires TOPDANBAZAR_SUPERADMIN_EMAIL and a TOPDANBAZAR_SUPERADMIN_PASSWORD of at least 16 characters.',
+  );
+}
+
+const superAdminPasswordHash = bcrypt.hashSync(superAdminPassword, 12);
 
 const defaultCategories = require('../../../packages/shared/src/default-categories.json');
 
@@ -489,6 +501,29 @@ async function seedShowcaseMarketplace(ownerUserId) {
 async function main() {
   await upsertCategoryTree(categoryTree);
 
+  await prisma.user.upsert({
+    where: { email: superAdminEmail },
+    create: {
+      email: superAdminEmail,
+      fullName: 'Topdanci Super Admin',
+      passwordHash: superAdminPasswordHash,
+      role: UserRole.SUPER_ADMIN,
+      status: UserStatus.ACTIVE,
+    },
+    update: {
+      fullName: 'Topdanci Super Admin',
+      passwordHash: superAdminPasswordHash,
+      role: UserRole.SUPER_ADMIN,
+      status: UserStatus.ACTIVE,
+    },
+  });
+
+  if (!shouldSeedDemoData) {
+    await deactivateDeprecatedCategories();
+    console.log('Production seed completed: categories and superadmin only.');
+    return;
+  }
+
   const textileCategory = await prisma.category.findUniqueOrThrow({ where: { slug: 'geyim-ayaqqabi-ve-tekstil' } });
   const electronicsCategory = await prisma.category.findUniqueOrThrow({ where: { slug: 'elektronika-ve-aksesuarlar' } });
   const shoesCategory = await prisma.category.findUniqueOrThrow({ where: { slug: 'ayaqqabi' } });
@@ -507,23 +542,6 @@ async function main() {
       fullName: 'Topdanci Admin',
       passwordHash: adminPasswordHash,
       role: UserRole.ADMIN,
-      status: UserStatus.ACTIVE,
-    },
-  });
-
-  await prisma.user.upsert({
-    where: { email: superAdminEmail },
-    create: {
-      email: superAdminEmail,
-      fullName: 'Topdanci Super Admin',
-      passwordHash: superAdminPasswordHash,
-      role: UserRole.SUPER_ADMIN,
-      status: UserStatus.ACTIVE,
-    },
-    update: {
-      fullName: 'Topdanci Super Admin',
-      passwordHash: superAdminPasswordHash,
-      role: UserRole.SUPER_ADMIN,
       status: UserStatus.ACTIVE,
     },
   });
@@ -945,17 +963,7 @@ async function main() {
 
   await seedShowcaseMarketplace(demoSellerUser.id);
 
-  await prisma.category.updateMany({
-    where: {
-      slug: { in: deprecatedCategorySlugs },
-      products: { none: {} },
-      stores: { none: {} },
-      storeApplications: { none: {} },
-    },
-    data: {
-      status: CategoryStatus.PASSIVE,
-    },
-  });
+  await deactivateDeprecatedCategories();
 
   const existingApplication = await prisma.storeApplication.findFirst({
     where: {
@@ -981,6 +989,20 @@ async function main() {
       },
     });
   }
+}
+
+async function deactivateDeprecatedCategories() {
+  await prisma.category.updateMany({
+    where: {
+      slug: { in: deprecatedCategorySlugs },
+      products: { none: {} },
+      stores: { none: {} },
+      storeApplications: { none: {} },
+    },
+    data: {
+      status: CategoryStatus.PASSIVE,
+    },
+  });
 }
 
 main()

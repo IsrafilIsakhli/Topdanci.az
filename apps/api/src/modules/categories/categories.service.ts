@@ -13,7 +13,7 @@ export class CategoriesService {
   ) {}
 
   async listPublicCategories(query: ListCategoriesQueryDto) {
-    const key = cacheKey('categories:list', query);
+    const key = cacheKey('categories:list:v2', query);
     const cached = await this.redis.getJson(key);
 
     if (cached) {
@@ -81,6 +81,7 @@ export class CategoriesService {
       })),
       meta: {
         total: categories.length,
+        nextCursor: null,
       },
     };
     await this.redis.setJson(key, response, 300);
