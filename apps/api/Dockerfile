@@ -1,3 +1,4 @@
+# Railway deploys this image when API code or railway.json changes.
 FROM node:22-alpine AS deps
 WORKDIR /app
 
