@@ -19,7 +19,7 @@
     "healthcheckPath": "/api/v1/health/ready",
     "healthcheckTimeout": 180,
     "restartPolicyType": "ALWAYS",
-    "overlapSeconds": "30",
-    "drainingSeconds": "15"
+    "overlapSeconds": 30,
+    "drainingSeconds": 15
   }
 }
