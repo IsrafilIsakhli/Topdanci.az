@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Grid3X3, Home, Menu, Package, Search, Store, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const navItems = [
   { href: '/', label: 'Ana səhifə' },
@@ -22,17 +22,73 @@ const mobileQuickItems = [
 
 export function SiteHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const pathDepth = pathname.split('/').filter(Boolean).length;
+  const isMarketplaceDetail =
+    pathDepth > 1 &&
+    (pathname.startsWith('/products/') || pathname.startsWith('/stores/') || pathname.startsWith('/categories/'));
   const hideMobileQuickNav =
     pathname === '/login' ||
     pathname === '/open-store' ||
     pathname === '/contact' ||
+    isMarketplaceDetail ||
     pathname.startsWith('/account') ||
-    pathname.startsWith('/seller');
+    pathname.startsWith('/seller') ||
+    pathname.startsWith('/admin');
   const showMobileQuickNav = !hideMobileQuickNav;
 
   const closeMenu = () => setIsMenuOpen(false);
   const isActive = (href: string) => (href === '/' ? pathname === href : pathname.startsWith(href));
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const triggerButton = menuButtonRef.current;
+    const previousOverflow = document.body.style.overflow;
+    const focusableSelector =
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const focusableElements = () =>
+      Array.from(drawerRef.current?.querySelectorAll<HTMLElement>(focusableSelector) ?? []).filter(
+        (element) => element.getClientRects().length > 0,
+      );
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const elements = focusableElements();
+      const first = elements[0];
+      const last = elements.at(-1);
+      if (!first || !last) return;
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+    const focusTimeout = window.setTimeout(() => focusableElements()[0]?.focus(), 50);
+
+    return () => {
+      window.clearTimeout(focusTimeout);
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+      triggerButton?.focus();
+    };
+  }, [isMenuOpen]);
 
   return (
     <>
@@ -72,6 +128,7 @@ export function SiteHeader() {
           </div>
 
           <button
+            ref={menuButtonRef}
             className="button mobile-menu-button"
             type="button"
             aria-label={isMenuOpen ? 'Menyunu bağla' : 'Menyunu aç'}
@@ -83,7 +140,14 @@ export function SiteHeader() {
           </button>
         </div>
 
-        <div id="mobile-navigation" className={`mobile-drawer${isMenuOpen ? ' is-open' : ''}`}>
+        <div
+          ref={drawerRef}
+          id="mobile-navigation"
+          className={`mobile-drawer${isMenuOpen ? ' is-open' : ''}`}
+          aria-hidden={!isMenuOpen}
+          aria-modal={isMenuOpen || undefined}
+          role={isMenuOpen ? 'dialog' : undefined}
+        >
           <nav className="mobile-drawer-nav" aria-label="Mobil menyu">
             {navItems.map((item) => (
               <Link aria-current={isActive(item.href) ? 'page' : undefined} key={item.href} href={item.href} onClick={closeMenu}>
@@ -101,6 +165,7 @@ export function SiteHeader() {
             </Link>
           </div>
         </div>
+        {isMenuOpen ? <button className="mobile-drawer-backdrop" type="button" aria-label="Menyunu bağla" onClick={closeMenu} /> : null}
       </header>
 
       {showMobileQuickNav ? (
