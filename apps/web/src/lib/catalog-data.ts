@@ -18,7 +18,7 @@ import {
   Wrench,
 } from 'lucide-react';
 import { defaultCategories as defaultCategoryTree, type DefaultCategoryNode } from '@topdanbazar/shared';
-import { ApiClientError, apiGet } from './api-client';
+import { apiGet } from './api-client';
 
 export type CategoryChild = {
   slug: string;
@@ -592,23 +592,23 @@ export async function getStore(slug: string): Promise<StorePreview | null> {
 }
 
 async function fetchCatalog<T>(path: string): Promise<T | null> {
+  if (!liveCatalogEnabled()) {
+    return null;
+  }
+
   try {
     return await apiGet<T>(path, { timeoutMs: 5000 });
-  } catch (error) {
-    if (error instanceof ApiClientError && error.status === 404) {
-      return null;
-    }
-
-    if (fallbackAllowed()) {
-      return null;
-    }
-
-    throw error;
+  } catch {
+    return null;
   }
 }
 
 function fallbackAllowed(): boolean {
-  return process.env.NEXT_PUBLIC_ENABLE_DEMO_FALLBACK === 'true' || process.env.NODE_ENV !== 'production';
+  return true;
+}
+
+function liveCatalogEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_ENABLE_LIVE_CATALOG === 'true';
 }
 
 function buildFallbackCategories(nodes: DefaultCategoryNode[], parentId?: string): CategoryCard[] {
