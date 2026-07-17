@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Activity,
   AlertTriangle,
@@ -15,7 +15,6 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
-  MoreHorizontal,
   PackageCheck,
   ShieldCheck,
   Store,
@@ -53,21 +52,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isChecking, setIsChecking] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  const [isMoreOpen, setIsMoreOpen] = useState(false);
-  const moreButtonRef = useRef<HTMLButtonElement>(null);
-  const moreSheetRef = useRef<HTMLElement>(null);
 
   const visibleNav = useMemo(
     () => adminNav.filter((item) => user && item.roles.includes(user.role as 'ADMIN' | 'SUPER_ADMIN')),
     [user],
-  );
-  const mobilePrimaryNav = useMemo(() => {
-    const hrefs = ['/admin', '/admin/products', '/admin/stores', '/admin/store-applications'];
-    return hrefs.map((href) => visibleNav.find((item) => item.href === href)).filter((item): item is AdminNavItem => Boolean(item));
-  }, [visibleNav]);
-  const mobileMoreNav = useMemo(
-    () => visibleNav.filter((item) => !mobilePrimaryNav.some((primaryItem) => primaryItem.href === item.href)),
-    [mobilePrimaryNav, visibleNav],
   );
 
   const activeTitle = useMemo(() => {
@@ -107,47 +95,6 @@ export function AdminShell({ children }: { children: ReactNode }) {
     };
   }, [pathname, router]);
 
-  useEffect(() => {
-    setIsOpen(false);
-    setIsMoreOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    if (!isMoreOpen) return;
-    const triggerButton = moreButtonRef.current;
-    const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-    const focusableElements = () =>
-      Array.from(moreSheetRef.current?.querySelectorAll<HTMLElement>(focusableSelector) ?? []).filter(
-        (element) => element.getClientRects().length > 0,
-      );
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsMoreOpen(false);
-        return;
-      }
-      if (event.key !== 'Tab') return;
-
-      const elements = focusableElements();
-      const first = elements[0];
-      const last = elements.at(-1);
-      if (!first || !last) return;
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    const focusTimeout = window.setTimeout(() => focusableElements()[0]?.focus(), 50);
-    return () => {
-      window.clearTimeout(focusTimeout);
-      window.removeEventListener('keydown', handleKeyDown);
-      triggerButton?.focus();
-    };
-  }, [isMoreOpen]);
-
   async function handleLogout() {
     await logout(false).catch(() => null);
     router.replace('/login');
@@ -174,7 +121,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <span>
               <Gauge size={18} />
             </span>
-            <b>TopdanBazar Ops</b>
+            TopdanBazar Ops
           </Link>
           <button className="admin-icon-button admin-mobile-only" type="button" onClick={() => setIsOpen(false)} aria-label="Menyunu bağla">
             <X size={18} />
@@ -187,9 +134,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
             const isActive = item.href === '/admin' ? pathname === item.href : pathname.startsWith(item.href);
 
             return (
-              <Link className={isActive ? 'is-active' : ''} href={item.href} key={item.href} title={item.label} onClick={() => setIsOpen(false)}>
+              <Link className={isActive ? 'is-active' : ''} href={item.href} key={item.href} onClick={() => setIsOpen(false)}>
                 <Icon size={18} />
-                <span>{item.label}</span>
+                {item.label}
               </Link>
             );
           })}
@@ -226,70 +173,6 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
         {children}
       </section>
-
-      <nav className="admin-bottom-nav" aria-label="Admin panel sürətli menyu">
-        {mobilePrimaryNav.map((item) => {
-          const Icon = item.icon;
-          const isActive = item.href === '/admin' ? pathname === item.href : pathname.startsWith(item.href);
-          return (
-            <Link aria-current={isActive ? 'page' : undefined} href={item.href} key={item.href}>
-              <Icon size={19} />
-              <span>{item.label === 'Mağaza müraciətləri' ? 'Müraciətlər' : item.label.replace(' moderasiyası', '')}</span>
-            </Link>
-          );
-        })}
-        <button
-          ref={moreButtonRef}
-          className={mobileMoreNav.some((item) => pathname.startsWith(item.href)) ? 'is-active' : ''}
-          type="button"
-          aria-expanded={isMoreOpen}
-          aria-controls="admin-more-menu"
-          onClick={() => setIsMoreOpen((value) => !value)}
-        >
-          <MoreHorizontal size={19} />
-          <span>Daha çox</span>
-        </button>
-      </nav>
-
-      {isMoreOpen ? (
-        <>
-          <button className="dashboard-sheet-backdrop" type="button" aria-label="Əlavə menyunu bağla" onClick={() => setIsMoreOpen(false)} />
-          <section
-            ref={moreSheetRef}
-            className="dashboard-more-sheet admin-more-sheet"
-            id="admin-more-menu"
-            aria-label="Əlavə admin menyusu"
-            aria-modal="true"
-            role="dialog"
-          >
-            <div className="dashboard-sheet-handle" aria-hidden="true" />
-            <div className="dashboard-sheet-head">
-              <span>
-                <strong>{user.email ?? user.phone ?? 'Admin hesabı'}</strong>
-                <small>{user.role}</small>
-              </span>
-              <button className="admin-icon-button" type="button" aria-label="Əlavə menyunu bağla" onClick={() => setIsMoreOpen(false)}>
-                <X size={18} />
-              </button>
-            </div>
-            <nav className="dashboard-sheet-links">
-              {mobileMoreNav.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link href={item.href} key={item.href}>
-                    <Icon size={19} />
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </nav>
-            <button className="button button-full" type="button" onClick={() => void handleLogout()}>
-              <LogOut size={17} />
-              Çıxış
-            </button>
-          </section>
-        </>
-      ) : null}
     </main>
   );
 }

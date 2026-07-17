@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
 import { getCategories } from '../../lib/catalog-data';
@@ -49,28 +49,13 @@ export default async function CategoriesPage() {
                       </span>
                     </span>
                     {visibleChildren.length ? (
-                      <span className="category-children category-main-children category-desktop-children">
-                        {visibleChildren.map((child, index) => (
-                          <Link className="category-child-chip" href={`/categories/${child.slug}`} key={`desktop-${child.slug}-${index}`}>
+                      <span className="category-children category-main-children">
+                        {visibleChildren.map((child) => (
+                          <Link className="category-child-chip" href={`/categories/${child.slug}`} key={child.slug}>
                             {child.name}
                           </Link>
                         ))}
                       </span>
-                    ) : null}
-                    {visibleChildren.length ? (
-                      <details className="category-mobile-children">
-                        <summary>
-                          Alt kateqoriyalar
-                          <ChevronDown size={15} />
-                        </summary>
-                        <span className="category-children category-main-children">
-                          {visibleChildren.map((child, index) => (
-                            <Link className="category-child-chip" href={`/categories/${child.slug}`} key={`mobile-${child.slug}-${index}`}>
-                              {child.name}
-                            </Link>
-                          ))}
-                        </span>
-                      </details>
                     ) : null}
                     <Link className="card-link category-card-action" href={`/categories/${category.slug}`}>
                       Kateqoriyaya bax <ArrowRight size={14} />

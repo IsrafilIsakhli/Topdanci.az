@@ -58,11 +58,11 @@ export function ProductCard({ product, variant = 'default' }: ProductCardProps) 
             storeName={product.store}
           >
             <MessageCircle size={17} />
-            <span>{isCompact ? 'Yaz' : 'WhatsApp'}</span>
+            {isCompact ? 'Yaz' : 'WhatsApp'}
           </LeadWhatsAppLink>
           <Link className="button" href={`/products/${product.slug}`} aria-label={`${product.title} bax`}>
             <Eye size={17} />
-            <span>Bax</span>
+            Bax
           </Link>
         </div>
       </div>
