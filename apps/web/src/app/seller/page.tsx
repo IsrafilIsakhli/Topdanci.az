@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { ArrowRight, BarChart3, Eye, MessageSquare, PackageCheck, Store, TimerReset } from 'lucide-react';
+import { ArrowRight, BarChart3, CheckCircle2, Circle, Eye, MessageSquare, PackageCheck, Store, TimerReset } from 'lucide-react';
 import { ApiClientError } from '../../lib/api-client';
 import { getSellerOverview, type SellerOverview } from '../../lib/seller-api';
 
@@ -52,6 +52,7 @@ export default function SellerDashboardPage() {
     { label: 'Bugünkü mağaza baxışı', value: overview.storeViewsToday, icon: Eye },
     { label: 'Qaralama', value: overview.draftProducts, icon: BarChart3 },
   ];
+  const onboarding = overview.stores[0]?.onboarding;
 
   return (
     <div className="seller-page">
@@ -69,6 +70,31 @@ export default function SellerDashboardPage() {
           <ArrowRight size={16} />
         </Link>
       </section>
+
+      {onboarding && onboarding.percentage < 100 ? (
+        <section className="seller-onboarding-card" aria-labelledby="seller-onboarding-title">
+          <div className="seller-onboarding-head">
+            <div>
+              <span className="seller-kicker">Başlanğıc yoxlaması</span>
+              <h3 id="seller-onboarding-title">Mağazanızı tamamlayın</h3>
+              <p>{onboarding.completed}/{onboarding.total} addım hazırdır</p>
+            </div>
+            <strong>{onboarding.percentage}%</strong>
+          </div>
+          <div className="seller-onboarding-progress" aria-label={`Tamamlanma ${onboarding.percentage}%`}>
+            <span style={{ width: `${onboarding.percentage}%` }} />
+          </div>
+          <div className="seller-onboarding-steps">
+            {onboarding.steps.map((step) => (
+              <Link className={step.completed ? 'is-complete' : ''} href={step.href} key={step.key}>
+                {step.completed ? <CheckCircle2 size={18} /> : <Circle size={18} />}
+                <span>{step.label}</span>
+                {!step.completed ? <ArrowRight size={15} /> : null}
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="seller-stat-grid">
         {stats.map((stat) => {

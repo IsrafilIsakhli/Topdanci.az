@@ -159,6 +159,20 @@ describe('TopdanBazar API smoke e2e', () => {
     await request(app.getHttpServer()).get('/api/v1/stores?sort=unknown').expect(400);
   });
 
+  it('supports advanced public product filters and rejects invalid filter values', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/api/v1/products?priceMin=0&priceMax=1000000&minOrderMax=1000000&verified=true&limit=20')
+      .expect(200);
+
+    expect(response.body.meta).toMatchObject({ total: expect.any(Number) });
+    expect(
+      response.body.data.every((product: { store: { verified: boolean } }) => product.store.verified),
+    ).toBe(true);
+
+    await request(app.getHttpServer()).get('/api/v1/products?stock=UNKNOWN').expect(400);
+    await request(app.getHttpServer()).get('/api/v1/products?priceMin=-1').expect(400);
+  });
+
   it('tracks only active public lead targets and deduplicates repeated views', async () => {
     const products = await request(app.getHttpServer()).get('/api/v1/products').expect(200);
     const product = products.body.data[0];
@@ -368,6 +382,87 @@ describe('TopdanBazar API smoke e2e', () => {
 
     expect(sellerView.body.data.status).toBe('REJECTED');
     expect(sellerView.body.data.reviewNote).toBe(reviewNote);
+  });
+
+  it('supports bulk moderation, suspicious flags and the notification inbox', async () => {
+    const seller = await loginAs('seller@topdanci.az', 'Seller12345!');
+    const sellerProducts = await request(app.getHttpServer())
+      .get('/api/v1/seller/products')
+      .set('Cookie', seller.cookies)
+      .expect(200);
+    const baseProduct = sellerProducts.body.data[0];
+    const ids: string[] = [];
+
+    for (const sequence of [1, 2]) {
+      const created = await request(app.getHttpServer())
+        .post('/api/v1/seller/products')
+        .set('Cookie', seller.cookies)
+        .set('x-csrf-token', seller.csrfToken)
+        .send({
+          storeId: baseProduct.store.id,
+          categoryId: baseProduct.category.id,
+          title: `E2E Bulk Product ${sequence} ${Date.now()}`,
+          description: 'Created to verify bulk product moderation.',
+          price: 25 + sequence,
+          minOrderQuantity: 5,
+          stockStatus: 'IN_STOCK',
+        })
+        .expect(201);
+
+      ids.push(created.body.data.id);
+      await request(app.getHttpServer())
+        .post(`/api/v1/seller/products/${created.body.data.id}/submit-review`)
+        .set('Cookie', seller.cookies)
+        .set('x-csrf-token', seller.csrfToken)
+        .expect(201);
+    }
+
+    const admin = await loginAs('admin@topdanci.az', 'Admin12345!');
+    const approved = await request(app.getHttpServer())
+      .post('/api/v1/admin/products/bulk/approve')
+      .set('Cookie', admin.cookies)
+      .set('x-csrf-token', admin.csrfToken)
+      .send({ ids })
+      .expect(201);
+
+    expect(approved.body.meta).toEqual({ updated: 2, skipped: 0 });
+    expect(approved.body.data.every((product: { status: string }) => product.status === 'ACTIVE')).toBe(true);
+
+    await request(app.getHttpServer())
+      .post(`/api/v1/admin/products/${ids[0]}/flag`)
+      .set('Cookie', admin.cookies)
+      .set('x-csrf-token', admin.csrfToken)
+      .send({ reason: 'E2E suspicious listing review' })
+      .expect(201);
+
+    await request(app.getHttpServer())
+      .post(`/api/v1/admin/products/${ids[0]}/flag`)
+      .set('Cookie', admin.cookies)
+      .set('x-csrf-token', admin.csrfToken)
+      .send({ reason: 'Duplicate E2E suspicious listing review' })
+      .expect(400);
+
+    const notifications = await request(app.getHttpServer())
+      .get('/api/v1/notifications?unreadOnly=true&limit=50')
+      .set('Cookie', seller.cookies)
+      .expect(200);
+
+    expect(notifications.body.meta.unreadCount).toBeGreaterThan(0);
+    expect(notifications.body.data.some((item: { href?: string }) => item.href?.includes('/seller/products/'))).toBe(true);
+
+    await request(app.getHttpServer())
+      .post('/api/v1/notifications/read-all')
+      .set('Cookie', seller.cookies)
+      .set('x-csrf-token', seller.csrfToken)
+      .expect(201);
+
+    const readInbox = await request(app.getHttpServer())
+      .get('/api/v1/notifications?unreadOnly=true&limit=50')
+      .set('Cookie', seller.cookies)
+      .expect(200);
+
+    expect(readInbox.body.data).toHaveLength(0);
+    expect(readInbox.body.meta.unreadCount).toBe(0);
   });
 
   it('rejects invalid media MIME for an owned seller product', async () => {

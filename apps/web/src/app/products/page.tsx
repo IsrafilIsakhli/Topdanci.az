@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, Package, Search } from 'lucide-react';
+import { ArrowRight, Filter, Package, Search } from 'lucide-react';
 import { ProductCard } from '../../components/product-card';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
-import { getProductsPage, type ProductSort } from '../../lib/catalog-data';
+import { getCategories, getProductsPage, type ProductSort } from '../../lib/catalog-data';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,18 +17,23 @@ export const metadata: Metadata = {
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ q?: string; category?: string; city?: string; cursor?: string; sort?: string }>;
+  searchParams?: Promise<ProductsSearchQuery>;
 }) {
   const query = await searchParams;
   const sort = normalizeProductSort(query?.sort);
-  const page = await getProductsPage({
+  const [page, categories] = await Promise.all([getProductsPage({
     q: query?.q,
     category: query?.category,
     city: query?.city,
     cursor: query?.cursor,
     sort,
     limit: 24,
-  });
+    priceMin: toOptionalNumber(query?.priceMin),
+    priceMax: toOptionalNumber(query?.priceMax),
+    minOrderMax: toOptionalNumber(query?.minOrderMax),
+    verified: query?.verified === 'true',
+    stock: normalizeStock(query?.stock),
+  }), getCategories()]);
   const products = page.items;
 
   return (
@@ -59,10 +64,51 @@ export default async function ProductsPage({
               <input defaultValue={query?.q ?? ''} name="q" placeholder="Məhsul, mağaza və ya kateqoriya axtarın" />
             </label>
             <input defaultValue={query?.city ?? ''} name="city" placeholder="Şəhər" />
-            {query?.category ? <input name="category" type="hidden" value={query.category} /> : null}
             <button className="button button-primary" type="submit">
               Axtar
             </button>
+            <details className="catalog-advanced-filters">
+              <summary>
+                <Filter size={17} />
+                Ətraflı filtr
+              </summary>
+              <div className="catalog-filter-grid">
+                <label>
+                  <span>Kateqoriya / alt kateqoriya</span>
+                  <select defaultValue={query?.category ?? ''} name="category">
+                    <option value="">Bütün kateqoriyalar</option>
+                    {categories.map((category) => (
+                      <option key={category.slug} value={category.slug}>{category.name}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  <span>Minimum qiymət</span>
+                  <input defaultValue={query?.priceMin ?? ''} min="0" name="priceMin" placeholder="0" type="number" />
+                </label>
+                <label>
+                  <span>Maksimum qiymət</span>
+                  <input defaultValue={query?.priceMax ?? ''} min="0" name="priceMax" placeholder="5000" type="number" />
+                </label>
+                <label>
+                  <span>Maksimum minimum sifariş</span>
+                  <input defaultValue={query?.minOrderMax ?? ''} min="0" name="minOrderMax" placeholder="100" type="number" />
+                </label>
+                <label>
+                  <span>Stok vəziyyəti</span>
+                  <select defaultValue={query?.stock ?? ''} name="stock">
+                    <option value="">Bütün stok vəziyyətləri</option>
+                    <option value="IN_STOCK">Stokda var</option>
+                    <option value="LIMITED">Məhdud stok</option>
+                    <option value="OUT_OF_STOCK">Stokda yoxdur</option>
+                  </select>
+                </label>
+                <label className="catalog-filter-check">
+                  <input defaultChecked={query?.verified === 'true'} name="verified" type="checkbox" value="true" />
+                  <span>Yalnız təsdiqlənmiş mağazalar</span>
+                </label>
+              </div>
+            </details>
           </form>
         </div>
       </section>
@@ -103,7 +149,7 @@ function normalizeProductSort(value?: string): ProductSort {
 }
 
 function buildProductsHref(
-  query: { q?: string; category?: string; city?: string } | undefined,
+  query: ProductsSearchQuery | undefined,
   cursor: string,
   sort: ProductSort,
 ) {
@@ -111,7 +157,35 @@ function buildProductsHref(
   if (query?.q) params.set('q', query.q);
   if (query?.category) params.set('category', query.category);
   if (query?.city) params.set('city', query.city);
+  if (query?.priceMin) params.set('priceMin', query.priceMin);
+  if (query?.priceMax) params.set('priceMax', query.priceMax);
+  if (query?.minOrderMax) params.set('minOrderMax', query.minOrderMax);
+  if (query?.verified) params.set('verified', query.verified);
+  if (query?.stock) params.set('stock', query.stock);
   if (sort !== 'newest') params.set('sort', sort);
   params.set('cursor', cursor);
   return `/products?${params.toString()}`;
+}
+
+type ProductsSearchQuery = {
+  q?: string;
+  category?: string;
+  city?: string;
+  cursor?: string;
+  sort?: string;
+  priceMin?: string;
+  priceMax?: string;
+  minOrderMax?: string;
+  verified?: string;
+  stock?: string;
+};
+
+function toOptionalNumber(value?: string): number | undefined {
+  if (!value) return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
+}
+
+function normalizeStock(value?: string): 'IN_STOCK' | 'LIMITED' | 'OUT_OF_STOCK' | undefined {
+  return value === 'IN_STOCK' || value === 'LIMITED' || value === 'OUT_OF_STOCK' ? value : undefined;
 }

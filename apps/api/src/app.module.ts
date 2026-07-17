@@ -16,6 +16,7 @@ import { validateEnv } from './config/env.validation';
 import { HealthModule } from './modules/health/health.module';
 import { LeadsModule } from './modules/leads/leads.module';
 import { MediaModule } from './modules/media/media.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { ProductsModule } from './modules/products/products.module';
 import { RedisModule } from './modules/redis/redis.module';
@@ -57,6 +58,7 @@ import { SupportModule } from './modules/support/support.module';
     SearchModule,
     LeadsModule,
     MediaModule,
+    NotificationsModule,
     SellerModule,
     AdminModule,
     SupportModule,

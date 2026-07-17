@@ -39,6 +39,12 @@ export type SellerStore = {
   verified: boolean;
   productCount: number;
   category?: { id: string; slug: string; name: string } | null;
+  onboarding: {
+    completed: number;
+    total: number;
+    percentage: number;
+    steps: Array<{ key: string; label: string; completed: boolean; href: string }>;
+  };
 };
 
 export type SellerProduct = {

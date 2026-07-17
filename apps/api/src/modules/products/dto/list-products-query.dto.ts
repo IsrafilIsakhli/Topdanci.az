@@ -1,5 +1,5 @@
-import { Type } from 'class-transformer';
-import { IsIn, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsBoolean, IsIn, IsInt, IsNumber, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
 
 export const productSortOptions = ['newest', 'popular', 'price_asc', 'price_desc'] as const;
 export type ProductSort = (typeof productSortOptions)[number];
@@ -24,6 +24,33 @@ export class ListProductsQueryDto {
   @IsOptional()
   @MaxLength(120)
   store?: string;
+
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  @Type(() => Number)
+  priceMin?: number;
+
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  @Type(() => Number)
+  priceMax?: number;
+
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  @Type(() => Number)
+  minOrderMax?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value === true || value === 'true')
+  verified?: boolean;
+
+  @IsIn(['IN_STOCK', 'LIMITED', 'OUT_OF_STOCK'])
+  @IsOptional()
+  stock?: 'IN_STOCK' | 'LIMITED' | 'OUT_OF_STOCK';
 
   @IsInt()
   @Min(1)

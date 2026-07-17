@@ -1,10 +1,11 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { LeadType, PriceType, Prisma, ProductStatus, StoreStatus, UserRole } from '@prisma/client';
+import { LeadType, NotificationType, PriceType, Prisma, ProductStatus, StoreStatus, UserRole } from '@prisma/client';
 import type { AuthenticatedUser } from '../../common/auth/authenticated-user';
 import { PublicCacheService } from '../../common/cache/public-cache.service';
 import { toCursorPagination } from '../../common/pagination/cursor-pagination';
 import { slugify } from '../../common/slug/slugify';
 import { AuditService } from '../audit/audit.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
 import type { ListSellerProductsQueryDto } from './dto/list-seller-products-query.dto';
 import type { ListSellerLeadsQueryDto, SellerAnalyticsQueryDto } from './dto/seller-analytics-query.dto';
@@ -16,6 +17,7 @@ export class SellerService {
   constructor(
     private readonly audit: AuditService,
     private readonly cache: PublicCacheService,
+    private readonly notifications: NotificationsService,
     private readonly prisma: PrismaService,
   ) {}
 
@@ -452,6 +454,13 @@ export class SellerService {
       metadata: { storeId: existing.storeId },
     });
     await this.cache.invalidateCatalog();
+    await this.notifications.createForRoles([UserRole.ADMIN, UserRole.SUPER_ADMIN], {
+      type: NotificationType.ACTION_REQUIRED,
+      title: 'Yeni məhsul yoxlama gözləyir',
+      message: product.title,
+      href: `/admin/products/${product.id}`,
+      metadata: { productId: product.id, storeId: existing.storeId },
+    });
 
     return { data: mapSellerProduct(product) };
   }
@@ -734,11 +743,50 @@ type SellerLead = Prisma.LeadEventGetPayload<{ select: typeof sellerLeadSelect }
 
 function mapSellerStore(store: SellerStore) {
   const { _count, ...publicStore } = store;
+  const steps = [
+    {
+      key: 'profile',
+      label: 'Mağaza məlumatları',
+      completed: Boolean(store.name && store.description && store.category),
+      href: '/seller/store',
+    },
+    {
+      key: 'contact',
+      label: 'Əlaqə məlumatları',
+      completed: Boolean((store.phone || store.whatsappNumber) && store.email),
+      href: '/seller/store',
+    },
+    {
+      key: 'location',
+      label: 'Ünvan məlumatları',
+      completed: Boolean(store.city && store.address),
+      href: '/seller/store',
+    },
+    {
+      key: 'media',
+      label: 'Logo və banner',
+      completed: Boolean(store.logoKey && store.bannerKey),
+      href: '/seller/store',
+    },
+    {
+      key: 'catalog',
+      label: 'İlk məhsul',
+      completed: _count.products > 0,
+      href: '/seller/products/new',
+    },
+  ];
+  const completed = steps.filter((step) => step.completed).length;
 
   return {
     ...publicStore,
     productCount: _count.products,
     verified: Boolean(store.verifiedAt),
+    onboarding: {
+      completed,
+      total: steps.length,
+      percentage: Math.round((completed / steps.length) * 100),
+      steps,
+    },
   };
 }
 

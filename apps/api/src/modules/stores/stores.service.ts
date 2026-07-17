@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ApplicationStatus, LeadType, Prisma, ProductStatus, StoreStatus } from '@prisma/client';
+import { ApplicationStatus, LeadType, NotificationType, Prisma, ProductStatus, StoreStatus, UserRole } from '@prisma/client';
 import { cacheKey } from '../../common/cache/cache-key';
 import { toCursorPagination } from '../../common/pagination/cursor-pagination';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import { RedisService } from '../redis/redis.service';
 import { CreateStoreApplicationDto } from './dto/create-store-application.dto';
 import { ListStoresQueryDto, type StoreSort } from './dto/list-stores-query.dto';
@@ -10,6 +11,7 @@ import { ListStoresQueryDto, type StoreSort } from './dto/list-stores-query.dto'
 @Injectable()
 export class StoresService {
   constructor(
+    private readonly notifications: NotificationsService,
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
   ) {}
@@ -116,6 +118,14 @@ export class StoresService {
         companyName: true,
         createdAt: true,
       },
+    });
+
+    await this.notifications.createForRoles([UserRole.ADMIN, UserRole.SUPER_ADMIN], {
+      type: NotificationType.ACTION_REQUIRED,
+      title: 'Yeni mağaza müraciəti',
+      message: application.companyName,
+      href: `/admin/store-applications/${application.id}`,
+      metadata: { applicationId: application.id },
     });
 
     return {

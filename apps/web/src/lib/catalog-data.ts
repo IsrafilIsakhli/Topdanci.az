@@ -50,6 +50,8 @@ export type ProductPreview = {
   categorySlug: string;
   price: string;
   minOrder: string;
+  minOrderQuantity?: string | null | undefined;
+  stockStatus?: string | null | undefined;
   badge: string;
   imageUrl: string;
   imageAlt: string;
@@ -164,6 +166,11 @@ export type ProductQuery = {
   limit?: number | undefined;
   cursor?: string | undefined;
   sort?: ProductSort | undefined;
+  priceMin?: number | undefined;
+  priceMax?: number | undefined;
+  minOrderMax?: number | undefined;
+  verified?: boolean | undefined;
+  stock?: 'IN_STOCK' | 'LIMITED' | 'OUT_OF_STOCK' | undefined;
 };
 
 export type StoreQuery = {
@@ -714,6 +721,8 @@ function mapProduct(product: ApiProduct, index: number): ProductPreview {
     categorySlug: category.slug,
     price: normalizePriceLabel(product),
     minOrder: normalizeMinOrder(product),
+    minOrderQuantity: product.minOrderQuantity,
+    stockStatus: product.stockStatus,
     badge: normalizeStockBadge(product.stockStatus),
     imageUrl: resolveProductImage(product, index),
     imageAlt: product.images?.[0]?.altText ?? `${product.title} məhsul şəkli`,
@@ -856,7 +865,7 @@ function formatCompactCount(count: number): string {
   return new Intl.NumberFormat('az-AZ').format(count);
 }
 
-function toQueryString(query: Record<string, string | number | undefined>): string {
+function toQueryString(query: Record<string, string | number | boolean | undefined>): string {
   const params = new URLSearchParams();
   Object.entries(query).forEach(([key, value]) => {
     if (value !== undefined && value !== '') {
@@ -884,7 +893,13 @@ function filterFallbackProducts(query: ProductQuery): ProductPreview[] {
     const matchesSearch = query.q
       ? `${product.title} ${product.store} ${product.category}`.toLowerCase().includes(query.q.toLowerCase())
       : true;
-    return matchesCategory && matchesStore && matchesCity && matchesSearch;
+    const price = numericPrice(product.price);
+    const minOrder = Number(product.minOrderQuantity ?? product.minOrder.match(/[\d.,]+/)?.[0]?.replace(',', '.') ?? 0);
+    const matchesPriceMin = query.priceMin !== undefined ? price >= query.priceMin : true;
+    const matchesPriceMax = query.priceMax !== undefined ? price <= query.priceMax : true;
+    const matchesMinOrder = query.minOrderMax !== undefined ? minOrder <= query.minOrderMax : true;
+    const matchesStock = query.stock ? product.stockStatus === query.stock : true;
+    return matchesCategory && matchesStore && matchesCity && matchesSearch && matchesPriceMin && matchesPriceMax && matchesMinOrder && matchesStock;
   });
 
   if (query.sort === 'price_asc' || query.sort === 'price_desc') {

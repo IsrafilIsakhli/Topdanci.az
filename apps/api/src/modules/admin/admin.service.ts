@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import {
   ApplicationStatus,
   CategoryStatus,
+  NotificationType,
   PriceType,
   Prisma,
   ProductStatus,
@@ -20,9 +21,11 @@ import { toCursorPagination } from '../../common/pagination/cursor-pagination';
 import { hashSensitiveValue } from '../../common/security/hash-ip';
 import { slugify } from '../../common/slug/slugify';
 import { MediaQueueService } from '../media/media-queue.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import type { AdminAnalyticsQueryDto } from './dto/admin-analytics-query.dto';
+import type { BulkProductActionDto, BulkRejectProductsDto, FlagProductDto } from './dto/bulk-product-action.dto';
 import type { ListAuditLogsQueryDto } from './dto/list-audit-logs-query.dto';
 import type { ListAdminProductsQueryDto } from './dto/list-admin-products-query.dto';
 import type { ListAdminReportsQueryDto } from './dto/list-admin-reports-query.dto';
@@ -43,6 +46,7 @@ export class AdminService {
     private readonly config: ConfigService,
     private readonly mediaQueue: MediaQueueService,
     private readonly metrics: MetricsService,
+    private readonly notifications: NotificationsService,
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
   ) {}
@@ -267,6 +271,13 @@ export class AdminService {
     });
 
     await this.cache.invalidateStores();
+    await this.notifications.createForUsers([result.data.seller.id], {
+      type: NotificationType.SUCCESS,
+      title: 'Mağaza müraciətiniz təsdiqləndi',
+      message: result.data.store.name,
+      href: '/seller',
+      metadata: { applicationId: result.data.applicationId, storeId: result.data.store.id },
+    });
     return result;
   }
 
@@ -319,6 +330,87 @@ export class AdminService {
     return this.listModerationProducts(query);
   }
 
+  async bulkApproveProducts(dto: BulkProductActionDto, admin: AuthenticatedUser) {
+    const products = await this.prisma.product.findMany({
+      where: { id: { in: dto.ids }, status: ProductStatus.PENDING_REVIEW },
+      select: moderationProductSelect,
+    });
+    const now = new Date();
+    const updated = await this.prisma.$transaction(
+      products.map((product) =>
+        this.prisma.product.update({
+          where: { id: product.id },
+          data: {
+            status: ProductStatus.ACTIVE,
+            publishedAt: now,
+            reviewedAt: now,
+            reviewedById: admin.id,
+            reviewNote: null,
+          },
+          select: moderationProductSelect,
+        }),
+      ),
+    );
+
+    await Promise.all(updated.map((product) =>
+      this.recordProductModeration(admin, 'ADMIN_PRODUCT_APPROVED', product, { status: ProductStatus.ACTIVE }),
+    ));
+    await Promise.all(updated.map((product) => this.notifyStoreMembers(product.store.id, {
+      type: NotificationType.SUCCESS,
+      title: 'Məhsul təsdiqləndi',
+      message: product.title,
+      href: `/seller/products/${product.id}/edit`,
+    })));
+    await this.cache.invalidateCatalog();
+
+    return {
+      data: updated.map(mapModerationProduct),
+      meta: { updated: updated.length, skipped: dto.ids.length - updated.length },
+    };
+  }
+
+  async bulkRejectProducts(dto: BulkRejectProductsDto, admin: AuthenticatedUser) {
+    const products = await this.prisma.product.findMany({
+      where: { id: { in: dto.ids }, status: ProductStatus.PENDING_REVIEW },
+      select: moderationProductSelect,
+    });
+    const now = new Date();
+    const updated = await this.prisma.$transaction(
+      products.map((product) =>
+        this.prisma.product.update({
+          where: { id: product.id },
+          data: {
+            status: ProductStatus.REJECTED,
+            publishedAt: null,
+            reviewedAt: now,
+            reviewedById: admin.id,
+            reviewNote: dto.reviewNote,
+          },
+          select: moderationProductSelect,
+        }),
+      ),
+    );
+
+    await Promise.all(updated.map((product) =>
+      this.recordProductModeration(admin, 'ADMIN_PRODUCT_REJECTED', product, {
+        status: ProductStatus.REJECTED,
+        reviewNote: dto.reviewNote,
+      }),
+    ));
+    await Promise.all(updated.map((product) => this.notifyStoreMembers(product.store.id, {
+      type: NotificationType.WARNING,
+      title: 'Məhsul rədd edildi',
+      message: `${product.title}: ${dto.reviewNote}`,
+      href: `/seller/products/${product.id}/edit`,
+    })));
+    await this.cache.invalidateCatalog();
+
+    return {
+      data: updated.map(mapModerationProduct),
+      meta: { updated: updated.length, skipped: dto.ids.length - updated.length },
+    };
+  }
+
   async getProduct(id: string) {
     const product = await this.prisma.product.findUnique({
       where: { id },
@@ -361,6 +453,12 @@ export class AdminService {
     await this.recordProductModeration(admin, 'ADMIN_PRODUCT_APPROVED', updated, {
       status: ProductStatus.ACTIVE,
     });
+    await this.notifyStoreMembers(updated.store.id, {
+      type: NotificationType.SUCCESS,
+      title: 'Məhsul təsdiqləndi',
+      message: updated.title,
+      href: `/seller/products/${updated.id}/edit`,
+    });
     await this.cache.invalidateCatalog();
 
     return { data: mapModerationProduct(updated) };
@@ -383,6 +481,12 @@ export class AdminService {
     await this.recordProductModeration(admin, 'ADMIN_PRODUCT_REJECTED', updated, {
       status: ProductStatus.REJECTED,
       reviewNote: dto.reviewNote,
+    });
+    await this.notifyStoreMembers(updated.store.id, {
+      type: NotificationType.WARNING,
+      title: 'Məhsul rədd edildi',
+      message: `${updated.title}: ${dto.reviewNote}`,
+      href: `/seller/products/${updated.id}/edit`,
     });
     await this.cache.invalidateCatalog();
 
@@ -422,6 +526,47 @@ export class AdminService {
     await this.cache.invalidateCatalog();
 
     return { data: mapModerationProduct(updated) };
+  }
+
+  async flagProduct(id: string, dto: FlagProductDto, admin: AuthenticatedUser) {
+    const product = await this.prisma.product.findUnique({
+      where: { id },
+      select: { id: true, title: true, storeId: true },
+    });
+    if (!product) throw new NotFoundException('Product not found');
+
+    const duplicate = await this.prisma.report.findFirst({
+      where: {
+        productId: id,
+        type: 'SUSPICIOUS_PRODUCT',
+        status: { in: [ReportStatus.OPEN, ReportStatus.IN_REVIEW] },
+      },
+      select: { id: true },
+    });
+    if (duplicate) throw new BadRequestException('Product is already flagged');
+
+    const report = await this.prisma.report.create({
+      data: {
+        reporterId: admin.id,
+        productId: id,
+        storeId: product.storeId,
+        type: 'SUSPICIOUS_PRODUCT',
+        message: dto.reason,
+      },
+      select: reportSelect,
+    });
+    await this.recordAdminAction(admin, 'ADMIN_PRODUCT_FLAGGED', 'Product', id, {
+      reportId: report.id,
+      reason: dto.reason,
+    });
+    await this.notifyStoreMembers(product.storeId, {
+      type: NotificationType.ACTION_REQUIRED,
+      title: 'Məhsul əlavə yoxlamaya işarələndi',
+      message: `${product.title}: ${dto.reason}`,
+      href: `/seller/products/${product.id}/edit`,
+    });
+
+    return { data: mapReport(report) };
   }
 
   async listStores(query: ListAdminStoresQueryDto) {
@@ -1148,6 +1293,17 @@ export class AdminService {
     });
   }
 
+  private async notifyStoreMembers(
+    storeId: string,
+    input: { type: NotificationType; title: string; message: string; href?: string },
+  ): Promise<void> {
+    const members = await this.prisma.storeMember.findMany({
+      where: { storeId },
+      select: { userId: true },
+    });
+    await this.notifications.createForUsers(members.map((member) => member.userId), input);
+  }
+
   private async recordAdminAction(
     admin: AuthenticatedUser,
     action: string,
@@ -1219,6 +1375,13 @@ const moderationProductSelect = {
       id: true,
       slug: true,
       name: true,
+    },
+  },
+  _count: {
+    select: {
+      reports: {
+        where: { status: { in: [ReportStatus.OPEN, ReportStatus.IN_REVIEW] } },
+      },
     },
   },
 } satisfies Prisma.ProductSelect;
@@ -1508,11 +1671,13 @@ function adminUserWhere(query: ListAdminUsersQueryDto): Prisma.UserWhereInput {
 }
 
 function mapModerationProduct(product: ModerationProduct) {
+  const { _count, ...data } = product;
   return {
-    ...product,
+    ...data,
     price: product.price?.toString() ?? null,
     minOrderQuantity: product.minOrderQuantity?.toString() ?? null,
     priceLabel: formatPrice(product.price, product.priceType, product.currency),
+    openReportCount: _count.reports,
   };
 }
 

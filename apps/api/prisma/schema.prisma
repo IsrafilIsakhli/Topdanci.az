@@ -89,6 +89,13 @@ enum ReportStatus {
   REJECTED
 }
 
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ACTION_REQUIRED
+}
+
 model User {
   id              String    @id @default(cuid())
   email           String?   @unique
@@ -113,9 +120,28 @@ model User {
   reviewedApplications StoreApplication[] @relation("ApplicationReviewer")
   reviewedProducts   Product[]          @relation("ProductReviewer")
   accountSetupTokens AccountSetupToken[]
+  notifications      Notification[]
 
   @@index([role, status])
   @@map("users")
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType @default(INFO)
+  title     String
+  message   String
+  href      String?
+  metadata  Json?
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt, createdAt])
+  @@index([userId, createdAt])
+  @@map("notifications")
 }
 
 model AccountSetupToken {

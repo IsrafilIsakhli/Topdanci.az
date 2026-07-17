@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { getAdminSession } from '../../lib/admin-api';
 import { logout, type AuthRole, type AuthUser } from '../../lib/seller-api';
+import { NotificationCenter } from '../../components/notification-center';
 
 type AdminNavItem = {
   href: string;
@@ -168,7 +169,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <span className="admin-kicker">Platforma idarəetməsi</span>
             <h1>{activeTitle}</h1>
           </div>
-          <span className="admin-role-badge">{user.role}</span>
+          <div className="admin-topbar-actions">
+            <NotificationCenter classPrefix="admin" />
+            <span className="admin-role-badge">{user.role}</span>
+          </div>
         </header>
 
         {children}

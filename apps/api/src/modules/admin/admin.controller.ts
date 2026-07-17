@@ -6,6 +6,7 @@ import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { AdminService } from './admin.service';
 import { AdminAnalyticsQueryDto } from './dto/admin-analytics-query.dto';
+import { BulkProductActionDto, BulkRejectProductsDto, FlagProductDto } from './dto/bulk-product-action.dto';
 import { ListAuditLogsQueryDto } from './dto/list-audit-logs-query.dto';
 import { ListAdminProductsQueryDto } from './dto/list-admin-products-query.dto';
 import { ListAdminReportsQueryDto } from './dto/list-admin-reports-query.dto';
@@ -68,6 +69,16 @@ export class AdminController {
     return this.adminService.listProducts(query);
   }
 
+  @Post('products/bulk/approve')
+  bulkApproveProducts(@Body() dto: BulkProductActionDto, @CurrentUser() user: AuthenticatedUser) {
+    return this.adminService.bulkApproveProducts(dto, user);
+  }
+
+  @Post('products/bulk/reject')
+  bulkRejectProducts(@Body() dto: BulkRejectProductsDto, @CurrentUser() user: AuthenticatedUser) {
+    return this.adminService.bulkRejectProducts(dto, user);
+  }
+
   @Get('products/:id')
   getProduct(@Param('id') id: string) {
     return this.adminService.getProduct(id);
@@ -94,6 +105,11 @@ export class AdminController {
     @CurrentUser() user: AuthenticatedUser,
   ) {
     return this.adminService.suspendProduct(id, dto, user);
+  }
+
+  @Post('products/:id/flag')
+  flagProduct(@Param('id') id: string, @Body() dto: FlagProductDto, @CurrentUser() user: AuthenticatedUser) {
+    return this.adminService.flagProduct(id, dto, user);
   }
 
   @Get('stores')

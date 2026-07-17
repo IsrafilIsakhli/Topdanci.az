@@ -6,11 +6,22 @@ export function AdminProductTable({
   items,
   isLoading,
   hasError,
+  selectedIds = [],
+  onToggle,
+  onToggleAll,
+  onFlag,
 }: {
   items: AdminProduct[];
   isLoading: boolean;
   hasError: boolean;
+  selectedIds?: string[];
+  onToggle?: (id: string) => void;
+  onToggleAll?: () => void;
+  onFlag?: (id: string) => void;
 }) {
+  const selectableItems = items.filter((item) => item.status === 'PENDING_REVIEW');
+  const allSelected = selectableItems.length > 0 && selectableItems.every((item) => selectedIds.includes(item.id));
+
   return (
     <section className="admin-panel">
       {isLoading ? <AdminLoadingBlock /> : null}
@@ -21,6 +32,16 @@ export function AdminProductTable({
           <table className="admin-table">
             <thead>
               <tr>
+                {onToggle ? (
+                  <th className="admin-select-cell">
+                    <input
+                      aria-label="Bütün gözləyən məhsulları seç"
+                      checked={allSelected}
+                      onChange={onToggleAll}
+                      type="checkbox"
+                    />
+                  </th>
+                ) : null}
                 <th>Məhsul</th>
                 <th>Mağaza</th>
                 <th>Qiymət</th>
@@ -32,9 +53,21 @@ export function AdminProductTable({
             <tbody>
               {items.map((product) => (
                 <tr key={product.id}>
+                  {onToggle ? (
+                    <td className="admin-select-cell">
+                      <input
+                        aria-label={`${product.title} məhsulunu seç`}
+                        checked={selectedIds.includes(product.id)}
+                        disabled={product.status !== 'PENDING_REVIEW'}
+                        onChange={() => onToggle(product.id)}
+                        type="checkbox"
+                      />
+                    </td>
+                  ) : null}
                   <td>
                     <strong>{product.title}</strong>
                     <small>{product.category?.name ?? 'Kateqoriya yoxdur'}</small>
+                    {product.openReportCount ? <small className="admin-flag-label">{product.openReportCount} açıq işarə</small> : null}
                   </td>
                   <td>
                     <span>{product.store.name}</span>
@@ -46,9 +79,16 @@ export function AdminProductTable({
                   </td>
                   <td>{formatDate(product.updatedAt)}</td>
                   <td>
-                    <Link className="admin-link-button" href={`/admin/products/${product.id}`}>
-                      Bax
-                    </Link>
+                    <div className="admin-row-actions">
+                      {onFlag && product.status !== 'DELETED' ? (
+                        <button className="admin-link-button admin-flag-button" onClick={() => onFlag(product.id)} type="button">
+                          Şübhəli
+                        </button>
+                      ) : null}
+                      <Link className="admin-link-button" href={`/admin/products/${product.id}`}>
+                        Bax
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -74,6 +74,7 @@ export type AdminProduct = {
   category?: { id: string; slug: string; name: string } | null;
   images?: AdminProductImage[];
   leadCounts?: LeadCounts;
+  openReportCount?: number;
 };
 
 export type AdminProductImage = {
@@ -256,6 +257,21 @@ export function suspendAdminProduct(id: string, reviewNote?: string) {
   return apiPost<DetailResponse<AdminProduct>>(`/admin/products/${encodeURIComponent(id)}/suspend`, {
     ...(reviewNote ? { reviewNote } : {}),
   });
+}
+
+export function bulkApproveAdminProducts(ids: string[]) {
+  return apiPost<{ data: AdminProduct[]; meta: { updated: number; skipped: number } }>('/admin/products/bulk/approve', { ids });
+}
+
+export function bulkRejectAdminProducts(ids: string[], reviewNote: string) {
+  return apiPost<{ data: AdminProduct[]; meta: { updated: number; skipped: number } }>('/admin/products/bulk/reject', {
+    ids,
+    reviewNote,
+  });
+}
+
+export function flagAdminProduct(id: string, reason: string) {
+  return apiPost<DetailResponse<AdminReport>>(`/admin/products/${encodeURIComponent(id)}/flag`, { reason });
 }
 
 export function getAdminStores(params: Record<string, string | undefined> = {}) {

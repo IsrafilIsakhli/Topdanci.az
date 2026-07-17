@@ -127,23 +127,47 @@ const publicProductSelect = {
 type PublicProductRecord = Prisma.ProductGetPayload<{ select: typeof publicProductSelect }>;
 
 function publicProductWhere(query: ListProductsQueryDto): Prisma.ProductWhereInput {
+  const and: Prisma.ProductWhereInput[] = [];
+
+  if (query.category) {
+    and.push({
+      OR: [
+        { category: { slug: query.category } },
+        { category: { parent: { slug: query.category } } },
+        { category: { parent: { parent: { slug: query.category } } } },
+      ],
+    });
+  }
+
+  if (query.q) {
+    and.push({
+      OR: [
+        { title: { contains: query.q, mode: 'insensitive' } },
+        { description: { contains: query.q, mode: 'insensitive' } },
+        { store: { name: { contains: query.q, mode: 'insensitive' } } },
+      ],
+    });
+  }
+
   return {
     status: ProductStatus.ACTIVE,
     store: {
       status: StoreStatus.ACTIVE,
       ...(query.city ? { city: { equals: query.city, mode: 'insensitive' } } : {}),
       ...(query.store ? { slug: query.store } : {}),
+      ...(query.verified ? { verifiedAt: { not: null } } : {}),
     },
-    ...(query.category ? { category: { slug: query.category } } : {}),
-    ...(query.q
+    ...(query.stock ? { stockStatus: query.stock } : {}),
+    ...(query.priceMin !== undefined || query.priceMax !== undefined
       ? {
-          OR: [
-            { title: { contains: query.q, mode: 'insensitive' } },
-            { description: { contains: query.q, mode: 'insensitive' } },
-            { store: { name: { contains: query.q, mode: 'insensitive' } } },
-          ],
+          price: {
+            ...(query.priceMin !== undefined ? { gte: query.priceMin } : {}),
+            ...(query.priceMax !== undefined ? { lte: query.priceMax } : {}),
+          },
         }
       : {}),
+    ...(query.minOrderMax !== undefined ? { minOrderQuantity: { lte: query.minOrderMax } } : {}),
+    ...(and.length ? { AND: and } : {}),
   };
 }
 

@@ -6,7 +6,6 @@ import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import {
   BarChart3,
-  Bell,
   Home,
   ListChecks,
   LogOut,
@@ -19,6 +18,7 @@ import {
   X,
 } from 'lucide-react';
 import { getSession, logout, type AuthUser } from '../../lib/seller-api';
+import { NotificationCenter } from '../../components/notification-center';
 
 const sellerNav = [
   { href: '/seller', label: 'Panel', icon: Home },
@@ -154,9 +154,7 @@ export function SellerShell({ children }: { children: ReactNode }) {
             <h1>{activeTitle}</h1>
           </div>
           <div className="seller-topbar-actions">
-            <button className="seller-icon-button" type="button" aria-label="Bildirişlər">
-              <Bell size={18} />
-            </button>
+            <NotificationCenter classPrefix="seller" />
             <button className="seller-icon-button seller-desktop-only" type="button" aria-label="Paneli yığ">
               <PanelLeftClose size={18} />
             </button>
