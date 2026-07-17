@@ -1,5 +1,8 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+import { IsIn, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+
+export const storeSortOptions = ['newest', 'popular', 'products'] as const;
+export type StoreSort = (typeof storeSortOptions)[number];
 
 export class ListStoresQueryDto {
   @IsString()
@@ -27,4 +30,8 @@ export class ListStoresQueryDto {
   @IsString()
   @IsOptional()
   cursor?: string;
+
+  @IsIn(storeSortOptions)
+  @IsOptional()
+  sort: StoreSort = 'newest';
 }

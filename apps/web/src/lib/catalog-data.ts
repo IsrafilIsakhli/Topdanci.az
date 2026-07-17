@@ -80,6 +80,9 @@ type ApiListResponse<T> = {
   meta?: {
     total?: number;
     nextCursor?: string | null;
+    totalProducts?: number;
+    verifiedStores?: number;
+    totalViews?: number;
   };
 };
 
@@ -147,21 +150,40 @@ type ApiStore = {
   verified: boolean;
   category?: { slug: string; name: string } | null;
   productCount: number;
+  viewCount?: number;
 };
 
-type ProductQuery = {
+export type ProductSort = 'newest' | 'popular' | 'price_asc' | 'price_desc';
+export type StoreSort = 'newest' | 'popular' | 'products';
+
+export type ProductQuery = {
   q?: string | undefined;
   category?: string | undefined;
   city?: string | undefined;
   store?: string | undefined;
   limit?: number | undefined;
+  cursor?: string | undefined;
+  sort?: ProductSort | undefined;
 };
 
-type StoreQuery = {
+export type StoreQuery = {
   q?: string | undefined;
   category?: string | undefined;
   city?: string | undefined;
   limit?: number | undefined;
+  cursor?: string | undefined;
+  sort?: StoreSort | undefined;
+};
+
+export type CatalogPage<T> = {
+  items: T[];
+  meta: {
+    total: number;
+    nextCursor: string | null;
+    totalProducts?: number;
+    verifiedStores?: number;
+    totalViews?: number;
+  };
 };
 
 export const heroImage =
@@ -554,15 +576,26 @@ export async function getCategory(slug: string): Promise<CategoryCard | null> {
 }
 
 export async function getProducts(query: ProductQuery = {}): Promise<ProductPreview[]> {
+  return (await getProductsPage(query)).items;
+}
+
+export async function getProductsPage(query: ProductQuery = {}): Promise<CatalogPage<ProductPreview>> {
   const fallback = filterFallbackProducts(query);
   const response = await fetchCatalog<ApiListResponse<ApiProduct>>(`/products${toQueryString(query)}`);
   if (!response) {
-    return fallbackAllowed() ? fallback : [];
+    const items = fallbackAllowed() ? fallback : [];
+    return { items, meta: { total: items.length, nextCursor: null } };
   }
   if (!response.data?.length) {
-    return [];
+    return { items: [], meta: { total: response.meta?.total ?? 0, nextCursor: null } };
   }
-  return response.data.map(mapProduct);
+  return {
+    items: response.data.map(mapProduct),
+    meta: {
+      total: response.meta?.total ?? response.data.length,
+      nextCursor: response.meta?.nextCursor ?? null,
+    },
+  };
 }
 export async function getProduct(slug: string): Promise<ProductPreview | null> {
   const response = await fetchCatalog<ApiDetailResponse<ApiProduct>>(`/products/${encodeURIComponent(slug)}`);
@@ -573,15 +606,29 @@ export async function getProduct(slug: string): Promise<ProductPreview | null> {
 }
 
 export async function getStores(query: StoreQuery = {}): Promise<StorePreview[]> {
+  return (await getStoresPage(query)).items;
+}
+
+export async function getStoresPage(query: StoreQuery = {}): Promise<CatalogPage<StorePreview>> {
   const fallback = filterFallbackStores(query);
   const response = await fetchCatalog<ApiListResponse<ApiStore>>(`/stores${toQueryString(query)}`);
   if (!response) {
-    return fallbackAllowed() ? fallback : [];
+    const items = fallbackAllowed() ? fallback : [];
+    return { items, meta: { total: items.length, nextCursor: null } };
   }
   if (!response.data?.length) {
-    return [];
+    return { items: [], meta: { total: response.meta?.total ?? 0, nextCursor: null } };
   }
-  return response.data.map(mapStore);
+  return {
+    items: response.data.map(mapStore),
+    meta: {
+      total: response.meta?.total ?? response.data.length,
+      nextCursor: response.meta?.nextCursor ?? null,
+      ...(response.meta?.totalProducts !== undefined ? { totalProducts: response.meta.totalProducts } : {}),
+      ...(response.meta?.verifiedStores !== undefined ? { verifiedStores: response.meta.verifiedStores } : {}),
+      ...(response.meta?.totalViews !== undefined ? { totalViews: response.meta.totalViews } : {}),
+    },
+  };
 }
 export async function getStore(slug: string): Promise<StorePreview | null> {
   const response = await fetchCatalog<ApiDetailResponse<ApiStore>>(`/stores/${encodeURIComponent(slug)}`);
@@ -687,7 +734,7 @@ function mapStore(store: ApiStore): StorePreview {
     categorySlug: category.slug,
     productCount: formatCompactCount(store.productCount),
     city: store.city ?? 'Azərbaycan',
-    views: 'Yeni',
+    views: store.viewCount ? formatCompactCount(store.viewCount) : 'Yeni',
     coverImageUrl: resolveStoreImage(store),
     description: store.description ?? 'Bu mağaza topdansatış məhsullarını alıcılarla birbaşa əlaqə modeli ilə təqdim edir.',
     verified: store.verified,
@@ -830,7 +877,7 @@ function filterCategories(source: CategoryCard[], query?: { q?: string | undefin
 }
 
 function filterFallbackProducts(query: ProductQuery): ProductPreview[] {
-  return products.filter((product) => {
+  const filtered = products.filter((product) => {
     const matchesCategory = query.category ? product.categorySlug === query.category : true;
     const matchesStore = query.store ? product.storeSlug === query.store : true;
     const matchesCity = query.city ? product.city.toLowerCase() === query.city.toLowerCase() : true;
@@ -839,14 +886,45 @@ function filterFallbackProducts(query: ProductQuery): ProductPreview[] {
       : true;
     return matchesCategory && matchesStore && matchesCity && matchesSearch;
   });
+
+  if (query.sort === 'price_asc' || query.sort === 'price_desc') {
+    filtered.sort((left, right) => {
+      const direction = query.sort === 'price_asc' ? 1 : -1;
+      return (numericPrice(left.price) - numericPrice(right.price)) * direction;
+    });
+  }
+
+  return filtered.slice(0, query.limit ?? filtered.length);
 }
 
 function filterFallbackStores(query: StoreQuery): StorePreview[] {
-  return stores.filter((store) => {
+  const filtered = stores.filter((store) => {
     const matchesCategory = query.category ? store.categorySlug === query.category : true;
     const matchesCity = query.city ? store.city.toLowerCase() === query.city.toLowerCase() : true;
     const matchesSearch = query.q ? `${store.name} ${store.category}`.toLowerCase().includes(query.q.toLowerCase()) : true;
     return matchesCategory && matchesCity && matchesSearch;
   });
+
+  if (query.sort === 'products') {
+    filtered.sort((left, right) => compactNumber(right.productCount) - compactNumber(left.productCount));
+  } else if (query.sort === 'popular') {
+    filtered.sort((left, right) => compactNumber(right.views) - compactNumber(left.views));
+  }
+
+  return filtered.slice(0, query.limit ?? filtered.length);
+}
+
+function numericPrice(value: string): number {
+  const parsed = Number(value.replace(/[^\d.,]/g, '').replace(',', '.'));
+  return Number.isFinite(parsed) ? parsed : Number.MAX_SAFE_INTEGER;
+}
+
+function compactNumber(value: string): number {
+  const normalized = value.trim().toUpperCase();
+  const parsed = Number.parseFloat(normalized.replace(/[^\d.]/g, ''));
+  if (!Number.isFinite(parsed)) return 0;
+  if (normalized.includes('K')) return parsed * 1_000;
+  if (normalized.includes('M')) return parsed * 1_000_000;
+  return parsed;
 }
 

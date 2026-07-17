@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { SiteFooter } from '../../components/site-footer';
@@ -5,6 +6,12 @@ import { SiteHeader } from '../../components/site-header';
 import { getCategories } from '../../lib/catalog-data';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Topdansatış kateqoriyaları',
+  description: 'Topdansatış sektorlarını və onların alt kateqoriyalarını bir yerdə kəşf edin.',
+  alternates: { canonical: '/categories' },
+};
 
 export default async function CategoriesPage() {
   const categories = await getCategories({ rootsOnly: true });

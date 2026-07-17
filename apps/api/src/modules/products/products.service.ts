@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PriceType, Prisma, ProductStatus, StoreStatus } from '@prisma/client';
 import { cacheKey } from '../../common/cache/cache-key';
 import { toCursorPagination } from '../../common/pagination/cursor-pagination';
-import { ListProductsQueryDto } from './dto/list-products-query.dto';
+import { ListProductsQueryDto, type ProductSort } from './dto/list-products-query.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 
@@ -29,7 +29,7 @@ export class ProductsService {
         take: take + 1,
         ...(cursor ? { cursor } : {}),
         ...(skip ? { skip } : {}),
-        orderBy: [{ publishedAt: 'desc' }, { id: 'desc' }],
+        orderBy: productOrderBy(query.sort),
         select: publicProductSelect,
       }),
       this.prisma.product.count({ where }),
@@ -145,6 +145,22 @@ function publicProductWhere(query: ListProductsQueryDto): Prisma.ProductWhereInp
         }
       : {}),
   };
+}
+
+function productOrderBy(sort: ProductSort): Prisma.ProductOrderByWithRelationInput[] {
+  if (sort === 'popular') {
+    return [{ leadEvents: { _count: 'desc' } }, { publishedAt: 'desc' }, { id: 'desc' }];
+  }
+
+  if (sort === 'price_asc') {
+    return [{ price: { sort: 'asc', nulls: 'last' } }, { id: 'desc' }];
+  }
+
+  if (sort === 'price_desc') {
+    return [{ price: { sort: 'desc', nulls: 'last' } }, { id: 'desc' }];
+  }
+
+  return [{ publishedAt: 'desc' }, { id: 'desc' }];
 }
 
 function mapPublicProduct(product: PublicProductRecord) {

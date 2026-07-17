@@ -1,25 +1,37 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, BadgeCheck, Building2, MapPin, Package, Search, Store, TrendingUp } from 'lucide-react';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
-import { getStores } from '../../lib/catalog-data';
+import { getStoresPage, type StoreSort } from '../../lib/catalog-data';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Topdansatış mağazaları',
+  description: 'Təsdiqlənmiş topdansatış mağazalarını şəhər, sektor və məhsul sayına görə müqayisə edin.',
+  alternates: { canonical: '/stores' },
+};
 
 export default async function StoresPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ q?: string; category?: string; city?: string }>;
+  searchParams?: Promise<{ q?: string; category?: string; city?: string; cursor?: string; sort?: string }>;
 }) {
   const query = await searchParams;
-  const stores = await getStores({
+  const sort = normalizeStoreSort(query?.sort);
+  const page = await getStoresPage({
     q: query?.q,
     category: query?.category,
     city: query?.city,
-    limit: 48,
+    cursor: query?.cursor,
+    sort,
+    limit: 18,
   });
+  const stores = page.items;
   const featuredStore = stores[0];
-  const totalProducts = stores.reduce((sum, store) => sum + toNumber(store.productCount), 0);
+  const totalProducts = page.meta.totalProducts ?? stores.reduce((sum, store) => sum + toNumber(store.productCount), 0);
+  const verifiedStores = page.meta.verifiedStores ?? stores.filter((store) => store.verified).length;
   const cities = Array.from(new Set(stores.map((store) => store.city).filter(Boolean))).slice(0, 5);
 
   return (
@@ -41,7 +53,7 @@ export default async function StoresPage({
             <div className="stores-hero-stats">
               <span>
                 <Store size={16} />
-                <strong>{stores.length}</strong>
+                <strong>{page.meta.total}</strong>
                 mağaza
               </span>
               <span>
@@ -51,7 +63,7 @@ export default async function StoresPage({
               </span>
               <span>
                 <BadgeCheck size={16} />
-                <strong>{stores.filter((store) => store.verified).length}</strong>
+                <strong>{verifiedStores}</strong>
                 təsdiqli
               </span>
             </div>
@@ -70,6 +82,11 @@ export default async function StoresPage({
                 <input name="city" defaultValue={query?.city ?? ''} placeholder="Şəhər" />
               </label>
               {query?.category ? <input type="hidden" name="category" value={query.category} /> : null}
+              <select aria-label="Sırala" defaultValue={sort} name="sort">
+                <option value="newest">Ən yenilər</option>
+                <option value="popular">Ən çox baxılan</option>
+                <option value="products">Ən çox məhsul</option>
+              </select>
               <button className="button button-primary" type="submit">
                 Axtar
               </button>
@@ -119,7 +136,7 @@ export default async function StoresPage({
               <p className="eyebrow">Mağaza kataloqu</p>
               <h2>Aktiv satıcılar</h2>
             </div>
-            <span>{stores.length} mağaza tapıldı</span>
+            <span>{page.meta.total} mağaza tapıldı</span>
           </div>
 
           <div className="grid store-grid store-market-grid">
@@ -166,6 +183,13 @@ export default async function StoresPage({
               <p className="empty-state">Axtarışa uyğun aktiv mağaza tapılmadı.</p>
             )}
           </div>
+          {page.meta.nextCursor ? (
+            <div className="catalog-pagination">
+              <Link className="button" href={buildStoresHref(query, page.meta.nextCursor, sort)}>
+                Daha çox mağaza <ArrowRight size={16} />
+              </Link>
+            </div>
+          ) : null}
         </div>
       </section>
 
@@ -177,4 +201,22 @@ export default async function StoresPage({
 function toNumber(value: string) {
   const number = Number.parseInt(value.replace(/[^\d]/g, ''), 10);
   return Number.isFinite(number) ? number : 0;
+}
+
+function normalizeStoreSort(value?: string): StoreSort {
+  return value === 'popular' || value === 'products' ? value : 'newest';
+}
+
+function buildStoresHref(
+  query: { q?: string; category?: string; city?: string } | undefined,
+  cursor: string,
+  sort: StoreSort,
+) {
+  const params = new URLSearchParams();
+  if (query?.q) params.set('q', query.q);
+  if (query?.category) params.set('category', query.category);
+  if (query?.city) params.set('city', query.city);
+  if (sort !== 'newest') params.set('sort', sort);
+  params.set('cursor', cursor);
+  return `/stores?${params.toString()}`;
 }

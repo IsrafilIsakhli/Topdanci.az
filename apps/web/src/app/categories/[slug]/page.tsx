@@ -1,15 +1,38 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ProductCard } from '../../../components/product-card';
 import { SiteFooter } from '../../../components/site-footer';
 import { SiteHeader } from '../../../components/site-header';
 import { getCategory, getProducts } from '../../../lib/catalog-data';
+import { absoluteUrl } from '../../../lib/site-url';
 
 export const dynamic = 'force-dynamic';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const category = await getCategory(slug);
+  if (!category) {
+    return { title: 'Kateqoriya tapılmadı', robots: { index: false, follow: false } };
+  }
+
+  const description = `${category.name} üzrə topdansatış məhsullarını və aktiv mağazaları kəşf edin.`;
+  return {
+    title: category.name,
+    description,
+    alternates: { canonical: `/categories/${category.slug}` },
+    openGraph: {
+      type: 'website',
+      title: category.name,
+      description,
+      url: absoluteUrl(`/categories/${category.slug}`),
+    },
+  };
+}
 
 export default async function CategoryDetailPage({ params }: PageProps) {
   const { slug } = await params;

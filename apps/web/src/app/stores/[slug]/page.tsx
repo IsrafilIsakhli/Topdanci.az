@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
@@ -15,10 +16,12 @@ import {
   Store,
 } from 'lucide-react';
 import { LeadViewTracker, LeadWhatsAppLink, PhoneRevealButton } from '../../../components/lead-actions';
+import { JsonLd } from '../../../components/json-ld';
 import { SiteFooter } from '../../../components/site-footer';
 import { SiteHeader } from '../../../components/site-header';
 import { ProductCard } from '../../../components/product-card';
 import { getProducts, getStore } from '../../../lib/catalog-data';
+import { absoluteUrl } from '../../../lib/site-url';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,6 +29,27 @@ type PageProps = {
   params: Promise<{ slug: string }>;
   searchParams?: Promise<{ q?: string }>;
 };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const store = await getStore(slug);
+  if (!store) {
+    return { title: 'Mağaza tapılmadı', robots: { index: false, follow: false } };
+  }
+
+  return {
+    title: store.name,
+    description: store.description,
+    alternates: { canonical: `/stores/${store.slug}` },
+    openGraph: {
+      type: 'website',
+      title: store.name,
+      description: store.description,
+      url: `/stores/${store.slug}`,
+      images: [{ url: absoluteUrl(store.coverImageUrl), alt: store.name }],
+    },
+  };
+}
 
 const tabs = ['Məhsullar', 'Mağaza haqqında', 'Əlaqə', 'Statistikalar'];
 
@@ -39,9 +63,25 @@ export default async function StoreDetailPage({ params, searchParams }: PageProp
   }
 
   const storeProducts = await getProducts({ store: store.slug, q: query?.q, limit: 48 });
+  const storeJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Store',
+    name: store.name,
+    description: store.description,
+    image: absoluteUrl(store.coverImageUrl),
+    url: absoluteUrl(`/stores/${store.slug}`),
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: store.city,
+      addressCountry: 'AZ',
+    },
+    ...(store.phone ? { telephone: store.phone } : {}),
+    ...(store.email ? { email: store.email } : {}),
+  };
 
   return (
     <main className="site-shell store-profile-page">
+      <JsonLd data={storeJsonLd} />
       <LeadViewTracker source="store-detail" storeId={store.id} type="STORE_VIEW" />
       <SiteHeader />
 

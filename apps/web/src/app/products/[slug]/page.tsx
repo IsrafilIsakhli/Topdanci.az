@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
@@ -12,16 +13,46 @@ import {
   Truck,
 } from 'lucide-react';
 import { LeadViewTracker, LeadWhatsAppLink, PhoneRevealButton } from '../../../components/lead-actions';
+import { JsonLd } from '../../../components/json-ld';
 import { ProductCard } from '../../../components/product-card';
 import { SiteFooter } from '../../../components/site-footer';
 import { SiteHeader } from '../../../components/site-header';
 import { getProduct, getProducts } from '../../../lib/catalog-data';
+import { absoluteUrl } from '../../../lib/site-url';
 
 export const dynamic = 'force-dynamic';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProduct(slug);
+  if (!product) {
+    return { title: 'Məhsul tapılmadı', robots: { index: false, follow: false } };
+  }
+
+  const description = product.description || `${product.title} topdansatış təklifi. Satıcı: ${product.store}.`;
+  return {
+    title: product.title,
+    description,
+    alternates: { canonical: `/products/${product.slug}` },
+    openGraph: {
+      type: 'website',
+      title: product.title,
+      description,
+      url: `/products/${product.slug}`,
+      images: [{ url: absoluteUrl(product.imageUrl), alt: product.imageAlt }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.title,
+      description,
+      images: [absoluteUrl(product.imageUrl)],
+    },
+  };
+}
 
 const defaultDescription =
   'Bu məhsul topdansatış sifarişləri üçün nəzərdə tutulub. Qiymət, çatdırılma və minimum sifariş şərtləri satıcı ilə birbaşa razılaşdırılır. Platforma yalnız mağaza və alıcı arasında əlaqəni asanlaşdırır.';
@@ -68,9 +99,37 @@ export default async function ProductDetailPage({ params }: PageProps) {
     ['Qiymət tipi', product.price],
     ['Stok vəziyyəti', product.badge],
   ];
+  const price = parsePrice(product.price);
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: product.description || defaultDescription,
+    image: [absoluteUrl(product.imageUrl)],
+    category: product.category,
+    sku: `TB-${product.slug.slice(0, 6).toUpperCase()}`,
+    url: absoluteUrl(`/products/${product.slug}`),
+    brand: {
+      '@type': 'Organization',
+      name: product.store,
+    },
+    ...(price
+      ? {
+          offers: {
+            '@type': 'Offer',
+            price,
+            priceCurrency: 'AZN',
+            availability: 'https://schema.org/InStock',
+            url: absoluteUrl(`/products/${product.slug}`),
+            seller: { '@type': 'Organization', name: product.store },
+          },
+        }
+      : {}),
+  };
 
   return (
     <main className="site-shell product-detail-page">
+      <JsonLd data={productJsonLd} />
       <LeadViewTracker productId={product.id} source="product-detail" storeId={product.storeId} type="PRODUCT_VIEW" />
       <SiteHeader />
 
@@ -254,4 +313,11 @@ export default async function ProductDetailPage({ params }: PageProps) {
       <SiteFooter />
     </main>
   );
+}
+
+function parsePrice(value: string): number | null {
+  const match = value.replace(',', '.').match(/\d+(?:\.\d+)?/);
+  if (!match) return null;
+  const parsed = Number(match[0]);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
 }

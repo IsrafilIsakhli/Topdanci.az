@@ -134,6 +134,31 @@ describe('TopdanBazar API smoke e2e', () => {
     expect(applications.body.data.length).toBeLessThanOrEqual(2);
   });
 
+  it('supports catalog sorting and returns real store aggregate statistics', async () => {
+    for (const sort of ['newest', 'popular', 'price_asc', 'price_desc']) {
+      const response = await request(app.getHttpServer())
+        .get(`/api/v1/products?limit=3&sort=${sort}`)
+        .expect(200);
+      expect(response.body.data.length).toBeLessThanOrEqual(3);
+    }
+
+    for (const sort of ['newest', 'popular', 'products']) {
+      const response = await request(app.getHttpServer())
+        .get(`/api/v1/stores?limit=2&sort=${sort}`)
+        .expect(200);
+      expect(response.body.data.length).toBeLessThanOrEqual(2);
+      expect(response.body.meta).toMatchObject({
+        total: expect.any(Number),
+        totalProducts: expect.any(Number),
+        verifiedStores: expect.any(Number),
+        totalViews: expect.any(Number),
+      });
+    }
+
+    await request(app.getHttpServer()).get('/api/v1/products?sort=unknown').expect(400);
+    await request(app.getHttpServer()).get('/api/v1/stores?sort=unknown').expect(400);
+  });
+
   it('tracks only active public lead targets and deduplicates repeated views', async () => {
     const products = await request(app.getHttpServer()).get('/api/v1/products').expect(200);
     const product = products.body.data[0];

@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ApplicationStatus, Prisma, ProductStatus, StoreStatus } from '@prisma/client';
+import { ApplicationStatus, LeadType, Prisma, ProductStatus, StoreStatus } from '@prisma/client';
 import { cacheKey } from '../../common/cache/cache-key';
 import { toCursorPagination } from '../../common/pagination/cursor-pagination';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import { CreateStoreApplicationDto } from './dto/create-store-application.dto';
-import { ListStoresQueryDto } from './dto/list-stores-query.dto';
+import { ListStoresQueryDto, type StoreSort } from './dto/list-stores-query.dto';
 
 @Injectable()
 export class StoresService {
@@ -24,16 +24,34 @@ export class StoresService {
 
     const where = publicStoreWhere(query);
     const { take, cursor, skip } = toCursorPagination(query);
-    const [stores, total] = await Promise.all([
+    const [stores, total, totalProducts, verifiedStores, totalViews] = await Promise.all([
       this.prisma.store.findMany({
         where,
         take: take + 1,
         ...(cursor ? { cursor } : {}),
         ...(skip ? { skip } : {}),
-        orderBy: [{ publishedAt: 'desc' }, { id: 'desc' }],
+        orderBy: storeOrderBy(query.sort),
         select: publicStoreSelect,
       }),
       this.prisma.store.count({ where }),
+      this.prisma.product.count({
+        where: {
+          status: ProductStatus.ACTIVE,
+          store: where,
+        },
+      }),
+      this.prisma.store.count({
+        where: {
+          ...where,
+          verifiedAt: { not: null },
+        },
+      }),
+      this.prisma.leadEvent.count({
+        where: {
+          type: LeadType.STORE_VIEW,
+          store: where,
+        },
+      }),
     ]);
     const page = stores.slice(0, take);
 
@@ -42,6 +60,9 @@ export class StoresService {
       meta: {
         total,
         nextCursor: stores.length > take ? page.at(-1)?.id ?? null : null,
+        totalProducts,
+        verifiedStores,
+        totalViews,
       },
     };
     await this.redis.setJson(key, response, 60);
@@ -125,6 +146,7 @@ const publicStoreSelect = {
   },
   _count: {
     select: {
+      leadEvents: true,
       products: {
         where: { status: ProductStatus.ACTIVE },
       },
@@ -150,6 +172,18 @@ function publicStoreWhere(query: ListStoresQueryDto): Prisma.StoreWhereInput {
   };
 }
 
+function storeOrderBy(sort: StoreSort): Prisma.StoreOrderByWithRelationInput[] {
+  if (sort === 'popular') {
+    return [{ leadEvents: { _count: 'desc' } }, { publishedAt: 'desc' }, { id: 'desc' }];
+  }
+
+  if (sort === 'products') {
+    return [{ products: { _count: 'desc' } }, { publishedAt: 'desc' }, { id: 'desc' }];
+  }
+
+  return [{ publishedAt: 'desc' }, { id: 'desc' }];
+}
+
 function mapPublicStore(store: PublicStoreRecord) {
   return {
     id: store.id,
@@ -167,5 +201,6 @@ function mapPublicStore(store: PublicStoreRecord) {
     publishedAt: store.publishedAt,
     category: store.category,
     productCount: store._count.products,
+    viewCount: store._count.leadEvents,
   };
 }
