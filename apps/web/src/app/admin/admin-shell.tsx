@@ -24,6 +24,7 @@ import {
 import { getAdminSession } from '../../lib/admin-api';
 import { logout, type AuthRole, type AuthUser } from '../../lib/seller-api';
 import { NotificationCenter } from '../../components/notification-center';
+import { ThemeToggle } from '../../components/theme-toggle';
 
 type AdminNavItem = {
   href: string;
@@ -170,6 +171,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <h1>{activeTitle}</h1>
           </div>
           <div className="admin-topbar-actions">
+            <ThemeToggle />
             <NotificationCenter classPrefix="admin" />
             <span className="admin-role-badge">{user.role}</span>
           </div>

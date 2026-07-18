@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Grid3X3, Home, Menu, Package, Search, Store, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { ThemeToggle } from './theme-toggle';
 
 const navItems = [
   { href: '/', label: 'Ana səhifə' },
@@ -59,6 +60,7 @@ export function SiteHeader() {
           </form>
 
           <div className="header-actions">
+            <ThemeToggle />
             <Link className="button icon-button" href="/products" aria-label="Axtarış">
               <Search size={18} />
             </Link>
@@ -70,6 +72,8 @@ export function SiteHeader() {
               Mağaza aç
             </Link>
           </div>
+
+          <ThemeToggle className="theme-toggle-mobile" />
 
           <button
             className="button mobile-menu-button"

@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { getSession, logout, type AuthUser } from '../../lib/seller-api';
 import { NotificationCenter } from '../../components/notification-center';
+import { ThemeToggle } from '../../components/theme-toggle';
 
 const sellerNav = [
   { href: '/seller', label: 'Panel', icon: Home },
@@ -154,6 +155,7 @@ export function SellerShell({ children }: { children: ReactNode }) {
             <h1>{activeTitle}</h1>
           </div>
           <div className="seller-topbar-actions">
+            <ThemeToggle />
             <NotificationCenter classPrefix="seller" />
             <button className="seller-icon-button seller-desktop-only" type="button" aria-label="Paneli yığ">
               <PanelLeftClose size={18} />
