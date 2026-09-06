@@ -1,14 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { Grid3X3, Home, Menu, Package, Search, Store, X } from 'lucide-react';
+import { Home, Menu, MessageCircle, Package, Search, Store, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { ThemeToggle } from './theme-toggle';
 
 const navItems = [
   { href: '/', label: 'Ana səhifə' },
-  { href: '/categories', label: 'Kateqoriyalar' },
   { href: '/stores', label: 'Mağazalar' },
   { href: '/products', label: 'Məhsullar' },
   { href: '/contact', label: 'Əlaqə' },
@@ -16,7 +15,7 @@ const navItems = [
 
 const mobileQuickItems = [
   { href: '/', label: 'Ana', icon: Home },
-  { href: '/categories', label: 'Kateqoriya', icon: Grid3X3 },
+  { href: '/contact', label: 'Əlaqə', icon: MessageCircle },
   { href: '/products', label: 'Məhsullar', icon: Package },
   { href: '/stores', label: 'Mağazalar', icon: Store },
 ];

@@ -1,6 +1,6 @@
 export const routes = {
   home: '/',
-  categories: '/categories',
+  categories: '/products',
   products: '/products',
   stores: '/stores',
   login: '/login',
@@ -18,5 +18,5 @@ export function storeRoute(slug: string): string {
 }
 
 export function categoryRoute(slug: string): string {
-  return `/categories/${slug}`;
+  return `/products?category=${encodeURIComponent(slug)}`;
 }

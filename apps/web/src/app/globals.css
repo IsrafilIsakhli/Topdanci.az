@@ -15807,8 +15807,8 @@ html[data-theme='dark'] .mini-price {
   }
 
   .city-strip-chips {
-    margin: 0 -20px;
-    padding: 0 20px 4px;
+    margin: 0 -14px;
+    padding: 0 14px 4px;
   }
 
   .tier-ladder {
@@ -15858,6 +15858,11 @@ html[data-theme='dark'] .mini-price {
 
   .market-store-flag-new {
     top: 38px;
+  }
+
+  .city-strip-chips {
+    margin: 0 -9px;
+    padding: 0 9px 4px;
   }
 
   .city-chip {

@@ -12,6 +12,13 @@ const nextConfig = {
   },
   allowedDevOrigins: ['*.ngrok-free.dev'],
   outputFileTracingRoot: path.join(__dirname, '../..'),
+  async redirects() {
+    return [
+      { source: '/categories', destination: '/products', permanent: true },
+      { source: '/categories/:slug', destination: '/products?category=:slug', permanent: true },
+    ];
+  },
+
   images: {
     remotePatterns: [
       {

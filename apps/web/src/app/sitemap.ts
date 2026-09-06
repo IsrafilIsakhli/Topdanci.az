@@ -1,17 +1,16 @@
 import type { MetadataRoute } from 'next';
-import { getCategories, getProductsPage, getStoresPage } from '../lib/catalog-data';
+import { getProductsPage, getStoresPage } from '../lib/catalog-data';
 import { absoluteUrl } from '../lib/site-url';
 
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [categories, products, stores] = await Promise.all([
-    getCategories({ rootsOnly: true }),
+  const [products, stores] = await Promise.all([
     getProductsPage({ limit: 100 }),
     getStoresPage({ limit: 100 }),
   ]);
   const now = new Date();
-  const staticRoutes = ['', '/products', '/stores', '/categories', '/open-store', '/contact'].map((path) => ({
+  const staticRoutes = ['', '/products', '/stores', '/open-store', '/contact'].map((path) => ({
     url: absoluteUrl(path || '/'),
     lastModified: now,
     changeFrequency: path ? ('daily' as const) : ('hourly' as const),
@@ -20,12 +19,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticRoutes,
-    ...categories.map((category) => ({
-      url: absoluteUrl(`/categories/${category.slug}`),
-      lastModified: now,
-      changeFrequency: 'daily' as const,
-      priority: 0.7,
-    })),
     ...products.items.map((product) => ({
       url: absoluteUrl(`/products/${product.slug}`),
       lastModified: now,
