@@ -15956,6 +15956,51 @@ html[data-theme='dark'] .mini-price {
   color: var(--color-brand);
   font-weight: 850;
 }
+
+/* --- Aktiv filtr çipləri --- */
+.stores-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 0 0;
+}
+
+.stores-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(6, 78, 59, 0.32);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--color-brand);
+  font-size: 12px;
+  font-weight: 850;
+  padding: 6px 10px;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.stores-filter-chip:hover {
+  border-color: rgba(6, 78, 59, 0.55);
+  background: #fdf4ea;
+}
+
+.stores-filter-chip svg {
+  flex: 0 0 auto;
+}
+
+.stores-filter-clear {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 8px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.stores-filter-clear:hover {
+  color: var(--color-brand);
+}
 /* --- Vitrin: həftənin mağazaları --- */
 .stores-showcase-section {
   padding: 56px 0;
@@ -16156,6 +16201,45 @@ html[data-theme='dark'] .mini-price {
   border-radius: 7px;
   background-position: center;
   background-size: cover;
+}
+
+/* --- Market kartı: tam klik + WhatsApp fəaliyyət sətri --- */
+.store-market-link {
+  display: grid;
+  grid-template-rows: 142px 1fr;
+  text-decoration: none;
+}
+
+.store-market-card {
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.store-market-link:focus-visible {
+  outline: 2px solid rgba(6, 78, 59, 0.6);
+  outline-offset: 2px;
+}
+
+.store-market-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 9px 12px;
+  border-top: 1px solid #dce7f0;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.store-market-actions .button,
+.store-market-actions .button-success {
+  flex: 1 1 auto;
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 850;
+  padding: 9px 10px;
 }
 
 /* --- Şəhər üzrə kataloq --- */
@@ -16362,7 +16446,7 @@ html[data-theme='dark'] .mini-price {
 }
 
 /* --- Dark theme --- */
-html[data-theme='dark'] :is(.stores-trust-bar > span, .stores-showcase-card, .stores-city-box, .stores-category-chips a) {
+html[data-theme='dark'] :is(.stores-trust-bar > span, .stores-showcase-card, .stores-city-box, .stores-category-chips a, .stores-filter-chip) {
   border-color: #26354a;
   background: #131e2e;
   color: #cdd8e8;
@@ -16370,6 +16454,15 @@ html[data-theme='dark'] :is(.stores-trust-bar > span, .stores-showcase-card, .st
 
 html[data-theme='dark'] :is(.stores-showcase-strip, .store-market-strip, .stores-city-stores li a) {
   background: #0e1a28;
+}
+
+html[data-theme='dark'] .store-market-actions {
+  border-top-color: #26354a;
+  background: #0e1a28;
+}
+
+html[data-theme='dark'] .stores-filter-clear {
+  color: #8fa0b8;
 }
 
 html[data-theme='dark'] :is(.stores-showcase-head strong, .stores-city-head span, .stores-city-stores strong, .stores-trust-bar strong) {

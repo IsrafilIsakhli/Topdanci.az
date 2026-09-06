@@ -6,6 +6,7 @@ import {
   Building2,
   Clock3,
   MapPin,
+  MessageCircle,
   Package,
   PackageCheck,
   Search,
@@ -13,9 +14,11 @@ import {
   Store,
   TrendingUp,
   Truck,
+  X,
 } from 'lucide-react';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
+import { LeadWhatsAppLink } from '../../components/lead-actions';
 import { categoryRoute } from '../../lib/routes';
 import {
   getCategories,
@@ -152,7 +155,12 @@ export default async function StoresPage({
                 <input name="city" defaultValue={query?.city ?? ''} placeholder="Şəhər" />
               </label>
               {query?.category ? <input type="hidden" name="category" value={query.category} /> : null}
-              <select aria-label="Sırala" defaultValue={sort} name="sort">
+              <select
+                aria-label="Sırala"
+                defaultValue={sort}
+                name="sort"
+                onChange={(event) => void event.currentTarget.form?.requestSubmit()}
+              >
                 <option value="newest">Ən yenilər</option>
                 <option value="popular">Ən çox baxılan</option>
                 <option value="products">Ən çox məhsul</option>
@@ -161,6 +169,38 @@ export default async function StoresPage({
                 Axtar
               </button>
             </form>
+
+            {(query?.q || query?.city || query?.category) ? (
+              <div className="stores-active-filters" aria-label="Aktiv filtrlər">
+                {query.q ? (
+                  <Link className="stores-filter-chip" href={withoutParam(query, 'q')}>
+                    “{query.q}” <X size={13} />
+                  </Link>
+                ) : null}
+                {query.city ? (
+                  <Link className="stores-filter-chip" href={withoutParam(query, 'city')}>
+                    <MapPin size={13} />
+                    {query.city}
+                    <X size={13} />
+                  </Link>
+                ) : null}
+                {query.category ? (
+                  <Link className="stores-filter-chip" href={withoutParam(query, 'category')}>
+                    {categories.find((category) => category.slug === query.category)?.name ?? query.category}
+                    <X size={13} />
+                  </Link>
+                ) : null}
+                {query.sort && sort !== 'newest' ? (
+                  <Link className="stores-filter-chip" href={withoutParam(query, 'sort')}>
+                    {sort === 'popular' ? 'Ən çox baxılan' : 'Ən çox məhsul'}
+                    <X size={13} />
+                  </Link>
+                ) : null}
+                <Link className="stores-filter-clear" href="/stores">
+                  Hamısını təmizlə
+                </Link>
+              </div>
+            ) : null}
 
             {cities.length ? (
               <div className="store-city-row" aria-label="Populyar şəhərlər">
@@ -303,55 +343,70 @@ export default async function StoresPage({
           <div className="grid store-grid store-market-grid">
             {listRows.length ? (
               listRows.map(({ store, strip }) => (
-                <Link className="card store-market-card" href={`/stores/${store.slug}`} key={store.slug}>
-                  <span className="store-market-cover" style={{ backgroundImage: `url(${store.coverImageUrl})` }}>
-                    {store.verified ? (
-                      <span>
-                        <BadgeCheck size={13} />
-                        Təsdiqli
+                <div className="card store-market-card" key={store.slug}>
+                  <Link className="store-market-link" href={`/stores/${store.slug}`} aria-label={`${store.name} mağazasına bax`}>
+                    <span className="store-market-cover" style={{ backgroundImage: `url(${store.coverImageUrl})` }}>
+                      {store.verified ? (
+                        <span>
+                          <BadgeCheck size={13} />
+                          Təsdiqli
+                        </span>
+                      ) : null}
+                      {sponsored.has(store.slug) ? <em>Bu həftə</em> : null}
+                    </span>
+                    <span className="store-market-body">
+                      <span className="store-market-head">
+                        <span className="store-avatar">{store.name.slice(0, 2).toUpperCase()}</span>
+                        <span>
+                          <strong>{store.name}</strong>
+                          <small>{store.category}</small>
+                        </span>
                       </span>
-                    ) : null}
-                    {sponsored.has(store.slug) ? <em>Bu həftə</em> : null}
+                      {strip.length ? (
+                        <span className="store-market-strip">
+                          {strip.map((product) => (
+                            <span
+                              aria-hidden="true"
+                              className="stores-market-thumb"
+                              key={product.slug}
+                              style={{ backgroundImage: `url(${product.imageUrl})` }}
+                            />
+                          ))}
+                        </span>
+                      ) : null}
+                      <span className="store-market-meta">
+                        <span>
+                          <MapPin size={14} />
+                          {store.city}
+                        </span>
+                        <span>
+                          <Package size={14} />
+                          {store.productCount} məhsul
+                        </span>
+                        <span>
+                          <TrendingUp size={14} />
+                          {store.views}
+                        </span>
+                      </span>
+                    </span>
+                  </Link>
+                  <span className="store-market-actions">
+                    <LeadWhatsAppLink
+                      className="button button-success store-market-action"
+                      phone={store.whatsappNumber}
+                      storeId={store.id}
+                      storeName={store.name}
+                      source="stores-market-card"
+                    >
+                      <MessageCircle size={16} />
+                      WhatsApp
+                    </LeadWhatsAppLink>
+                    <Link className="button store-market-action" href={`/stores/${store.slug}`}>
+                      Mağazaya bax
+                      <ArrowRight size={15} />
+                    </Link>
                   </span>
-                  <span className="store-market-body">
-                    <span className="store-market-head">
-                      <span className="store-avatar">{store.name.slice(0, 2).toUpperCase()}</span>
-                      <span>
-                        <strong>{store.name}</strong>
-                        <small>{store.category}</small>
-                      </span>
-                    </span>
-                    {strip.length ? (
-                      <span className="store-market-strip">
-                        {strip.map((product) => (
-                          <span
-                            aria-hidden="true"
-                            className="stores-market-thumb"
-                            key={product.slug}
-                            style={{ backgroundImage: `url(${product.imageUrl})` }}
-                          />
-                        ))}
-                      </span>
-                    ) : null}
-                    <span className="store-market-meta">
-                      <span>
-                        <MapPin size={14} />
-                        {store.city}
-                      </span>
-                      <span>
-                        <Package size={14} />
-                        {store.productCount} məhsul
-                      </span>
-                      <span>
-                        <TrendingUp size={14} />
-                        {store.views}
-                      </span>
-                    </span>
-                    <span className="card-link store-market-action">
-                      Mağazaya bax <ArrowRight size={14} />
-                    </span>
-                  </span>
-                </Link>
+                </div>
               ))
             ) : (
               <p className="empty-state">Axtarışa uyğun aktiv mağaza tapılmadı.</p>
@@ -425,6 +480,20 @@ function toNumber(value: string) {
 
 function normalizeStoreSort(value?: string): StoreSort {
   return value === 'popular' || value === 'products' ? value : 'newest';
+}
+
+function withoutParam(
+  query: { q?: string; category?: string; city?: string; sort?: string } | undefined,
+  drop: 'q' | 'category' | 'city' | 'sort',
+) {
+  if (!query) return '/stores';
+  const params = new URLSearchParams();
+  if (query.q && drop !== 'q') params.set('q', query.q);
+  if (query.category && drop !== 'category') params.set('category', query.category);
+  if (query.city && drop !== 'city') params.set('city', query.city);
+  if (query.sort && drop !== 'sort') params.set('sort', query.sort);
+  const qs = params.toString();
+  return qs ? `/stores?${qs}` : '/stores';
 }
 
 function buildStoresHref(
