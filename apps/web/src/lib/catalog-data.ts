@@ -49,6 +49,7 @@ export type ProductPreview = {
   category: string;
   categorySlug: string;
   price: string;
+  priceTiers?: Array<{ qty: string; price: string }> | undefined;
   minOrder: string;
   minOrderQuantity?: string | null | undefined;
   stockStatus?: string | null | undefined;
@@ -602,6 +603,11 @@ products.push(
     category: 'Corab və trikotaj',
     categorySlug: 'geyim-ayaqqabi-ve-tekstil',
     price: '0.85 AZN',
+    priceTiers: [
+      { qty: '500+ cüt', price: '0.85 AZN' },
+      { qty: '2000+ cüt', price: '0.74 AZN' },
+      { qty: '5000+ cüt', price: '0.65 AZN' },
+    ],
     minOrder: 'Min: 500 cüt',
     badge: 'Stokda var',
     imageUrl: productImageFallbacks[1],
@@ -618,6 +624,10 @@ products.push(
     category: 'Uşaq ayaqqabıları',
     categorySlug: 'geyim-ayaqqabi-ve-tekstil',
     price: '6.40 AZN',
+    priceTiers: [
+      { qty: '200+ cüt', price: '6.40 AZN' },
+      { qty: '500+ cüt', price: '5.80 AZN' },
+    ],
     minOrder: 'Min: 200 cüt',
     badge: 'Yeni partiya',
     imageUrl: productImageFallbacks[2],
@@ -634,6 +644,10 @@ products.push(
     category: 'Audio avadanlıqlar',
     categorySlug: 'elektronika-ve-aksesuarlar',
     price: '4.90 AZN',
+    priceTiers: [
+      { qty: '300+ ədəd', price: '4.90 AZN' },
+      { qty: '1000+ ədəd', price: '4.20 AZN' },
+    ],
     minOrder: 'Min: 300 ədəd',
     badge: 'Top seller',
     imageUrl: productImageFallbacks[0],
@@ -650,6 +664,10 @@ products.push(
     category: 'Boya və ləvazimat',
     categorySlug: 'tikinti-ve-temir',
     price: '12 AZN',
+    priceTiers: [
+      { qty: '50+ dəst', price: '12 AZN' },
+      { qty: '200+ dəst', price: '10.50 AZN' },
+    ],
     minOrder: 'Min: 50 dəst',
     badge: 'Stokda var',
     imageUrl: productImageFallbacks[3],
@@ -666,6 +684,10 @@ products.push(
     category: 'Çay və qəhvə',
     categorySlug: 'sireler-ve-qazli-ickiler',
     price: '28 AZN',
+    priceTiers: [
+      { qty: '40+ qutu', price: '28 AZN' },
+      { qty: '100+ qutu', price: '25 AZN' },
+    ],
     minOrder: 'Min: 40 qutu',
     badge: 'Yeni',
     imageUrl: productImageFallbacks[2],
@@ -701,6 +723,10 @@ products.push(
     category: 'Uşaq geyimləri',
     categorySlug: 'geyim-ayaqqabi-ve-tekstil',
     price: '4.20 AZN',
+    priceTiers: [
+      { qty: '150+ ədəd', price: '4.20 AZN' },
+      { qty: '500+ ədəd', price: '3.75 AZN' },
+    ],
     minOrder: 'Min: 150 ədəd',
     badge: 'Yeni partiya',
     imageUrl: productImageFallbacks[2],
@@ -717,6 +743,10 @@ products.push(
     category: 'Şokolad və konfetlər',
     categorySlug: 'qida-ve-icki',
     price: '52 AZN',
+    priceTiers: [
+      { qty: '20+ qutu', price: '52 AZN' },
+      { qty: '60+ qutu', price: '47 AZN' },
+    ],
     minOrder: 'Min: 20 qutu',
     badge: 'Top seller',
     imageUrl: productImageFallbacks[1],
@@ -733,6 +763,10 @@ products.push(
     category: 'Su və mineral sular',
     categorySlug: 'qida-ve-icki',
     price: '0.45 AZN',
+    priceTiers: [
+      { qty: '1+ palet', price: '0.45 AZN' },
+      { qty: '10+ palet', price: '0.41 AZN' },
+    ],
     minOrder: 'Min: 1 palet',
     badge: 'Stokda var',
     imageUrl: productImageFallbacks[3],
@@ -749,6 +783,10 @@ products.push(
     category: 'Audio avadanlıqlar',
     categorySlug: 'elektronika-ve-aksesuarlar',
     price: '3.60 AZN',
+    priceTiers: [
+      { qty: '200+ komplekt', price: '3.60 AZN' },
+      { qty: '600+ komplekt', price: '3.10 AZN' },
+    ],
     minOrder: 'Min: 200 komplekt',
     badge: 'Yeni',
     imageUrl: productImageFallbacks[2],
@@ -765,6 +803,10 @@ products.push(
     category: 'Telefon aksesuarları',
     categorySlug: 'elektronika-ve-aksesuarlar',
     price: '1.80 AZN',
+    priceTiers: [
+      { qty: '500+ ədəd', price: '1.80 AZN' },
+      { qty: '1500+ ədəd', price: '1.55 AZN' },
+    ],
     minOrder: 'Min: 500 ədəd',
     badge: 'Stokda var',
     imageUrl: productImageFallbacks[0],
@@ -779,6 +821,48 @@ export const stats = [
   { label: 'aktiv məhsul', value: '200K+', icon: Package },
   { label: 'birbaşa əlaqə', value: '24/7', icon: BriefcaseBusiness },
   { label: 'yoxlanılmış satıcı', value: '100%', icon: BadgeCheck },
+];
+
+export const cityStrip = [
+  { name: 'Bakı', storeCount: '180+' },
+  { name: 'Sumqayıt', storeCount: '64+' },
+  { name: 'Gəncə', storeCount: '52+' },
+  { name: 'Şəki', storeCount: '23+' },
+  { name: 'Quba', storeCount: '18+' },
+  { name: 'Zaqatala', storeCount: '16+' },
+  { name: 'Lənkəran', storeCount: '21+' },
+  { name: 'Mingəçevir', storeCount: '14+' },
+];
+
+export const demandRequests = [
+  {
+    quantity: '500 ədəd',
+    title: 'Yay papaqları mix modellər',
+    city: 'Bakı',
+    time: '12 dəq əvvəl',
+    offers: 4,
+  },
+  {
+    quantity: '1 palet',
+    title: 'Yuyucu vasitə 5L qablar',
+    city: 'Sumqayıt',
+    time: '38 dəq əvvəl',
+    offers: 2,
+  },
+  {
+    quantity: '300 cüt',
+    title: 'Uşaq məktəb ayaqqabısı 30-35 ölçü',
+    city: 'Gəncə',
+    time: '1 saat əvvəl',
+    offers: 5,
+  },
+  {
+    quantity: '1000 ədəd',
+    title: 'Telefon cib qoruyucusu topdan',
+    city: 'Bakı',
+    time: '2 saat əvvəl',
+    offers: 7,
+  },
 ];
 
 export async function getCategories(query?: { q?: string | undefined; rootsOnly?: boolean | undefined }): Promise<CategoryCard[]> {

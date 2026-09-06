@@ -2,7 +2,9 @@ import Link from 'next/link';
 import {
   ArrowRight,
   BadgeCheck,
+  ClipboardList,
   Crown,
+  MapPin,
   Megaphone,
   MessageCircle,
   PackageCheck,
@@ -14,7 +16,15 @@ import { MarketTicker } from '../components/market-ticker';
 import { SiteFooter } from '../components/site-footer';
 import { SiteHeader } from '../components/site-header';
 import { StoreStrip } from '../components/store-strip';
-import { getCategories, getProducts, getStores, heroImage, stats } from '../lib/catalog-data';
+import {
+  cityStrip,
+  demandRequests,
+  getCategories,
+  getProducts,
+  getStores,
+  heroImage,
+  stats,
+} from '../lib/catalog-data';
 import type { ProductPreview } from '../lib/catalog-data';
 
 export const dynamic = 'force-dynamic';
@@ -96,6 +106,25 @@ export default async function HomePage() {
 
       <MarketTicker />
 
+      <section aria-label="Şəhərlər üzrə topdan bazar" className="city-strip-section">
+        <div className="container">
+          <div className="city-strip">
+            <span className="city-strip-label">
+              <MapPin size={15} />
+              Şəhər üzrə bazar
+            </span>
+            <div className="city-strip-chips">
+              {cityStrip.map((city) => (
+                <Link className="city-chip" href={`/stores?city=${encodeURIComponent(city.name)}`} key={city.name}>
+                  <strong>{city.name}</strong>
+                  <small>{city.storeCount} mağaza</small>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="section market-strip-section">
         <div className="container">
           <div className="section-title-row">
@@ -155,7 +184,21 @@ export default async function HomePage() {
                     <span className="vitrin-body">
                       <small>{product.category}</small>
                       <strong>{product.title}</strong>
-                      <em>{product.price}</em>
+                      {product.priceTiers?.length ? (
+                        <span className="tier-ladder">
+                          {product.priceTiers.map((tier, tierIndex) => (
+                            <span
+                              className={tierIndex === product.priceTiers!.length - 1 ? 'tier-row tier-best' : 'tier-row'}
+                              key={tier.qty}
+                            >
+                              <small>{tier.qty}</small>
+                              <em>{tier.price}</em>
+                            </span>
+                          ))}
+                        </span>
+                      ) : (
+                        <em>{product.price}</em>
+                      )}
                       <span className="vitrin-meta">
                         <PackageCheck size={13} />
                         {product.minOrder}
@@ -232,6 +275,52 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="section section-muted demand-board-section">
+        <div className="container">
+          <div className="section-title-row">
+            <div>
+              <p className="eyebrow">
+                <ClipboardList size={14} />
+                Tələb taxtası
+              </p>
+              <h2>Alıcılar nə axtarır?</h2>
+            </div>
+            <Link className="card-link" href="/contact">
+              Tələbini yerləşdir <ArrowRight size={14} />
+            </Link>
+          </div>
+
+          <div className="demand-board-grid">
+            {demandRequests.map((request) => (
+              <div className="demand-card" key={request.title}>
+                <div className="demand-head">
+                  <span className="demand-qty">{request.quantity}</span>
+                  <span className="demand-time">{request.time}</span>
+                </div>
+                <strong>{request.title}</strong>
+                <div className="demand-foot">
+                  <span className="demand-city">
+                    <MapPin size={13} />
+                    {request.city}
+                  </span>
+                  <span className="demand-offers">{request.offers} təklif</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="demand-cta">
+            <p>
+              Axtardığınız malı yazın — uyğun satıcılar birbaşa WhatsApp üzərindən təklif göndərsin.
+            </p>
+            <Link className="button button-primary" href="/contact">
+              <MessageCircle size={16} />
+              Öz tələbimi yerləşdir
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="section fresh-arrivals-section">
         <div className="container">
           <div className="section-title-row">
@@ -262,58 +351,6 @@ export default async function HomePage() {
             ) : (
               <p className="empty-state">Hazırda yeni məhsul yoxdur.</p>
             )}
-          </div>
-        </div>
-      </section>
-
-      <section className="section seller-cta-section">
-        <div className="container">
-          <div className="seller-cta-banner">
-            <div className="seller-cta-main">
-              <p className="seller-cta-eyebrow">Satıcılar üçün</p>
-              <h2>Mağazanı aç, alıcılar səni özü tapsın</h2>
-              <p className="seller-cta-lead">
-                Gündə minlərlə alıcı toptan mallar axtarır. Mağazanı qeydiyyatdan keçir, məhsullarını yerləşdir və
-                sifarişləri birbaşa WhatsApp-dan qəbul et.
-              </p>
-              <ul className="seller-cta-points">
-                <li>
-                  <BadgeCheck size={16} />
-                  Qeydiyyat pulsuzdur — 5 dəqiqəyə mağaza hazır
-                </li>
-                <li>
-                  <PackageCheck size={16} />
-                  Limitsiz məhsul və şəkil yükləmə
-                </li>
-                <li>
-                  <MessageCircle size={16} />
-                  Komissiya yoxdur — razılaşma birbaşa alıcı ilə olur
-                </li>
-              </ul>
-              <div className="seller-cta-actions">
-                <Link className="button button-light" href="/open-store">
-                  <StoreIcon size={16} />
-                  Mağazanı aç — pulsuzdur
-                </Link>
-                <Link className="button button-ghost-light" href="/contact">
-                  Suallarınız var? Yazın
-                </Link>
-              </div>
-            </div>
-            <div className="seller-cta-side">
-              <div className="seller-cta-stat">
-                <strong>400+</strong>
-                <span>aktiv mağaza</span>
-              </div>
-              <div className="seller-cta-stat">
-                <strong>200K+</strong>
-                <span>aylıq məhsul baxışı</span>
-              </div>
-              <div className="seller-cta-stat">
-                <strong>0 AZN</strong>
-                <span>başlanğıc xərc</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
