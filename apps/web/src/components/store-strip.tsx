@@ -10,11 +10,14 @@ export function StoreStrip({ stores }: { stores: StorePreview[] }) {
       <div className="market-store-strip-track">
         {stores.map((store, index) => (
           <Link className="market-store-card" href={`/stores/${store.slug}`} key={store.slug}>
-            {index < 3 ? (
+            {index % 5 === 0 ? (
               <span className="market-store-flag">
                 <Megaphone size={11} />
                 Sponsorlu
               </span>
+            ) : null}
+            {store.views === 'Yeni' ? (
+              <span className="market-store-flag market-store-flag-new">Bu həftə</span>
             ) : null}
             <span aria-hidden="true" className="store-avatar store-avatar-sm">
               {store.name.slice(0, 2).toUpperCase()}

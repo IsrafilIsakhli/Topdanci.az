@@ -3,15 +3,20 @@ import {
   ArrowRight,
   BadgeCheck,
   ClipboardList,
+  Coffee,
   Crown,
+  Hammer,
   MapPin,
   Megaphone,
   MessageCircle,
   PackageCheck,
+  Shirt,
+  Smartphone,
   Store as StoreIcon,
   TrendingUp,
 } from 'lucide-react';
 import { CategorySearchForm, type CategorySearchItem } from '../components/category-search-form';
+import { CategoryStrip } from '../components/category-strip';
 import { MarketTicker } from '../components/market-ticker';
 import { SiteFooter } from '../components/site-footer';
 import { SiteHeader } from '../components/site-header';
@@ -29,13 +34,20 @@ import type { ProductPreview } from '../lib/catalog-data';
 
 export const dynamic = 'force-dynamic';
 
-const paidVitrinCount = 3;
+const paidVitrinCount = 4;
+
+const categoryStrips = [
+  { eyebrow: 'Geyim və Ayaqqabı', title: 'Topdan geyim partiyaları', categorySlug: 'geyim-ayaqqabi-ve-tekstil', icon: Shirt },
+  { eyebrow: 'Elektronika', title: 'Topdan elektronika aksesuarları', categorySlug: 'elektronika-ve-aksesuarlar', icon: Smartphone },
+  { eyebrow: 'Qida və İçki', title: 'Topdan qida partiyaları', categorySlug: 'qida-ve-icki', icon: Coffee },
+  { eyebrow: 'Tikinti və Təmir', title: 'Topdan tikinti materialları', categorySlug: 'tikinti-ve-temir', icon: Hammer },
+];
 
 export default async function HomePage() {
   const [allCategories, products, stores] = await Promise.all([
     getCategories(),
-    getProducts({ limit: 24 }),
-    getStores({ limit: 12 }),
+    getProducts({ limit: 60 }),
+    getStores({ limit: 20 }),
   ]);
   const categorySearchItems: CategorySearchItem[] = allCategories.map(({ id, parentId, slug, name }) => ({
     id,
@@ -43,10 +55,10 @@ export default async function HomePage() {
     slug,
     name,
   }));
-  const stripStores = stores.slice(0, 12);
+  const stripStores = stores.slice(0, 20);
   const premiumStores = stores.slice(0, 6);
-  const vitrinProducts = products.slice(0, 12);
-  const freshProducts = products.slice(12, 24);
+  const vitrinProducts = products.slice(0, 20);
+  const freshProducts = products.slice(-7);
 
   const productsByStore = new Map<string, ProductPreview[]>();
   for (const product of products) {
@@ -217,6 +229,17 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {categoryStrips.map((strip) => (
+        <CategoryStrip
+          categorySlug={strip.categorySlug}
+          eyebrow={strip.eyebrow}
+          icon={strip.icon}
+          key={strip.categorySlug}
+          products={products.filter((product) => product.categorySlug === strip.categorySlug).slice(0, 10)}
+          title={strip.title}
+        />
+      ))}
 
       <section className="section sponsored-section">
         <div className="container">
