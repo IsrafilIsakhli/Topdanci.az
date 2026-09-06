@@ -1,15 +1,37 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, BadgeCheck, Building2, MapPin, Package, Search, Store, TrendingUp } from 'lucide-react';
+import {
+  ArrowRight,
+  BadgeCheck,
+  Building2,
+  Clock3,
+  MapPin,
+  Package,
+  PackageCheck,
+  Search,
+  ShieldCheck,
+  Store,
+  TrendingUp,
+  Truck,
+} from 'lucide-react';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
-import { getStoresPage, type StoreSort } from '../../lib/catalog-data';
+import { categoryRoute } from '../../lib/routes';
+import {
+  getCategories,
+  getProducts,
+  getStoresPage,
+  type ProductPreview,
+  type StorePreview,
+  type StoreSort,
+} from '../../lib/catalog-data';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Topdansatış mağazaları',
-  description: 'Təsdiqlənmiş topdansatış mağazalarını şəhər, sektor və məhsul sayına görə müqayisə edin.',
+  description:
+    'Təsdiqlənmiş topdansatış mağazalarını şəhər, sektor və məhsul sayına görə müqayisə edin. Həftənin vitrini, şəhər mağazaları və topdan qiymət kataloqu bir yerdə.',
   alternates: { canonical: '/stores' },
 };
 
@@ -20,19 +42,49 @@ export default async function StoresPage({
 }) {
   const query = await searchParams;
   const sort = normalizeStoreSort(query?.sort);
-  const page = await getStoresPage({
-    q: query?.q,
-    category: query?.category,
-    city: query?.city,
-    cursor: query?.cursor,
-    sort,
-    limit: 18,
-  });
+  const [page, categories, products] = await Promise.all([
+    getStoresPage({
+      q: query?.q,
+      category: query?.category,
+      city: query?.city,
+      cursor: query?.cursor,
+      sort,
+      limit: 18,
+    }),
+    getCategories({ rootsOnly: true }),
+    getProducts({ limit: 60 }),
+  ]);
   const stores = page.items;
   const featuredStore = stores[0];
+  const showcaseStores = stores.slice(1, 3);
+  const sponsored = new Set(stores.slice(0, 4).map((store) => store.slug));
   const totalProducts = page.meta.totalProducts ?? stores.reduce((sum, store) => sum + toNumber(store.productCount), 0);
   const verifiedStores = page.meta.verifiedStores ?? stores.filter((store) => store.verified).length;
   const cities = Array.from(new Set(stores.map((store) => store.city).filter(Boolean))).slice(0, 5);
+
+  // Hər mağaza üçün 3 məhsulluq vitrin zolağı.
+  const productsByStore = new Map<string, ProductPreview[]>();
+  for (const product of products) {
+    if (!product.storeSlug) continue;
+    const rail = productsByStore.get(product.storeSlug) ?? [];
+    if (rail.length < 3) {
+      rail.push(product);
+      productsByStore.set(product.storeSlug, rail);
+    }
+  }
+  const listRows = stores.map((store) => ({ store, strip: productsByStore.get(store.slug) ?? [] }));
+
+  // Şəhər üzrə kataloq — ən çox mağazası olan 3 şəhər.
+  const cityGroups = Object.entries(
+    stores.reduce<Record<string, StorePreview[]>>((groups, store) => {
+      if (!store.city) return groups;
+      (groups[store.city] ??= []).push(store);
+      return groups;
+    }, {}),
+  )
+    .sort((a, b) => b[1].length - a[1].length)
+    .slice(0, 3)
+    .map(([city, cityStores]) => ({ city, total: cityStores.length, stores: cityStores.slice(0, 4) }));
 
   return (
     <main className="site-shell">
@@ -68,6 +120,24 @@ export default async function StoresPage({
               </span>
             </div>
 
+            <div className="stores-trust-bar" aria-label="Mağaza zəmanətləri">
+              <span>
+                <ShieldCheck size={16} />
+                <strong>{verifiedStores}</strong> təsdiqli satıcı
+              </span>
+              <span>
+                <Truck size={16} />
+                Ölkə üzrə topdan çatdırılma
+              </span>
+              <span>
+                <PackageCheck size={16} />
+                Sifariş və qiymət zəmanəti
+              </span>
+              <span>
+                <Clock3 size={16} />
+                7/24 satıcı dəstəyi
+              </span>
+            </div>
             <form className="catalog-search-panel stores-search-panel" action="/stores">
               <label className="catalog-search-field">
                 <Search size={18} />
@@ -129,6 +199,85 @@ export default async function StoresPage({
         </div>
       </section>
 
+      {showcaseStores.length ? (
+        <section className="section stores-showcase-section">
+          <div className="container">
+            <div className="section-title-row">
+              <div>
+                <p className="eyebrow">Vitrin</p>
+                <h2>Həftənin mağazaları</h2>
+              </div>
+              <Link className="card-link" href="/stores">
+                Bütün mağazalar <ArrowRight size={15} />
+              </Link>
+            </div>
+
+            <div className="stores-showcase-grid">
+              {showcaseStores.map((store) => {
+                const strip = productsByStore.get(store.slug) ?? [];
+                return (
+                  <Link className="stores-showcase-card" href={`/stores/${store.slug}`} key={store.slug}>
+                    <span
+                      className="stores-showcase-cover"
+                      style={{ backgroundImage: `url(${store.coverImageUrl})` }}
+                    >
+                      <span className="stores-showcase-tag">
+                        <TrendingUp size={13} />
+                        Vitrin mağazası
+                      </span>
+                    </span>
+                    <span className="stores-showcase-body">
+                      <span className="stores-showcase-head">
+                        <span className="store-avatar">{store.name.slice(0, 2).toUpperCase()}</span>
+                        <span>
+                          <strong>{store.name}</strong>
+                          <small>{store.category} · {store.city}</small>
+                        </span>
+                        {store.verified ? (
+                          <em>
+                            <BadgeCheck size={13} />
+                            Təsdiqli
+                          </em>
+                        ) : null}
+                      </span>
+                      {strip.length ? (
+                        <span className="stores-showcase-strip">
+                          {strip.map((product) => (
+                            <span
+                              aria-hidden="true"
+                              className="stores-showcase-thumb"
+                              key={product.slug}
+                              style={{ backgroundImage: `url(${product.imageUrl})` }}
+                            />
+                          ))}
+                          <span className="stores-showcase-more">{store.productCount} məhsul</span>
+                        </span>
+                      ) : null}
+                      <span className="stores-showcase-meta">
+                        <span>
+                          <Package size={14} />
+                          {store.productCount} məhsul
+                        </span>
+                        <span>
+                          <MapPin size={14} />
+                          {store.city}
+                        </span>
+                        <span>
+                          <TrendingUp size={14} />
+                          {store.views}
+                        </span>
+                      </span>
+                      <span className="card-link stores-showcase-action">
+                        Vitrinə bax <ArrowRight size={15} />
+                      </span>
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      ) : null}
       <section className="section section-muted stores-list-section">
         <div className="container">
           <div className="section-title-row stores-list-title">
@@ -139,9 +288,21 @@ export default async function StoresPage({
             <span>{page.meta.total} mağaza tapıldı</span>
           </div>
 
+          {categories.length ? (
+            <div className="stores-category-chips" aria-label="Kateqoriya üzrə mağazalar">
+              {categories.slice(0, 8).map((category) => (
+                <Link href={categoryRoute(category.slug)} key={category.slug}>
+                  <category.icon size={15} />
+                  {category.name}
+                </Link>
+              ))}
+              <Link href="/products">Bütün kateqoriyalar</Link>
+            </div>
+          ) : null}
+
           <div className="grid store-grid store-market-grid">
-            {stores.length ? (
-              stores.map((store) => (
+            {listRows.length ? (
+              listRows.map(({ store, strip }) => (
                 <Link className="card store-market-card" href={`/stores/${store.slug}`} key={store.slug}>
                   <span className="store-market-cover" style={{ backgroundImage: `url(${store.coverImageUrl})` }}>
                     {store.verified ? (
@@ -150,6 +311,7 @@ export default async function StoresPage({
                         Təsdiqli
                       </span>
                     ) : null}
+                    {sponsored.has(store.slug) ? <em>Bu həftə</em> : null}
                   </span>
                   <span className="store-market-body">
                     <span className="store-market-head">
@@ -159,6 +321,18 @@ export default async function StoresPage({
                         <small>{store.category}</small>
                       </span>
                     </span>
+                    {strip.length ? (
+                      <span className="store-market-strip">
+                        {strip.map((product) => (
+                          <span
+                            aria-hidden="true"
+                            className="stores-market-thumb"
+                            key={product.slug}
+                            style={{ backgroundImage: `url(${product.imageUrl})` }}
+                          />
+                        ))}
+                      </span>
+                    ) : null}
                     <span className="store-market-meta">
                       <span>
                         <MapPin size={14} />
@@ -183,6 +357,7 @@ export default async function StoresPage({
               <p className="empty-state">Axtarışa uyğun aktiv mağaza tapılmadı.</p>
             )}
           </div>
+
           {page.meta.nextCursor ? (
             <div className="catalog-pagination">
               <Link className="button" href={buildStoresHref(query, page.meta.nextCursor, sort)}>
@@ -192,6 +367,51 @@ export default async function StoresPage({
           ) : null}
         </div>
       </section>
+      {cityGroups.length ? (
+        <section className="section stores-city-section">
+          <div className="container">
+            <div className="section-title-row">
+              <div>
+                <p className="eyebrow">Ölkə üzrə</p>
+                <h2>Şəhər mağazaları</h2>
+              </div>
+              <Link className="card-link" href="/stores">
+                Bütün mağazalar <ArrowRight size={15} />
+              </Link>
+            </div>
+
+            <div className="stores-city-grid">
+              {cityGroups.map(({ city, stores: cityStores, total }) => (
+                <div className="stores-city-box" key={city}>
+                  <div className="stores-city-head">
+                    <span>
+                      <MapPin size={15} />
+                      {city}
+                    </span>
+                    <small>{total} mağaza</small>
+                  </div>
+                  <ul className="stores-city-stores">
+                    {cityStores.map((store) => (
+                      <li key={store.slug}>
+                        <Link href={`/stores/${store.slug}`}>
+                          <span className="store-avatar">{store.name.slice(0, 2).toUpperCase()}</span>
+                          <span>
+                            <strong>{store.name}</strong>
+                            <small>{store.category} · {store.productCount} məhsul</small>
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link className="card-link stores-city-link" href={`/stores?city=${encodeURIComponent(city)}`}>
+                    Bütün {city} mağazaları <ArrowRight size={14} />
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <SiteFooter />
     </main>
@@ -199,7 +419,7 @@ export default async function StoresPage({
 }
 
 function toNumber(value: string) {
-  const number = Number.parseInt(value.replace(/[^\d]/g, ''), 10);
+  const number = parseInt(value.replace(/[^\d]/g, ''), 10);
   return Number.isFinite(number) ? number : 0;
 }
 
