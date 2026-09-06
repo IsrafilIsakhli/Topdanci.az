@@ -4,8 +4,8 @@ import {
   BadgeCheck,
   Crown,
   Megaphone,
+  MessageCircle,
   PackageCheck,
-  Sparkles,
   Store as StoreIcon,
   TrendingUp,
 } from 'lucide-react';
@@ -24,8 +24,8 @@ const paidVitrinCount = 3;
 export default async function HomePage() {
   const [allCategories, products, stores] = await Promise.all([
     getCategories(),
-    getProducts({ limit: 20 }),
-    getStores({ limit: 10 }),
+    getProducts({ limit: 24 }),
+    getStores({ limit: 12 }),
   ]);
   const categorySearchItems: CategorySearchItem[] = allCategories.map(({ id, parentId, slug, name }) => ({
     id,
@@ -33,10 +33,10 @@ export default async function HomePage() {
     slug,
     name,
   }));
-  const stripStores = stores.slice(0, 10);
+  const stripStores = stores.slice(0, 12);
   const premiumStores = stores.slice(0, 6);
   const vitrinProducts = products.slice(0, 12);
-  const freshProducts = products.slice(12, 20);
+  const freshProducts = products.slice(12, 24);
 
   const productsByStore = new Map<string, ProductPreview[]>();
   for (const product of products) {
@@ -269,24 +269,50 @@ export default async function HomePage() {
       <section className="section seller-cta-section">
         <div className="container">
           <div className="seller-cta-banner">
-            <div className="seller-cta-copy">
-              <p className="eyebrow">
-                <Sparkles size={14} />
-                Satıcılar üçün
+            <div className="seller-cta-main">
+              <p className="seller-cta-eyebrow">Satıcılar üçün</p>
+              <h2>Mağazanı aç, alıcılar səni özü tapsın</h2>
+              <p className="seller-cta-lead">
+                Gündə minlərlə alıcı toptan mallar axtarır. Mağazanı qeydiyyatdan keçir, məhsullarını yerləşdir və
+                sifarişləri birbaşa WhatsApp-dan qəbul et.
               </p>
-              <h2>Mağazanı bazarın ön cərgəsinə qoy</h2>
-              <p>
-                Məhsullarınızı minlərlə alıcıya çatdırın, WhatsApp sorğularını birbaşa qəbul edin və vitrində önə çıxın.
-              </p>
+              <ul className="seller-cta-points">
+                <li>
+                  <BadgeCheck size={16} />
+                  Qeydiyyat pulsuzdur — 5 dəqiqəyə mağaza hazır
+                </li>
+                <li>
+                  <PackageCheck size={16} />
+                  Limitsiz məhsul və şəkil yükləmə
+                </li>
+                <li>
+                  <MessageCircle size={16} />
+                  Komissiya yoxdur — razılaşma birbaşa alıcı ilə olur
+                </li>
+              </ul>
+              <div className="seller-cta-actions">
+                <Link className="button button-light" href="/open-store">
+                  <StoreIcon size={16} />
+                  Mağazanı aç — pulsuzdur
+                </Link>
+                <Link className="button button-ghost-light" href="/contact">
+                  Suallarınız var? Yazın
+                </Link>
+              </div>
             </div>
-            <div className="seller-cta-actions">
-              <Link className="button button-primary" href="/open-store">
-                <StoreIcon size={16} />
-                Mağaza aç
-              </Link>
-              <Link className="button" href="/contact">
-                Əlaqə saxla
-              </Link>
+            <div className="seller-cta-side">
+              <div className="seller-cta-stat">
+                <strong>400+</strong>
+                <span>aktiv mağaza</span>
+              </div>
+              <div className="seller-cta-stat">
+                <strong>200K+</strong>
+                <span>aylıq məhsul baxışı</span>
+              </div>
+              <div className="seller-cta-stat">
+                <strong>0 AZN</strong>
+                <span>başlanğıc xərc</span>
+              </div>
             </div>
           </div>
         </div>
