@@ -19,7 +19,7 @@ import type { ProductPreview } from '../lib/catalog-data';
 
 export const dynamic = 'force-dynamic';
 
-const paidVitrinCount = 4;
+const paidVitrinCount = 3;
 
 export default async function HomePage() {
   const [allCategories, products, stores] = await Promise.all([
@@ -37,7 +37,6 @@ export default async function HomePage() {
   const premiumStores = stores.slice(0, 6);
   const vitrinProducts = products.slice(0, 12);
   const freshProducts = products.slice(12, 20);
-  const marketSections = allCategories.slice(0, 16);
 
   const productsByStore = new Map<string, ProductPreview[]>();
   for (const product of products) {
@@ -83,7 +82,7 @@ export default async function HomePage() {
             <div className="hero-showcase-image" style={{ backgroundImage: `url(${heroImage})` }}>
               <span className="sponsored-pill hero-pill">
                 <Crown size={13} />
-                Premium tərəfdaş
+                Canlı vitrin
               </span>
               <div className="hero-showcase-card">
                 <span>Canlı kataloq</span>
@@ -229,38 +228,6 @@ export default async function HomePage() {
             ) : (
               <p className="empty-state">Hazırda göstəriləcək mağaza yoxdur.</p>
             )}
-          </div>
-        </div>
-      </section>
-
-      <section className="section market-sections-section">
-        <div className="container">
-          <div className="section-title-row">
-            <div>
-              <p className="eyebrow">
-                <StoreIcon size={14} />
-                Bazar bölmələri
-              </p>
-              <h2>Kateqoriyalar üzrə gəz</h2>
-            </div>
-            <Link className="card-link" href="/categories">
-              Bütün kateqoriyalar <ArrowRight size={14} />
-            </Link>
-          </div>
-
-          <div className="market-sections-grid">
-            {marketSections.map((category) => {
-              const Icon = category.icon;
-              return (
-                <Link className="market-section-card" key={category.slug} href={`/categories/${category.slug}`}>
-                  <span className="market-section-icon">
-                    <Icon size={19} />
-                  </span>
-                  <strong>{category.name}</strong>
-                  <small>{category.productCount} məhsul</small>
-                </Link>
-              );
-            })}
           </div>
         </div>
       </section>
