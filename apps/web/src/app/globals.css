@@ -15951,6 +15951,21 @@ html[data-theme='dark'] .mini-price {
   color: var(--color-brand);
 }
 
+.stores-category-chips a small {
+  display: inline-flex;
+  min-width: 22px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(6, 78, 59, 0.12);
+  color: var(--color-brand);
+  font-size: 10.5px;
+  font-weight: 900;
+  line-height: 1;
+  padding: 0 6px;
+}
+
 .stores-category-chips a:last-child {
   border-style: dashed;
   color: var(--color-brand);

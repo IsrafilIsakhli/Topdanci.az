@@ -215,14 +215,19 @@ export default async function StoresPage({
 
           {featuredStore ? (
             <Link className="stores-spotlight-card" href={`/stores/${featuredStore.slug}`}>
-              <span className="stores-spotlight-cover" style={{ backgroundImage: `url(${featuredStore.coverImageUrl})` }}>
+              <span className="stores-spotlight-cover" style={{ backgroundImage: `url(${featuredStore.coverImageUrl})`, backgroundColor: storeAccent(featuredStore.slug).bg }}>
                 <span>
                   <TrendingUp size={14} />
                   Önə çıxan mağaza
                 </span>
               </span>
               <span className="stores-spotlight-body">
-                <span className="store-avatar">{featuredStore.name.slice(0, 2).toUpperCase()}</span>
+                <span
+                  className="store-avatar"
+                  style={{ backgroundColor: storeAccent(featuredStore.slug).bg, color: storeAccent(featuredStore.slug).fg }}
+                >
+                  {featuredStore.name.slice(0, 2).toUpperCase()}
+                </span>
                 <span>
                   <strong>{featuredStore.name}</strong>
                   <small>{featuredStore.category}</small>
@@ -259,7 +264,7 @@ export default async function StoresPage({
                   <Link className="stores-showcase-card" href={`/stores/${store.slug}`} key={store.slug}>
                     <span
                       className="stores-showcase-cover"
-                      style={{ backgroundImage: `url(${store.coverImageUrl})` }}
+                      style={{ backgroundImage: `url(${store.coverImageUrl})`, backgroundColor: storeAccent(store.slug).bg }}
                     >
                       <span className="stores-showcase-tag">
                         <TrendingUp size={13} />
@@ -268,7 +273,12 @@ export default async function StoresPage({
                     </span>
                     <span className="stores-showcase-body">
                       <span className="stores-showcase-head">
-                        <span className="store-avatar">{store.name.slice(0, 2).toUpperCase()}</span>
+                        <span
+                          className="store-avatar"
+                          style={{ backgroundColor: storeAccent(store.slug).bg, color: storeAccent(store.slug).fg }}
+                        >
+                          {store.name.slice(0, 2).toUpperCase()}
+                        </span>
                         <span>
                           <strong>{store.name}</strong>
                           <small>{store.category} · {store.city}</small>
@@ -330,12 +340,20 @@ export default async function StoresPage({
 
           {categories.length ? (
             <div className="stores-category-chips" aria-label="Kateqoriya üzrə mağazalar">
-              {categories.slice(0, 8).map((category) => (
-                <Link href={categoryRoute(category.slug)} key={category.slug}>
-                  <category.icon size={15} />
-                  {category.name}
-                </Link>
-              ))}
+              {categories.slice(0, 8).map((category) => {
+                const matchedCount = stores.filter((store) => store.categorySlug === category.slug).length;
+                const chipCount =
+                  category.storeCount && category.storeCount !== '0'
+                    ? category.storeCount
+                    : matchedCount > 0 ? String(matchedCount) : null;
+                return (
+                  <Link href={categoryRoute(category.slug)} key={category.slug}>
+                    <category.icon size={15} />
+                    {category.name}
+                    {chipCount ? <small>{chipCount}</small> : null}
+                  </Link>
+                );
+              })}
               <Link href="/products">Bütün kateqoriyalar</Link>
             </div>
           ) : null}
@@ -345,7 +363,7 @@ export default async function StoresPage({
               listRows.map(({ store, strip }) => (
                 <div className="card store-market-card" key={store.slug}>
                   <Link className="store-market-link" href={`/stores/${store.slug}`} aria-label={`${store.name} mağazasına bax`}>
-                    <span className="store-market-cover" style={{ backgroundImage: `url(${store.coverImageUrl})` }}>
+                    <span className="store-market-cover" style={{ backgroundImage: `url(${store.coverImageUrl})`, backgroundColor: storeAccent(store.slug).bg }}>
                       {store.verified ? (
                         <span>
                           <BadgeCheck size={13} />
@@ -356,7 +374,12 @@ export default async function StoresPage({
                     </span>
                     <span className="store-market-body">
                       <span className="store-market-head">
-                        <span className="store-avatar">{store.name.slice(0, 2).toUpperCase()}</span>
+                        <span
+                          className="store-avatar"
+                          style={{ backgroundColor: storeAccent(store.slug).bg, color: storeAccent(store.slug).fg }}
+                        >
+                          {store.name.slice(0, 2).toUpperCase()}
+                        </span>
                         <span>
                           <strong>{store.name}</strong>
                           <small>{store.category}</small>
@@ -449,7 +472,12 @@ export default async function StoresPage({
                     {cityStores.map((store) => (
                       <li key={store.slug}>
                         <Link href={`/stores/${store.slug}`}>
-                          <span className="store-avatar">{store.name.slice(0, 2).toUpperCase()}</span>
+                          <span
+                            className="store-avatar"
+                            style={{ backgroundColor: storeAccent(store.slug).bg, color: storeAccent(store.slug).fg }}
+                          >
+                            {store.name.slice(0, 2).toUpperCase()}
+                          </span>
                           <span>
                             <strong>{store.name}</strong>
                             <small>{store.category} · {store.productCount} məhsul</small>
@@ -476,6 +504,25 @@ export default async function StoresPage({
 function toNumber(value: string) {
   const number = parseInt(value.replace(/[^\d]/g, ''), 10);
   return Number.isFinite(number) ? number : 0;
+}
+
+const STORE_ACCENTS: Array<{ bg: string; fg: string }> = [
+  { bg: '#0f5b3a', fg: '#ffffff' },
+  { bg: '#1e3a8a', fg: '#ffffff' },
+  { bg: '#7c2d92', fg: '#ffffff' },
+  { bg: '#b54708', fg: '#ffffff' },
+  { bg: '#0f766e', fg: '#ffffff' },
+  { bg: '#be185d', fg: '#ffffff' },
+  { bg: '#0369a1', fg: '#ffffff' },
+  { bg: '#4d2c3a', fg: '#ffffff' },
+];
+
+function storeAccent(slug: string) {
+  let hash = 0;
+  for (let index = 0; index < slug.length; index += 1) {
+    hash = (hash * 31 + slug.charCodeAt(index)) & 0x7fffffff;
+  }
+  return STORE_ACCENTS[hash % STORE_ACCENTS.length]!;
 }
 
 function normalizeStoreSort(value?: string): StoreSort {
