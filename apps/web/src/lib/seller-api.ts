@@ -239,16 +239,61 @@ export async function uploadProductImage(productId: string, file: File) {
     sizeBytes: file.size,
   });
 
-  await fetch(upload.data.uploadUrl, {
+  const response = await fetch(upload.data.uploadUrl, {
     method: 'PUT',
     headers: upload.data.headers,
     body: file,
   });
+  if (!response.ok) {
+    throw new Error(`Media upload failed with status ${response.status}`);
+  }
 
   return apiPost<DetailResponse<{ imageId: string; status: string }>>(
     `/media/product-images/${encodeURIComponent(upload.data.imageId)}/complete`,
     {},
   );
+}
+
+export async function uploadStoreAsset(storeId: string, kind: 'logo' | 'banner', file: File) {
+  const upload = await apiPost<
+    DetailResponse<{
+      storeId: string;
+      kind: 'logo' | 'banner';
+      storageKey: string;
+      uploadUrl: string;
+      cdnUrl?: string | null;
+      headers: Record<string, string>;
+    }>
+  >('/media/store-assets/upload-url', {
+    storeId,
+    kind,
+    fileName: file.name,
+    contentType: file.type,
+    sizeBytes: file.size,
+  });
+
+  const response = await fetch(upload.data.uploadUrl, {
+    method: 'PUT',
+    headers: upload.data.headers,
+    body: file,
+  });
+  if (!response.ok) {
+    throw new Error(`Store asset upload failed with status ${response.status}`);
+  }
+
+  return apiPost<
+    DetailResponse<{
+      storeId: string;
+      kind: 'logo' | 'banner';
+      storageKey: string;
+      cdnUrl?: string | null;
+    }>
+  >(`/media/store-assets/${encodeURIComponent(storeId)}/complete`, {
+    kind,
+    storageKey: upload.data.storageKey,
+    contentType: file.type,
+    sizeBytes: file.size,
+  });
 }
 
 function toQueryString(params: Record<string, string | undefined>): string {

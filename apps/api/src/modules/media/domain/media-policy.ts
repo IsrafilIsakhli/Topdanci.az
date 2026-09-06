@@ -18,6 +18,11 @@ export function productImageObjectKey(storeId: string, productId: string, fileNa
   return `stores/${storeId}/products/${productId}/${Date.now()}-${safeFileName}`;
 }
 
+export function storeAssetObjectKey(storeId: string, kind: 'logo' | 'banner', fileName: string): string {
+  const safeFileName = fileName.toLowerCase().replace(/[^a-z0-9.]+/g, '-');
+  return `stores/${storeId}/assets/${kind}/${Date.now()}-${safeFileName}`;
+}
+
 export function isFileNameAllowedForMimeType(fileName: string, mimeType: string): boolean {
   if (!isAllowedProductImageMimeType(mimeType)) {
     return false;

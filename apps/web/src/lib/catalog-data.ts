@@ -772,18 +772,33 @@ function resolveProductImage(product: ApiProduct, index: number): string {
   const firstImage = product.images?.[0];
   const variantUrl = getVariantUrl(firstImage?.variants);
   const rawUrl = firstImage?.cdnUrl ?? variantUrl;
-  if (rawUrl?.startsWith('http')) {
-    return rawUrl;
+  const resolvedUrl = resolveMediaUrl(rawUrl ?? firstImage?.storageKey);
+  if (resolvedUrl) {
+    return resolvedUrl;
   }
   return productImageFallbacks[index % productImageFallbacks.length] ?? heroImage;
 }
 
 function resolveStoreImage(store: ApiStore): string {
   const candidate = store.bannerKey ?? store.logoKey;
-  if (candidate?.startsWith('http')) {
-    return candidate;
+  const resolvedUrl = resolveMediaUrl(candidate);
+  if (resolvedUrl) {
+    return resolvedUrl;
   }
   return store.category?.slug === 'elektronika' ? categoryImageFallback : heroImage;
+}
+
+function resolveMediaUrl(value?: string | null): string | null {
+  if (!value) {
+    return null;
+  }
+
+  if (value.startsWith('http')) {
+    return value;
+  }
+
+  const cdnBaseUrl = process.env.NEXT_PUBLIC_CDN_BASE_URL?.replace(/\/+$/, '');
+  return cdnBaseUrl ? `${cdnBaseUrl}/${value.replace(/^\/+/, '')}` : null;
 }
 
 function getVariantUrl(variants: unknown): string | null {

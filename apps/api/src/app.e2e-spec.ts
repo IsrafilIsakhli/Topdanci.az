@@ -486,6 +486,40 @@ describe('TopdanBazar API smoke e2e', () => {
       .expect(400);
   });
 
+  it('protects seller store asset uploads with MIME and storage path checks', async () => {
+    const seller = await loginAs('seller@topdanci.az', 'Seller12345!');
+    const products = await request(app.getHttpServer())
+      .get('/api/v1/seller/products')
+      .set('Cookie', seller.cookies)
+      .expect(200);
+    const storeId = products.body.data[0].store.id;
+
+    await request(app.getHttpServer())
+      .post('/api/v1/media/store-assets/upload-url')
+      .set('Cookie', seller.cookies)
+      .set('x-csrf-token', seller.csrfToken)
+      .send({
+        storeId,
+        kind: 'logo',
+        fileName: 'store-logo.svg',
+        contentType: 'image/svg+xml',
+        sizeBytes: 1000,
+      })
+      .expect(400);
+
+    await request(app.getHttpServer())
+      .post(`/api/v1/media/store-assets/${storeId}/complete`)
+      .set('Cookie', seller.cookies)
+      .set('x-csrf-token', seller.csrfToken)
+      .send({
+        kind: 'logo',
+        storageKey: 'stores/another-store/assets/logo/logo.jpg',
+        contentType: 'image/jpeg',
+        sizeBytes: 1000,
+      })
+      .expect(403);
+  });
+
   it('approves a store application once and prevents duplicate approval', async () => {
     const admin = await loginAs('admin@topdanci.az', 'Admin12345!');
     const suffix = Date.now().toString(36);

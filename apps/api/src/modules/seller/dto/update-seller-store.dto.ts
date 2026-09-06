@@ -46,16 +46,6 @@ export class UpdateSellerStoreDto {
   @IsOptional()
   email?: string;
 
-  @IsString()
-  @MaxLength(500)
-  @IsOptional()
-  logoKey?: string;
-
-  @IsString()
-  @MaxLength(500)
-  @IsOptional()
-  bannerKey?: string;
-
   @IsObject()
   @IsOptional()
   workingHours?: Record<string, unknown>;

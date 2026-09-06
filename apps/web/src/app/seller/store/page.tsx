@@ -1,8 +1,13 @@
 'use client';
 
 import { FormEvent, useEffect, useState } from 'react';
-import { CheckCircle2, Loader2, Save, Store } from 'lucide-react';
-import { getSellerStores, updateSellerStore, type SellerStore } from '../../../lib/seller-api';
+import { CheckCircle2, Image as ImageIcon, Loader2, Save, Store, Upload } from 'lucide-react';
+import {
+  getSellerStores,
+  updateSellerStore,
+  uploadStoreAsset,
+  type SellerStore,
+} from '../../../lib/seller-api';
 
 type StoreForm = {
   name: string;
@@ -24,6 +29,7 @@ export default function SellerStorePage() {
   const [form, setForm] = useState<StoreForm | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [uploadingAsset, setUploadingAsset] = useState<'logo' | 'banner' | null>(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
@@ -74,6 +80,32 @@ export default function SellerStorePage() {
       setError('Mağaza profili yenilənmədi.');
     } finally {
       setIsSaving(false);
+    }
+  }
+
+  async function handleAssetUpload(kind: 'logo' | 'banner', file?: File) {
+    if (!store || !file) return;
+
+    setUploadingAsset(kind);
+    setError('');
+    setMessage('');
+    try {
+      const response = await uploadStoreAsset(store.id, kind, file);
+      setStore((current) =>
+        current
+          ? {
+              ...current,
+              ...(kind === 'logo'
+                ? { logoKey: response.data.cdnUrl ?? response.data.storageKey }
+                : { bannerKey: response.data.cdnUrl ?? response.data.storageKey }),
+            }
+          : current,
+      );
+      setMessage(kind === 'logo' ? 'Mağaza loqosu yeniləndi.' : 'Mağaza örtük şəkli yeniləndi.');
+    } catch {
+      setError('Şəkil yüklənmədi. JPG, PNG və ya WEBP formatında 10 MB-dan kiçik fayl seçin.');
+    } finally {
+      setUploadingAsset(null);
     }
   }
 
@@ -133,6 +165,60 @@ export default function SellerStorePage() {
             <label className="field seller-span-2">
               <span>Açıqlama</span>
               <textarea value={form.description} onChange={(event) => updateField('description', event.target.value)} />
+            </label>
+          </div>
+        </section>
+
+        <section className="seller-card seller-form-card seller-span-2">
+          <div>
+            <h3>Mağaza şəkilləri</h3>
+            <p className="seller-form-help">Loqo kvadrat, örtük şəkli isə üfüqi formatda daha yaxşı görünür.</p>
+          </div>
+          <div className="seller-store-media-grid">
+            <label className="seller-store-media-field">
+              <span
+                className="seller-store-media-preview is-logo"
+                style={mediaStyle(store.logoKey)}
+              >
+                {!store.logoKey ? <ImageIcon size={24} /> : null}
+              </span>
+              <span>
+                <strong>Mağaza loqosu</strong>
+                <small>JPG, PNG və ya WEBP, maksimum 10 MB</small>
+              </span>
+              <span className="button">
+                {uploadingAsset === 'logo' ? <Loader2 className="spin-icon" size={16} /> : <Upload size={16} />}
+                Seç
+              </span>
+              <input
+                accept="image/jpeg,image/png,image/webp"
+                disabled={Boolean(uploadingAsset)}
+                onChange={(event) => void handleAssetUpload('logo', event.target.files?.[0])}
+                type="file"
+              />
+            </label>
+
+            <label className="seller-store-media-field">
+              <span
+                className="seller-store-media-preview is-banner"
+                style={mediaStyle(store.bannerKey)}
+              >
+                {!store.bannerKey ? <ImageIcon size={24} /> : null}
+              </span>
+              <span>
+                <strong>Örtük şəkli</strong>
+                <small>Mağaza səhifəsinin yuxarı hissəsində göstərilir</small>
+              </span>
+              <span className="button">
+                {uploadingAsset === 'banner' ? <Loader2 className="spin-icon" size={16} /> : <Upload size={16} />}
+                Seç
+              </span>
+              <input
+                accept="image/jpeg,image/png,image/webp"
+                disabled={Boolean(uploadingAsset)}
+                onChange={(event) => void handleAssetUpload('banner', event.target.files?.[0])}
+                type="file"
+              />
             </label>
           </div>
         </section>
@@ -212,4 +298,14 @@ function toStoreForm(store: SellerStore): StoreForm {
     saturday: hours?.saturday ?? '10:00 - 15:00',
     sunday: hours?.sunday ?? 'Bağlıdır',
   };
+}
+
+function mediaStyle(value?: string | null) {
+  if (!value) return undefined;
+  const url = value.startsWith('http')
+    ? value
+    : process.env.NEXT_PUBLIC_CDN_BASE_URL
+      ? `${process.env.NEXT_PUBLIC_CDN_BASE_URL.replace(/\/+$/, '')}/${value.replace(/^\/+/, '')}`
+      : null;
+  return url ? { backgroundImage: `url(${url})` } : undefined;
 }

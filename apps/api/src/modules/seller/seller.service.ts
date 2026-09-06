@@ -192,8 +192,6 @@ export class SellerService {
     if (dto.phone !== undefined) data.phone = dto.phone;
     if (dto.whatsappNumber !== undefined) data.whatsappNumber = dto.whatsappNumber;
     if (dto.email !== undefined) data.email = dto.email;
-    if (dto.logoKey !== undefined) data.logoKey = dto.logoKey;
-    if (dto.bannerKey !== undefined) data.bannerKey = dto.bannerKey;
     if (dto.workingHours !== undefined) data.workingHours = dto.workingHours as Prisma.InputJsonValue;
 
     const store = await this.prisma.store.update({
@@ -419,7 +417,6 @@ export class SellerService {
       metadata: { storeId: existing.storeId },
     });
     await this.cache.invalidateCatalog();
-
     return { data: mapSellerProduct(product) };
   }
 
