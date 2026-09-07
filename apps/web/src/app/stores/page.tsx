@@ -20,6 +20,8 @@ import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
 import { LeadWhatsAppLink } from '../../components/lead-actions';
 import { CatalogSortSelect } from '../../components/catalog-sort-select';
+import { CountUp } from '../../components/count-up';
+import { StoresEditorialBanner } from '../../components/stores-editorial-banner';
 import { categoryRoute } from '../../lib/routes';
 import { storeAccent } from '../../lib/store-accent';
 import {
@@ -79,6 +81,9 @@ export default async function StoresPage({
   }
   const listRows = stores.map((store) => ({ store, strip: productsByStore.get(store.slug) ?? [] }));
 
+  // Redaksiya banneri — bu həftə ən çox baxılan mağaza.
+  const editorialStore = [...stores].sort((left, right) => viewsToNumber(right.views) - viewsToNumber(left.views))[0];
+
   // Şəhər üzrə kataloq — ən çox mağazası olan 3 şəhər.
   const cityGroups = Object.entries(
     stores.reduce<Record<string, StorePreview[]>>((groups, store) => {
@@ -110,17 +115,23 @@ export default async function StoresPage({
             <div className="stores-hero-stats">
               <span>
                 <Store size={16} />
-                <strong>{page.meta.total}</strong>
+                <strong>
+                  <CountUp value={page.meta.total} />
+                </strong>
                 mağaza
               </span>
               <span>
                 <Package size={16} />
-                <strong>{totalProducts}</strong>
+                <strong>
+                  <CountUp value={totalProducts} />
+                </strong>
                 məhsul
               </span>
               <span>
                 <BadgeCheck size={16} />
-                <strong>{verifiedStores}</strong>
+                <strong>
+                  <CountUp value={verifiedStores} />
+                </strong>
                 təsdiqli
               </span>
             </div>
@@ -245,6 +256,8 @@ export default async function StoresPage({
           ) : null}
         </div>
       </section>
+
+      {editorialStore ? <StoresEditorialBanner store={editorialStore} /> : null}
 
       {showcaseStores.length ? (
         <section className="section stores-showcase-section">
@@ -506,6 +519,17 @@ export default async function StoresPage({
 function toNumber(value: string) {
   const number = parseInt(value.replace(/[^\d]/g, ''), 10);
   return Number.isFinite(number) ? number : 0;
+}
+
+/** "5.4K" / "1.2M" / "340" kimi compact baxış sayını rəqəmə çevirir. */
+function viewsToNumber(views: string): number {
+  const match = views.trim().toLowerCase().match(/^([\d]+(?:[.,]\d+)?)\s*(k|m)?/);
+  const rawBase = match?.[1];
+  if (!rawBase) return 0;
+  const base = Number(rawBase.replace(',', '.'));
+  if (!Number.isFinite(base)) return 0;
+  const scale = match[2] === 'k' ? 1_000 : match[2] === 'm' ? 1_000_000 : 1;
+  return Math.round(base * scale);
 }
 
 function normalizeStoreSort(value?: string): StoreSort {
