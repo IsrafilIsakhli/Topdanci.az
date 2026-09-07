@@ -8,7 +8,8 @@ COPY apps/web/package.json apps/web/package.json
 COPY packages/config/package.json packages/config/package.json
 COPY packages/shared/package.json packages/shared/package.json
 COPY packages/ui/package.json packages/ui/package.json
-RUN npm ci
+RUN npm ci --include=optional
+RUN node -e "require('sharp'); console.log('sharp alpine runtime ready')"
 
 FROM node:22-alpine AS builder
 WORKDIR /app
