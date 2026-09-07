@@ -207,6 +207,106 @@ const productImageFallbacks = [
   'https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=900&q=82',
 ] as const;
 
+/**
+ * Kateqoriya əsaslı şəkil fallback-ləri — məhsul şəkli olmayanda
+ * mövzuya uyğun stock şəkil göstərilir ( indeks ilə növbələnir).
+ */
+const themedCategoryImages: Array<{ keywords: string[]; images: string[] }> = [
+  {
+    keywords: ['un-seker', 'qida', 'icki', 'sire', 'sud', 'et-', 'toyug', 'balig'],
+    images: [
+      'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+  {
+    keywords: ['geyim', 'ayaqqabi', 'tekstil', 'parca', 'cki-godik'],
+    images: [
+      'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1489987707025-afc232f7bdaf?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+  {
+    keywords: ['elektronika', 'kabel', 'adapter', 'powerbank', 'telefon', 'saat', 'televizor', 'audio'],
+    images: [
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+  {
+    keywords: ['meiset', 'texnika', 'soyuducu'],
+    images: [
+      'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+  {
+    keywords: ['ev-bag', 'mebel', 'metbex', 'temizlik', 'yataq'],
+    images: [
+      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+  {
+    keywords: ['tikinti', 'temir', 'sement', 'boya', 'drel', 'alet', 'kran'],
+    images: [
+      'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+  {
+    keywords: ['avto', 'neqliyyat', 'ehtiyat-hisseleri', 'təkər' ],
+    images: [
+      'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+  {
+    keywords: ['gozellik', 'saglamliq', 'kosmetik', 'parfum', 'sexsi-qulluq'],
+    images: [
+      'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+  {
+    keywords: ['usaq', 'oyuncaq', 'mektob'],
+    images: [
+      'https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+  {
+    keywords: ['qablasdirma', 'reklam', 'karton', 'etiket'],
+    images: [
+      'https://images.unsplash.com/photo-1607166452427-7e4477079cb9?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+  {
+    keywords: ['biznes', 'magaza-avadanligi', 'ofis', 'kassa'],
+    images: [
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+  {
+    keywords: ['kend-teserrufati', 'heyvandarliq', 'toxum', 'gubre', 'yem'],
+    images: [
+      'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+  {
+    keywords: ['xidmetler', 'dasinmaz-emlak'],
+    images: [
+      'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=82',
+    ],
+  },
+];
+
+
 const iconBySlug: Record<string, LucideIcon> = {
   'son-elanlar': Package,
   'qida-ve-icki': Package,
@@ -260,7 +360,7 @@ export const products: ProductPreview[] = [
     price: 'Razılaşma yolu ilə',
     minOrder: 'Min: 50 ədəd',
     badge: 'Yeni',
-    imageUrl: productImageFallbacks[0],
+    imageUrl: themedImage('geyim-ayaqqabi-ve-tekstil', 0),
     imageAlt: 'Topdansatış geyim məhsulları',
     whatsappNumber: '+994501234567',
     phone: '+994501234567',
@@ -276,7 +376,7 @@ export const products: ProductPreview[] = [
     price: 'Razılaşma yolu ilə',
     minOrder: 'Min: 100 cüt',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[1],
+    imageUrl: themedImage('geyim-ayaqqabi-ve-tekstil', 1),
     imageAlt: 'Topdansatış ayaqqabı məhsulları',
     whatsappNumber: '+994552223344',
     phone: '+994552223344',
@@ -292,7 +392,7 @@ export const products: ProductPreview[] = [
     price: 'Razılaşma yolu ilə',
     minOrder: 'Min: 50 ədəd',
     badge: 'Top seller',
-    imageUrl: productImageFallbacks[2],
+    imageUrl: themedImage('elektronika-ve-aksesuarlar', 2),
     imageAlt: 'Topdansatış ağıllı saat məhsulları',
     whatsappNumber: '+994551112233',
     phone: '+994551112233',
@@ -308,7 +408,7 @@ export const products: ProductPreview[] = [
     price: 'Razılaşma yolu ilə',
     minOrder: 'Min: 20 ədəd',
     badge: 'Yeni partiya',
-    imageUrl: productImageFallbacks[3],
+    imageUrl: themedImage('tikinti-ve-temir', 3),
     imageAlt: 'Topdansatış elektrik alətləri',
     whatsappNumber: '+994703334455',
     phone: '+994703334455',
@@ -445,7 +545,7 @@ products.push(
     price: '32 AZN',
     minOrder: 'Min: 20 paket',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[0],
+    imageUrl: themedImage('un-seker-ve-duz', 0),
     imageAlt: 'Topdan ərzaq məhsulu',
     whatsappNumber: '+994502101010',
     phone: '+994502101010',
@@ -461,7 +561,7 @@ products.push(
     price: '18.40 AZN',
     minOrder: 'Min: 30 qutu',
     badge: 'Yeni',
-    imageUrl: productImageFallbacks[1],
+    imageUrl: themedImage('sireler-ve-qazli-ickiler', 1),
     imageAlt: 'Topdan içki məhsulu',
     whatsappNumber: '+994502101010',
     phone: '+994502101010',
@@ -477,7 +577,7 @@ products.push(
     price: '145 AZN',
     minOrder: 'Min: 5 paket',
     badge: 'Top seller',
-    imageUrl: productImageFallbacks[2],
+    imageUrl: themedImage('adapter-ve-kabeller', 2),
     imageAlt: 'Topdan elektronika aksesuarı',
     whatsappNumber: '+994552202020',
     phone: '+994552202020',
@@ -493,7 +593,7 @@ products.push(
     price: 'Razılaşma yolu ilə',
     minOrder: 'Min: 50 ədəd',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[3],
+    imageUrl: themedImage('powerbanklar', 3),
     imageAlt: 'Topdan powerbank məhsulu',
     whatsappNumber: '+994552202020',
     phone: '+994552202020',
@@ -509,7 +609,7 @@ products.push(
     price: '9.20 AZN',
     minOrder: 'Min: 120 ədəd',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[0],
+    imageUrl: themedImage('sement-ve-qum', 0),
     imageAlt: 'Topdan tikinti materialı',
     whatsappNumber: '+994773404040',
     phone: '+994773404040',
@@ -525,7 +625,7 @@ products.push(
     price: '0.72 AZN',
     minOrder: 'Min: 500 ədəd',
     badge: 'Yeni',
-    imageUrl: productImageFallbacks[1],
+    imageUrl: themedImage('karton-qutular', 1),
     imageAlt: 'Topdan qablaşdırma məhsulu',
     whatsappNumber: '+994508808080',
     phone: '+994508808080',
@@ -541,7 +641,7 @@ products.push(
     price: '17.50 AZN',
     minOrder: 'Min: 80 ədəd',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[2],
+    imageUrl: themedImage('mineral-gubreler', 2),
     imageAlt: 'Topdan kənd təsərrüfatı məhsulu',
     whatsappNumber: '+994559909090',
     phone: '+994559909090',
@@ -708,7 +808,7 @@ products.push(
     ],
     minOrder: 'Min: 500 cüt',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[1],
+    imageUrl: themedImage('geyim-ayaqqabi-ve-tekstil', 1),
     imageAlt: 'Topdan corab məhsulu',
     whatsappNumber: '+994501234567',
     phone: '+994501234567',
@@ -728,7 +828,7 @@ products.push(
     ],
     minOrder: 'Min: 200 cüt',
     badge: 'Yeni partiya',
-    imageUrl: productImageFallbacks[2],
+    imageUrl: themedImage('geyim-ayaqqabi-ve-tekstil', 2),
     imageAlt: 'Topdan uşaq ayaqqabısı',
     whatsappNumber: '+994552223344',
     phone: '+994552223344',
@@ -748,7 +848,7 @@ products.push(
     ],
     minOrder: 'Min: 300 ədəd',
     badge: 'Top seller',
-    imageUrl: productImageFallbacks[0],
+    imageUrl: themedImage('elektronika-ve-aksesuarlar', 0),
     imageAlt: 'Topdan bluetooth qulaqlıq',
     whatsappNumber: '+994551112233',
     phone: '+994551112233',
@@ -768,7 +868,7 @@ products.push(
     ],
     minOrder: 'Min: 50 dəst',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[3],
+    imageUrl: themedImage('tikinti-ve-temir', 3),
     imageAlt: 'Topdan boya dəsti',
     whatsappNumber: '+994703334455',
     phone: '+994703334455',
@@ -788,7 +888,7 @@ products.push(
     ],
     minOrder: 'Min: 40 qutu',
     badge: 'Yeni',
-    imageUrl: productImageFallbacks[2],
+    imageUrl: themedImage('sireler-ve-qazli-ickiler', 2),
     imageAlt: 'Topdan çay məhsulu',
     whatsappNumber: '+994502101010',
     phone: '+994502101010',
@@ -807,7 +907,7 @@ products.push(
     price: '9.50 AZN',
     minOrder: 'Min: 300 ədəd',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[0],
+    imageUrl: themedImage('geyim-ayaqqabi-ve-tekstil', 0),
     imageAlt: 'Topdan kişi kösələk partiyası',
     whatsappNumber: '+994556667788',
     phone: '+994556667788',
@@ -827,7 +927,7 @@ products.push(
     ],
     minOrder: 'Min: 150 ədəd',
     badge: 'Yeni partiya',
-    imageUrl: productImageFallbacks[2],
+    imageUrl: themedImage('geyim-ayaqqabi-ve-tekstil', 2),
     imageAlt: 'Topdan uşaq köynək partiyası',
     whatsappNumber: '+994556667788',
     phone: '+994556667788',
@@ -847,7 +947,7 @@ products.push(
     ],
     minOrder: 'Min: 20 qutu',
     badge: 'Top seller',
-    imageUrl: productImageFallbacks[1],
+    imageUrl: themedImage('qida-ve-icki', 1),
     imageAlt: 'Topdan şokolad partiyası',
     whatsappNumber: '+994553334455',
     phone: '+994553334455',
@@ -867,7 +967,7 @@ products.push(
     ],
     minOrder: 'Min: 1 palet',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[3],
+    imageUrl: themedImage('qida-ve-icki', 3),
     imageAlt: 'Topdan su paleti',
     whatsappNumber: '+994553334455',
     phone: '+994553334455',
@@ -887,7 +987,7 @@ products.push(
     ],
     minOrder: 'Min: 200 komplekt',
     badge: 'Yeni',
-    imageUrl: productImageFallbacks[2],
+    imageUrl: themedImage('elektronika-ve-aksesuarlar', 2),
     imageAlt: 'Topdan audio aksesuar dəsti',
     whatsappNumber: '+994704445566',
     phone: '+994704445566',
@@ -907,7 +1007,7 @@ products.push(
     ],
     minOrder: 'Min: 500 ədəd',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[0],
+    imageUrl: themedImage('elektronika-ve-aksesuarlar', 0),
     imageAlt: 'Topdan telefon aksesuarları',
     whatsappNumber: '+994704445566',
     phone: '+994704445566',
@@ -927,7 +1027,7 @@ products.push(
     ],
     minOrder: 'Min: 250 ədəd',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[3],
+    imageUrl: themedImage('geyim-ayaqqabi-ve-tekstil', 3),
     imageAlt: 'Topdan kişi köynək partiyası',
     whatsappNumber: '+994556667788',
     phone: '+994556667788',
@@ -947,7 +1047,7 @@ products.push(
     ],
     minOrder: 'Min: 180 ədəd',
     badge: 'Yeni',
-    imageUrl: productImageFallbacks[1],
+    imageUrl: themedImage('geyim-ayaqqabi-ve-tekstil', 1),
     imageAlt: 'Topdan qadın şalı partiyası',
     whatsappNumber: '+994501234567',
     phone: '+994501234567',
@@ -967,7 +1067,7 @@ products.push(
     ],
     minOrder: 'Min: 300 dəst',
     badge: 'Top seller',
-    imageUrl: productImageFallbacks[0],
+    imageUrl: themedImage('geyim-ayaqqabi-ve-tekstil', 0),
     imageAlt: 'Topdan uşaq trikotaj komplekti',
     whatsappNumber: '+994556667788',
     phone: '+994556667788',
@@ -987,7 +1087,7 @@ products.push(
     ],
     minOrder: 'Min: 150 ədəd',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[2],
+    imageUrl: themedImage('elektronika-ve-aksesuarlar', 2),
     imageAlt: 'Topdan powerbank partiyası',
     whatsappNumber: '+994551112233',
     phone: '+994551112233',
@@ -1007,7 +1107,7 @@ products.push(
     ],
     minOrder: 'Min: 1000 ədəd',
     badge: 'Top seller',
-    imageUrl: productImageFallbacks[1],
+    imageUrl: themedImage('elektronika-ve-aksesuarlar', 1),
     imageAlt: 'Topdan ekran qoruyucu partiyası',
     whatsappNumber: '+994704445566',
     phone: '+994704445566',
@@ -1030,7 +1130,7 @@ products.push(
     ],
     minOrder: 'Min: 400 ədəd',
     badge: 'Yeni partiya',
-    imageUrl: productImageFallbacks[3],
+    imageUrl: themedImage('elektronika-ve-aksesuarlar', 3),
     imageAlt: 'Topdan USB kabel dəsti',
     whatsappNumber: '+994551112233',
     phone: '+994551112233',
@@ -1050,7 +1150,7 @@ products.push(
     ],
     minOrder: 'Min: 24 qutu',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[2],
+    imageUrl: themedImage('qida-ve-icki', 2),
     imageAlt: 'Topdan qəhvə partiyası',
     whatsappNumber: '+994502101010',
     phone: '+994502101010',
@@ -1070,7 +1170,7 @@ products.push(
     ],
     minOrder: 'Min: 50 qutu',
     badge: 'Yeni partiya',
-    imageUrl: productImageFallbacks[0],
+    imageUrl: themedImage('qida-ve-icki', 0),
     imageAlt: 'Topdan konfet partiyası',
     whatsappNumber: '+994553334455',
     phone: '+994553334455',
@@ -1090,7 +1190,7 @@ products.push(
     ],
     minOrder: 'Min: 120 ədəd',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[3],
+    imageUrl: themedImage('qida-ve-icki', 3),
     imageAlt: 'Topdan yağ partiyası',
     whatsappNumber: '+994772223344',
     phone: '+994772223344',
@@ -1110,7 +1210,7 @@ products.push(
     ],
     minOrder: 'Min: 400 çu',
     badge: 'Stokda var',
-    imageUrl: productImageFallbacks[2],
+    imageUrl: themedImage('tikinti-ve-temir', 2),
     imageAlt: 'Topdan sement partiyası',
     whatsappNumber: '+994777778899',
     phone: '+994777778899',
@@ -1130,7 +1230,7 @@ products.push(
     ],
     minOrder: 'Min: 90 dəst',
     badge: 'Yeni',
-    imageUrl: productImageFallbacks[1],
+    imageUrl: themedImage('tikinti-ve-temir', 1),
     imageAlt: 'Topdan bağ alətləri dəsti',
     whatsappNumber: '+994777778899',
     phone: '+994777778899',
@@ -1408,6 +1508,20 @@ function resolveProductImage(product: ApiProduct, index: number): string {
   const resolvedUrl = resolveMediaUrl(rawUrl ?? firstImage?.storageKey);
   if (resolvedUrl) {
     return resolvedUrl;
+  }
+  return themedImage(product.category?.slug ?? '', index);
+}
+
+/**
+ * Kateqoriya açar sözlərinə görə mövzuya uyğun stock şəkil qaytarır —
+ * şəkli olmayan məhsullar başqa kateqoriyanın şəklini göstərmir.
+ */
+function themedImage(categorySlug: string, index: number): string {
+  const theme = themedCategoryImages.find((entry) =>
+    entry.keywords.some((keyword) => categorySlug.includes(keyword)),
+  );
+  if (theme) {
+    return theme.images[index % theme.images.length] ?? categoryImageFallback;
   }
   return productImageFallbacks[index % productImageFallbacks.length] ?? heroImage;
 }
