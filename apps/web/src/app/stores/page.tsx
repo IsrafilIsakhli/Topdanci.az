@@ -19,6 +19,7 @@ import {
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
 import { LeadWhatsAppLink } from '../../components/lead-actions';
+import { StoresSortSelect } from '../../components/stores-sort-select';
 import { categoryRoute } from '../../lib/routes';
 import {
   getCategories,
@@ -155,16 +156,7 @@ export default async function StoresPage({
                 <input name="city" defaultValue={query?.city ?? ''} placeholder="Şəhər" />
               </label>
               {query?.category ? <input type="hidden" name="category" value={query.category} /> : null}
-              <select
-                aria-label="Sırala"
-                defaultValue={sort}
-                name="sort"
-                onChange={(event) => void event.currentTarget.form?.requestSubmit()}
-              >
-                <option value="newest">Ən yenilər</option>
-                <option value="popular">Ən çox baxılan</option>
-                <option value="products">Ən çox məhsul</option>
-              </select>
+              <StoresSortSelect value={sort} />
               <button className="button button-primary" type="submit">
                 Axtar
               </button>
