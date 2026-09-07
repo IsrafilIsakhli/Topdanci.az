@@ -223,7 +223,7 @@ const themedCategoryImages: Array<{ keywords: string[]; images: string[] }> = [
     keywords: ['geyim', 'ayaqqabi', 'tekstil', 'parca', 'cki-godik'],
     images: [
       'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=900&q=82',
-      'https://images.unsplash.com/photo-1489987707025-afc232f7bdaf?auto=format&fit=crop&w=900&q=82',
+      'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?auto=format&fit=crop&w=900&q=82',
       'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=900&q=82',
     ],
   },
@@ -1312,7 +1312,7 @@ export async function getCategory(slug: string): Promise<CategoryCard | null> {
   if (response?.data) {
     return mapCategory(response.data);
   }
-  return categories.find((category) => category.slug === slug) ?? null;
+  return filterCategories(categories).find((category) => category.slug === slug) ?? null;
 }
 
 export async function getProducts(query: ProductQuery = {}): Promise<ProductPreview[]> {
@@ -1640,10 +1640,35 @@ function toQueryString(query: Record<string, string | number | boolean | undefin
 
 function filterCategories(source: CategoryCard[], query?: { q?: string | undefined; rootsOnly?: boolean | undefined }): CategoryCard[] {
   const normalized = query?.q?.toLowerCase();
-  return source.filter((category) => {
+  const counted = applyFallbackCategoryCounts(source);
+  return counted.filter((category) => {
     const matchesRoot = query?.rootsOnly ? category.parentId === 'son-elanlar' : true;
     const matchesSearch = normalized ? category.name.toLowerCase().includes(normalized) : true;
     return matchesRoot && matchesSearch;
+  });
+}
+
+/**
+ * Fallback kateqoriyalarında məhsul sayını mock kataloqdan hesablayır.
+ * Say validdən yuxarı (valideyn kateqoriyalar) doğru yığılır.
+ */
+function applyFallbackCategoryCounts(source: CategoryCard[]): CategoryCard[] {
+  const parentBySlug = new Map(source.map((category) => [category.slug, category.parentId]));
+  const counts = new Map<string, number>();
+
+  for (const product of products) {
+    let slug: string | undefined = product.categorySlug;
+    const visited = new Set<string>();
+    while (slug && !visited.has(slug)) {
+      visited.add(slug);
+      counts.set(slug, (counts.get(slug) ?? 0) + 1);
+      slug = parentBySlug.get(slug) ?? undefined;
+    }
+  }
+
+  return source.map((category) => {
+    const count = counts.get(category.slug) ?? 0;
+    return count ? { ...category, productCount: formatCompactCount(count) } : category;
   });
 }
 

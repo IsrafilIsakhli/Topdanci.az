@@ -188,7 +188,7 @@ export default async function ProductsPage({
                   key={category.slug}
                 >
                   {category.name}
-                  <small>{category.productCount}</small>
+                  {category.productCount !== '0' ? <small>{category.productCount}</small> : null}
                 </Link>
               ))}
             </div>

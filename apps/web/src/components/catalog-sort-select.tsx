@@ -17,6 +17,7 @@ export function CatalogSortSelect({ ariaLabel, name, value, options, form }: Cat
   return (
     <select
       aria-label={ariaLabel}
+      className="catalog-sort-select"
       defaultValue={value}
       form={form}
       name={name}
