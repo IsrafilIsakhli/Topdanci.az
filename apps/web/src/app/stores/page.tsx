@@ -19,8 +19,9 @@ import {
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
 import { LeadWhatsAppLink } from '../../components/lead-actions';
-import { StoresSortSelect } from '../../components/stores-sort-select';
+import { CatalogSortSelect } from '../../components/catalog-sort-select';
 import { categoryRoute } from '../../lib/routes';
+import { storeAccent } from '../../lib/store-accent';
 import {
   getCategories,
   getProducts,
@@ -156,7 +157,16 @@ export default async function StoresPage({
                 <input name="city" defaultValue={query?.city ?? ''} placeholder="Şəhər" />
               </label>
               {query?.category ? <input type="hidden" name="category" value={query.category} /> : null}
-              <StoresSortSelect value={sort} />
+              <CatalogSortSelect
+                ariaLabel="Sırala"
+                name="sort"
+                value={sort}
+                options={[
+                  { value: 'newest', label: 'Ən yenilər' },
+                  { value: 'popular', label: 'Ən çox baxılan' },
+                  { value: 'products', label: 'Ən çox məhsul' },
+                ]}
+              />
               <button className="button button-primary" type="submit">
                 Axtar
               </button>
@@ -496,25 +506,6 @@ export default async function StoresPage({
 function toNumber(value: string) {
   const number = parseInt(value.replace(/[^\d]/g, ''), 10);
   return Number.isFinite(number) ? number : 0;
-}
-
-const STORE_ACCENTS: Array<{ bg: string; fg: string }> = [
-  { bg: '#0f5b3a', fg: '#ffffff' },
-  { bg: '#1e3a8a', fg: '#ffffff' },
-  { bg: '#7c2d92', fg: '#ffffff' },
-  { bg: '#b54708', fg: '#ffffff' },
-  { bg: '#0f766e', fg: '#ffffff' },
-  { bg: '#be185d', fg: '#ffffff' },
-  { bg: '#0369a1', fg: '#ffffff' },
-  { bg: '#4d2c3a', fg: '#ffffff' },
-];
-
-function storeAccent(slug: string) {
-  let hash = 0;
-  for (let index = 0; index < slug.length; index += 1) {
-    hash = (hash * 31 + slug.charCodeAt(index)) & 0x7fffffff;
-  }
-  return STORE_ACCENTS[hash % STORE_ACCENTS.length]!;
 }
 
 function normalizeStoreSort(value?: string): StoreSort {

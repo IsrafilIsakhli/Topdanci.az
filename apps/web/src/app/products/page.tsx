@@ -1,10 +1,22 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, Filter, Package, Search } from 'lucide-react';
-import { ProductCard } from '../../components/product-card';
+import { ArrowRight, BadgeCheck, Filter, Package, Search, ShieldCheck, Truck, X } from 'lucide-react';
+import { CatalogSortSelect } from '../../components/catalog-sort-select';
+import { JsonLd } from '../../components/json-ld';
+import { ProductMarketCard } from '../../components/product-market-card';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
-import { getCategories, getProductsPage, type ProductSort } from '../../lib/catalog-data';
+import { getCategories, getProductsPage } from '../../lib/catalog-data';
+import { absoluteUrl } from '../../lib/site-url';
+import {
+  SORT_OPTIONS,
+  buildActiveFilters,
+  buildProductsHref,
+  normalizeProductSort,
+  normalizeStock,
+  toOptionalNumber,
+  type ProductsSearchQuery,
+} from './products-filters';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,24 +33,43 @@ export default async function ProductsPage({
 }) {
   const query = await searchParams;
   const sort = normalizeProductSort(query?.sort);
-  const [page, categories] = await Promise.all([getProductsPage({
-    q: query?.q,
-    category: query?.category,
-    city: query?.city,
-    cursor: query?.cursor,
-    sort,
-    limit: 24,
-    priceMin: toOptionalNumber(query?.priceMin),
-    priceMax: toOptionalNumber(query?.priceMax),
-    minOrderMax: toOptionalNumber(query?.minOrderMax),
-    verified: query?.verified === 'true',
-    stock: normalizeStock(query?.stock),
-  }), getCategories()]);
+  const [page, categories] = await Promise.all([
+    getProductsPage({
+      q: query?.q,
+      category: query?.category,
+      city: query?.city,
+      cursor: query?.cursor,
+      sort,
+      limit: 24,
+      priceMin: toOptionalNumber(query?.priceMin),
+      priceMax: toOptionalNumber(query?.priceMax),
+      minOrderMax: toOptionalNumber(query?.minOrderMax),
+      verified: query?.verified === 'true',
+      stock: normalizeStock(query?.stock),
+    }),
+    getCategories({ rootsOnly: true }),
+  ]);
   const products = page.items;
+  const activeFilters = buildActiveFilters(query, sort, categories);
+
+  const productListJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Topdansatış məhsulları',
+    numberOfItems: page.meta.total,
+    itemListElement: products.slice(0, 20).map((product, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: product.title,
+      url: absoluteUrl(`/products/${product.slug}`),
+    })),
+  };
 
   return (
     <main className="site-shell">
       <SiteHeader />
+      <JsonLd data={productListJsonLd} />
+
       <section className="section products-hero-section">
         <div className="container">
           <div className="section-title-row products-title-row">
@@ -50,12 +81,28 @@ export default async function ProductsPage({
               <h1>Məhsullar</h1>
               <p className="lead">Topdansatış məhsullarını daha rahat müqayisə edin və satıcı ilə birbaşa əlaqə saxlayın.</p>
             </div>
-            <select className="button" aria-label="Sırala" defaultValue={sort} form="products-filter-form" name="sort">
-              <option value="newest">Ən yenilər</option>
-              <option value="popular">Populyar</option>
-              <option value="price_asc">Qiymət: artan</option>
-              <option value="price_desc">Qiymət: azalan</option>
-            </select>
+            <CatalogSortSelect
+              ariaLabel="Sırala"
+              form="products-filter-form"
+              name="sort"
+              options={SORT_OPTIONS}
+              value={sort}
+            />
+          </div>
+
+          <div className="products-trust-bar" aria-label="Kataloq zəmanətləri">
+            <span>
+              <ShieldCheck size={16} />
+              <strong>{page.meta.total}</strong> aktiv topdan elan
+            </span>
+            <span>
+              <Truck size={16} />
+              Ölkə üzrə topdan çatdırılma
+            </span>
+            <span>
+              <BadgeCheck size={16} />
+              Birbaşa satıcı əlaqəsi
+            </span>
           </div>
 
           <form action="/products" className="catalog-search-panel products-search-panel" id="products-filter-form">
@@ -110,6 +157,42 @@ export default async function ProductsPage({
               </div>
             </details>
           </form>
+
+          {activeFilters.length ? (
+            <div className="products-active-filters" aria-label="Aktiv filtrlər">
+              {activeFilters.map((filter) => (
+                <Link className="products-filter-chip" href={filter.href} key={filter.key}>
+                  {filter.icon}
+                  {filter.label}
+                  <X size={13} />
+                </Link>
+              ))}
+              <Link className="products-filter-clear" href="/products">
+                Hamısını təmizlə
+              </Link>
+            </div>
+          ) : null}
+
+          {categories.length ? (
+            <div className="products-category-row" aria-label="Kateqoriyalar üzrə göstər">
+              <Link
+                className={query?.category ? 'products-category-chip' : 'products-category-chip active'}
+                href="/products"
+              >
+                Bütün kateqoriyalar
+              </Link>
+              {categories.map((category) => (
+                <Link
+                  className={query?.category === category.slug ? 'products-category-chip active' : 'products-category-chip'}
+                  href={`/products?category=${encodeURIComponent(category.slug)}`}
+                  key={category.slug}
+                >
+                  {category.name}
+                  <small>{category.productCount}</small>
+                </Link>
+              ))}
+            </div>
+          ) : null}
         </div>
       </section>
 
@@ -123,16 +206,16 @@ export default async function ProductsPage({
             <span>{page.meta.total} məhsul tapıldı</span>
           </div>
 
-          <div className="grid product-grid product-market-grid product-list-view">
+          <div className="products-market-grid">
             {products.length ? (
-              products.map((product) => <ProductCard key={product.slug} product={product} variant="compact" />)
+              products.map((product) => <ProductMarketCard key={product.slug} product={product} />)
             ) : (
               <p className="empty-state">Axtarışa uyğun aktiv məhsul tapılmadı.</p>
             )}
           </div>
           {page.meta.nextCursor ? (
             <div className="catalog-pagination">
-              <Link className="button" href={buildProductsHref(query, page.meta.nextCursor, sort)}>
+              <Link className="button" href={buildProductsHref(query, sort, { cursor: page.meta.nextCursor })}>
                 Daha çox məhsul <ArrowRight size={16} />
               </Link>
             </div>
@@ -142,50 +225,4 @@ export default async function ProductsPage({
       <SiteFooter />
     </main>
   );
-}
-
-function normalizeProductSort(value?: string): ProductSort {
-  return value === 'popular' || value === 'price_asc' || value === 'price_desc' ? value : 'newest';
-}
-
-function buildProductsHref(
-  query: ProductsSearchQuery | undefined,
-  cursor: string,
-  sort: ProductSort,
-) {
-  const params = new URLSearchParams();
-  if (query?.q) params.set('q', query.q);
-  if (query?.category) params.set('category', query.category);
-  if (query?.city) params.set('city', query.city);
-  if (query?.priceMin) params.set('priceMin', query.priceMin);
-  if (query?.priceMax) params.set('priceMax', query.priceMax);
-  if (query?.minOrderMax) params.set('minOrderMax', query.minOrderMax);
-  if (query?.verified) params.set('verified', query.verified);
-  if (query?.stock) params.set('stock', query.stock);
-  if (sort !== 'newest') params.set('sort', sort);
-  params.set('cursor', cursor);
-  return `/products?${params.toString()}`;
-}
-
-type ProductsSearchQuery = {
-  q?: string;
-  category?: string;
-  city?: string;
-  cursor?: string;
-  sort?: string;
-  priceMin?: string;
-  priceMax?: string;
-  minOrderMax?: string;
-  verified?: string;
-  stock?: string;
-};
-
-function toOptionalNumber(value?: string): number | undefined {
-  if (!value) return undefined;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
-}
-
-function normalizeStock(value?: string): 'IN_STOCK' | 'LIMITED' | 'OUT_OF_STOCK' | undefined {
-  return value === 'IN_STOCK' || value === 'LIMITED' || value === 'OUT_OF_STOCK' ? value : undefined;
 }
