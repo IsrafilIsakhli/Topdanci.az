@@ -1,4 +1,4 @@
-import { Clock3, Mail, MessageCircle, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, Clock3, Mail, MessageCircle, ShieldCheck } from 'lucide-react';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
 import { ContactForm } from './contact-form';
@@ -9,18 +9,21 @@ const contactCards = [
     title: 'WhatsApp dəstəyi',
     text: 'Mağaza, məhsul və reklam sualları üçün ən sürətli əlaqə.',
     value: '+994 00 000 00 00',
+    hint: 'Adətən 15 dəqiqə ərzində',
   },
   {
     icon: Mail,
     title: 'E-poçt',
     text: 'Rəsmi müraciət və tərəfdaşlıq təklifləri üçün yazın.',
     value: 'support@topdanbazar.az',
+    hint: '1 iş günü ərzində cavab',
   },
   {
     icon: Clock3,
     title: 'İş saatları',
     text: 'Müraciətlər növbə ilə cavablandırılır.',
     value: 'B.e - C. 09:00-18:00',
+    hint: 'Şənbə 10:00-15:00',
   },
 ];
 
@@ -43,32 +46,41 @@ export default function ContactPage() {
   return (
     <main className="site-shell">
       <SiteHeader />
-      <section className="section contact-page-section">
-        <div className="container contact-hero-layout">
-          <aside className="contact-copy">
+      <section className="contact-v2">
+        <div className="container contact-v2-layout">
+          <aside className="contact-v2-copy">
             <span className="section-eyebrow">
               <ShieldCheck size={16} />
               Dəstək və əlaqə
             </span>
-            <h1>Bizimlə rahat əlaqə saxlayın</h1>
-            <p className="lead">
-              Mağaza açmaq, məhsul yerləşdirmək, reklam almaq və texniki suallar üçün müraciətinizi göndərin.
-            </p>
+            <div className="contact-v2-heading">
+              <h1>Sualınız var? Birlikdə həll edək.</h1>
+              <p>
+                Mağaza açmaq, məhsul yerləşdirmək, reklam və texniki məsələlərlə bağlı doğru komandaya birbaşa yazın.
+              </p>
+            </div>
 
-            <div className="contact-card-grid">
+            <div className="contact-v2-assurance" aria-label="Dəstək üstünlükləri">
+              <span><CheckCircle2 size={17} /> Müraciətiniz qorunur</span>
+              <span><CheckCircle2 size={17} /> Cavab məsul şəxsə yönləndirilir</span>
+            </div>
+
+            <div className="contact-v2-channels">
               {contactCards.map((card) => {
                 const Icon = card.icon;
                 return (
-                  <div className="contact-info-card" key={card.title}>
-                    <span className="icon-badge">
+                  <article className="contact-v2-channel" key={card.title}>
+                    <span className="contact-v2-channel-icon">
                       <Icon size={18} />
                     </span>
-                    <span>
+                    <span className="contact-v2-channel-copy">
                       <strong>{card.title}</strong>
-                      <span className="card-meta">{card.text}</span>
+                      <span>{card.text}</span>
                       <b>{card.value}</b>
+                      <small>{card.hint}</small>
                     </span>
-                  </div>
+                    <ArrowUpRight className="contact-v2-channel-arrow" size={18} aria-hidden="true" />
+                  </article>
                 );
               })}
             </div>
@@ -78,18 +90,19 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="section contact-faq-section">
-        <div className="container contact-faq-layout">
-          <div>
+      <section className="contact-v2-faq-section">
+        <div className="container contact-v2-faq-layout">
+          <div className="contact-v2-faq-heading">
             <span className="section-eyebrow">Tez cavablar</span>
             <h2>Ən çox soruşulanlar</h2>
+            <p>Yazmazdan əvvəl axtardığınız cavab burada ola bilər.</p>
           </div>
-          <div className="contact-faq-grid">
+          <div className="contact-v2-faq-list">
             {faqs.map((item) => (
-              <article className="contact-faq-card" key={item.question}>
-                <h3>{item.question}</h3>
+              <details className="contact-v2-faq-item" key={item.question}>
+                <summary>{item.question}</summary>
                 <p>{item.answer}</p>
-              </article>
+              </details>
             ))}
           </div>
         </div>

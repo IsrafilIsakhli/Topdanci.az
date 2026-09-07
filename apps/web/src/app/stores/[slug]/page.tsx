@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import {
   BadgeCheck,
   BriefcaseBusiness,
-  ChevronDown,
   Clock3,
   Eye,
   Mail,
@@ -173,14 +172,13 @@ export default async function StoreDetailPage({ params, searchParams }: PageProp
                     placeholder="Bu mağazada məhsul axtar"
                   />
                 </label>
-                <button className="store-sort-button" type="submit">
-                  Axtar
-                  <ChevronDown size={18} />
-                </button>
+              <button className="store-sort-button" type="submit">
+                Axtar
+              </button>
               </form>
             </div>
 
-            <div className="grid product-grid">
+            <div className="grid product-grid store-product-grid">
               {storeProducts.length ? (
                 storeProducts.map((product) => <ProductCard key={product.slug} product={product} />)
               ) : (
@@ -212,18 +210,22 @@ export default async function StoreDetailPage({ params, searchParams }: PageProp
               </Link>
 
               <div className="work-hours">
-                <span>İş saatları</span>
-                <p>
-                  <Clock3 size={17} />
-                  <strong>Bazar ertəsi - Cümə:</strong>
-                  <br />
-                  09:00 - 18:00
-                </p>
-                <p>
-                  <strong>Şənbə:</strong>
-                  <br />
-                  10:00 - 14:00
-                </p>
+                <span>
+                  <Clock3 size={15} />
+                  İş saatları
+                </span>
+                <div className="work-hours-row">
+                  <strong>Bazar ertəsi – Cümə</strong>
+                  <em>09:00 – 18:00</em>
+                </div>
+                <div className="work-hours-row">
+                  <strong>Şənbə</strong>
+                  <em>10:00 – 14:00</em>
+                </div>
+                <div className="work-hours-row is-closed">
+                  <strong>Bazar</strong>
+                  <em>Bağlıdır</em>
+                </div>
               </div>
             </section>
 

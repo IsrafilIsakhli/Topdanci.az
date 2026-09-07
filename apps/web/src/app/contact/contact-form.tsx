@@ -39,13 +39,15 @@ export function ContactForm() {
   }
 
   return (
-    <form className="panel contact-form-card" onSubmit={handleSubmit}>
-      <span className="form-kicker">
-        <MessageSquare size={16} />
-        Mesaj göndərin
-      </span>
-      <h2>Müraciətinizi yazın</h2>
-      <p className="card-meta">Mövzunu seçin, komanda doğru istiqamətdə cavablandırsın.</p>
+    <form className="contact-form-card contact-v2-form" onSubmit={handleSubmit}>
+      <header className="contact-v2-form-header">
+        <span className="form-kicker">
+          <MessageSquare size={16} />
+          Mesaj göndərin
+        </span>
+        <h2>Müraciətinizi yazın</h2>
+        <p>Mövzunu seçin, komanda müraciətinizi doğru istiqamətdə cavablandırsın.</p>
+      </header>
 
       {state.type === 'success' ? <p className="form-alert form-alert-success">{state.message}</p> : null}
       {state.type === 'error' ? <p className="form-alert form-alert-error">{state.message}</p> : null}
@@ -53,19 +55,19 @@ export function ContactForm() {
       <div className="field-grid">
         <label className="field">
           <span>Ad</span>
-          <input name="name" placeholder="Adınız" required />
+          <input autoComplete="name" name="name" placeholder="Adınız və soyadınız" required />
         </label>
         <label className="field">
           <span>E-poçt</span>
-          <input name="email" placeholder="numune@email.com" required type="email" />
+          <input autoComplete="email" name="email" placeholder="numune@email.com" required type="email" />
         </label>
         <label className="field">
           <span>Telefon</span>
-          <input name="phone" placeholder="+994 (__) ___-__-__" />
+          <input autoComplete="tel" inputMode="tel" name="phone" placeholder="+994 (__) ___-__-__" />
         </label>
         <label className="field">
           <span>Mövzu</span>
-          <select name="subject" defaultValue="">
+          <select name="subject" defaultValue="" required>
             <option disabled value="">
               Müraciət tipi seçin
             </option>
@@ -85,6 +87,7 @@ export function ContactForm() {
         <Send size={17} />
         {state.type === 'submitting' ? 'Göndərilir...' : 'Müraciəti göndər'}
       </button>
+      <small className="contact-v2-form-note">Göndərməklə məlumatlarınızın müraciətinizə cavab vermək üçün işlənməsinə razılaşırsınız.</small>
     </form>
   );
 }
