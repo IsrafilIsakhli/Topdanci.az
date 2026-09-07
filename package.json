@@ -17,7 +17,7 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "test:e2e": "npm run test:e2e --workspace @topdanbazar/api",
-    "verify": "npm run lint && npm run prisma:validate && npm run typecheck && npm run test && npm run test:e2e && npm run build && npm audit --omit=dev --audit-level=high",
+    "verify": "npm run lint && npm run prisma:validate && npm run typecheck && npm run test && npm run test:e2e && npm run build && node scripts/audit-gate.cjs",
     "verify:local": "node scripts/check-local-services.cjs && npm run prisma:deploy && npm run prisma:seed && npm run verify",
     "smoke:production": "node scripts/production-smoke.cjs",
     "check:local-services": "node scripts/check-local-services.cjs",
@@ -36,7 +36,9 @@
   },
   "overrides": {
     "multer": "^2.2.0",
-    "postcss": "^8.5.16"
+    "postcss": "^8.5.28",
+    "sharp": "^0.35.4",
+    "deepmerge-ts": "^8.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
