@@ -15,6 +15,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  MoreHorizontal,
   PackageCheck,
   ShieldCheck,
   Store,
@@ -178,6 +179,30 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </header>
 
         {children}
+
+        <nav className="admin-bottom-nav" aria-label="Mobil admin paneli menyusu">
+          {visibleNav.slice(0, 4).map((item) => {
+            const Icon = item.icon;
+            const isActive = item.href === '/admin' ? pathname === item.href : pathname.startsWith(item.href);
+
+            return (
+              <Link className={isActive ? 'is-active' : ''} href={item.href} key={item.href}>
+                <Icon size={20} />
+                <span>
+                  {item.href === '/admin/store-applications'
+                    ? 'Müraciətlər'
+                    : item.href === '/admin/products'
+                      ? 'Məhsullar'
+                      : item.label}
+                </span>
+              </Link>
+            );
+          })}
+          <button aria-label="Bütün admin bölmələrini aç" type="button" onClick={() => setIsOpen(true)}>
+            <MoreHorizontal size={20} />
+            <span>Daha çox</span>
+          </button>
+        </nav>
       </section>
     </main>
   );

@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Eye, Mail, MessageSquare, Phone, Store } from 'lucide-react';
+import { Inbox, Loader2 } from 'lucide-react';
 import { getSellerLeads, type SellerLead } from '../../../lib/seller-api';
+import { leadIcon, leadLabels, leadTone, timeAgo } from '../dashboard/dashboard-utils';
 
 const typeOptions = [
   { value: '', label: 'Bütün hadisələr' },
@@ -12,14 +13,6 @@ const typeOptions = [
   { value: 'PHONE_REVEAL', label: 'Telefon göstərildi' },
   { value: 'EMAIL_CLICK', label: 'E-poçt klik' },
 ];
-
-const leadLabels = {
-  PRODUCT_VIEW: 'Məhsul baxışı',
-  STORE_VIEW: 'Mağaza baxışı',
-  WHATSAPP_CLICK: 'WhatsApp klik',
-  PHONE_REVEAL: 'Telefon göstərildi',
-  EMAIL_CLICK: 'E-poçt klik',
-};
 
 export default function SellerLeadsPage() {
   const [range, setRange] = useState('30d');
@@ -31,78 +24,92 @@ export default function SellerLeadsPage() {
   const params = useMemo(() => ({ range, type: type || undefined }), [range, type]);
 
   useEffect(() => {
+    let mounted = true;
     setIsLoading(true);
+
     getSellerLeads(params)
       .then((response) => {
+        if (!mounted) return;
         setLeads(response.data);
         setError('');
       })
-      .catch(() => setError('Müraciətlər yüklənmədi.'))
-      .finally(() => setIsLoading(false));
+      .catch(() => {
+        if (mounted) setError('Müraciətlər yüklənmədi.');
+      })
+      .finally(() => {
+        if (mounted) setIsLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
   }, [params]);
 
   return (
     <div className="seller-page">
-      <div className="seller-page-head">
-        <span className="seller-kicker">Lead hadisələri</span>
-        <h2>Müraciətlər və baxışlar</h2>
-        <p>Alıcıların baxış, WhatsApp və telefon hərəkətləri burada görünür. Şəxsi IP məlumatları göstərilmir.</p>
-      </div>
+      <div className="dash2-page">
+        <div className="dash2-page-head">
+          <div>
+            <h2>Müraciətlər və baxışlar</h2>
+            <p>Alıcıların baxış, WhatsApp və telefon hərəkətləri burada görünür. Şəxsi IP məlumatları göstərilmir.</p>
+          </div>
+          {leads.length ? <span className="dash2-chip">{leads.length} hadisə</span> : null}
+        </div>
 
-      <section className="seller-card seller-filter-card seller-filter-compact">
-        <select value={range} onChange={(event) => setRange(event.target.value)}>
-          <option value="7d">Son 7 gün</option>
-          <option value="30d">Son 30 gün</option>
-          <option value="90d">Son 90 gün</option>
-        </select>
-        <select value={type} onChange={(event) => setType(event.target.value)}>
-          {typeOptions.map((item) => (
-            <option value={item.value} key={item.value}>
-              {item.label}
-            </option>
-          ))}
-        </select>
-      </section>
+        <section aria-label="Filtrlər" className="dash2-toolbar">
+          <select className="dash2-select" value={range} onChange={(event) => setRange(event.target.value)}>
+            <option value="7d">Son 7 gün</option>
+            <option value="30d">Son 30 gün</option>
+            <option value="90d">Son 90 gün</option>
+          </select>
+          <select className="dash2-select" value={type} onChange={(event) => setType(event.target.value)}>
+            {typeOptions.map((item) => (
+              <option value={item.value} key={item.value}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </section>
 
-      {error ? <div className="form-alert form-alert-error">{error}</div> : null}
+        {error ? <div className="form-alert form-alert-error">{error}</div> : null}
 
-      <section className="seller-card">
         {isLoading ? (
-          <div className="seller-table-loading">Müraciətlər yüklənir</div>
+          <div className="dash2-list-card">
+            <div className="seller-table-loading">
+              <Loader2 className="spin-icon" size={20} />
+              Müraciətlər yüklənir
+            </div>
+          </div>
         ) : leads.length ? (
-          <div className="seller-lead-timeline">
-            {leads.map((lead) => {
-              const Icon = iconForLead(lead.type);
-              return (
-                <article className="seller-lead-row" key={lead.id}>
-                  <span className="seller-icon-soft">
-                    <Icon size={18} />
-                  </span>
-                  <div>
-                    <strong>{leadLabels[lead.type]}</strong>
-                    <p>{lead.product?.title ?? lead.store.name}</p>
-                    <small>{lead.store.name}</small>
+          <section className="dash2-section">
+            <div className="dash2-timeline">
+              {leads.map((lead, index) => {
+                const Icon = leadIcon(lead.type);
+                return (
+                  <div className={`dash2-tl-row ${leadTone(lead.type)}`} key={lead.id} style={{ animationDelay: `${index * 40}ms` }}>
+                    <span className="dash2-tl-dot">
+                      <Icon size={16} />
+                    </span>
+                    <div className="dash2-tl-body">
+                      <strong>{leadLabels[lead.type]}</strong>
+                      <small>{lead.product?.title ?? lead.store.name}</small>
+                    </div>
+                    <time className="dash2-tl-time">{timeAgo(lead.createdAt)}</time>
                   </div>
-                  <time>{new Date(lead.createdAt).toLocaleString('az-AZ')}</time>
-                </article>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          </section>
         ) : (
-          <div className="seller-empty">
-            <h3>Müraciət yoxdur</h3>
-            <p>Seçilən period üçün lead hadisəsi tapılmadı.</p>
-          </div>
+          <section className="dash2-section">
+            <div className="dash2-empty">
+              <Inbox size={22} />
+              <strong>Müraciət yoxdur</strong>
+              <span>Seçilən period üçün lead hadisəsi tapılmadı.</span>
+            </div>
+          </section>
         )}
-      </section>
+      </div>
     </div>
   );
-}
-
-function iconForLead(type: SellerLead['type']) {
-  if (type === 'WHATSAPP_CLICK') return MessageSquare;
-  if (type === 'PHONE_REVEAL') return Phone;
-  if (type === 'EMAIL_CLICK') return Mail;
-  if (type === 'STORE_VIEW') return Store;
-  return Eye;
 }

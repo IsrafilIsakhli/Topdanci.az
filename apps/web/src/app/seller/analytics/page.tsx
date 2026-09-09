@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { BarChart3, Eye, MessageSquare, Phone, Store } from 'lucide-react';
 import { getSellerAnalytics, type SellerAnalytics } from '../../../lib/seller-api';
+import { CountUp } from '../../../components/count-up';
 
 const ranges = [
   { label: '7 gün', value: '7d' },
@@ -17,106 +18,181 @@ export default function SellerAnalyticsPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    let mounted = true;
     setIsLoading(true);
+
     getSellerAnalytics(range)
       .then((response) => {
+        if (!mounted) return;
         setAnalytics(response.data);
         setError('');
       })
-      .catch(() => setError('Statistika yüklənmədi.'))
-      .finally(() => setIsLoading(false));
+      .catch(() => {
+        if (mounted) setError('Statistika yüklənmədi.');
+      })
+      .finally(() => {
+        if (mounted) setIsLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
   }, [range]);
 
-  const leadStats = analytics
+  const total = analytics
+    ? analytics.productCounts.draft +
+      analytics.productCounts.pendingReview +
+      analytics.productCounts.active +
+      analytics.productCounts.passive +
+      analytics.productCounts.rejected
+    : 0;
+
+  const distribution = analytics
     ? [
-        { label: 'Məhsul baxışı', value: analytics.leadCounts.productViews, icon: Eye },
-        { label: 'Mağaza baxışı', value: analytics.leadCounts.storeViews, icon: Store },
-        { label: 'WhatsApp klik', value: analytics.leadCounts.whatsappClicks, icon: MessageSquare },
-        { label: 'Telefon göstərildi', value: analytics.leadCounts.phoneReveals, icon: Phone },
+        { label: 'Qaralama', value: analytics.productCounts.draft, accent: '#8b5cf6' },
+        { label: 'Yoxlamada', value: analytics.productCounts.pendingReview, accent: '#f59e0b' },
+        { label: 'Aktiv', value: analytics.productCounts.active, accent: '#10b981' },
+        { label: 'Passiv', value: analytics.productCounts.passive, accent: '#0ea5e9' },
+        { label: 'Rədd edildi', value: analytics.productCounts.rejected, accent: '#f43f5e' },
       ]
     : [];
 
   return (
     <div className="seller-page">
-      <div className="seller-page-head seller-page-head-row">
-        <div>
-          <span className="seller-kicker">Analitika</span>
-          <h2>Mağaza statistikası</h2>
-          <p>Raw IP və user-agent göstərilmir. Yalnız təhlükəsiz lead sayları paneldə görünür.</p>
+      <div className="dash2-page">
+        <div className="dash2-page-head">
+          <div>
+            <h2>Mağaza statistikası</h2>
+            <p>Raw IP və user-agent göstərilmir. Yalnız təhlükəsiz lead sayları paneldə görünür.</p>
+          </div>
+          <div aria-label="Period seçimi" className="dash2-range" role="group">
+            {ranges.map((item) => (
+              <button
+                className={range === item.value ? 'is-active' : ''}
+                key={item.value}
+                type="button"
+                onClick={() => setRange(item.value)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="seller-range-switch">
-          {ranges.map((item) => (
-            <button type="button" className={range === item.value ? 'is-active' : ''} key={item.value} onClick={() => setRange(item.value)}>
-              {item.label}
-            </button>
-          ))}
-        </div>
-      </div>
 
-      {error ? <div className="form-alert form-alert-error">{error}</div> : null}
+        {error ? <div className="form-alert form-alert-error">{error}</div> : null}
 
-      {isLoading || !analytics ? (
-        <div className="seller-skeleton seller-skeleton-hero">Statistika hazırlanır</div>
-      ) : (
-        <>
-          <section className="seller-stat-grid">
-            <article className="seller-stat-card seller-stat-card-wide">
-              <span>
-                <BarChart3 size={19} />
-              </span>
-              <small>Ümumi lead hadisəsi</small>
-              <strong>{analytics.totalLeads.toLocaleString('az-AZ')}</strong>
-            </article>
-            {leadStats.map((stat) => {
-              const Icon = stat.icon;
-              return (
-                <article className="seller-stat-card" key={stat.label}>
-                  <span>
-                    <Icon size={19} />
+        {isLoading || !analytics ? (
+          <div className="dash2-skel is-hero">Statistika hazırlanır</div>
+        ) : (
+          <>
+            <section aria-label="Lead göstəriciləri" className="dash2-stats">
+              <article className="dash2-tile is-emerald" style={{ animationDelay: '0ms' }}>
+                <div className="dash2-tile-head">
+                  <small>Ümumi lead hadisəsi</small>
+                  <span className="dash2-tile-icon">
+                    <BarChart3 size={17} />
                   </span>
-                  <small>{stat.label}</small>
-                  <strong>{stat.value.toLocaleString('az-AZ')}</strong>
-                </article>
-              );
-            })}
-          </section>
+                </div>
+                <strong className="dash2-tile-value">
+                  <CountUp value={analytics.totalLeads} />
+                </strong>
+                <div className="dash2-tile-foot">
+                  <small>seçilən period</small>
+                </div>
+              </article>
 
-          <section className="seller-card">
-            <div className="seller-card-head">
-              <div>
-                <span className="seller-kicker">Məhsul vəziyyəti</span>
-                <h3>Status paylanması</h3>
-              </div>
-            </div>
-            <div className="seller-status-bars">
-              {[
-                ['Qaralama', analytics.productCounts.draft],
-                ['Yoxlamada', analytics.productCounts.pendingReview],
-                ['Aktiv', analytics.productCounts.active],
-                ['Passiv', analytics.productCounts.passive],
-                ['Rədd edildi', analytics.productCounts.rejected],
-              ].map(([label, value]) => {
-                const numberValue = Number(value);
-                const total = Math.max(
-                  1,
-                  analytics.productCounts.draft +
-                    analytics.productCounts.pendingReview +
-                    analytics.productCounts.active +
-                    analytics.productCounts.passive +
-                    analytics.productCounts.rejected,
-                );
-                return (
-                  <div className="seller-status-bar" key={label}>
-                    <span>{label}</span>
-                    <strong>{numberValue}</strong>
-                    <em style={{ width: `${Math.max(6, (numberValue / total) * 100)}%` }} />
+              <article className="dash2-tile is-sky" style={{ animationDelay: '60ms' }}>
+                <div className="dash2-tile-head">
+                  <small>Məhsul baxışı</small>
+                  <span className="dash2-tile-icon">
+                    <Eye size={17} />
+                  </span>
+                </div>
+                <strong className="dash2-tile-value">
+                  <CountUp value={analytics.leadCounts.productViews} />
+                </strong>
+                <div className="dash2-tile-foot">
+                  <small>məhsul səhifələri</small>
+                </div>
+              </article>
+
+              <article className="dash2-tile is-violet" style={{ animationDelay: '120ms' }}>
+                <div className="dash2-tile-head">
+                  <small>Mağaza baxışı</small>
+                  <span className="dash2-tile-icon">
+                    <Store size={17} />
+                  </span>
+                </div>
+                <strong className="dash2-tile-value">
+                  <CountUp value={analytics.leadCounts.storeViews} />
+                </strong>
+                <div className="dash2-tile-foot">
+                  <small>mağaza profili</small>
+                </div>
+              </article>
+
+              <article className="dash2-tile is-amber" style={{ animationDelay: '180ms' }}>
+                <div className="dash2-tile-head">
+                  <small>WhatsApp klik</small>
+                  <span className="dash2-tile-icon">
+                    <MessageSquare size={17} />
+                  </span>
+                </div>
+                <strong className="dash2-tile-value">
+                  <CountUp value={analytics.leadCounts.whatsappClicks} />
+                </strong>
+                <div className="dash2-tile-foot">
+                  <small>birbaşa əlaqə</small>
+                </div>
+              </article>
+
+              <article className="dash2-tile is-rose" style={{ animationDelay: '240ms' }}>
+                <div className="dash2-tile-head">
+                  <small>Telefon göstərildi</small>
+                  <span className="dash2-tile-icon">
+                    <Phone size={17} />
+                  </span>
+                </div>
+                <strong className="dash2-tile-value">
+                  <CountUp value={analytics.leadCounts.phoneReveals} />
+                </strong>
+                <div className="dash2-tile-foot">
+                  <small>numaraya baxış</small>
+                </div>
+              </article>
+            </section>
+
+            <section className="dash2-section" style={{ animationDelay: '280ms' }}>
+              <header className="dash2-section-head">
+                <span className="dash2-card-icon">
+                  <BarChart3 size={19} />
+                </span>
+                <div>
+                  <h3>Status paylanması</h3>
+                  <p className="dash2-section-sub">Məhsulların statuslar üzrə sayı</p>
+                </div>
+              </header>
+              <div className="dash2-dist">
+                {distribution.map((row, index) => (
+                  <div className="dash2-dist-row" key={row.label} style={{ animationDelay: `${320 + index * 60}ms` }}>
+                    <span>{row.label}</span>
+                    <span className="dash2-dist-bar">
+                      <i
+                        style={{
+                          width: `${Math.max(4, (row.value / Math.max(total, 1)) * 100)}%`,
+                          background: row.accent,
+                          animationDelay: `${360 + index * 60}ms`,
+                        }}
+                      />
+                    </span>
+                    <strong>{row.value}</strong>
                   </div>
-                );
-              })}
-            </div>
-          </section>
-        </>
-      )}
+                ))}
+              </div>
+            </section>
+          </>
+        )}
+      </div>
     </div>
   );
 }

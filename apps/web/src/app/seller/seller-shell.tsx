@@ -11,7 +11,6 @@ import {
   LogOut,
   Menu,
   Package,
-  PanelLeftClose,
   Settings,
   Store,
   UserCircle,
@@ -104,7 +103,7 @@ export function SellerShell({ children }: { children: ReactNode }) {
             </span>
             TopdanBazar
           </Link>
-          <button className="seller-icon-button seller-mobile-only" type="button" onClick={() => setIsOpen(false)}>
+          <button aria-label="Menyunu bağla" className="seller-icon-button seller-mobile-only" type="button" onClick={() => setIsOpen(false)}>
             <X size={18} />
           </button>
         </div>
@@ -143,27 +142,37 @@ export function SellerShell({ children }: { children: ReactNode }) {
         </div>
       </aside>
 
-      {isOpen ? <button className="seller-drawer-backdrop" type="button" onClick={() => setIsOpen(false)} /> : null}
+      {isOpen ? <button aria-label="Menyunu bağla" className="seller-drawer-backdrop" type="button" onClick={() => setIsOpen(false)} /> : null}
 
       <section className="seller-main">
         <header className="seller-topbar">
-          <button className="seller-icon-button seller-mobile-only" type="button" onClick={() => setIsOpen(true)}>
+          <button aria-label="Menyunu aç" className="seller-icon-button seller-mobile-only" type="button" onClick={() => setIsOpen(true)}>
             <Menu size={20} />
           </button>
           <div>
-            <span className="seller-kicker">Satıcı mərkəzi</span>
             <h1>{activeTitle}</h1>
           </div>
           <div className="seller-topbar-actions">
             <ThemeToggle />
             <NotificationCenter classPrefix="seller" />
-            <button className="seller-icon-button seller-desktop-only" type="button" aria-label="Paneli yığ">
-              <PanelLeftClose size={18} />
-            </button>
           </div>
         </header>
 
         {children}
+
+        <nav className="seller-bottom-nav" aria-label="Mobil mağaza paneli menyusu">
+          {sellerNav.slice(0, 5).map((item) => {
+            const Icon = item.icon;
+            const isActive = item.href === '/seller' ? pathname === item.href : pathname.startsWith(item.href);
+
+            return (
+              <Link className={isActive ? 'is-active' : ''} href={item.href} key={item.href}>
+                <Icon size={20} />
+                <span>{item.label === 'Mağaza profili' ? 'Mağaza' : item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
       </section>
     </main>
   );

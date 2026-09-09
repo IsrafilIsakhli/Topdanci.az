@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { Edit3, EyeOff, Loader2, Plus, Search, Send, Trash2 } from 'lucide-react';
+import { Edit3, EyeOff, Loader2, PackageSearch, Plus, Search, Send, Trash2 } from 'lucide-react';
 import {
   deleteSellerProduct,
   getCategoryOptions,
@@ -20,6 +20,15 @@ const statusLabels: Record<ProductStatus, string> = {
   PASSIVE: 'Passiv',
   REJECTED: 'Rədd edildi',
   DELETED: 'Silindi',
+};
+
+const statusTones: Record<ProductStatus, string> = {
+  DRAFT: 'is-draft',
+  PENDING_REVIEW: 'is-pending',
+  ACTIVE: 'is-active',
+  PASSIVE: 'is-passive',
+  REJECTED: 'is-rejected',
+  DELETED: 'is-rejected',
 };
 
 export default function SellerProductsPage() {
@@ -92,98 +101,121 @@ export default function SellerProductsPage() {
 
   return (
     <div className="seller-page">
-      <div className="seller-page-head seller-page-head-row">
-        <div>
-          <span className="seller-kicker">Məhsul idarəsi</span>
-          <h2>Məhsullar</h2>
-          <p>Mağazanızın bütün məhsullarını buradan yaradın, redaktə edin və yoxlamaya göndərin.</p>
+      <div className="dash2-page">
+        <div className="dash2-page-head">
+          <div>
+            <h2>Məhsullar</h2>
+            <p>Mağazanızın bütün məhsullarını buradan yaradın, redaktə edin və yoxlamaya göndərin.</p>
+          </div>
+          <Link className="dash2-cta" href="/seller/products/new">
+            <Plus size={16} />
+            Məhsul əlavə et
+          </Link>
         </div>
-        <Link className="button button-primary" href="/seller/products/new">
-          <Plus size={16} />
-          Məhsul əlavə et
-        </Link>
-      </div>
 
-      <section className="seller-card seller-filter-card">
-        <label className="seller-search-field">
-          <Search size={18} />
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Məhsul adı və ya açıqlama üzrə axtar..." />
-        </label>
-        <select value={categoryId} onChange={(event) => setCategoryId(event.target.value)}>
-          <option value="">Bütün kateqoriyalar</option>
-          {categories.map((category) => (
-            <option value={category.id} key={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-        <select value={status} onChange={(event) => setStatus(event.target.value)}>
-          <option value="">Bütün statuslar</option>
-          {Object.entries(statusLabels).map(([value, label]) => (
-            <option value={value} key={value}>
-              {label}
-            </option>
-          ))}
-        </select>
-      </section>
+        <section aria-label="Filtrlər" className="dash2-toolbar">
+          <label className="dash2-search">
+            <Search size={17} />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Məhsul adı və ya açıqlama üzrə axtar..."
+            />
+          </label>
+          <select className="dash2-select" value={categoryId} onChange={(event) => setCategoryId(event.target.value)}>
+            <option value="">Bütün kateqoriyalar</option>
+            {categories.map((category) => (
+              <option value={category.id} key={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          <select className="dash2-select" value={status} onChange={(event) => setStatus(event.target.value)}>
+            <option value="">Bütün statuslar</option>
+            {Object.entries(statusLabels).map(([value, label]) => (
+              <option value={value} key={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </section>
 
-      {error ? <div className="form-alert form-alert-error">{error}</div> : null}
+        {error ? <div className="form-alert form-alert-error">{error}</div> : null}
 
-      <section className="seller-card seller-table-card">
         {isLoading ? (
-          <div className="seller-table-loading">
-            <Loader2 className="spin-icon" size={20} />
-            Məhsullar yüklənir
+          <div className="dash2-list-card">
+            <div className="seller-table-loading">
+              <Loader2 className="spin-icon" size={20} />
+              Məhsullar yüklənir
+            </div>
           </div>
         ) : products.length ? (
-          <div className="seller-product-list">
-            {products.map((product) => (
-              <article className="seller-product-row" key={product.id}>
-                <span className="seller-product-thumb" style={{ backgroundImage: product.images[0]?.cdnUrl ? `url(${product.images[0].cdnUrl})` : undefined }}>
-                  {!product.images[0]?.cdnUrl ? 'TB' : null}
+          <section className="dash2-list-card">
+            {products.map((product, index) => (
+              <article className="dash2-row" key={product.id} style={{ animationDelay: `${index * 45}ms` }}>
+                <span
+                  className="dash2-row-thumb"
+                  style={
+                    product.images[0]?.cdnUrl ? { backgroundImage: `url(${product.images[0].cdnUrl})` } : undefined
+                  }
+                >
+                  {product.images[0]?.cdnUrl ? null : 'TB'}
                 </span>
-                <span className="seller-product-main">
+                <span className="dash2-row-main">
                   <strong>{product.title}</strong>
                   <small>
                     {product.category?.name ?? 'Kateqoriyasız'} · {product.store.name}
                   </small>
                   {product.reviewNote ? <em>{product.reviewNote}</em> : null}
                 </span>
-                <span className={`seller-status seller-status-${product.status.toLowerCase().replace('_', '-')}`}>
-                  {statusLabels[product.status]}
-                </span>
-                <span className="seller-price">{product.priceLabel}</span>
-                <span className="seller-row-actions">
-                  <Link className="seller-icon-button" href={`/seller/products/${product.id}/edit`} aria-label="Redaktə et">
-                    <Edit3 size={16} />
+                <span className={`dash2-status ${statusTones[product.status]}`}>{statusLabels[product.status]}</span>
+                <span className="dash2-price">{product.priceLabel}</span>
+                <span className="dash2-row-actions">
+                  <Link className="dash2-icon-action" href={`/seller/products/${product.id}/edit`} aria-label="Redaktə et">
+                    <Edit3 size={15} />
                   </Link>
                   {['DRAFT', 'REJECTED', 'PASSIVE'].includes(product.status) ? (
-                    <button className="seller-icon-button" type="button" onClick={() => void handleSubmit(product.id)} disabled={isWorking === product.id} aria-label="Yoxlamaya göndər">
-                      {isWorking === product.id ? <Loader2 className="spin-icon" size={16} /> : <Send size={16} />}
+                    <button
+                      className="dash2-icon-action"
+                      type="button"
+                      onClick={() => void handleSubmit(product.id)}
+                      disabled={isWorking === product.id}
+                      aria-label="Yoxlamaya göndər"
+                    >
+                      {isWorking === product.id ? <Loader2 className="spin-icon" size={15} /> : <Send size={15} />}
                     </button>
                   ) : (
-                    <span className="seller-icon-button seller-icon-muted">
-                      <EyeOff size={16} />
+                    <span className="dash2-icon-action is-muted" aria-hidden="true">
+                      <EyeOff size={15} />
                     </span>
                   )}
-                  <button className="seller-icon-button seller-danger" type="button" onClick={() => void handleDelete(product.id)} disabled={isWorking === product.id} aria-label="Sil">
-                    <Trash2 size={16} />
+                  <button
+                    className="dash2-icon-action is-danger"
+                    type="button"
+                    onClick={() => void handleDelete(product.id)}
+                    disabled={isWorking === product.id}
+                    aria-label="Sil"
+                  >
+                    <Trash2 size={15} />
                   </button>
                 </span>
               </article>
             ))}
-          </div>
+          </section>
         ) : (
-          <div className="seller-empty">
-            <h3>Məhsul tapılmadı</h3>
-            <p>Filtrləri dəyişin və ya yeni məhsul əlavə edin.</p>
-            <Link className="button button-primary" href="/seller/products/new">
-              <Plus size={16} />
-              Yeni məhsul
-            </Link>
-          </div>
+          <section className="dash2-section">
+            <div className="dash2-empty">
+              <PackageSearch size={22} />
+              <strong>Məhsul tapılmadı</strong>
+              <span>Filtrləri dəyişin və ya yeni məhsul əlavə edin.</span>
+              <Link className="dash2-cta" href="/seller/products/new">
+                <Plus size={15} />
+                Yeni məhsul
+              </Link>
+            </div>
+          </section>
         )}
-      </section>
+      </div>
     </div>
   );
 }

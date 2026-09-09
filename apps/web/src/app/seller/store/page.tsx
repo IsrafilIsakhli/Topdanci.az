@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, useEffect, useState } from 'react';
-import { CheckCircle2, Image as ImageIcon, Loader2, Save, Store, Upload } from 'lucide-react';
+import { BadgeCheck, CheckCircle2, Clock, Image as ImageIcon, Loader2, Phone, Save, Store, TimerReset, Upload } from 'lucide-react';
 import {
   getSellerStores,
   updateSellerStore,
@@ -110,173 +110,207 @@ export default function SellerStorePage() {
   }
 
   if (isLoading) {
-    return <div className="seller-skeleton seller-skeleton-hero">Mağaza profili hazırlanır</div>;
+    return (
+      <div className="seller-page">
+        <div className="dash2-page">
+          <div className="dash2-skel is-hero" />
+          <div className="dash2-skel is-panel" />
+        </div>
+      </div>
+    );
   }
 
   if (!store || !form) {
     return (
-      <div className="seller-card seller-state-card">
-        <h2>Mağaza tapılmadı</h2>
-        <p>Bu hesab üçün mağaza üzvlüyü görünmür.</p>
+      <div className="seller-page">
+        <section className="dash2-state">
+          <strong>Mağaza tapılmadı</strong>
+          <p>Bu hesab üçün mağaza üzvlüyü görünmür.</p>
+        </section>
       </div>
     );
   }
 
   return (
     <div className="seller-page">
-      <div className="seller-page-head">
-        <span className="seller-kicker">Mağaza profili</span>
-        <h2>{store.name}</h2>
-        <p>Alıcıların gördüyü mağaza məlumatlarını buradan idarə edin.</p>
-      </div>
-
-      {message ? (
-        <div className="form-alert form-alert-success">
-          <CheckCircle2 size={17} />
-          {message}
-        </div>
-      ) : null}
-      {error ? <div className="form-alert form-alert-error">{error}</div> : null}
-
-      <form className="seller-form-layout" onSubmit={handleSubmit}>
-        <section className="seller-card seller-form-card seller-span-2">
-          <h3>Mağaza məlumatları</h3>
-          <div className="seller-form-grid">
-            <label className="field">
-              <span>Mağaza adı</span>
-              <input value={form.name} onChange={(event) => updateField('name', event.target.value)} required />
-            </label>
-            <label className="field">
-              <span>Rəsmi ad</span>
-              <input value={form.legalName} onChange={(event) => updateField('legalName', event.target.value)} />
-            </label>
-            <label className="field">
-              <span>Şəhər</span>
-              <input value={form.city} onChange={(event) => updateField('city', event.target.value)} required />
-            </label>
-            <label className="field">
-              <span>Rayon</span>
-              <input value={form.district} onChange={(event) => updateField('district', event.target.value)} />
-            </label>
-            <label className="field seller-span-2">
-              <span>Ünvan</span>
-              <input value={form.address} onChange={(event) => updateField('address', event.target.value)} />
-            </label>
-            <label className="field seller-span-2">
-              <span>Açıqlama</span>
-              <textarea value={form.description} onChange={(event) => updateField('description', event.target.value)} />
-            </label>
-          </div>
-        </section>
-
-        <section className="seller-card seller-form-card seller-span-2">
+      <div className="dash2-page">
+        <div className="dash2-page-head">
           <div>
-            <h3>Mağaza şəkilləri</h3>
-            <p className="seller-form-help">Loqo kvadrat, örtük şəkli isə üfüqi formatda daha yaxşı görünür.</p>
+            <h2>{store.name}</h2>
+            <p>Alıcıların gördüyü mağaza məlumatlarını buradan idarə edin.</p>
           </div>
-          <div className="seller-store-media-grid">
-            <label className="seller-store-media-field">
-              <span
-                className="seller-store-media-preview is-logo"
-                style={mediaStyle(store.logoKey)}
-              >
-                {!store.logoKey ? <ImageIcon size={24} /> : null}
-              </span>
-              <span>
-                <strong>Mağaza loqosu</strong>
-                <small>JPG, PNG və ya WEBP, maksimum 10 MB</small>
-              </span>
-              <span className="button">
-                {uploadingAsset === 'logo' ? <Loader2 className="spin-icon" size={16} /> : <Upload size={16} />}
-                Seç
-              </span>
-              <input
-                accept="image/jpeg,image/png,image/webp"
-                disabled={Boolean(uploadingAsset)}
-                onChange={(event) => void handleAssetUpload('logo', event.target.files?.[0])}
-                type="file"
-              />
-            </label>
+          <span className={`dash2-pill ${store.verified ? 'is-verified' : 'is-pending'}`}>
+            {store.verified ? <BadgeCheck size={13} /> : <TimerReset size={13} />}
+            {store.verified ? 'Təsdiqlənib' : 'Təsdiq gözləyir'}
+          </span>
+        </div>
 
-            <label className="seller-store-media-field">
-              <span
-                className="seller-store-media-preview is-banner"
-                style={mediaStyle(store.bannerKey)}
-              >
-                {!store.bannerKey ? <ImageIcon size={24} /> : null}
-              </span>
-              <span>
-                <strong>Örtük şəkli</strong>
-                <small>Mağaza səhifəsinin yuxarı hissəsində göstərilir</small>
-              </span>
-              <span className="button">
-                {uploadingAsset === 'banner' ? <Loader2 className="spin-icon" size={16} /> : <Upload size={16} />}
-                Seç
-              </span>
-              <input
-                accept="image/jpeg,image/png,image/webp"
-                disabled={Boolean(uploadingAsset)}
-                onChange={(event) => void handleAssetUpload('banner', event.target.files?.[0])}
-                type="file"
-              />
-            </label>
+        {message ? (
+          <div className="form-alert form-alert-success">
+            <CheckCircle2 size={17} />
+            {message}
           </div>
-        </section>
+        ) : null}
+        {error ? <div className="form-alert form-alert-error">{error}</div> : null}
 
-        <aside className="seller-card seller-form-card">
-          <h3>Əlaqə</h3>
-          <div className="field-grid">
-            <label className="field">
-              <span>Telefon</span>
-              <input value={form.phone} onChange={(event) => updateField('phone', event.target.value)} />
-            </label>
-            <label className="field">
-              <span>WhatsApp</span>
-              <input value={form.whatsappNumber} onChange={(event) => updateField('whatsappNumber', event.target.value)} />
-            </label>
-            <label className="field">
-              <span>E-poçt</span>
-              <input type="email" value={form.email} onChange={(event) => updateField('email', event.target.value)} />
-            </label>
-          </div>
-        </aside>
+        <form className="dash2-store-form" onSubmit={handleSubmit}>
+          <section className="dash2-section dash2-col-2">
+            <header className="dash2-section-head">
+              <span className="dash2-card-icon">
+                <Store size={19} />
+              </span>
+              <div>
+                <h3>Mağaza məlumatları</h3>
+                <p className="dash2-section-sub">Marketplace-də görünən əsas məlumatlar</p>
+              </div>
+            </header>
+            <div className="dash2-form-grid">
+              <label className="dash2-field">
+                <span>Mağaza adı</span>
+                <input value={form.name} onChange={(event) => updateField('name', event.target.value)} required />
+              </label>
+              <label className="dash2-field">
+                <span>Rəsmi ad</span>
+                <input value={form.legalName} onChange={(event) => updateField('legalName', event.target.value)} />
+              </label>
+              <label className="dash2-field">
+                <span>Şəhər</span>
+                <input value={form.city} onChange={(event) => updateField('city', event.target.value)} required />
+              </label>
+              <label className="dash2-field">
+                <span>Rayon</span>
+                <input value={form.district} onChange={(event) => updateField('district', event.target.value)} />
+              </label>
+              <label className="dash2-field is-wide">
+                <span>Ünvan</span>
+                <input value={form.address} onChange={(event) => updateField('address', event.target.value)} />
+              </label>
+              <label className="dash2-field is-wide">
+                <span>Açıqlama</span>
+                <textarea value={form.description} onChange={(event) => updateField('description', event.target.value)} />
+              </label>
+            </div>
+          </section>
 
-        <aside className="seller-card seller-form-card">
-          <h3>İş saatları</h3>
-          <div className="field-grid">
-            <label className="field">
-              <span>Bazar ertəsi - Cümə</span>
-              <input value={form.workdays} onChange={(event) => updateField('workdays', event.target.value)} />
-            </label>
-            <label className="field">
-              <span>Şənbə</span>
-              <input value={form.saturday} onChange={(event) => updateField('saturday', event.target.value)} />
-            </label>
-            <label className="field">
-              <span>Bazar</span>
-              <input value={form.sunday} onChange={(event) => updateField('sunday', event.target.value)} />
-            </label>
-          </div>
-        </aside>
+          <section className="dash2-section dash2-col-2">
+            <header className="dash2-section-head">
+              <span className="dash2-card-icon">
+                <ImageIcon size={19} />
+              </span>
+              <div>
+                <h3>Mağaza şəkilləri</h3>
+                <p className="dash2-section-sub">Loqo kvadrat, örtük şəkli isə üfüqi formatda daha yaxşı görünür</p>
+              </div>
+            </header>
+            <div className="dash2-media-grid">
+              <label className="dash2-media-field">
+                <span className="dash2-media-preview" style={mediaStyle(store.logoKey)}>
+                  {!store.logoKey ? <ImageIcon size={22} /> : null}
+                </span>
+                <span className="dash2-media-info">
+                  <strong>Mağaza loqosu</strong>
+                  <small>JPG, PNG və ya WEBP, maksimum 10 MB</small>
+                </span>
+                <span className="dash2-ghost-button">
+                  {uploadingAsset === 'logo' ? <Loader2 className="spin-icon" size={15} /> : <Upload size={15} />}
+                  Seç
+                </span>
+                <input
+                  accept="image/jpeg,image/png,image/webp"
+                  disabled={Boolean(uploadingAsset)}
+                  onChange={(event) => void handleAssetUpload('logo', event.target.files?.[0])}
+                  type="file"
+                />
+              </label>
 
-        <section className="seller-card seller-form-card seller-span-2">
-          <div className="seller-profile-preview">
-            <span>
-              <Store size={24} />
-            </span>
-            <div>
+              <label className="dash2-media-field">
+                <span className="dash2-media-preview" style={mediaStyle(store.bannerKey)}>
+                  {!store.bannerKey ? <ImageIcon size={22} /> : null}
+                </span>
+                <span className="dash2-media-info">
+                  <strong>Örtük şəkli</strong>
+                  <small>Mağaza səhifəsinin yuxarı hissəsində göstərilir</small>
+                </span>
+                <span className="dash2-ghost-button">
+                  {uploadingAsset === 'banner' ? <Loader2 className="spin-icon" size={15} /> : <Upload size={15} />}
+                  Seç
+                </span>
+                <input
+                  accept="image/jpeg,image/png,image/webp"
+                  disabled={Boolean(uploadingAsset)}
+                  onChange={(event) => void handleAssetUpload('banner', event.target.files?.[0])}
+                  type="file"
+                />
+              </label>
+            </div>
+          </section>
+
+          <section className="dash2-section">
+            <header className="dash2-section-head">
+              <span className="dash2-card-icon">
+                <Phone size={19} />
+              </span>
+              <div>
+                <h3>Əlaqə</h3>
+                <p className="dash2-section-sub">Alıcıların sizinlə əlaqə saxlayacağı məlumatlar</p>
+              </div>
+            </header>
+            <div className="dash2-form-grid">
+              <label className="dash2-field">
+                <span>Telefon</span>
+                <input value={form.phone} onChange={(event) => updateField('phone', event.target.value)} />
+              </label>
+              <label className="dash2-field">
+                <span>WhatsApp</span>
+                <input value={form.whatsappNumber} onChange={(event) => updateField('whatsappNumber', event.target.value)} />
+              </label>
+              <label className="dash2-field is-wide">
+                <span>E-poçt</span>
+                <input type="email" value={form.email} onChange={(event) => updateField('email', event.target.value)} />
+              </label>
+            </div>
+          </section>
+
+          <section className="dash2-section">
+            <header className="dash2-section-head">
+              <span className="dash2-card-icon">
+                <Clock size={19} />
+              </span>
+              <div>
+                <h3>İş saatları</h3>
+                <p className="dash2-section-sub">Mağazanın xidmət göstərdiyi saatlar</p>
+              </div>
+            </header>
+            <div className="dash2-form-grid">
+              <label className="dash2-field is-wide">
+                <span>Bazar ertəsi - Cümə</span>
+                <input value={form.workdays} onChange={(event) => updateField('workdays', event.target.value)} />
+              </label>
+              <label className="dash2-field">
+                <span>Şənbə</span>
+                <input value={form.saturday} onChange={(event) => updateField('saturday', event.target.value)} />
+              </label>
+              <label className="dash2-field">
+                <span>Bazar</span>
+                <input value={form.sunday} onChange={(event) => updateField('sunday', event.target.value)} />
+              </label>
+            </div>
+          </section>
+
+          <section className="dash2-savebar dash2-col-2">
+            <div className="dash2-hero-id">
               <strong>{store.name}</strong>
               <small>
                 {store.verified ? 'Təsdiqlənmiş mağaza' : 'Təsdiq gözləyir'} · {store.productCount} məhsul
               </small>
             </div>
-          </div>
-          <button className="button button-primary" type="submit" disabled={isSaving}>
-            {isSaving ? <Loader2 className="spin-icon" size={16} /> : <Save size={16} />}
-            Profili yadda saxla
-          </button>
-        </section>
-      </form>
+            <button className="dash2-cta" type="submit" disabled={isSaving || Boolean(uploadingAsset)}>
+              {isSaving ? <Loader2 className="spin-icon" size={16} /> : <Save size={16} />}
+              {isSaving ? 'Yadda saxlanılır...' : 'Profili yadda saxla'}
+            </button>
+          </section>
+        </form>
+      </div>
     </div>
   );
 }

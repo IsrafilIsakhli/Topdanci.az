@@ -223,6 +223,24 @@ export function getCategoryOptions() {
   return apiGet<ListResponse<CategoryOption>>('/categories');
 }
 
+export type UpdateAccountPayload = {
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  currentPassword: string;
+};
+
+export function updateAccount(payload: UpdateAccountPayload) {
+  return apiPatch<DetailResponse<{ user: AuthUser }>>('/auth/me', payload);
+}
+
+export function changePassword(currentPassword: string, newPassword: string) {
+  return apiPost<DetailResponse<{ success: boolean }>>('/auth/change-password', {
+    currentPassword,
+    newPassword,
+  });
+}
+
 export async function uploadProductImage(productId: string, file: File) {
   const upload = await apiPost<
     DetailResponse<{

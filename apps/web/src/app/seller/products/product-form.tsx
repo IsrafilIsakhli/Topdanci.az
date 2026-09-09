@@ -162,7 +162,6 @@ export function SellerProductForm({ productId }: { productId?: string }) {
           Məhsullara qayıt
         </Link>
         <div>
-          <span className="seller-kicker">{productId ? 'Redaktə' : 'Yeni məhsul'}</span>
           <h2>{productId ? 'Məhsulu redaktə edin' : 'Kataloqa yeni məhsul əlavə edin'}</h2>
           <p>Satış platforması deyil: alıcılar məhsulu görüb sizinlə WhatsApp və ya telefonla əlaqə saxlayır.</p>
         </div>

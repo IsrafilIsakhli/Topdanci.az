@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import Link from 'next/link';
-import { Send } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { ApiClientError, apiPost } from '../../lib/api-client';
 
 type CategoryOption = {
@@ -55,69 +55,96 @@ export function OpenStoreForm({ categories }: OpenStoreFormProps) {
   }
 
   return (
-    <form className="panel open-store-form-card" onSubmit={handleSubmit}>
-      <h2>Mağaza müraciəti</h2>
+    <div className="authx-wrap authx-wrap-wide">
+      <Link className="authx-brand" href="/">
+        <span className="authx-brand-mark" aria-hidden="true">
+          td
+        </span>
+        <span className="authx-brand-name">TopdanBazar</span>
+      </Link>
 
-      {state.type === 'success' ? <p className="form-alert form-alert-success">{state.message}</p> : null}
-      {state.type === 'error' ? <p className="form-alert form-alert-error">{state.message}</p> : null}
+      <form className="authx-card" onSubmit={handleSubmit}>
+        <header className="authx-card-head">
+          <h1>Mağaza açın</h1>
+          <p>Məlumatları doldurun — müraciət 2 dəqiqə çəkir.</p>
+        </header>
 
-      <div className="field-grid">
-        <label className="field">
-          <span>Ad və soyad</span>
-          <input name="contactName" placeholder="Adınızı daxil edin" required />
-        </label>
-        <label className="field">
-          <span>E-poçt</span>
-          <input name="contactEmail" placeholder="numune@email.com" type="email" />
-        </label>
-        <label className="field">
-          <span>Telefon</span>
-          <input name="contactPhone" placeholder="+994 (__) ___-__-__" required />
-        </label>
-        <label className="field">
-          <span>VÖEN</span>
-          <input name="taxNumber" placeholder="VÖEN varsa daxil edin" />
-        </label>
-        <label className="field">
-          <span>Mağaza adı</span>
-          <input name="companyName" placeholder="Şirkət və ya mağaza adı" required />
-        </label>
-        <label className="field">
-          <span>Əsas kateqoriya</span>
-          <select name="categoryId">
-            <option value="">Kateqoriya seçin</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="field">
-          <span>Şəhər</span>
-          <input name="city" placeholder="Bakı" required />
-        </label>
-        <label className="field">
-          <span>Rayon</span>
-          <input name="district" placeholder="Nəsimi" />
-        </label>
-        <label className="field field-full">
-          <span>Qısa mağaza təsviri</span>
-          <textarea name="description" placeholder="Mağazanız və məhsullarınız haqqında qısa məlumat" />
-        </label>
-      </div>
+        {state.type === 'success' ? <p className="authx-alert authx-alert-success">{state.message}</p> : null}
+        {state.type === 'error' ? <p className="authx-alert authx-alert-error">{state.message}</p> : null}
 
-      <button className="button button-primary button-full" disabled={state.type === 'submitting'} type="submit">
-        <Send size={17} />
-        {state.type === 'submitting' ? 'Göndərilir...' : 'Müraciəti göndər'}
-      </button>
-      <p className="card-meta">
-        Artıq hesabınız var?{' '}
-        <Link className="card-link" href="/login">
-          Daxil ol
-        </Link>
+        <section className="authx-section">
+          <header className="authx-section-head">
+            <b>01</b>
+            <h3>Əlaqə məlumatları</h3>
+            <span>Yoxlama üçün lazımdır</span>
+          </header>
+          <div className="authx-grid-2">
+            <label className="authx-field">
+              <span>Ad və soyad</span>
+              <input name="contactName" placeholder="Adınızı daxil edin" autoComplete="name" required />
+            </label>
+            <label className="authx-field">
+              <span>Telefon</span>
+              <input name="contactPhone" placeholder="+994 (__) ___-__-__" autoComplete="tel" inputMode="tel" required />
+            </label>
+            <label className="authx-field">
+              <span>E-poçt</span>
+              <input name="contactEmail" placeholder="numune@email.com" type="email" autoComplete="email" />
+            </label>
+            <label className="authx-field">
+              <span>VÖEN</span>
+              <input name="taxNumber" placeholder="VÖEN varsa daxil edin" />
+            </label>
+          </div>
+        </section>
+
+        <section className="authx-section">
+          <header className="authx-section-head">
+            <b>02</b>
+            <h3>Mağaza məlumatları</h3>
+            <span>Vitrində görünəcək</span>
+          </header>
+          <div className="authx-grid-2">
+            <label className="authx-field">
+              <span>Mağaza adı</span>
+              <input name="companyName" placeholder="Şirkət və ya mağaza adı" required />
+            </label>
+            <label className="authx-field">
+              <span>Əsas kateqoriya</span>
+              <select name="categoryId">
+                <option value="">Kateqoriya seçin</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="authx-field">
+              <span>Şəhər</span>
+              <input name="city" placeholder="Bakı" autoComplete="address-level2" required />
+            </label>
+            <label className="authx-field">
+              <span>Rayon</span>
+              <input name="district" placeholder="Nəsimi" />
+            </label>
+            <label className="authx-field authx-field-full">
+              <span>Qısa mağaza təsviri</span>
+              <textarea name="description" placeholder="Mağazanız və məhsullarınız haqqında qısa məlumat" />
+            </label>
+          </div>
+        </section>
+
+        <button className="authx-submit" disabled={state.type === 'submitting'} type="submit">
+          <span>{state.type === 'submitting' ? 'Göndərilir…' : 'Müraciəti göndər'}</span>
+          <ArrowRight size={17} />
+        </button>
+      </form>
+
+      <p className="authx-alt">
+        Artıq hesabınız var? <Link href="/login">Daxil olun</Link>
       </p>
-    </form>
+    </div>
   );
 }
 

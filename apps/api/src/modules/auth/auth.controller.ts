@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, HttpCode, Ip, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Headers, HttpCode, Ip, Patch, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
@@ -13,8 +13,10 @@ import {
   REFRESH_COOKIE_NAME,
 } from './domain/auth-cookies';
 import { AuthService } from './auth.service';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { LoginDto } from './dto/login.dto';
 import { SetupPasswordDto } from './dto/setup-password.dto';
+import { UpdateAccountDto } from './dto/update-account.dto';
 
 @ApiTags('auth')
 @Controller({
@@ -101,5 +103,18 @@ export class AuthController {
   session(@Req() request: AuthenticatedRequest) {
     const cookies = parseCookieHeader(request.headers?.cookie);
     return this.authService.session(cookies[ACCESS_COOKIE_NAME]);
+  }
+
+  @Patch('me')
+  async updateAccount(@CurrentUser() user: AuthenticatedUser, @Body() dto: UpdateAccountDto) {
+    const updated = await this.authService.updateAccount(user, dto);
+    return { data: { user: updated } };
+  }
+
+  @Post('change-password')
+  @HttpCode(200)
+  async changePassword(@CurrentUser() user: AuthenticatedUser, @Body() dto: ChangePasswordDto) {
+    const result = await this.authService.changePassword(user, dto);
+    return { data: result };
   }
 }

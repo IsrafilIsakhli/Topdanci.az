@@ -1,6 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import {
   BadRequestException,
+  ConflictException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -21,6 +22,8 @@ import { JwtTokenService } from './domain/jwt-token.service';
 import { isStrongPassword, passwordPolicyMessage } from './domain/password-policy';
 import type { LoginDto } from './dto/login.dto';
 import type { SetupPasswordDto } from './dto/setup-password.dto';
+import type { UpdateAccountDto } from './dto/update-account.dto';
+import type { ChangePasswordDto } from './dto/change-password.dto';
 
 type AuthRequestContext = {
   ipAddress?: string;
@@ -347,6 +350,93 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
         user,
       },
     };
+  }
+
+  async updateAccount(user: AuthenticatedUser, dto: UpdateAccountDto): Promise<AuthenticatedUser> {
+    const record = await this.prisma.user.findUnique({
+      where: { id: user.id },
+      select: authUserSelect,
+    });
+
+    if (!record?.passwordHash) {
+      throw new UnauthorizedException('Password is not configured for this account');
+    }
+
+    const passwordMatches = await bcrypt.compare(dto.currentPassword, record.passwordHash);
+
+    if (!passwordMatches) {
+      throw new UnauthorizedException('Current password is incorrect');
+    }
+
+    const email = dto.email !== undefined ? dto.email.trim().toLowerCase() || null : record.email;
+    const phone = dto.phone !== undefined ? dto.phone.trim() || null : record.phone;
+    const fullName = dto.fullName !== undefined ? dto.fullName.trim() || null : record.fullName;
+
+    if (email && email !== record.email) {
+      const existing = await this.prisma.user.findFirst({
+        where: { email, id: { not: user.id } },
+        select: { id: true },
+      });
+      if (existing) {
+        throw new ConflictException('This email is already in use');
+      }
+    }
+
+    if (phone && phone !== record.phone) {
+      const existing = await this.prisma.user.findFirst({
+        where: { phone, id: { not: user.id } },
+        select: { id: true },
+      });
+      if (existing) {
+        throw new ConflictException('This phone number is already in use');
+      }
+    }
+
+    const updated = await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        ...(email !== record.email ? { email } : {}),
+        ...(phone !== record.phone ? { phone } : {}),
+        ...(fullName !== record.fullName ? { fullName } : {}),
+      },
+      select: authUserSelect,
+    });
+
+    return toAuthenticatedUser(updated);
+  }
+
+  async changePassword(user: AuthenticatedUser, dto: ChangePasswordDto): Promise<{ success: boolean }> {
+    const record = await this.prisma.user.findUnique({
+      where: { id: user.id },
+      select: authUserSelect,
+    });
+
+    if (!record?.passwordHash) {
+      throw new UnauthorizedException('Password is not configured for this account');
+    }
+
+    const passwordMatches = await bcrypt.compare(dto.currentPassword, record.passwordHash);
+
+    if (!passwordMatches) {
+      throw new UnauthorizedException('Current password is incorrect');
+    }
+
+    if (dto.newPassword === dto.currentPassword) {
+      throw new BadRequestException('New password must be different from the current one');
+    }
+
+    if (!isStrongPassword(dto.newPassword)) {
+      throw new BadRequestException(passwordPolicyMessage());
+    }
+
+    const passwordHash = await bcrypt.hash(dto.newPassword, 12);
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { passwordHash },
+    });
+
+    return { success: true };
   }
 
   cookieConfig(): AuthCookieConfig {
