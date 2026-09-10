@@ -1,9 +1,8 @@
 import Link from 'next/link';
-import { ArrowRight, BadgeCheck, MapPin, MessageCircle, Package, TrendingUp } from 'lucide-react';
-import { LeadWhatsAppLink } from './lead-actions';
+import { ArrowRight } from 'lucide-react';
 import type { CategoryCard, ProductPreview, StorePreview } from '../lib/catalog-data';
 import { categoryRoute } from '../lib/routes';
-import { storeAccent } from '../lib/store-accent';
+import { StoreMarketCard } from './store-market-card';
 
 type StoresMarketListProps = {
   rows: Array<{ store: StorePreview; strip: ProductPreview[] }>;
@@ -53,85 +52,14 @@ export function StoresMarketList({ rows, sponsored, categories, total, nextCurso
 
         <div className="grid store-grid store-market-grid">
           {rows.length ? (
-            rows.map(({ store, strip }) => {
-              const accent = storeAccent(store.slug);
-              return (
-                <div className="card store-market-card" key={store.slug}>
-
-                  <Link
-                    className="store-market-link"
-                    href={`/stores/${store.slug}`}
-                    aria-label={`${store.name} mağazasına bax`}
-                  >
-                    <span
-                      className="store-market-cover"
-                      style={{ backgroundImage: `url(${store.coverImageUrl})`, backgroundColor: accent.bg }}
-                    >
-                      {store.verified ? (
-                        <span>
-                          <BadgeCheck size={13} />
-                          Təsdiqli
-                        </span>
-                      ) : null}
-                      {sponsored.has(store.slug) ? <em>Bu həftə</em> : null}
-                    </span>
-                    <span className="store-market-body">
-                      <span className="store-market-head">
-                        <span className="store-avatar" style={{ backgroundColor: accent.bg, color: accent.fg }}>
-                          {store.name.slice(0, 2).toUpperCase()}
-                        </span>
-                        <span>
-                          <strong>{store.name}</strong>
-                          <small>{store.category}</small>
-                        </span>
-                      </span>
-                      {strip.length ? (
-                        <span className="store-market-strip">
-                          {strip.map((product) => (
-                            <span
-                              aria-hidden="true"
-                              className="stores-market-thumb"
-                              key={product.slug}
-                              style={{ backgroundImage: `url(${product.imageUrl})` }}
-                            />
-                          ))}
-                        </span>
-                      ) : null}
-                      <span className="store-market-meta">
-                        <span>
-                          <MapPin size={14} />
-                          {store.city}
-                        </span>
-                        <span>
-                          <Package size={14} />
-                          {store.productCount} məhsul
-                        </span>
-                        <span>
-                          <TrendingUp size={14} />
-                          {store.views}
-                        </span>
-                      </span>
-                    </span>
-                  </Link>
-                  <span className="store-market-actions">
-                    <LeadWhatsAppLink
-                      className="button button-success store-market-action"
-                      phone={store.whatsappNumber}
-                      source="stores-market-card"
-                      storeId={store.id}
-                      storeName={store.name}
-                    >
-                      <MessageCircle size={16} />
-                      WhatsApp
-                    </LeadWhatsAppLink>
-                    <Link className="button store-market-action" href={`/stores/${store.slug}`}>
-                      Mağazaya bax
-                      <ArrowRight size={15} />
-                    </Link>
-                  </span>
-                </div>
-              );
-            })
+            rows.map(({ store, strip }) => (
+              <StoreMarketCard
+                key={store.slug}
+                products={strip}
+                sponsored={sponsored.has(store.slug)}
+                store={store}
+              />
+            ))
           ) : (
             <p className="empty-state">Axtarışa uyğun aktiv mağaza tapılmadı.</p>
           )}

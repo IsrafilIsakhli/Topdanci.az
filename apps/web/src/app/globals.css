@@ -16896,142 +16896,6 @@ html[data-theme='dark'] .mini-price {
   justify-content: flex-start;
 }
 
-/* --- Editor's pick banner: bu həftə ən çox baxılan --- */
-.stores-editorial-section {
-  padding: 14px 0 4px;
-}
-
-.stores-editorial-banner {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-  overflow: hidden;
-  border: 1px solid rgba(6, 62, 48, 0.5);
-  border-radius: 20px;
-  background: linear-gradient(115deg, #052e24 0%, #064e3b 55%, #0b6b50 100%);
-  box-shadow: 0 24px 60px rgba(6, 78, 59, 0.2);
-}
-
-.stores-editorial-copy {
-  display: grid;
-  gap: 14px;
-  align-content: center;
-  padding: 32px 34px 30px;
-}
-
-.stores-editorial-eyebrow {
-  display: inline-flex;
-  width: fit-content;
-  align-items: center;
-  gap: 7px;
-  border: 1px solid rgba(255, 233, 168, 0.45);
-  border-radius: 999px;
-  background: rgba(255, 233, 168, 0.14);
-  color: #ffe9a8;
-  font-size: 11.5px;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 7px 11px;
-}
-
-.stores-editorial-copy h2 {
-  color: #ffffff;
-  font-size: 32px;
-  line-height: 1.05;
-}
-
-.stores-editorial-lead {
-  display: -webkit-box;
-  overflow: hidden;
-  color: rgba(234, 246, 240, 0.82);
-  font-size: 14.5px;
-  line-height: 1.55;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.stores-editorial-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.stores-editorial-meta span {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #eaf6f0;
-  font-size: 12px;
-  font-weight: 800;
-  padding: 6px 11px;
-}
-
-.stores-editorial-meta .stores-editorial-verified {
-  background: #ffe9a8;
-  color: #6b540c;
-}
-
-.stores-editorial-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 4px;
-}
-
-.stores-editorial-cta {
-  border-color: #ffe9a8;
-  background: #ffe9a8;
-  color: #3d2f05;
-}
-
-.stores-editorial-cta:hover {
-  border-color: #fff3cd;
-  background: #fff3cd;
-}
-
-.stores-editorial-wa {
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-}
-
-.stores-editorial-wa:hover {
-  border-color: rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.18);
-}
-
-.stores-editorial-cover {
-  position: relative;
-  display: block;
-  min-height: 240px;
-  background-position: center;
-  background-size: cover;
-  transition: transform 650ms var(--ease-out), filter 400ms ease;
-}
-
-.stores-editorial-cover::after {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(5, 46, 36, 0.6), transparent 45%);
-  content: "";
-}
-
-.stores-editorial-cover .store-avatar {
-  position: absolute;
-  z-index: 1;
-  right: 16px;
-  bottom: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.65);
-}
-
-.stores-editorial-banner:hover .stores-editorial-cover {
-  transform: scale(1.03);
-  filter: saturate(1.08);
-}
-
 /* --- Hover zoom: vitrin cover-ları --- */
 .stores-spotlight-cover,
 .stores-showcase-cover,
@@ -17075,23 +16939,6 @@ html[data-theme='dark'] .mini-price {
 
   .stores-showcase-grid {
     grid-template-columns: 1fr;
-  }
-
-  .stores-editorial-banner {
-    grid-template-columns: 1fr;
-  }
-
-  .stores-editorial-cover {
-    order: -1;
-    min-height: 170px;
-  }
-
-  .stores-editorial-copy {
-    padding: 22px 20px 24px;
-  }
-
-  .stores-editorial-copy h2 {
-    font-size: 26px;
   }
 
   .store-market-grid {
@@ -17148,14 +16995,6 @@ html[data-theme='dark'] .mini-price {
   .stores-trust-bar > span {
     padding: 9px 10px;
     font-size: 11.5px;
-  }
-
-  .stores-editorial-copy {
-    padding: 18px 16px 20px;
-  }
-
-  .stores-editorial-copy h2 {
-    font-size: 22px;
   }
 
   .stores-showcase-card {

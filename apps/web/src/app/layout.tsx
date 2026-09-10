@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { getSiteUrl } from '../lib/site-url';
 import './globals.css';
+import './marketplace-mobile.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),

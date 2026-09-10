@@ -1,0 +1,353 @@
+/* Mobile catalog density lives here so marketplace cards can evolve independently. */
+@media (max-width: 720px) {
+  .products-hero-section,
+  .stores-hero-section {
+    padding: 22px 0 18px;
+  }
+
+  .products-title-row,
+  .stores-list-title {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .products-title-row h1,
+  .stores-hero-copy h1 {
+    font-size: 27px;
+    line-height: 1.08;
+  }
+
+  .products-title-row .lead,
+  .stores-hero-copy > p {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .products-trust-bar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 10px;
+    margin: 12px 0;
+  }
+
+  .products-trust-bar span {
+    min-width: 0;
+    font-size: 10.5px;
+  }
+
+  .products-trust-bar span:nth-child(2) {
+    display: none;
+  }
+
+  .products-search-panel,
+  .stores-search-panel {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .products-category-row,
+  .stores-category-chips {
+    gap: 6px;
+  }
+
+  .products-category-chip,
+  .stores-category-chips a {
+    min-height: 34px;
+    padding: 6px 10px;
+    font-size: 10.5px;
+    white-space: nowrap;
+  }
+
+  .products-list-section,
+  .stores-list-section,
+  .stores-showcase-section,
+  .stores-city-section {
+    padding-block: 24px;
+  }
+
+  .products-list-title h2,
+  .stores-list-title h2,
+  .stores-showcase-section .section-title-row h2 {
+    font-size: 21px;
+  }
+
+  .products-market-grid,
+  .store-market-grid,
+  .stores-showcase-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .product-market-card {
+    grid-template-rows: 112px minmax(0, 1fr);
+    min-width: 0;
+    border-radius: 9px;
+  }
+
+  .product-market-card:hover,
+  .store-market-card:hover,
+  .stores-showcase-card:hover {
+    transform: none;
+  }
+
+  .product-market-photo,
+  .store-market-cover,
+  .stores-showcase-cover {
+    transform: none !important;
+  }
+
+  .product-market-badge {
+    top: 6px;
+    left: 6px;
+    max-width: calc(100% - 12px);
+    overflow: hidden;
+    padding: 3px 6px;
+    font-size: 8px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .product-market-body {
+    gap: 5px;
+    padding: 8px;
+  }
+
+  .product-market-kicker {
+    overflow: hidden;
+    font-size: 8.5px;
+    letter-spacing: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .product-market-title {
+    min-height: 2.55em;
+    font-size: 12px;
+    line-height: 1.28;
+  }
+
+  .product-market-price {
+    font-size: 14px;
+  }
+
+  .product-market-tiers {
+    max-height: 50px;
+    overflow: hidden;
+  }
+
+  .product-market-tiers .tier-row:not(:last-child) {
+    display: none;
+  }
+
+  .product-market-min {
+    max-width: 100%;
+    overflow: hidden;
+    padding: 2px 6px;
+    font-size: 9px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .product-market-store {
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .product-market-store .store-avatar {
+    display: none;
+  }
+
+  .product-market-store > span {
+    min-width: 0;
+  }
+
+  .product-market-store strong {
+    overflow: hidden;
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .product-market-store small {
+    font-size: 9px;
+  }
+
+  .product-market-actions {
+    gap: 5px;
+    margin-top: 1px;
+  }
+
+  .product-market-actions .button {
+    min-width: 0;
+    min-height: 34px;
+    padding: 6px;
+    font-size: 10px;
+  }
+
+  .store-market-card {
+    grid-template-rows: minmax(0, 1fr) auto;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 9px;
+  }
+
+  .store-market-link {
+    grid-template-rows: 96px minmax(0, 1fr);
+  }
+
+  .store-market-cover > span,
+  .store-market-cover > em {
+    top: 6px;
+    padding: 4px 6px;
+    font-size: 8px;
+  }
+
+  .store-market-cover > span {
+    right: 6px;
+  }
+
+  .store-market-cover > em {
+    left: 6px;
+  }
+
+  .store-market-body {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .store-market-head {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .store-market-head .store-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    font-size: 9px;
+  }
+
+  .store-market-head strong {
+    font-size: 11.5px;
+  }
+
+  .store-market-head small {
+    font-size: 9px;
+  }
+
+  .store-market-strip {
+    display: none;
+  }
+
+  .store-market-meta {
+    gap: 4px;
+  }
+
+  .store-market-meta span {
+    gap: 4px;
+    overflow: hidden;
+    font-size: 9.5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .store-market-meta span:nth-child(3) {
+    display: none;
+  }
+
+  .store-market-meta svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  .store-market-actions {
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .store-market-actions .button,
+  .store-market-actions .button-success {
+    min-height: 34px;
+    padding: 6px;
+    font-size: 9px;
+  }
+
+  .store-market-actions svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .stores-showcase-card {
+    grid-template-rows: 100px minmax(0, 1fr);
+    min-width: 0;
+    border-radius: 9px;
+  }
+
+  .stores-showcase-tag {
+    top: 6px;
+    left: 6px;
+    padding: 4px 6px;
+    font-size: 8px;
+  }
+
+  .stores-showcase-body {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .stores-showcase-head {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .stores-showcase-head .store-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    font-size: 9px;
+  }
+
+  .stores-showcase-head strong {
+    font-size: 11.5px;
+  }
+
+  .stores-showcase-head small {
+    font-size: 9px;
+  }
+
+  .stores-showcase-head em,
+  .stores-showcase-strip,
+  .stores-showcase-meta span:nth-child(3) {
+    display: none;
+  }
+
+  .stores-showcase-meta {
+    gap: 4px 7px;
+  }
+
+  .stores-showcase-meta span,
+  .stores-showcase-action {
+    font-size: 9.5px;
+  }
+}
+
+@media (max-width: 380px) {
+  .products-market-grid,
+  .store-market-grid,
+  .stores-showcase-grid {
+    gap: 6px !important;
+  }
+
+  .product-market-card {
+    grid-template-rows: 104px minmax(0, 1fr);
+  }
+
+  .store-market-link,
+  .stores-showcase-card {
+    grid-template-rows: 88px minmax(0, 1fr);
+  }
+
+  .store-market-action-label {
+    display: none;
+  }
+}

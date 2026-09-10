@@ -3,7 +3,6 @@ import { JsonLd } from '../../components/json-ld';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
 import { StoresCitySection } from '../../components/stores-city-section';
-import { StoresEditorialBanner } from '../../components/stores-editorial-banner';
 import { StoresHero } from '../../components/stores-hero';
 import { StoresMarketList } from '../../components/stores-market-list';
 import { StoresShowcase } from '../../components/stores-showcase';
@@ -19,7 +18,6 @@ import {
   buildStoresHref,
   normalizeStoreSort,
   toNumber,
-  viewsToNumber,
   type StoresSearchQuery,
 } from './stores-filters';
 
@@ -67,9 +65,6 @@ export default async function StoresPage({ searchParams }: { searchParams?: Prom
   }
   const listRows = stores.map((store) => ({ store, strip: productsByStore.get(store.slug) ?? [] }));
 
-  // Redaksiya banneri — bu həftə ən çox baxılan mağaza.
-  const editorialStore = [...stores].sort((left, right) => viewsToNumber(right.views) - viewsToNumber(left.views))[0];
-
   // Şəhər üzrə kataloq — ən çox mağazası olan 3 şəhər.
   const cityGroups = Object.entries(
     stores.reduce<Record<string, StorePreview[]>>((groups, store) => {
@@ -110,7 +105,6 @@ export default async function StoresPage({ searchParams }: { searchParams?: Prom
         totalProducts={totalProducts}
         verifiedStores={verifiedStores}
       />
-      {editorialStore ? <StoresEditorialBanner store={editorialStore} /> : null}
       {showcaseStores.length ? <StoresShowcase productsByStore={productsByStore} stores={showcaseStores} /> : null}
       <StoresMarketList
         categories={categories}
