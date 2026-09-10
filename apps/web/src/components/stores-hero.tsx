@@ -102,7 +102,7 @@ export function StoresHero({
           <form className="catalog-search-panel stores-search-panel" action="/stores">
             <label className="catalog-search-field">
               <Search size={18} />
-              <input name="q" defaultValue={query?.q ?? ''} placeholder="Mağaza, məhsul və ya kateqoriya axtarın" />
+              <input name="q" defaultValue={query?.q ?? ''} placeholder="Mağaza və ya məhsul axtar" />
             </label>
             <label className="catalog-search-field stores-city-field">
               <MapPin size={18} />

@@ -41,9 +41,10 @@ export function CategorySearchForm({ categories }: CategorySearchFormProps) {
 
       <div className="category-mega-select">
         <input type="hidden" name="category" value={selected?.slug ?? ''} />
-        <div className="category-mobile-fields">
+        <div
+          className={selected && activeChildren.length ? 'category-mobile-fields has-subcategory' : 'category-mobile-fields'}
+        >
           <label className="category-mobile-select">
-            <span className="sr-only">Əsas kateqoriya seçin</span>
             <select
               aria-label="Əsas kateqoriya seçin"
               value={selected ? activeRoot?.slug ?? '' : ''}
@@ -57,7 +58,7 @@ export function CategorySearchForm({ categories }: CategorySearchFormProps) {
                 setSelected({ slug: root.slug, label: root.name });
               }}
             >
-              <option value="">Bütün kateqoriyalar</option>
+              <option value="">Kateqoriya seçin</option>
               {tree.roots.map((root) => (
                 <option key={root.slug} value={root.slug}>
                   {root.name}
@@ -69,7 +70,6 @@ export function CategorySearchForm({ categories }: CategorySearchFormProps) {
 
           {selected && activeRoot && activeChildren.length ? (
             <label className="category-mobile-select category-mobile-subcategory">
-              <span className="sr-only">Alt kateqoriya seçin</span>
               <select
                 aria-label="Alt kateqoriya seçin"
                 value={selected?.slug ?? activeRoot.slug}

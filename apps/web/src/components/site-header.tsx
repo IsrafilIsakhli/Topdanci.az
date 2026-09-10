@@ -22,13 +22,7 @@ const mobileQuickItems = [
 export function SiteHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
-  const hideMobileQuickNav =
-    pathname === '/login' ||
-    pathname === '/open-store' ||
-    pathname === '/contact' ||
-    pathname.startsWith('/account') ||
-    pathname.startsWith('/seller');
-  const showMobileQuickNav = !hideMobileQuickNav;
+  const showMobileQuickNav = pathname === '/' || pathname === '/products' || pathname === '/stores';
 
   const closeMenu = () => setIsMenuOpen(false);
   const isActive = (href: string) => (href === '/' ? pathname === href : pathname.startsWith(href));
