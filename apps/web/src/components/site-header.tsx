@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, Menu, MessageCircle, Package, Search, Store, X } from 'lucide-react';
+import { Home, Menu, Package, Search, Store, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { ThemeToggle } from './theme-toggle';
@@ -15,7 +15,6 @@ const navItems = [
 
 const mobileQuickItems = [
   { href: '/', label: 'Ana', icon: Home },
-  { href: '/contact', label: 'Əlaqə', icon: MessageCircle },
   { href: '/products', label: 'Məhsullar', icon: Package },
   { href: '/stores', label: 'Mağazalar', icon: Store },
 ];

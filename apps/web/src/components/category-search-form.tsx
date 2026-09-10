@@ -41,6 +41,60 @@ export function CategorySearchForm({ categories }: CategorySearchFormProps) {
 
       <div className="category-mega-select">
         <input type="hidden" name="category" value={selected?.slug ?? ''} />
+        <div className="category-mobile-fields">
+          <label className="category-mobile-select">
+            <span className="sr-only">Əsas kateqoriya seçin</span>
+            <select
+              aria-label="Əsas kateqoriya seçin"
+              value={selected ? activeRoot?.slug ?? '' : ''}
+              onChange={(event) => {
+                const root = tree.roots.find((item) => item.slug === event.target.value) ?? null;
+                if (!root) {
+                  selectCategory(null);
+                  return;
+                }
+                setActiveSlug(root.slug);
+                setSelected({ slug: root.slug, label: root.name });
+              }}
+            >
+              <option value="">Bütün kateqoriyalar</option>
+              {tree.roots.map((root) => (
+                <option key={root.slug} value={root.slug}>
+                  {root.name}
+                </option>
+              ))}
+            </select>
+            <ChevronDown size={17} aria-hidden="true" />
+          </label>
+
+          {selected && activeRoot && activeChildren.length ? (
+            <label className="category-mobile-select category-mobile-subcategory">
+              <span className="sr-only">Alt kateqoriya seçin</span>
+              <select
+                aria-label="Alt kateqoriya seçin"
+                value={selected?.slug ?? activeRoot.slug}
+                onChange={(event) => {
+                  const option = event.currentTarget.selectedOptions.item(0);
+                  if (!option) return;
+                  setSelected({ slug: option.value, label: option.text });
+                }}
+              >
+                <option value={activeRoot.slug}>{activeRoot.name}: hamısı</option>
+                {activeChildren.map((child) => (
+                  <optgroup key={child.slug} label={child.name}>
+                    <option value={child.slug}>{child.name}</option>
+                    {tree.childrenOf(child).map((grandchild) => (
+                      <option key={grandchild.slug} value={grandchild.slug}>
+                        {grandchild.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+              <ChevronDown size={17} aria-hidden="true" />
+            </label>
+          ) : null}
+        </div>
         <button
           className="category-mega-trigger"
           type="button"

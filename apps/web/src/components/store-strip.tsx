@@ -15,8 +15,7 @@ export function StoreStrip({ stores }: { stores: StorePreview[] }) {
                 <Megaphone size={11} />
                 Sponsorlu
               </span>
-            ) : null}
-            {store.views === 'Yeni' ? (
+            ) : store.views === 'Yeni' ? (
               <span className="market-store-flag market-store-flag-new">Bu həftə</span>
             ) : null}
             <span aria-hidden="true" className="store-avatar store-avatar-sm">

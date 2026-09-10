@@ -56,7 +56,7 @@ export default async function HomePage() {
     name,
   }));
   const stripStores = stores.slice(0, 20);
-  const premiumStores = stores.slice(0, 6);
+  const premiumStores = stores.slice(0, 12);
   const vitrinProducts = products.slice(0, 20);
   const freshProducts = products.slice(-7);
 
