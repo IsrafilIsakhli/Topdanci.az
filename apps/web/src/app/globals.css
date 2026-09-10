@@ -21972,3 +21972,172 @@ html[data-theme='dark'] .admin-shell {
     box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
   }
 }
+
+/* ============================================================
+   Micro-phone pass — kiçik telefonlarda (≤430px) hər kart növü
+   mikro ölçüyə keçir: ekranda daha çox məhsul/mağaza, rahat baxış
+   ============================================================ */
+@media (max-width: 430px) {
+  /* — /products market kartları: 3 sütun mikro — */
+  .product-market-grid,
+  .featured-product-grid,
+  .sponsored-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+  }
+
+  .product-card .product-image-frame,
+  .product-card-compact .product-image-frame,
+  .sponsored-product-thumb {
+    aspect-ratio: 1 / 0.8 !important;
+  }
+
+  .product-card .product-badge,
+  .sponsored-product-thumb span {
+    top: 5px !important;
+    left: 5px !important;
+    font-size: 7.5px !important;
+    padding: 4px 5px !important;
+  }
+
+  .product-card .product-body,
+  .product-card-compact .product-body,
+  .sponsored-product-info {
+    gap: 3px !important;
+    padding: 6px 7px 8px !important;
+  }
+
+  .product-card .product-kicker,
+  .sponsored-product-info small {
+    display: none !important;
+  }
+
+  .product-card .product-title,
+  .sponsored-product-info strong {
+    min-height: 0 !important;
+    font-size: 10.5px !important;
+    line-height: 1.22 !important;
+  }
+
+  .product-card .price,
+  .sponsored-product-info em {
+    font-size: 12.5px !important;
+  }
+
+  .product-card .min-order {
+    min-height: 0 !important;
+    font-size: 8.5px !important;
+    padding: 3px 5px !important;
+  }
+
+  .product-card .product-meta,
+  .sponsored-product-info span {
+    font-size: 8.5px !important;
+  }
+
+  .product-card .product-actions {
+    display: none !important;
+  }
+
+  /* — Bütün grid gap-ları bir dəfə sıx — */
+  .product-grid,
+  .store-market-grid,
+  .premium-store-grid,
+  .category-market-grid {
+    gap: 7px !important;
+  }
+
+  .store-market-card,
+  .premium-store-card {
+    border-radius: 12px !important;
+  }
+
+  .store-market-body,
+  .premium-store-body {
+    padding: 8px !important;
+  }
+
+  .store-market-head,
+  .premium-store-head {
+    grid-template-columns: 28px minmax(0, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  .store-avatar {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 9px !important;
+    font-size: 9.5px !important;
+  }
+
+  .store-market-head strong,
+  .premium-store-body > strong {
+    font-size: 11.5px !important;
+  }
+
+  .store-market-meta,
+  .store-metric-row,
+  .premium-store-body .card-meta {
+    font-size: 9px !important;
+  }
+
+  .premium-store-minis {
+    gap: 5px !important;
+  }
+
+  .premium-store-mini {
+    padding: 5px !important;
+  }
+
+  .premium-store-mini > span:last-child {
+    font-size: 8.5px !important;
+  }
+
+  /* — Fresh arrivals mikro — */
+  .fresh-card {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 8px;
+    padding: 7px;
+  }
+
+  .fresh-thumb {
+    width: 44px;
+    height: 44px;
+  }
+
+  .fresh-info strong {
+    font-size: 11px;
+  }
+
+  .fresh-info em {
+    font-size: 10.5px;
+  }
+
+  .fresh-info small {
+    font-size: 9px;
+  }
+
+  /* — Demand mikro — */
+  .demand-card {
+    padding: 10px;
+  }
+
+  .demand-card strong {
+    font-size: 11.5px;
+  }
+
+  .demand-qty {
+    font-size: 9.5px;
+    padding: 2px 7px;
+  }
+
+  /* — Bölmə başlıqları bir az da kiçik — */
+  .section-title-row h2 {
+    font-size: 19px !important;
+  }
+
+  .section {
+    padding-top: 20px !important;
+    padding-bottom: 22px !important;
+  }
+}
