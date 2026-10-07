@@ -205,6 +205,11 @@ export class AdminController {
     return this.adminService.listReports(query);
   }
 
+  @Get('reports/:id')
+  getReport(@Param('id') id: string) {
+    return this.adminService.getReport(id);
+  }
+
   @Post('reports/:id/in-review')
   markReportInReview(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
     return this.adminService.updateReportStatus(id, ReportStatus.IN_REVIEW, user);

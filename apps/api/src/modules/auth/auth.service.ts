@@ -168,16 +168,18 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
     const user = toAuthenticatedUser(session.user);
     const nextSession = this.createRefreshTokenData(context);
 
-    await this.prisma.$transaction([
-      this.prisma.refreshSession.update({
-        where: { id: session.id },
-        data: {
-          revokedAt: new Date(),
-          lastUsedAt: new Date(),
-        },
-        select: { id: true },
-      }),
-      this.prisma.refreshSession.create({
+    await this.prisma.$transaction(async (transaction) => {
+      const now = new Date();
+      const rotation = await transaction.refreshSession.updateMany({
+        where: { id: session.id, revokedAt: null, expiresAt: { gt: now } },
+        data: { revokedAt: now, lastUsedAt: now },
+      });
+
+      if (rotation.count !== 1) {
+        throw new UnauthorizedException('Refresh session is invalid');
+      }
+
+      await transaction.refreshSession.create({
         data: {
           userId: user.id,
           tokenHash: nextSession.tokenHash,
@@ -186,8 +188,8 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
           ...(nextSession.userAgentHash ? { userAgentHash: nextSession.userAgentHash } : {}),
         },
         select: { id: true },
-      }),
-    ]);
+      });
+    });
 
     await this.audit.record({
       actorId: user.id,
@@ -199,7 +201,7 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
     return this.authResult(user, nextSession.refreshToken);
   }
 
-  async logout(refreshToken: string | undefined, user?: AuthenticatedUser): Promise<{ data: { authenticated: false } }> {
+  async logout(refreshToken: string | undefined, user?: AuthenticatedUser, pushToken?: string): Promise<{ data: { authenticated: false } }> {
     let actorId = user?.id;
     let refreshSessionId: string | undefined;
 
@@ -213,6 +215,7 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
         },
       });
 
+      if (session && pushToken) await this.prisma.pushDevice.deleteMany({ where: { userId: session.userId, token: pushToken } });
       if (session && !session.revokedAt) {
         actorId = actorId ?? session.userId;
         refreshSessionId = session.id;
@@ -228,6 +231,7 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
     }
 
     if (actorId) {
+      if (pushToken) await this.prisma.pushDevice.deleteMany({ where: { userId: actorId, token: pushToken } });
       await this.audit.record({
         actorId,
         action: 'AUTH_LOGOUT',
@@ -244,6 +248,7 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
   }
 
   async logoutAll(user: AuthenticatedUser): Promise<{ data: { authenticated: false; revokedSessions: number } }> {
+    await this.prisma.pushDevice.deleteMany({ where: { userId: user.id } });
     const result = await this.prisma.refreshSession.updateMany({
       where: {
         userId: user.id,
@@ -431,12 +436,22 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
 
     const passwordHash = await bcrypt.hash(dto.newPassword, 12);
 
-    await this.prisma.user.update({
-      where: { id: user.id },
-      data: { passwordHash },
-    });
+    await this.prisma.$transaction([
+      this.prisma.user.update({
+        where: { id: user.id },
+        data: { passwordHash },
+      }),
+      this.prisma.refreshSession.updateMany({
+        where: { userId: user.id, revokedAt: null },
+        data: { revokedAt: new Date() },
+      }),
+    ]);
 
     return { success: true };
+  }
+
+  accessTokenTtlSeconds(): number {
+    return Number(this.config.get('AUTH_ACCESS_TOKEN_TTL_SECONDS', 900));
   }
 
   cookieConfig(): AuthCookieConfig {

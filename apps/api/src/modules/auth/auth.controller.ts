@@ -14,6 +14,7 @@ import {
 } from './domain/auth-cookies';
 import { AuthService } from './auth.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { MobileRefreshDto } from './dto/mobile-refresh.dto';
 import { LoginDto } from './dto/login.dto';
 import { SetupPasswordDto } from './dto/setup-password.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
@@ -43,6 +44,64 @@ export class AuthController {
     applyAuthCookies(response, result.tokens, this.authService.cookieConfig());
 
     return result.data;
+  }
+
+  @Post('mobile/login')
+  @Public()
+  @HttpCode(200)
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  async mobileLogin(
+    @Body() dto: LoginDto,
+    @Ip() ipAddress: string,
+    @Headers('user-agent') userAgent: string | undefined,
+  ) {
+    const result = await this.authService.login(dto, {
+      ipAddress,
+      ...(userAgent ? { userAgent } : {}),
+    });
+    return {
+      data: {
+        ...result.data,
+        accessToken: result.tokens.accessToken,
+        refreshToken: result.tokens.refreshToken,
+        expiresIn: this.authService.accessTokenTtlSeconds(),
+      },
+    };
+  }
+
+  @Post('mobile/refresh')
+  @Public()
+  @HttpCode(200)
+  @Throttle({ default: { limit: 30, ttl: 60_000 } })
+  async mobileRefresh(
+    @Body() dto: MobileRefreshDto,
+    @Ip() ipAddress: string,
+    @Headers('user-agent') userAgent: string | undefined,
+  ) {
+    const result = await this.authService.refresh(dto.refreshToken, {
+      ipAddress,
+      ...(userAgent ? { userAgent } : {}),
+    });
+    return {
+      data: {
+        ...result.data,
+        accessToken: result.tokens.accessToken,
+        refreshToken: result.tokens.refreshToken,
+        expiresIn: this.authService.accessTokenTtlSeconds(),
+      },
+    };
+  }
+
+  @Get('mobile/session')
+  mobileSession(@CurrentUser() user: AuthenticatedUser) {
+    return { data: { authenticated: true, user } };
+  }
+
+  @Post('mobile/logout')
+  @Public()
+  @HttpCode(200)
+  async mobileLogout(@Body() dto: MobileRefreshDto) {
+    return this.authService.logout(dto.refreshToken, undefined, dto.pushToken);
   }
 
   @Post('refresh')
@@ -113,8 +172,13 @@ export class AuthController {
 
   @Post('change-password')
   @HttpCode(200)
-  async changePassword(@CurrentUser() user: AuthenticatedUser, @Body() dto: ChangePasswordDto) {
+  async changePassword(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: ChangePasswordDto,
+    @Res({ passthrough: true }) response: CookieResponse,
+  ) {
     const result = await this.authService.changePassword(user, dto);
+    clearAuthCookies(response, this.authService.cookieConfig());
     return { data: result };
   }
 }

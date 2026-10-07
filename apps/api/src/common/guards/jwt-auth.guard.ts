@@ -18,7 +18,7 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
-    const token = this.extractAccessToken(request);
+    const { token, method } = this.extractAccessToken(request);
     const user = this.jwtTokens.verifyAccessToken(token);
 
     if (!user) {
@@ -26,6 +26,7 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     request.auth = user;
+    request.authMethod = method;
     return true;
   }
 
@@ -35,20 +36,21 @@ export class JwtAuthGuard implements CanActivate {
     );
   }
 
-  private extractAccessToken(request: AuthenticatedRequest): string | undefined {
+  private extractAccessToken(request: AuthenticatedRequest): {
+    token: string | undefined;
+    method: 'cookie' | 'bearer';
+  } {
     const cookies = parseCookieHeader(request.headers?.cookie);
-
-    if (cookies[ACCESS_COOKIE_NAME]) {
-      return cookies[ACCESS_COOKIE_NAME];
-    }
-
     const authorization = request.headers?.authorization;
     const header = Array.isArray(authorization) ? authorization[0] : authorization;
+    const bearer = header?.startsWith('Bearer ') ? header.slice('Bearer '.length).trim() : undefined;
 
-    if (header?.startsWith('Bearer ')) {
-      return header.slice('Bearer '.length).trim();
+    if (bearer && cookies[ACCESS_COOKIE_NAME]) {
+      throw new UnauthorizedException('Ambiguous authentication');
     }
 
-    return undefined;
+    return bearer
+      ? { token: bearer, method: 'bearer' }
+      : { token: cookies[ACCESS_COOKIE_NAME], method: 'cookie' };
   }
 }

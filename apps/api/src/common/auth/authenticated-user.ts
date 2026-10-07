@@ -10,6 +10,7 @@ export type AuthenticatedUser = {
 
 export type AuthenticatedRequest = {
   auth?: AuthenticatedUser;
+  authMethod?: 'cookie' | 'bearer';
   method: string;
   headers?: Record<string, string | string[] | undefined>;
   params?: Record<string, string | undefined>;

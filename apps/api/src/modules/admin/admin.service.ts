@@ -887,6 +887,14 @@ export class AdminService {
     };
   }
 
+  async getReport(id: string) {
+    const report = await this.prisma.report.findUnique({ where: { id }, select: reportSelect });
+    if (!report) {
+      throw new NotFoundException('Report not found');
+    }
+    return { data: mapReport(report) };
+  }
+
   async updateReportStatus(id: string, status: ReportStatus, admin: AuthenticatedUser) {
     const report = await this.prisma.report.findUnique({ where: { id }, select: { id: true, status: true } });
 

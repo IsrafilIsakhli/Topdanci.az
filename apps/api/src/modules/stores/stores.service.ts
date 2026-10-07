@@ -134,7 +134,7 @@ export class StoresService {
   }
 }
 
-const publicStoreSelect = {
+export const publicStoreSelect = {
   id: true,
   slug: true,
   name: true,
@@ -150,6 +150,7 @@ const publicStoreSelect = {
   publishedAt: true,
   category: {
     select: {
+      id: true,
       slug: true,
       name: true,
     },
@@ -194,7 +195,7 @@ function storeOrderBy(sort: StoreSort): Prisma.StoreOrderByWithRelationInput[] {
   return [{ publishedAt: 'desc' }, { id: 'desc' }];
 }
 
-function mapPublicStore(store: PublicStoreRecord) {
+export function mapPublicStore(store: PublicStoreRecord) {
   return {
     id: store.id,
     slug: store.slug,

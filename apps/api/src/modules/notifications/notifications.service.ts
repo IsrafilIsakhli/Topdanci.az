@@ -1,3 +1,4 @@
+import { PushService } from './push.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { NotificationType, Prisma, UserRole, UserStatus } from '@prisma/client';
 import type { AuthenticatedUser } from '../../common/auth/authenticated-user';
@@ -14,7 +15,7 @@ export type CreateNotificationInput = {
 
 @Injectable()
 export class NotificationsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService, private readonly push: PushService) {}
 
   async list(user: AuthenticatedUser, query: ListNotificationsQueryDto) {
     const where: Prisma.NotificationWhereInput = {
@@ -24,14 +25,16 @@ export class NotificationsService {
     const [items, unreadCount] = await Promise.all([
       this.prisma.notification.findMany({
         where,
-        take: query.limit,
+        take: query.limit + 1,
+        ...(query.cursor ? { cursor: { id: query.cursor }, skip: 1 } : {}),
         orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
         select: notificationSelect,
       }),
       this.prisma.notification.count({ where: { userId: user.id, readAt: null } }),
     ]);
 
-    return { data: items, meta: { unreadCount } };
+    const data = items.slice(0, query.limit);
+    return { data, meta: { unreadCount, nextCursor: items.length > query.limit ? data.at(-1)?.id : null } };
   }
 
   async markRead(user: AuthenticatedUser, id: string) {
@@ -63,16 +66,16 @@ export class NotificationsService {
     const uniqueUserIds = [...new Set(userIds.filter(Boolean))];
     if (!uniqueUserIds.length) return;
 
-    await this.prisma.notification.createMany({
+    const notifications = await this.prisma.notification.createManyAndReturn({
       data: uniqueUserIds.map((userId) => ({
-        userId,
-        type: input.type ?? NotificationType.INFO,
-        title: input.title,
-        message: input.message,
-        ...(input.href ? { href: input.href } : {}),
-        ...(input.metadata ? { metadata: input.metadata } : {}),
+        userId, type: input.type ?? NotificationType.INFO, title: input.title, message: input.message,
+        ...(input.href ? { href: input.href } : {}), ...(input.metadata ? { metadata: input.metadata } : {}),
       })),
+      select: { id: true, userId: true, title: true, message: true, href: true },
     });
+    for (const notification of notifications) {
+      await this.push.enqueue([notification.userId], notification).catch(() => undefined);
+    }
   }
 
   async createForRoles(roles: UserRole[], input: CreateNotificationInput): Promise<void> {

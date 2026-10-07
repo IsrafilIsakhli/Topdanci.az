@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@
 import { Reflector } from '@nestjs/core';
 import type { AuthenticatedRequest } from '../auth/authenticated-user';
 import { IS_PUBLIC_ROUTE } from '../decorators/public.decorator';
-import { CSRF_COOKIE_NAME, parseCookieHeader } from '../../modules/auth/domain/auth-cookies';
+import { ACCESS_COOKIE_NAME, CSRF_COOKIE_NAME, REFRESH_COOKIE_NAME, parseCookieHeader } from '../../modules/auth/domain/auth-cookies';
 
 const csrfHeaderName = 'x-csrf-token';
 const safeMethods = new Set(['GET', 'HEAD', 'OPTIONS']);
@@ -23,6 +23,9 @@ export class CsrfGuard implements CanActivate {
     }
 
     const cookies = parseCookieHeader(request.headers?.cookie);
+    if (request.authMethod === 'bearer' && !cookies[ACCESS_COOKIE_NAME] && !cookies[REFRESH_COOKIE_NAME]) {
+      return true;
+    }
     const csrfCookie = cookies[CSRF_COOKIE_NAME];
     const csrfHeader = getHeader(request.headers?.[csrfHeaderName]);
 

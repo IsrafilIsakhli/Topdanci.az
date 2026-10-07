@@ -25,6 +25,8 @@ import { RedisThrottlerStorage } from './modules/redis/redis-throttler.storage';
 import { SearchModule } from './modules/search/search.module';
 import { SellerModule } from './modules/seller/seller.module';
 import { StoresModule } from './modules/stores/stores.module';
+import { LibraryModule } from './modules/library/library.module';
+import { BuyerRequestsModule } from './modules/buyer-requests/buyer-requests.module';
 import { SupportModule } from './modules/support/support.module';
 
 @Module({
@@ -62,6 +64,8 @@ import { SupportModule } from './modules/support/support.module';
     SellerModule,
     AdminModule,
     SupportModule,
+    BuyerRequestsModule,
+    LibraryModule,
   ],
   providers: [
     {

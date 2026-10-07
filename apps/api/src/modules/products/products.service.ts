@@ -76,7 +76,7 @@ export class ProductsService {
   }
 }
 
-const publicProductSelect = {
+export const publicProductSelect = {
   id: true,
   slug: true,
   title: true,
@@ -90,6 +90,7 @@ const publicProductSelect = {
   publishedAt: true,
   category: {
     select: {
+      id: true,
       slug: true,
       name: true,
     },
@@ -187,7 +188,7 @@ function productOrderBy(sort: ProductSort): Prisma.ProductOrderByWithRelationInp
   return [{ publishedAt: 'desc' }, { id: 'desc' }];
 }
 
-function mapPublicProduct(product: PublicProductRecord) {
+export function mapPublicProduct(product: PublicProductRecord) {
   return {
     id: product.id,
     slug: product.slug,
