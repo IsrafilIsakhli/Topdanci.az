@@ -53,6 +53,9 @@ export function SiteHeader() {
 
           <div className="header-actions">
             <ThemeToggle />
+            <Link className="button icon-button" href="/products" aria-label="Axtarış">
+              <Search size={18} />
+            </Link>
             <Link className="button" href="/login">
               Daxil ol
             </Link>

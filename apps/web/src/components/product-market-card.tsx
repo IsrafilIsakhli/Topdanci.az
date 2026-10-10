@@ -78,7 +78,7 @@ export function ProductMarketCard({ product }: ProductMarketCardProps) {
             storeName={product.store}
           >
             <MessageCircle size={15} />
-            WhatsApp
+            Yaz
           </LeadWhatsAppLink>
           <Link className="button" href={`/products/${product.slug}`} aria-label={`${product.title} ətraflı bax`}>
             Ətraflı

@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react';
 import { AlertCircle, ChevronRight, Loader2 } from 'lucide-react';
-import { statusLabel } from '../../lib/status-labels';
-import { formatDateTime } from '../../lib/display-format';
 
 export function AdminPageHeader({
   kicker,
@@ -52,8 +50,24 @@ export function AdminMetricCard({
 export function AdminStatusBadge({ status }: { status?: string | null }) {
   const rawStatus = status ?? 'UNKNOWN';
   const normalized = rawStatus.toLowerCase().replaceAll('_', '-');
+  const labels: Record<string, string> = {
+    ACTIVE: 'Aktiv',
+    APPROVED: 'Təsdiqlənmiş',
+    RESOLVED: 'Həll olunub',
+    OK: 'Sağlam',
+    PENDING: 'Gözləyir',
+    PENDING_REVIEW: 'Yoxlamada',
+    IN_REVIEW: 'Baxılır',
+    REJECTED: 'Rədd edilib',
+    SUSPENDED: 'Dayandırılıb',
+    DELETED: 'Silinib',
+    FAILED: 'Xəta',
+    DRAFT: 'Qaralama',
+    PASSIVE: 'Passiv',
+    UNKNOWN: 'Naməlum',
+  };
 
-  return <span className={`admin-status admin-status-${normalized}`}>{statusLabel(rawStatus)}</span>;
+  return <span className={`admin-status admin-status-${normalized}`}>{labels[rawStatus] ?? rawStatus}</span>;
 }
 
 export function AdminLoadingBlock({ label = 'Məlumatlar yüklənir' }: { label?: string }) {
@@ -108,7 +122,14 @@ export function AdminListLink({
 }
 
 export function formatDate(value?: string | null): string {
-  return formatDateTime(value);
+  if (!value) return '-';
+  return new Intl.DateTimeFormat('az-AZ', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(value));
 }
 
 export function compactNumber(value?: number | null): string {

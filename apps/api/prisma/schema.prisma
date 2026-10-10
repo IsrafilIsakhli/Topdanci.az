@@ -96,35 +96,6 @@ enum NotificationType {
   ACTION_REQUIRED
 }
 
-enum TicketStatus {
-  OPEN
-  IN_PROGRESS
-  WAITING_SELLER
-  WAITING_SUPPORT
-  CLOSED
-}
-
-enum TicketReason {
-  TECHNICAL
-  STORE_PROFILE
-  PRODUCT_REVIEW
-  COMPLAINT
-  ACCOUNT
-  OTHER
-}
-
-enum TicketPriority {
-  LOW
-  NORMAL
-  HIGH
-  URGENT
-}
-
-enum TicketMessageKind {
-  MESSAGE
-  SYSTEM
-}
-
 model User {
   id              String     @id @default(cuid())
   email           String?    @unique
@@ -154,9 +125,6 @@ model User {
   buyerRequests        BuyerRequest[]
   resetChallenges      PasswordResetChallenge[]
   pushDevices          PushDevice[]
-  createdTickets       SupportTicket[] @relation("TicketCreator")
-  assignedTickets      SupportTicket[] @relation("TicketAssignee")
-  ticketMessages       TicketMessage[]
 
   @@index([role, status])
   @@map("users")
@@ -274,7 +242,6 @@ model Store {
   leadEvents  LeadEvent[]
   reports     Report[]
   buyerOffers BuyerOffer[]
-  tickets     SupportTicket[]
 
   @@index([status, city])
   @@index([categoryId, status])
@@ -452,48 +419,6 @@ model AuditLog {
   @@index([resourceType, resourceId, createdAt])
   @@index([actorId, createdAt])
   @@map("audit_logs")
-}
-
-model SupportTicket {
-  id           String         @id @default(cuid())
-  number       Int            @unique @default(autoincrement())
-  storeId      String
-  creatorId    String?
-  assigneeId   String?
-  subject      String         @db.VarChar(200)
-  reason       TicketReason
-  priority     TicketPriority @default(NORMAL)
-  status       TicketStatus   @default(OPEN)
-  version      Int            @default(1)
-  closedAt     DateTime?
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-
-  store        Store          @relation(fields: [storeId], references: [id], onDelete: Restrict)
-  creator      User?          @relation("TicketCreator", fields: [creatorId], references: [id], onDelete: SetNull)
-  assignee     User?          @relation("TicketAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
-  messages     TicketMessage[]
-
-  @@index([storeId, status, updatedAt])
-  @@index([status, priority, updatedAt])
-  @@index([assigneeId, status])
-  @@map("support_tickets")
-}
-
-model TicketMessage {
-  id           String            @id @default(cuid())
-  ticketId     String
-  authorId     String?
-  authorRole   UserRole
-  kind         TicketMessageKind @default(MESSAGE)
-  body         String            @db.Text
-  createdAt    DateTime          @default(now())
-
-  ticket       SupportTicket     @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  author       User?             @relation(fields: [authorId], references: [id], onDelete: SetNull)
-
-  @@index([ticketId, createdAt, id])
-  @@map("ticket_messages")
 }
 
 enum BuyerRequestStatus {

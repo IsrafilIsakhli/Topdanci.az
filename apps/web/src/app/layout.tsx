@@ -1,21 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { getSiteUrl } from '../lib/site-url';
-// Qlobal stillər məntiqi hissələrə bölünüb; sıra (order) CSS kaskadını təyin edir —
-// dəyişdirilərkən ardıcıllıq qorunmalıdır. Detallar: src/styles/globals/README.md
-import '../styles/globals/01-tokens-and-base.css';
-import '../styles/globals/02-public-marketplace.css';
-import '../styles/globals/03-seller-panel-and-dashboard.css';
-import '../styles/globals/04-marketplace-refinements.css';
-import '../styles/globals/05-auth-contact-login.css';
-import '../styles/globals/06-mobile-surfaces.css';
-import '../styles/globals/07-admin-responsive.css';
-import '../styles/globals/08-theme-and-dark-layers.css';
-import '../styles/globals/09-homepage-final-passes.css';
-import '../styles/globals/10-seller-dashboard-and-forms.css';
-import '../styles/globals/11-performance-guard.css';
+import './globals.css';
 import './marketplace-mobile.css';
-import '../styles/globals/12-review-refinements.css';
-import '../styles/globals/13-tickets.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -80,10 +66,6 @@ export default function RootLayout({
   return (
     <html lang="az" suppressHydrationWarning>
       <head>
-        {/* Şəkil CDN-lərinə əvvəlcədən bağlantı: ilk şəkillər daha tez görünür. */}
-        <link rel="preconnect" href="https://images.unsplash.com" />
-        <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        <link rel="preconnect" href="https://lh3.googleusercontent.com" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>{children}</body>

@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { getAdminUsers, type AdminUser, type AdminUserRole, type AdminUserStatus } from '../../../lib/admin-api';
 import { AdminEmptyBlock, AdminErrorBlock, AdminLoadingBlock, AdminPageHeader, AdminStatusBadge, formatDate } from '../admin-ui';
-import { statusLabel } from '../../../lib/status-labels';
 
 export default function AdminUsersPage() {
   const [role, setRole] = useState<AdminUserRole | ''>('');
@@ -47,38 +46,22 @@ export default function AdminUsersPage() {
       <AdminPageHeader
         kicker="Superadmin"
         title="İstifadəçi və rol idarəsi"
-        description="Rol və status dəyişiklikləri audit jurnalına yazılır. Son SUPER_ADMIN qorunur."
+        description="Rol və status dəyişiklikləri audit log-a düşür. Son SUPER_ADMIN qorunur."
       />
       <div className="admin-toolbar">
-        <input
-          aria-label="İstifadəçi axtarışı"
-          className="admin-input"
-          placeholder="Email, telefon və ya ad axtarın"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-        />
-        <select
-          aria-label="Rol filtri"
-          className="admin-select"
-          value={role}
-          onChange={(event) => setRole(event.target.value as AdminUserRole | '')}
-        >
+        <input className="admin-input" placeholder="Email, telefon və ya ad axtarın" value={query} onChange={(event) => setQuery(event.target.value)} />
+        <select className="admin-select" value={role} onChange={(event) => setRole(event.target.value as AdminUserRole | '')}>
           <option value="">Bütün rollar</option>
-          <option value="BUYER">{statusLabel('BUYER')}</option>
-          <option value="SELLER">{statusLabel('SELLER')}</option>
-          <option value="ADMIN">{statusLabel('ADMIN')}</option>
-          <option value="SUPER_ADMIN">{statusLabel('SUPER_ADMIN')}</option>
+          <option value="BUYER">BUYER</option>
+          <option value="SELLER">SELLER</option>
+          <option value="ADMIN">ADMIN</option>
+          <option value="SUPER_ADMIN">SUPER_ADMIN</option>
         </select>
-        <select
-          aria-label="Status filtri"
-          className="admin-select"
-          value={status}
-          onChange={(event) => setStatus(event.target.value as AdminUserStatus | '')}
-        >
+        <select className="admin-select" value={status} onChange={(event) => setStatus(event.target.value as AdminUserStatus | '')}>
           <option value="">Bütün statuslar</option>
-          <option value="ACTIVE">{statusLabel('ACTIVE')}</option>
-          <option value="SUSPENDED">{statusLabel('SUSPENDED')}</option>
-          <option value="DELETED">{statusLabel('DELETED')}</option>
+          <option value="ACTIVE">ACTIVE</option>
+          <option value="SUSPENDED">SUSPENDED</option>
+          <option value="DELETED">DELETED</option>
         </select>
       </div>
 

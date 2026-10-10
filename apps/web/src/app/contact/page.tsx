@@ -1,31 +1,29 @@
-import { ArrowUpRight, CheckCircle2, Mail, MessageCircle, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, Clock3, Mail, MessageCircle, ShieldCheck } from 'lucide-react';
 import { SiteFooter } from '../../components/site-footer';
 import { SiteHeader } from '../../components/site-header';
 import { ContactForm } from './contact-form';
 
-const supportPhone = process.env.NEXT_PUBLIC_SUPPORT_WHATSAPP?.replace(/\D/g, '') ?? '';
-const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL?.trim() ?? '';
 const contactCards = [
-  ...(/^\d{10,15}$/.test(supportPhone) ? [{
+  {
     icon: MessageCircle,
     title: 'WhatsApp dəstəyi',
     text: 'Mağaza, məhsul və reklam sualları üçün ən sürətli əlaqə.',
-    value: `+${supportPhone}`,
-    href: `https://wa.me/${supportPhone}`,
-  }] : []),
-  ...(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(supportEmail) ? [{
+    value: '+994 00 000 00 00',
+    hint: 'Adətən 15 dəqiqə ərzində',
+  },
+  {
     icon: Mail,
     title: 'E-poçt',
     text: 'Rəsmi müraciət və tərəfdaşlıq təklifləri üçün yazın.',
-    value: supportEmail,
-    href: `mailto:${supportEmail}`,
-  }] : []),
+    value: 'support@topdanbazar.az',
+    hint: '1 iş günü ərzində cavab',
+  },
   {
-    icon: MessageCircle,
-    title: 'Dəstəyə yazın',
+    icon: Clock3,
+    title: 'İş saatları',
     text: 'Müraciətlər növbə ilə cavablandırılır.',
-    value: 'Müraciət forması',
-    href: '#contact-form',
+    value: 'B.e - C. 09:00-18:00',
+    hint: 'Şənbə 10:00-15:00',
   },
 ];
 
@@ -71,7 +69,7 @@ export default function ContactPage() {
               {contactCards.map((card) => {
                 const Icon = card.icon;
                 return (
-                  <a className="contact-v2-channel" href={card.href} key={card.title}>
+                  <article className="contact-v2-channel" key={card.title}>
                     <span className="contact-v2-channel-icon">
                       <Icon size={18} />
                     </span>
@@ -79,9 +77,10 @@ export default function ContactPage() {
                       <strong>{card.title}</strong>
                       <span>{card.text}</span>
                       <b>{card.value}</b>
+                      <small>{card.hint}</small>
                     </span>
                     <ArrowUpRight className="contact-v2-channel-arrow" size={18} aria-hidden="true" />
-                  </a>
+                  </article>
                 );
               })}
             </div>

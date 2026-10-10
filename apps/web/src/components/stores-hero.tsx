@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {
   BadgeCheck,
   Building2,
+  Clock3,
   MapPin,
   Package,
   PackageCheck,
@@ -9,6 +10,7 @@ import {
   ShieldCheck,
   Store,
   TrendingUp,
+  Truck,
   X,
 } from 'lucide-react';
 import { CatalogSortSelect } from './catalog-sort-select';
@@ -49,7 +51,7 @@ export function StoresHero({
             <Building2 size={15} />
             Topdansatış mağazalar
           </p>
-          <h1>Topdansatış mağazaları</h1>
+          <h1>Etibarlı satıcıları bir yerdə tapın</h1>
           <p className="lead">
             Şəhər, sektor və mağaza adına görə axtarın, məhsul sayına baxın və satıcı ilə birbaşa əlaqəyə keçin.
           </p>
@@ -84,23 +86,27 @@ export function StoresHero({
               <strong>{verifiedStores}</strong> təsdiqli satıcı
             </span>
             <span>
-              <MapPin size={16} />
-              Şəhərlər üzrə mağazalar
+              <Truck size={16} />
+              Ölkə üzrə topdan çatdırılma
             </span>
             <span>
               <PackageCheck size={16} />
-              Qiymət razılaşması satıcı ilə
+              Sifariş və qiymət zəmanəti
+            </span>
+            <span>
+              <Clock3 size={16} />
+              7/24 satıcı dəstəyi
             </span>
           </div>
 
           <form className="catalog-search-panel stores-search-panel" action="/stores">
             <label className="catalog-search-field">
               <Search size={18} />
-              <input aria-label="Mağaza və ya məhsul axtar" name="q" defaultValue={query?.q ?? ''} placeholder="Mağaza və ya məhsul axtar" />
+              <input name="q" defaultValue={query?.q ?? ''} placeholder="Mağaza və ya məhsul axtar" />
             </label>
             <label className="catalog-search-field stores-city-field">
               <MapPin size={18} />
-              <input aria-label="Şəhər" name="city" defaultValue={query?.city ?? ''} placeholder="Şəhər" />
+              <input name="city" defaultValue={query?.city ?? ''} placeholder="Şəhər" />
             </label>
             {query?.category ? <input type="hidden" name="category" value={query.category} /> : null}
             <CatalogSortSelect ariaLabel="Sırala" name="sort" value={sort} options={STORE_SORT_OPTIONS} />

@@ -1,7 +1,6 @@
 'use client';
 
 import { useId } from 'react';
-import { ChartNoAxesCombined } from 'lucide-react';
 
 export type LeadActivityPoint = {
   label: string;
@@ -18,18 +17,16 @@ const PADDING_X = 40;
 const PADDING_TOP = 24;
 const PADDING_BOTTOM = 34;
 
+/**
+ * Xüsusi SVG area qrafik — heç bir qrafik kitabxanası olmadan,
+ * gradient dolgu + animasiyalı çəkiliş ilə son 7 günün lead axını.
+ */
 export function LeadActivityChart({ points }: LeadActivityChartProps) {
   const rawId = useId();
   const gradientId = `tb-lead-grad-${rawId.replace(/[^a-zA-Z0-9]/g, '')}`;
 
-  if (!points.some((point) => point.value > 0)) {
-    return (
-      <div className="dash2-empty chart-empty" role="status">
-        <ChartNoAxesCombined size={28} />
-        <strong>Bu dövrdə fəaliyyət yoxdur</strong>
-        <span>Baxış və əlaqə hadisələri olduqda qrafik burada görünəcək.</span>
-      </div>
-    );
+  if (points.length === 0) {
+    return null;
   }
 
   const maxValue = Math.max(...points.map((point) => point.value), 4);
@@ -72,7 +69,7 @@ export function LeadActivityChart({ points }: LeadActivityChartProps) {
       className="dash2-chart"
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       role="img"
-      aria-label="Seçilən dövrün baxış və əlaqə hadisələri qrafiki"
+      aria-label="Son 7 günün lead hadisələri qrafiki"
     >
       <defs>
         <linearGradient id={`${gradientId}-line`} x1="0" y1="0" x2="1" y2="0">
@@ -109,20 +106,20 @@ export function LeadActivityChart({ points }: LeadActivityChartProps) {
         strokeWidth={3}
       />
 
-      {coords.map((coord, index) => (
+      {coords.map((coord) => (
         <g key={coord.label}>
           <circle
             className="dash2-chart-dot"
             cx={coord.x}
             cy={coord.y}
             r={4.5}
-            style={{ animationDelay: `${Math.min(900 + index * 90, 1500)}ms` }}
+            style={{ animationDelay: `${900 + coords.indexOf(coord) * 90}ms` }}
           >
             <title>{`${coord.label}: ${coord.value} hadisə`}</title>
           </circle>
-          {index % Math.max(1, Math.ceil((coords.length - 1) / 5)) === 0 || index === coords.length - 1 ? <text className="dash2-chart-xlabel" textAnchor="middle" x={coord.x} y={HEIGHT - 10}>
+          <text className="dash2-chart-xlabel" textAnchor="middle" x={coord.x} y={HEIGHT - 10}>
             {coord.label}
-          </text> : null}
+          </text>
         </g>
       ))}
     </svg>

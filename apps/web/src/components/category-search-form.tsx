@@ -36,7 +36,7 @@ export function CategorySearchForm({ categories }: CategorySearchFormProps) {
     <form className="category-search-form premium-search" action="/products">
       <label className="category-search-input">
         <Search size={18} />
-        <input aria-label="Məhsul və ya mağaza axtarın" name="q" placeholder="Məhsul və ya mağaza axtar" />
+        <input name="q" placeholder="Məhsul, mağaza və ya kateqoriya axtarın" />
       </label>
 
       <div className="category-mega-select">

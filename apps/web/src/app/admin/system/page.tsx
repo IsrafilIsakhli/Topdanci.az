@@ -32,19 +32,19 @@ export default function AdminSystemPage() {
   return (
     <section className="admin-page">
       <AdminPageHeader
-        kicker="Sistem vəziyyəti"
+        kicker="Ops health"
         title="Sistem sağlamlığı"
         description={`Son yoxlama: ${formatDate(system.timestamp)}`}
         action={<AdminStatusBadge status={system.status} />}
       />
       <div className="admin-stat-grid">
-        <AdminMetricCard label="Sorğu sayı" value={system.metrics.requests.count} />
-        <AdminMetricCard label="Xəta sayı" value={system.metrics.requests.errors} />
-        <AdminMetricCard label="Orta müddət" value={`${Math.round(system.metrics.requests.averageDurationMs)}ms`} />
-        <AdminMetricCard label="Uğursuz növbə" value={system.metrics.worker.failed} />
+        <AdminMetricCard label="Request count" value={system.metrics.requests.count} />
+        <AdminMetricCard label="Error count" value={system.metrics.requests.errors} />
+        <AdminMetricCard label="Avg duration" value={`${Math.round(system.metrics.requests.averageDurationMs)}ms`} />
+        <AdminMetricCard label="Queue failed" value={system.metrics.worker.failed} />
       </div>
       <section className="admin-panel">
-        <h3>Asılılıqlar</h3>
+        <h3>Dependencies</h3>
         <div className="admin-card-grid">
           {Object.entries(system.dependencies).map(([name, dependency]) => (
             <article className="admin-dependency-card" key={name}>

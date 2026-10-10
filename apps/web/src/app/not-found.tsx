@@ -4,10 +4,10 @@ export default function NotFoundPage() {
   return (
     <main className="section">
       <div className="container panel">
-        <h1>Səhifə tapılmadı</h1>
-        <p className="lead">Axtardığınız səhifə mövcud deyil və ya yayımdan qaldırılıb.</p>
+        <h1>Sehife tapilmadi</h1>
+        <p className="lead">Axtardiginiz sehife movcud deyil ve ya yayimdan qaldirilib.</p>
         <Link className="button button-primary" href="/">
-          Ana səhifəyə qayıt
+          Ana sehifeye qayit
         </Link>
       </div>
     </main>

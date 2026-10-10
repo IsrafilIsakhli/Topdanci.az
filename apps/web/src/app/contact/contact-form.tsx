@@ -18,8 +18,7 @@ export function ContactForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = event.currentTarget;
-    const formData = new FormData(form);
+    const formData = new FormData(event.currentTarget);
 
     setState({ type: 'submitting' });
 
@@ -32,7 +31,7 @@ export function ContactForm() {
         message: getValue(formData, 'message'),
       });
 
-      form.reset();
+      event.currentTarget.reset();
       setState({ type: 'success', message: 'Mesajınız qəbul edildi. Dəstək komandası ən qısa zamanda baxacaq.' });
     } catch {
       setState({ type: 'error', message: 'Mesaj göndərilə bilmədi. Bir az sonra yenidən cəhd edin.' });
@@ -40,7 +39,7 @@ export function ContactForm() {
   }
 
   return (
-    <form id="contact-form" className="contact-form-card contact-v2-form" onSubmit={handleSubmit}>
+    <form className="contact-form-card contact-v2-form" onSubmit={handleSubmit}>
       <header className="contact-v2-form-header">
         <span className="form-kicker">
           <MessageSquare size={16} />
@@ -50,8 +49,8 @@ export function ContactForm() {
         <p>Mövzunu seçin, komanda müraciətinizi doğru istiqamətdə cavablandırsın.</p>
       </header>
 
-      {state.type === 'success' ? <p className="form-alert form-alert-success" role="status">{state.message}</p> : null}
-      {state.type === 'error' ? <p className="form-alert form-alert-error" role="alert">{state.message}</p> : null}
+      {state.type === 'success' ? <p className="form-alert form-alert-success">{state.message}</p> : null}
+      {state.type === 'error' ? <p className="form-alert form-alert-error">{state.message}</p> : null}
 
       <div className="field-grid">
         <label className="field">
@@ -63,8 +62,8 @@ export function ContactForm() {
           <input autoComplete="email" name="email" placeholder="numune@email.com" required type="email" />
         </label>
         <label className="field">
-          <span>Telefon (könüllü)</span>
-          <input autoComplete="tel" type="tel" inputMode="tel" name="phone" placeholder="+994 (__) ___-__-__" />
+          <span>Telefon</span>
+          <input autoComplete="tel" inputMode="tel" name="phone" placeholder="+994 (__) ___-__-__" />
         </label>
         <label className="field">
           <span>Mövzu</span>

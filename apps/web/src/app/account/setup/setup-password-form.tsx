@@ -77,7 +77,7 @@ export function SetupPasswordForm() {
       </div>
 
       {error ? <div className="form-alert form-alert-error">{error}</div> : null}
-      {!token ? <div className="form-alert form-alert-error">Aktivləşdirmə keçidi tapılmadı. Admin panelindəki quraşdırma keçidini yenidən açın.</div> : null}
+      {!token ? <div className="form-alert form-alert-error">Token tapılmadı. Admin panelindəki setup linkini yenidən açın.</div> : null}
 
       <div className="field-grid">
         <label className="field">

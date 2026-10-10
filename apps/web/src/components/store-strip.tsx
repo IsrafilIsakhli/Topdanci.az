@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BadgeCheck, MapPin, Package } from 'lucide-react';
+import { BadgeCheck, MapPin, Megaphone, Package } from 'lucide-react';
 import type { StorePreview } from '../lib/catalog-data';
 
 export function StoreStrip({ stores }: { stores: StorePreview[] }) {
@@ -8,8 +8,16 @@ export function StoreStrip({ stores }: { stores: StorePreview[] }) {
   return (
     <div className="market-store-strip">
       <div className="market-store-strip-track">
-        {stores.map((store) => (
+        {stores.map((store, index) => (
           <Link className="market-store-card" href={`/stores/${store.slug}`} key={store.slug}>
+            {index % 5 === 0 ? (
+              <span className="market-store-flag">
+                <Megaphone size={11} />
+                Sponsorlu
+              </span>
+            ) : store.views === 'Yeni' ? (
+              <span className="market-store-flag market-store-flag-new">Bu həftə</span>
+            ) : null}
             <span aria-hidden="true" className="store-avatar store-avatar-sm">
               {store.name.slice(0, 2).toUpperCase()}
             </span>

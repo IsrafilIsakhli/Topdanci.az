@@ -19,7 +19,6 @@ import {
   errorMessage,
   formatDate,
 } from '../../admin-ui';
-import { statusLabel } from '../../../../lib/status-labels';
 
 export function AdminUserDetailPage({ id }: { id: string }) {
   const [user, setUser] = useState<AdminUser | null>(null);
@@ -88,10 +87,10 @@ export function AdminUserDetailPage({ id }: { id: string }) {
       {message ? <div className="admin-alert">{message}</div> : null}
 
       <div className="admin-stat-grid">
-        <AdminMetricCard label="Mağaza üzvlüyü" value={user.counts?.storeMembers ?? 0} />
-        <AdminMetricCard label="Sahib olduğu mağaza" value={user.counts?.ownedStores ?? 0} />
-        <AdminMetricCard label="Lead hadisəsi" value={user.counts?.leadEvents ?? 0} />
-        <AdminMetricCard label="Audit qeydi" value={user.counts?.auditLogs ?? 0} />
+        <AdminMetricCard label="Store membership" value={user.counts?.storeMembers ?? 0} />
+        <AdminMetricCard label="Owned store" value={user.counts?.ownedStores ?? 0} />
+        <AdminMetricCard label="Lead event" value={user.counts?.leadEvents ?? 0} />
+        <AdminMetricCard label="Audit" value={user.counts?.auditLogs ?? 0} />
       </div>
 
       <div className="admin-two-column">
@@ -101,22 +100,22 @@ export function AdminUserDetailPage({ id }: { id: string }) {
             <label>
               Rol
               <select className="admin-select" value={user.role} disabled={isBusy} onChange={(event) => void changeRole(event.target.value as AdminUserRole)}>
-                <option value="BUYER">{statusLabel('BUYER')}</option>
-                <option value="SELLER">{statusLabel('SELLER')}</option>
-                <option value="ADMIN">{statusLabel('ADMIN')}</option>
-                <option value="SUPER_ADMIN">{statusLabel('SUPER_ADMIN')}</option>
+                <option value="BUYER">BUYER</option>
+                <option value="SELLER">SELLER</option>
+                <option value="ADMIN">ADMIN</option>
+                <option value="SUPER_ADMIN">SUPER_ADMIN</option>
               </select>
             </label>
             <label>
               Status
               <select className="admin-select" value={user.status} disabled={isBusy} onChange={(event) => void changeStatus(event.target.value as AdminUserStatus)}>
-                <option value="ACTIVE">{statusLabel('ACTIVE')}</option>
-                <option value="SUSPENDED">{statusLabel('SUSPENDED')}</option>
-                <option value="DELETED">{statusLabel('DELETED')}</option>
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="SUSPENDED">SUSPENDED</option>
+                <option value="DELETED">DELETED</option>
               </select>
             </label>
           </div>
-          <p className="admin-muted">Öz hesabınızı dayandırmaq və ya son SUPER_ADMIN rolunu azaltmaq sistem tərəfindən bloklanır.</p>
+          <p className="admin-muted">Öz hesabınızı suspend etmək və ya son SUPER_ADMIN rolunu azaltmaq backend tərəfindən bloklanır.</p>
         </section>
 
         <section className="admin-panel">
@@ -128,7 +127,7 @@ export function AdminUserDetailPage({ id }: { id: string }) {
                   key={member.id}
                   href={`/admin/stores/${member.store.id}`}
                   title={member.store.name}
-                  meta={`${statusLabel(member.role)} · ${formatDate(member.createdAt)}`}
+                  meta={`${member.role} · ${formatDate(member.createdAt)}`}
                   badge={<AdminStatusBadge status={member.store.status} />}
                 />
               ))

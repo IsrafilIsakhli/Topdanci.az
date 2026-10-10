@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { getAdminAnalytics, type AdminAnalytics } from '../../../lib/admin-api';
-import { LeadActivityChart } from '../../seller/dashboard/lead-activity-chart';
-import { formatDayLabel } from '../../../lib/display-format';
 import { AdminEmptyBlock, AdminErrorBlock, AdminListLink, AdminLoadingBlock, AdminMetricCard, AdminPageHeader, compactNumber } from '../admin-ui';
 
 export default function AdminAnalyticsPage() {
@@ -36,16 +34,11 @@ export default function AdminAnalyticsPage() {
   return (
     <section className="admin-page">
       <AdminPageHeader
-        kicker="Böyümə"
+        kicker="Growth"
         title="Platform analitikası"
-        description="Baxış və əlaqə hadisələri, ən çox maraq göstərilən mağaza və məhsullar."
+        description="Lead event trendi, top mağaza və top məhsul göstəriciləri."
         action={
-          <select
-            aria-label="Tarix aralığı"
-            className="admin-select"
-            value={range}
-            onChange={(event) => setRange(event.target.value as '7d' | '30d' | '90d')}
-          >
+          <select className="admin-select" value={range} onChange={(event) => setRange(event.target.value as '7d' | '30d' | '90d')}>
             <option value="7d">7 gün</option>
             <option value="30d">30 gün</option>
             <option value="90d">90 gün</option>
@@ -54,33 +47,28 @@ export default function AdminAnalyticsPage() {
       />
 
       <div className="admin-stat-grid">
-        <AdminMetricCard label="Ümumi fəaliyyət" value={compactNumber(analytics.totalLeads)} />
-        <AdminMetricCard label="Məhsul baxışı" value={compactNumber(analytics.leadCounts.PRODUCT_VIEW)} />
-        <AdminMetricCard label="Mağaza baxışı" value={compactNumber(analytics.leadCounts.STORE_VIEW)} />
-        <AdminMetricCard label="WhatsApp klikləri" value={compactNumber(analytics.leadCounts.WHATSAPP_CLICK)} />
+        <AdminMetricCard label="Total lead" value={compactNumber(analytics.totalLeads)} />
+        <AdminMetricCard label="Product view" value={compactNumber(analytics.leadCounts.PRODUCT_VIEW)} />
+        <AdminMetricCard label="Store view" value={compactNumber(analytics.leadCounts.STORE_VIEW)} />
+        <AdminMetricCard label="WhatsApp" value={compactNumber(analytics.leadCounts.WHATSAPP_CLICK)} />
       </div>
-
-      <section className="admin-panel">
-        <h3>Fəaliyyətin dəyişməsi</h3>
-        <LeadActivityChart points={analytics.trend.map((point) => ({ label: formatDayLabel(point.day), value: point.count }))} />
-      </section>
 
       <div className="admin-two-column">
         <section className="admin-panel">
-          <h3>Ən çox baxılan mağazalar</h3>
+          <h3>Top mağazalar</h3>
           <div className="admin-list">
             {analytics.topStores.length ? (
               analytics.topStores.map((store) => (
                 <AdminListLink key={store.id} href={`/admin/stores/${store.id}`} title={store.name} meta={`${store.city ?? '-'} · ${store.leadCount} lead`} />
               ))
             ) : (
-              <AdminEmptyBlock title="Bu dövrdə mağaza fəaliyyəti yoxdur" />
+              <AdminEmptyBlock title="Top mağaza yoxdur" />
             )}
           </div>
         </section>
 
         <section className="admin-panel">
-          <h3>Ən çox baxılan məhsullar</h3>
+          <h3>Top məhsullar</h3>
           <div className="admin-list">
             {analytics.topProducts.length ? (
               analytics.topProducts.map((product, index) => (
@@ -92,7 +80,7 @@ export default function AdminAnalyticsPage() {
                 />
               ))
             ) : (
-              <AdminEmptyBlock title="Bu dövrdə məhsul fəaliyyəti yoxdur" />
+              <AdminEmptyBlock title="Top məhsul yoxdur" />
             )}
           </div>
         </section>

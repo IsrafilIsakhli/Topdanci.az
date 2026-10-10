@@ -30,9 +30,9 @@ export default function PendingProductsPage() {
   return (
     <section className="admin-page">
       <AdminPageHeader
-        kicker="Yoxlama növbəsi"
+        kicker="Review queue"
         title="Yoxlama gözləyən məhsullar"
-        description="Satıcıların kataloqa göndərdiyi məhsullar burada təsdiq və ya rədd edilir."
+        description="Satıcıların public catalog-a göndərdiyi məhsullar burada təsdiq və ya rədd edilir."
       />
       <AdminProductTable items={items} isLoading={isLoading} hasError={hasError} />
     </section>

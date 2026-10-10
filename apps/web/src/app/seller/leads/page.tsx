@@ -9,7 +9,7 @@ const typeOptions = [
   { value: '', label: 'Bütün hadisələr' },
   { value: 'PRODUCT_VIEW', label: 'Məhsul baxışı' },
   { value: 'STORE_VIEW', label: 'Mağaza baxışı' },
-  { value: 'WHATSAPP_CLICK', label: 'WhatsApp klikləri' },
+  { value: 'WHATSAPP_CLICK', label: 'WhatsApp klik' },
   { value: 'PHONE_REVEAL', label: 'Telefon göstərildi' },
   { value: 'EMAIL_CLICK', label: 'E-poçt klik' },
 ];

@@ -24,7 +24,6 @@ import { MediaQueueService } from '../media/media-queue.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
-import { wouldCreateCategoryCycle } from './category-hierarchy';
 import type { AdminAnalyticsQueryDto } from './dto/admin-analytics-query.dto';
 import type { BulkProductActionDto, BulkRejectProductsDto, FlagProductDto } from './dto/bulk-product-action.dto';
 import type { ListAuditLogsQueryDto } from './dto/list-audit-logs-query.dto';
@@ -817,13 +816,11 @@ export class AdminService {
       throw new NotFoundException('Category not found');
     }
 
-    await this.assertParentCategory(dto.parentId);
-    if (dto.parentId) {
-      const categories = await this.prisma.category.findMany({ select: { id: true, parentId: true } });
-      if (wouldCreateCategoryCycle(id, dto.parentId, categories)) {
-        throw new BadRequestException('Category cannot be placed under itself or its descendants');
-      }
+    if (dto.parentId === id) {
+      throw new BadRequestException('Category cannot be its own parent');
     }
+
+    await this.assertParentCategory(dto.parentId);
     const data: Prisma.CategoryUncheckedUpdateInput = {};
 
     if (dto.name !== undefined) data.name = dto.name;

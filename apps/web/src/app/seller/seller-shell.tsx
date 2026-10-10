@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { statusLabel } from '../../lib/status-labels';
 import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
@@ -11,7 +10,6 @@ import {
   ListChecks,
   LogOut,
   Menu,
-  MessagesSquare,
   Package,
   Settings,
   Store,
@@ -26,9 +24,8 @@ const sellerNav = [
   { href: '/seller', label: 'Panel', icon: Home },
   { href: '/seller/products', label: 'Məhsullar', icon: Package },
   { href: '/seller/store', label: 'Mağaza profili', icon: Store },
-  { href: '/seller/tickets', label: 'Dəstək', icon: MessagesSquare },
   { href: '/seller/analytics', label: 'Statistika', icon: BarChart3 },
-  { href: '/seller/leads', label: 'Alıcı hərəkətləri', icon: ListChecks },
+  { href: '/seller/leads', label: 'Müraciətlər', icon: ListChecks },
   { href: '/seller/settings', label: 'Ayarlar', icon: Settings },
 ];
 
@@ -42,7 +39,7 @@ export function SellerShell({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const activeTitle = useMemo(() => {
-    const current = sellerNav.find((item) => item.href === pathname || (item.href !== '/seller' && pathname.startsWith(`${item.href}/`)));
+    const current = sellerNav.find((item) => item.href === pathname);
     return current?.label ?? 'Mağaza paneli';
   }, [pathname]);
 
@@ -135,7 +132,7 @@ export function SellerShell({ children }: { children: ReactNode }) {
             <UserCircle size={22} />
             <span>
               <strong>{user.email ?? user.phone ?? 'Seller hesabı'}</strong>
-              <small>{statusLabel(user.role)}</small>
+              <small>{user.role}</small>
             </span>
           </div>
           <button className="button button-full" type="button" onClick={() => void handleLogout(false)}>

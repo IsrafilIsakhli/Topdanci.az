@@ -1,10 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { statusLabel } from '../../lib/status-labels';
 import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Activity,
   AlertTriangle,
@@ -16,7 +15,6 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
-  MessagesSquare,
   MoreHorizontal,
   PackageCheck,
   ShieldCheck,
@@ -41,18 +39,15 @@ const adminNav: AdminNavItem[] = [
   { href: '/admin/store-applications', label: 'Mağaza müraciətləri', icon: ClipboardCheck, roles: ['ADMIN', 'SUPER_ADMIN'] },
   { href: '/admin/products', label: 'Məhsul moderasiyası', icon: PackageCheck, roles: ['ADMIN', 'SUPER_ADMIN'] },
   { href: '/admin/stores', label: 'Mağazalar', icon: Store, roles: ['ADMIN', 'SUPER_ADMIN'] },
-  { href: '/admin/tickets', label: 'Dəstək müraciətləri', icon: MessagesSquare, roles: ['SUPER_ADMIN'] },
-  { href: '/admin/reports', label: 'Moderasiya şikayətləri', icon: AlertTriangle, roles: ['ADMIN'] },
+  { href: '/admin/reports', label: 'Şikayətlər', icon: AlertTriangle, roles: ['ADMIN', 'SUPER_ADMIN'] },
   { href: '/admin/analytics', label: 'Analitika', icon: BarChart3, roles: ['ADMIN', 'SUPER_ADMIN'] },
   { href: '/admin/users', label: 'İstifadəçilər', icon: Users, roles: ['SUPER_ADMIN'] },
   { href: '/admin/categories', label: 'Kateqoriyalar', icon: FolderTree, roles: ['SUPER_ADMIN'] },
-  { href: '/admin/audit-logs', label: 'Audit jurnalı', icon: FileClock, roles: ['SUPER_ADMIN'] },
+  { href: '/admin/audit-logs', label: 'Audit log', icon: FileClock, roles: ['SUPER_ADMIN'] },
   { href: '/admin/system', label: 'Sistem', icon: Activity, roles: ['SUPER_ADMIN'] },
 ] as const;
 
 const allowedRoles = new Set(['ADMIN', 'SUPER_ADMIN']);
-const AdminUserContext = createContext<AuthUser | null>(null);
-export const useAdminUser = () => useContext(AdminUserContext);
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -155,7 +150,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <ShieldCheck size={22} />
             <span>
               <strong>{user.email ?? user.phone ?? 'Admin hesabı'}</strong>
-              <small>{statusLabel(user.role)}</small>
+              <small>{user.role}</small>
             </span>
           </div>
           <button className="button button-full" type="button" onClick={() => void handleLogout()}>
@@ -179,11 +174,11 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <div className="admin-topbar-actions">
             <ThemeToggle />
             <NotificationCenter classPrefix="admin" />
-            <span className="admin-role-badge">{statusLabel(user.role)}</span>
+            <span className="admin-role-badge">{user.role}</span>
           </div>
         </header>
 
-        <AdminUserContext.Provider value={user}>{children}</AdminUserContext.Provider>
+        {children}
 
         <nav className="admin-bottom-nav" aria-label="Mobil admin paneli menyusu">
           {visibleNav.slice(0, 4).map((item) => {
