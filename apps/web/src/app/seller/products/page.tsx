@@ -9,27 +9,9 @@ import {
   getSellerProducts,
   submitSellerProduct,
   type CategoryOption,
-  type ProductStatus,
   type SellerProduct,
 } from '../../../lib/seller-api';
-
-const statusLabels: Record<ProductStatus, string> = {
-  DRAFT: 'Qaralama',
-  PENDING_REVIEW: 'Yoxlamada',
-  ACTIVE: 'Aktiv',
-  PASSIVE: 'Passiv',
-  REJECTED: 'Rədd edildi',
-  DELETED: 'Silindi',
-};
-
-const statusTones: Record<ProductStatus, string> = {
-  DRAFT: 'is-draft',
-  PENDING_REVIEW: 'is-pending',
-  ACTIVE: 'is-active',
-  PASSIVE: 'is-passive',
-  REJECTED: 'is-rejected',
-  DELETED: 'is-rejected',
-};
+import { PRODUCT_STATUS_LABELS, productStatusLabel, productStatusTone } from '../../../lib/status-labels';
 
 export default function SellerProductsPage() {
   const [products, setProducts] = useState<SellerProduct[]>([]);
@@ -132,7 +114,7 @@ export default function SellerProductsPage() {
           </select>
           <select className="dash2-select" value={status} onChange={(event) => setStatus(event.target.value)}>
             <option value="">Bütün statuslar</option>
-            {Object.entries(statusLabels).map(([value, label]) => (
+            {Object.entries(PRODUCT_STATUS_LABELS).map(([value, label]) => (
               <option value={value} key={value}>
                 {label}
               </option>
@@ -168,10 +150,10 @@ export default function SellerProductsPage() {
                   </small>
                   {product.reviewNote ? <em>{product.reviewNote}</em> : null}
                 </span>
-                <span className={`dash2-status ${statusTones[product.status]}`}>{statusLabels[product.status]}</span>
+                <span className={`dash2-status ${productStatusTone(product.status)}`}>{productStatusLabel(product.status)}</span>
                 <span className="dash2-price">{product.priceLabel}</span>
                 <span className="dash2-row-actions">
-                  <Link className="dash2-icon-action" href={`/seller/products/${product.id}/edit`} aria-label="Redaktə et">
+                  <Link className="dash2-icon-action" href={`/seller/products/${product.id}/edit`} aria-label="Redaktə et" title="Redaktə et">
                     <Edit3 size={15} />
                   </Link>
                   {['DRAFT', 'REJECTED', 'PASSIVE'].includes(product.status) ? (
@@ -181,6 +163,7 @@ export default function SellerProductsPage() {
                       onClick={() => void handleSubmit(product.id)}
                       disabled={isWorking === product.id}
                       aria-label="Yoxlamaya göndər"
+                      title="Yoxlamaya göndər"
                     >
                       {isWorking === product.id ? <Loader2 className="spin-icon" size={15} /> : <Send size={15} />}
                     </button>
@@ -195,6 +178,7 @@ export default function SellerProductsPage() {
                     onClick={() => void handleDelete(product.id)}
                     disabled={isWorking === product.id}
                     aria-label="Sil"
+                    title="Sil"
                   >
                     <Trash2 size={15} />
                   </button>

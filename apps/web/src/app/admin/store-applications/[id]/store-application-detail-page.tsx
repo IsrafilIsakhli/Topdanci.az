@@ -47,7 +47,7 @@ export function StoreApplicationDetailPage({ id }: { id: string }) {
         ...(storeSlug ? { storeSlug } : {}),
       });
       setSetupUrl(response.data.setup.url);
-      setMessage('Müraciət təsdiqləndi. Setup link yalnız bu cavabda göstərilir.');
+      setMessage('Müraciət təsdiqləndi. Quraşdırma keçidi yalnız bu cavabda göstərilir.');
       await load();
     } catch (error) {
       setMessage(errorMessage(error));
@@ -76,7 +76,7 @@ export function StoreApplicationDetailPage({ id }: { id: string }) {
   async function copySetupUrl() {
     if (!setupUrl) return;
     await navigator.clipboard.writeText(setupUrl).catch(() => null);
-    setMessage('Setup link kopyalandı.');
+    setMessage('Quraşdırma keçidi kopyalandı.');
   }
 
   if (isLoading) return <AdminLoadingBlock />;
@@ -94,10 +94,10 @@ export function StoreApplicationDetailPage({ id }: { id: string }) {
       {message ? <div className="admin-alert">{message}</div> : null}
       {setupUrl ? (
         <div className="admin-alert admin-alert-success">
-          <strong>Seller setup linki:</strong>
+          <strong>Satıcı quraşdırma keçidi:</strong>
           <code>{setupUrl}</code>
           <button className="button" type="button" onClick={() => void copySetupUrl()}>
-            Copy
+            Kopyala
           </button>
         </div>
       ) : null}
@@ -119,7 +119,7 @@ export function StoreApplicationDetailPage({ id }: { id: string }) {
               <dd>{application.description ?? '-'}</dd>
             </div>
             <div>
-              <dt>Review qeydi</dt>
+              <dt>Yoxlama qeydi</dt>
               <dd>{application.reviewNote ?? '-'}</dd>
             </div>
           </dl>

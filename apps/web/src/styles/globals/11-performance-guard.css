@@ -1,0 +1,58 @@
+/*
+ * 11 — Performans qatı (ən son yüklənir, ona görə əvvəlki qaydaları üstələyə bilər).
+ *
+ * Məqsəd: scroll və ilk render zamanı lazımsız işi azaltmaq.
+ * Bu fayl vizual dizaynı dəyişmir — yalnız brauzerin "görmədiyi" hissələri
+ * render etməməsini və hərəkət azaldılmış rejimdə animasiyaların söndürülməsini təmin edir.
+ */
+
+/* 1) Ekrandan kənar bölmələr/kartlar render olunmur.
+   Chrome content-visibility:auto üçün ekrandankənar konteynerlərin daxilindəki
+   şəkilləri də yükləmir — yəni bu, CSS fon şəkilləri üçün "lazy loading" effekti verir. */
+.section,
+.card,
+.admin-panel,
+.report-card,
+.store-side-panel {
+  content-visibility: auto;
+}
+
+/* contain-intrinsic-size: əvvəlcə sabit təxmin (köhnə brauzerlər üçün),
+   sonra "auto" ilə brauzer real ölçünü yadda saxlayır (scroll jumping olmasın). */
+.section {
+  contain-intrinsic-size: 900px;
+  contain-intrinsic-size: auto 900px;
+}
+
+.card,
+.admin-panel,
+.report-card {
+  contain-intrinsic-size: 320px;
+  contain-intrinsic-size: auto 320px;
+}
+
+.store-side-panel {
+  contain-intrinsic-size: 420px;
+  contain-intrinsic-size: auto 420px;
+}
+
+/* 2) Mobil ekranlarda header-in dekorativ "trace" animasiyası daim işləyirdi;
+   sabit header üzərində olduğu üçün hər scroll frame-də kompozisiya xərci yaradırdı. */
+@media (max-width: 900px) {
+  .site-header::after {
+    animation: none;
+  }
+}
+
+/* 3) "Hərəkəti azalt" rejimi: animasiya/keçidlər praktiki olaraq söndürülür.
+   Bu, a11y tələbidir və batareya/CPU xərcini də azaldır. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

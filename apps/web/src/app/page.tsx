@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { CSSProperties } from 'react';
 import {
   ArrowRight,
   BadgeCheck,
@@ -21,20 +22,11 @@ import { MarketTicker } from '../components/market-ticker';
 import { SiteFooter } from '../components/site-footer';
 import { SiteHeader } from '../components/site-header';
 import { StoreStrip } from '../components/store-strip';
-import {
-  cityStrip,
-  demandRequests,
-  getCategories,
-  getProducts,
-  getStores,
-  heroImage,
-  stats,
-} from '../lib/catalog-data';
+import { cityStrip, demandRequests, homeStats } from '../features/home/data';
+import { getCategories, getProductsPage, getStoresPage, heroImage } from '../lib/catalog-data';
 import type { ProductPreview } from '../lib/catalog-data';
 
 export const dynamic = 'force-dynamic';
-
-const paidVitrinCount = 4;
 
 const categoryStrips = [
   { eyebrow: 'Geyim və Ayaqqabı', title: 'Topdan geyim partiyaları', categorySlug: 'geyim-ayaqqabi-ve-tekstil', icon: Shirt },
@@ -44,21 +36,24 @@ const categoryStrips = [
 ];
 
 export default async function HomePage() {
-  const [allCategories, products, stores] = await Promise.all([
+  const [allCategories, productPage, storePage] = await Promise.all([
     getCategories(),
-    getProducts({ limit: 60 }),
-    getStores({ limit: 20 }),
+    getProductsPage({ limit: 40, sort: 'newest' }),
+    getStoresPage({ limit: 14 }),
   ]);
+  const products = productPage.items;
+  const stores = storePage.items;
+  const stats = homeStats(storePage.meta.total, productPage.meta.total);
   const categorySearchItems: CategorySearchItem[] = allCategories.map(({ id, parentId, slug, name }) => ({
     id,
     parentId,
     slug,
     name,
   }));
-  const stripStores = stores.slice(0, 20);
-  const premiumStores = stores.slice(0, 12);
-  const vitrinProducts = products.slice(0, 20);
-  const freshProducts = products.slice(-7);
+  const stripStores = stores.slice(0, 8);
+  const premiumStores = stores.slice(0, 6);
+  const vitrinProducts = products.slice(6, 14).length ? products.slice(6, 14) : products.slice(0, 8);
+  const freshProducts = products.slice(0, 6);
 
   const productsByStore = new Map<string, ProductPreview[]>();
   for (const product of products) {
@@ -74,15 +69,14 @@ export default async function HomePage() {
     <main className="site-shell">
       <SiteHeader />
 
-      <section className="home-hero home-hero-premium home-hero-compact">
-        <div className="home-hero-aura" aria-hidden="true" />
+      <section className="home-hero home-hero-premium home-hero-compact" style={{ '--home-hero-image': `url(${heroImage})` } as CSSProperties}>
         <div className="container home-hero-premium-grid">
           <div className="home-hero-copy">
-            <h1>Topdansatıcı mağazaları və məhsulları bir yerdə kəşf edin</h1>
+            <h1>TopdanBazar</h1>
             <p className="lead">
-              Alıcılar məhsulları araşdırır, mağazaları yoxlayır və satıcı ilə WhatsApp və telefon üzərindən birbaşa əlaqə saxlayır.
-              Platforma satış aparmır, etibarlı əlaqəni sürətləndirir.
+              Topdansatış məhsullarını və mağazaları tapın. Qiyməti satıcı ilə danışın, WhatsApp və telefonla birbaşa əlaqə saxlayın.
             </p>
+            {productPage.meta.isDemo || storePage.meta.isDemo ? <p className="catalog-demo-note">Nümunə kataloq</p> : null}
 
             <CategorySearchForm categories={categorySearchItems} />
 
@@ -100,19 +94,6 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="home-hero-showcase" aria-label="TopdanBazar platforma vitrin nümunəsi">
-            <div className="hero-showcase-image" style={{ backgroundImage: `url(${heroImage})` }}>
-              <span className="sponsored-pill hero-pill">
-                <Crown size={13} />
-                Canlı vitrin
-              </span>
-              <div className="hero-showcase-card">
-                <span>Canlı kataloq</span>
-                <strong>200K+ məhsul seçimi</strong>
-                <small>Aktiv mağazalar və yeni təkliflər</small>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -129,7 +110,6 @@ export default async function HomePage() {
               {cityStrip.map((city) => (
                 <Link className="city-chip" href={`/stores?city=${encodeURIComponent(city.name)}`} key={city.name}>
                   <strong>{city.name}</strong>
-                  <small>{city.storeCount} mağaza</small>
                 </Link>
               ))}
             </div>
@@ -161,7 +141,7 @@ export default async function HomePage() {
             <div>
               <p className="eyebrow">
                 <Crown size={14} />
-                Ödənişli vitrin
+                Məhsul seçimi
               </p>
               <h2>Vitrindəki məhsullar</h2>
             </div>
@@ -172,25 +152,14 @@ export default async function HomePage() {
 
           <div className="vitrin-grid">
             {vitrinProducts.length ? (
-              vitrinProducts.map((product, index) => {
-                const paid = index < paidVitrinCount;
+              vitrinProducts.map((product) => {
                 return (
                   <Link
-                    className={paid ? 'vitrin-card vitrin-card-paid' : 'vitrin-card'}
+                    className="vitrin-card"
                     href={`/products/${product.slug}`}
                     key={product.slug}
                   >
                     <span className="vitrin-thumb" style={{ backgroundImage: `url(${product.imageUrl})` }}>
-                      <span className={paid ? 'vitrin-flag vitrin-flag-paid' : 'vitrin-flag'}>
-                        {paid ? (
-                          <>
-                            <Crown size={11} />
-                            Ödənişli
-                          </>
-                        ) : (
-                          'Vitrin'
-                        )}
-                      </span>
                       {product.badge ? <span className="vitrin-stock">{product.badge}</span> : null}
                     </span>
                     <span className="vitrin-body">
@@ -230,13 +199,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {categoryStrips.map((strip) => (
+      {categoryStrips.slice(0, 2).map((strip) => (
         <CategoryStrip
           categorySlug={strip.categorySlug}
           eyebrow={strip.eyebrow}
           icon={strip.icon}
           key={strip.categorySlug}
-          products={products.filter((product) => product.categorySlug === strip.categorySlug).slice(0, 10)}
+          products={products.filter((product) => product.categorySlug === strip.categorySlug).slice(0, 4)}
           title={strip.title}
         />
       ))}
@@ -245,8 +214,8 @@ export default async function HomePage() {
         <div className="container">
           <div className="section-title-row">
             <div>
-              <p className="eyebrow">Premium tərəfdaşlar</p>
-              <h2>Sponsorlu mağazalar</h2>
+              <p className="eyebrow">Mağaza seçimi</p>
+              <h2>Kataloqdakı mağazalar</h2>
             </div>
             <Link className="card-link" href="/stores">
               Bütün mağazalara bax <ArrowRight size={14} />
@@ -255,28 +224,28 @@ export default async function HomePage() {
 
           <div className="premium-store-grid">
             {premiumStores.length ? (
-              premiumStores.map((store, index) => (
+              premiumStores.map((store) => (
                 <Link className="premium-store-card" href={`/stores/${store.slug}`} key={store.slug}>
                   <div className="premium-store-cover" style={{ backgroundImage: `url(${store.coverImageUrl})` }}>
                     <span className="sponsored-pill">
                       <Megaphone size={13} />
-                      Sponsorlu
+                      Mağaza
                     </span>
                   </div>
                   <div className="premium-store-body">
                     <div className="premium-store-head">
                       <span className="store-avatar">{store.name.slice(0, 2).toUpperCase()}</span>
-                      <span className="verified-pill">
+                      {store.verified ? <span className="verified-pill">
                         <BadgeCheck size={14} />
                         Təsdiqlənmiş
-                      </span>
+                      </span> : null}
                     </div>
                     <strong>{store.name}</strong>
                     <span className="card-meta">{store.category}</span>
                     <div className="store-metric-row">
                       <span>{store.productCount} məhsul</span>
                       <span>{store.city}</span>
-                      <span>{index === 0 ? 'Vitrin #1' : `${store.views} baxış`}</span>
+                      <span>{store.views} baxış</span>
                     </div>
                     {(productsByStore.get(store.slug) ?? []).length ? (
                       <div className="premium-store-minis">
@@ -306,7 +275,7 @@ export default async function HomePage() {
                 <ClipboardList size={14} />
                 Tələb taxtası
               </p>
-              <h2>Alıcılar nə axtarır?</h2>
+              <h2>Alış sorğusu nümunələri</h2>
             </div>
             <Link className="card-link" href="/contact">
               Tələbini yerləşdir <ArrowRight size={14} />
@@ -318,7 +287,6 @@ export default async function HomePage() {
               <div className="demand-card" key={request.title}>
                 <div className="demand-head">
                   <span className="demand-qty">{request.quantity}</span>
-                  <span className="demand-time">{request.time}</span>
                 </div>
                 <strong>{request.title}</strong>
                 <div className="demand-foot">
@@ -326,7 +294,6 @@ export default async function HomePage() {
                     <MapPin size={13} />
                     {request.city}
                   </span>
-                  <span className="demand-offers">{request.offers} təklif</span>
                 </div>
               </div>
             ))}
@@ -334,7 +301,7 @@ export default async function HomePage() {
 
           <div className="demand-cta">
             <p>
-              Axtardığınız malı yazın — uyğun satıcılar birbaşa WhatsApp üzərindən təklif göndərsin.
+              Axtardığınız məhsulla bağlı dəstək komandasına müraciət edin.
             </p>
             <Link className="button button-primary" href="/contact">
               <MessageCircle size={16} />

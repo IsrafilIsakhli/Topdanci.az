@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 320">
+  <rect width="640" height="320" fill="#e8f0ee"/>
+  <g fill="none" stroke="#66877b" stroke-width="3" stroke-linejoin="round">
+    <path d="M274 140h92v58h-92zM268 140l12-32h80l12 32M298 198v-36h22v36M334 160h16v16h-16z"/>
+  </g>
+  <text x="320" y="244" fill="#426457" text-anchor="middle" font-family="Arial,sans-serif" font-size="17">Mağaza şəkli əlavə edilməyib</text>
+</svg>

@@ -16,7 +16,7 @@ export function StoresShowcase({ stores, productsByStore }: StoresShowcaseProps)
         <div className="section-title-row">
           <div>
             <p className="eyebrow">Vitrin</p>
-            <h2>Həftənin mağazaları</h2>
+            <h2>Mağaza seçimi</h2>
           </div>
           <Link className="card-link" href="/stores">
             Bütün mağazalar <ArrowRight size={15} />
@@ -66,7 +66,6 @@ export function StoresShowcase({ stores, productsByStore }: StoresShowcaseProps)
                           style={{ backgroundImage: `url(${product.imageUrl})` }}
                         />
                       ))}
-                      <span className="stores-showcase-more">{store.productCount} məhsul</span>
                     </span>
                   ) : null}
                   <span className="stores-showcase-meta">

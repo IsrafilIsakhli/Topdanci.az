@@ -1,0 +1,741 @@
+/* Auth and open-store refresh */
+.login-shell,
+.open-store-page-section {
+  min-height: auto;
+  padding: 54px 0 64px;
+  background:
+    linear-gradient(rgba(6, 78, 59, 0.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 78, 59, 0.024) 1px, transparent 1px),
+    linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+  background-size: 56px 56px, 56px 56px, auto;
+}
+
+.login-layout {
+  max-width: 1080px;
+  grid-template-columns: minmax(0, 0.92fr) minmax(340px, 0.68fr);
+  border-radius: 16px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+}
+
+.login-layout .auth-benefits {
+  align-content: center;
+  gap: 24px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.08), transparent 38%),
+    #18553f;
+  padding: 44px;
+}
+
+.login-layout .auth-benefits > svg {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  padding: 10px;
+}
+
+.login-layout .auth-benefits h1 {
+  max-width: 560px;
+  color: #ffffff;
+  font-size: 36px;
+  line-height: 1.08;
+}
+
+.login-layout .auth-benefits p {
+  max-width: 560px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.login-layout .auth-benefits .field-grid {
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.login-layout .auth-benefits .field-grid span {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.login-layout .auth-card {
+  align-content: center;
+  gap: 18px;
+  padding: 44px;
+}
+
+.login-layout .auth-card h2 {
+  color: #102033;
+  font-size: 28px;
+}
+
+.login-layout .auth-card > .card-meta {
+  text-align: center;
+}
+
+.field > span {
+  color: #243449;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.login-layout .field input,
+.open-store-form-card .field input,
+.open-store-form-card .field select,
+.open-store-form-card .field textarea {
+  min-height: 48px;
+  border-color: #d9e5ee;
+  border-radius: 10px;
+  background: #f8fbff;
+}
+
+.login-layout .button-full,
+.open-store-form-card .button-full {
+  min-height: 48px;
+  border-radius: 10px;
+}
+
+.open-store-page-section {
+  padding-top: 46px;
+}
+
+.open-store-layout {
+  grid-template-columns: minmax(320px, 0.78fr) minmax(520px, 1fr);
+  gap: 30px;
+  align-items: start;
+}
+
+.open-store-copy {
+  position: sticky;
+  top: 92px;
+  display: grid;
+  gap: 18px;
+}
+
+.open-store-copy h1 {
+  max-width: 650px;
+  color: #102033;
+  font-size: 46px;
+  line-height: 1.04;
+}
+
+.open-store-copy .lead {
+  max-width: 620px;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.58;
+}
+
+.open-store-copy .benefit-list {
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.open-store-copy .benefit-item {
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: center;
+  border-color: #d9e5ee;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.86);
+  padding: 14px;
+}
+
+.open-store-copy .benefit-item .icon-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.open-store-copy .benefit-item strong {
+  color: #102033;
+  font-size: 15px;
+}
+
+.open-store-copy .benefit-item .card-meta {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.open-store-form-card {
+  display: grid;
+  gap: 18px;
+  border-color: #d9e5ee;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.1);
+}
+
+.open-store-form-card h2 {
+  color: #102033;
+  font-size: 32px;
+  line-height: 1.08;
+}
+
+.open-store-form-card .field-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.open-store-form-card .field-full {
+  grid-column: 1 / -1;
+}
+
+.open-store-form-card textarea {
+  min-height: 96px;
+}
+
+.open-store-form-card > .card-meta {
+  text-align: center;
+}
+
+@media (max-width: 1180px) {
+  .login-layout,
+  .open-store-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .open-store-copy {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .login-shell,
+  .open-store-page-section {
+    padding: 28px 0 38px;
+  }
+
+  .login-layout {
+    border-radius: 14px;
+  }
+
+  .login-layout .auth-benefits,
+  .login-layout .auth-card,
+  .open-store-form-card {
+    padding: 22px;
+  }
+
+  .login-layout .auth-benefits h1,
+  .open-store-copy h1 {
+    font-size: 30px;
+  }
+
+  .open-store-form-card .field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .open-store-form-card h2 {
+    font-size: 28px;
+  }
+}
+
+/* Contact page refresh */
+.contact-page-section {
+  min-height: auto;
+  padding: 72px 0 58px;
+  border-bottom: 1px solid #d7e2ec;
+  background:
+    linear-gradient(rgba(214, 226, 238, 0.46) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(214, 226, 238, 0.46) 1px, transparent 1px),
+    radial-gradient(circle at 18% 20%, rgba(219, 234, 254, 0.62), transparent 34%),
+    linear-gradient(180deg, #f8fbff 0%, #edf4fb 100%);
+  background-size:
+    44px 44px,
+    44px 44px,
+    auto,
+    auto;
+}
+
+.contact-hero-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.92fr) minmax(420px, 1fr);
+  gap: 36px;
+  align-items: start;
+}
+
+.contact-copy {
+  display: grid;
+  gap: 20px;
+  padding-top: 18px;
+}
+
+.contact-copy .section-eyebrow {
+  width: max-content;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid #d8e5ef;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  padding: 8px 13px;
+}
+
+.contact-copy h1 {
+  max-width: 11ch;
+  color: #0f1b2d;
+  font-size: clamp(40px, 4.2vw, 58px);
+  line-height: 1.02;
+}
+
+.contact-copy .lead {
+  max-width: 620px;
+  color: #64748b;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.contact-card-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.contact-info-card {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 14px;
+  align-items: start;
+  border: 1px solid #dbe6ef;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  padding: 17px;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.06);
+}
+
+.contact-info-card strong {
+  display: block;
+  color: #102033;
+  font-size: 16px;
+}
+
+.contact-info-card .card-meta {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.contact-info-card b {
+  display: block;
+  margin-top: 10px;
+  color: #174f3b;
+  font-size: 15px;
+}
+
+.contact-form-card {
+  display: grid;
+  gap: 16px;
+  border-color: #d7e3ed;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.11);
+}
+
+.contact-form-card h2 {
+  color: #102033;
+  font-size: clamp(28px, 2.5vw, 38px);
+  line-height: 1.12;
+}
+
+.form-kicker {
+  width: max-content;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border-radius: 999px;
+  background: #e9f7f1;
+  color: #174f3b;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.contact-form-card .field-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.contact-form-card .field-full {
+  grid-column: 1 / -1;
+}
+
+.contact-form-card textarea {
+  min-height: 132px;
+}
+
+.contact-faq-section {
+  padding: 52px 0 72px;
+  background: #f7fafc;
+}
+
+.contact-faq-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.38fr) 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.contact-faq-layout h2 {
+  margin-top: 12px;
+  color: #102033;
+  font-size: clamp(30px, 3vw, 44px);
+  line-height: 1.08;
+}
+
+.contact-faq-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.contact-faq-card {
+  border: 1px solid #dce6ef;
+  border-radius: 14px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.05);
+}
+
+.contact-faq-card h3 {
+  color: #102033;
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.contact-faq-card p {
+  margin-top: 10px;
+  color: #64748b;
+  line-height: 1.55;
+}
+
+@media (max-width: 1080px) {
+  .contact-hero-layout,
+  .contact-faq-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-copy h1 {
+    max-width: 14ch;
+  }
+}
+
+@media (max-width: 760px) {
+  .contact-page-section {
+    padding: 34px 0 42px;
+  }
+
+  .contact-copy {
+    padding-top: 0;
+  }
+
+  .contact-copy h1 {
+    font-size: 36px;
+  }
+
+  .contact-copy .lead {
+    font-size: 15px;
+  }
+
+  .contact-form-card {
+    padding: 22px;
+  }
+
+  .contact-form-card .field-grid,
+  .contact-faq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Login page polish */
+.login-shell {
+  padding: 24px 0 28px;
+  background:
+    linear-gradient(rgba(16, 88, 68, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 88, 68, 0.028) 1px, transparent 1px),
+    radial-gradient(circle at 50% 6%, rgba(214, 226, 238, 0.7), transparent 30%),
+    linear-gradient(180deg, #fbfdff 0%, #eef4fb 100%);
+  background-size:
+    56px 56px,
+    56px 56px,
+    auto,
+    auto;
+}
+
+.login-layout {
+  max-width: 1120px;
+  min-height: 470px;
+  overflow: hidden;
+  border: 1px solid #d7e3ed;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.13);
+}
+
+.login-layout .auth-benefits {
+  position: relative;
+  align-content: center;
+  gap: 17px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.11), transparent 34%),
+    linear-gradient(155deg, #1f6249 0%, #174a38 58%, #123c2f 100%);
+  padding: 28px 38px;
+}
+
+.login-layout .auth-benefits::before {
+  content: '';
+  position: absolute;
+  inset: 18px auto auto 58%;
+  width: 240px;
+  height: 240px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  opacity: 0.72;
+}
+
+.login-layout .auth-benefits::after {
+  content: '';
+  position: absolute;
+  right: -90px;
+  bottom: -90px;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  background: rgba(220, 252, 231, 0.08);
+}
+
+.login-layout .auth-benefits > * {
+  position: relative;
+  z-index: 1;
+}
+
+.login-brand-row {
+  display: inline-flex;
+  gap: 13px;
+  align-items: center;
+  width: max-content;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 10px 12px;
+}
+
+.login-store-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.login-brand-row strong,
+.login-brand-row small {
+  display: block;
+}
+
+.login-brand-row strong {
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.login-brand-row small {
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 12px;
+}
+
+.login-kicker,
+.login-form-badge {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  width: max-content;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.login-kicker {
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 8px 12px;
+}
+
+.login-layout .auth-benefits h1 {
+  max-width: 620px;
+  font-size: clamp(30px, 2.8vw, 38px);
+  line-height: 1.04;
+}
+
+.login-layout .auth-benefits p {
+  margin-top: 10px;
+  max-width: 570px;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.login-stat-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 560px;
+}
+
+.login-stat-strip span {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 11px 12px;
+}
+
+.login-stat-strip b,
+.login-stat-strip small {
+  display: block;
+}
+
+.login-stat-strip b {
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.login-stat-strip small {
+  margin-top: 7px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.login-layout .auth-benefits .field-grid {
+  gap: 8px;
+}
+
+.login-layout .auth-benefits .field-grid span {
+  width: max-content;
+  max-width: 100%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.075);
+  padding: 6px 10px;
+}
+
+.login-trust-note {
+  display: grid;
+  grid-template-columns: 18px 1fr 18px;
+  gap: 10px;
+  align-items: center;
+  max-width: 560px;
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+  padding-top: 14px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.login-layout .login-form-card {
+  align-content: center;
+  gap: 15px;
+  padding: 32px 38px;
+}
+
+.login-form-head {
+  display: grid;
+  gap: 9px;
+}
+
+.login-form-badge {
+  background: #e9f7f1;
+  color: #18553f;
+  padding: 8px 11px;
+}
+
+.login-layout .auth-card h2 {
+  font-size: 32px;
+  line-height: 1.05;
+}
+
+.login-form-card .card-meta {
+  color: #64748b;
+}
+
+.login-form-options {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.login-form-options label {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.login-form-options input {
+  width: 15px;
+  height: 15px;
+  accent-color: #18553f;
+}
+
+.login-form-options a {
+  color: #18553f;
+}
+
+.login-open-store-link {
+  text-align: center;
+}
+
+@media (max-width: 980px) {
+  .login-layout {
+    min-height: 0;
+  }
+
+  .login-stat-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .login-shell {
+    padding: 28px 0 40px;
+  }
+
+  .login-layout {
+    border-radius: 14px;
+  }
+
+  .login-layout .auth-benefits,
+  .login-layout .login-form-card {
+    padding: 24px;
+  }
+
+  .login-brand-row,
+  .login-kicker {
+    width: 100%;
+  }
+
+  .login-stat-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .login-layout .auth-benefits .field-grid span {
+    width: 100%;
+  }
+
+  .login-form-options {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+

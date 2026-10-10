@@ -34,4 +34,5 @@ Thumbs.db
 .vscode/
 
 # generated
+.artifacts/
 apps/api/prisma/migrations/dev/

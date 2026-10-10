@@ -79,10 +79,10 @@ export function StoreMarketCard({ store, products, sponsored }: StoreMarketCardP
           storeName={store.name}
         >
           <MessageCircle size={16} />
-          <span className="store-market-action-label">Yaz</span>
+          <span className="store-market-action-label">WhatsApp</span>
         </LeadWhatsAppLink>
         <Link className="button store-market-action" href={`/stores/${store.slug}`}>
-          <span className="store-market-action-label">Bax</span>
+          <span className="store-market-action-label">Mağazaya bax</span>
           <ArrowRight size={15} />
         </Link>
       </span>

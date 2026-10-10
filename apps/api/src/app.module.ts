@@ -28,6 +28,7 @@ import { StoresModule } from './modules/stores/stores.module';
 import { LibraryModule } from './modules/library/library.module';
 import { BuyerRequestsModule } from './modules/buyer-requests/buyer-requests.module';
 import { SupportModule } from './modules/support/support.module';
+import { TicketsModule } from './modules/tickets/tickets.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { SupportModule } from './modules/support/support.module';
     SellerModule,
     AdminModule,
     SupportModule,
+    TicketsModule,
     BuyerRequestsModule,
     LibraryModule,
   ],

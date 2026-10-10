@@ -1,4 +1,5 @@
 'use client';
+import { statusLabel } from '../../../../lib/status-labels';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -42,7 +43,7 @@ export function AdminProductDetailPage({ id }: { id: string }) {
     const note =
       action === 'approve'
         ? undefined
-        : window.prompt(action === 'reject' ? 'Rədd səbəbini yazın:' : 'Suspend səbəbini yazın:');
+        : window.prompt(action === 'reject' ? 'Rədd səbəbini yazın:' : 'Dayandırma səbəbini yazın:');
     if (action !== 'approve' && !note?.trim()) return;
 
     setIsBusy(true);
@@ -55,7 +56,7 @@ export function AdminProductDetailPage({ id }: { id: string }) {
             ? await rejectAdminProduct(product.id, note!.trim())
             : await suspendAdminProduct(product.id, note?.trim());
       setProduct(response.data);
-      setMessage('Əməliyyat tamamlandı və public cache yeniləndi.');
+      setMessage('Məhsulun statusu yeniləndi.');
     } catch (error) {
       setMessage(errorMessage(error));
     } finally {
@@ -84,18 +85,18 @@ export function AdminProductDetailPage({ id }: { id: string }) {
             {readyImage?.cdnUrl ? (
               <Image src={readyImage.cdnUrl} alt={readyImage.altText ?? product.title} fill sizes="(max-width: 800px) 100vw, 48vw" />
             ) : (
-              <span>READY şəkil yoxdur</span>
+              <span>Məhsul şəkli əlavə edilməyib</span>
             )}
           </div>
           <div className="admin-actions">
-            <button className="button" type="button" disabled={isBusy || product.status === 'ACTIVE'} onClick={() => void runAction('approve')}>
+            <button className="button button-primary" title={product.status === 'ACTIVE' ? 'Məhsul artıq aktivdir' : 'Məhsulu kataloqda yayımla'} type="button" disabled={isBusy || product.status === 'ACTIVE'} onClick={() => void runAction('approve')}>
               Təsdiqlə
             </button>
             <button className="button button-secondary" type="button" disabled={isBusy} onClick={() => void runAction('reject')}>
               Rədd et
             </button>
             <button className="button button-danger" type="button" disabled={isBusy || product.status === 'PASSIVE'} onClick={() => void runAction('suspend')}>
-              Suspend
+              Dayandır
             </button>
           </div>
         </section>
@@ -113,14 +114,14 @@ export function AdminProductDetailPage({ id }: { id: string }) {
             </div>
             <div>
               <dt>Stok</dt>
-              <dd>{product.stockStatus}</dd>
+              <dd>{statusLabel(product.stockStatus)}</dd>
             </div>
             <div>
-              <dt>Review qeydi</dt>
+              <dt>Yoxlama qeydi</dt>
               <dd>{product.reviewNote ?? '-'}</dd>
             </div>
             <div>
-              <dt>Public link</dt>
+              <dt>Kataloq keçidi</dt>
               <dd>
                 <Link href={`/products/${product.slug}`}>Məhsula bax</Link>
               </dd>

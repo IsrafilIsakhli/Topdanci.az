@@ -48,7 +48,7 @@ export default async function StoresPage({ searchParams }: { searchParams?: Prom
   const stores = page.items;
   const featuredStore = stores[0];
   const showcaseStores = stores.slice(1, 3);
-  const sponsored = new Set(stores.slice(0, 4).map((store) => store.slug));
+  const sponsored = new Set<string>();
   const totalProducts = page.meta.totalProducts ?? stores.reduce((sum, store) => sum + toNumber(store.productCount), 0);
   const verifiedStores = page.meta.verifiedStores ?? stores.filter((store) => store.verified).length;
   const cities = Array.from(new Set(stores.map((store) => store.city).filter(Boolean))).slice(0, 5);
@@ -94,6 +94,7 @@ export default async function StoresPage({ searchParams }: { searchParams?: Prom
   return (
     <main className="site-shell">
       <SiteHeader />
+      {page.meta.isDemo ? <div className="container catalog-demo-note">Nümunə kataloq</div> : null}
       <JsonLd data={storesJsonLd} />
       <StoresHero
         categories={categories}

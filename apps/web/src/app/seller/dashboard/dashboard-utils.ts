@@ -1,22 +1,14 @@
 import type { LucideIcon } from 'lucide-react';
 import { Eye, Mail, MessageSquare, Phone, Store } from 'lucide-react';
 import type { SellerLead } from '../../../lib/seller-api';
+import { formatDateTime, formatDayLabel } from '../../../lib/display-format';
 
 export const leadLabels: Record<SellerLead['type'], string> = {
   PRODUCT_VIEW: 'Məhsul baxışı',
   STORE_VIEW: 'Mağaza baxışı',
-  WHATSAPP_CLICK: 'WhatsApp klik',
+  WHATSAPP_CLICK: 'WhatsApp klikləri',
   PHONE_REVEAL: 'Telefon göstərildi',
   EMAIL_CLICK: 'E-poçt klik',
-};
-
-export const statusLabels: Record<string, { label: string; tone: string }> = {
-  ACTIVE: { label: 'Aktiv', tone: 'is-active' },
-  PENDING_REVIEW: { label: 'Yoxlamada', tone: 'is-pending' },
-  DRAFT: { label: 'Qaralama', tone: 'is-draft' },
-  PASSIVE: { label: 'Passiv', tone: 'is-passive' },
-  REJECTED: { label: 'Rədd edilib', tone: 'is-rejected' },
-  DELETED: { label: 'Silinib', tone: 'is-rejected' },
 };
 
 export type DaySeries = { label: string; total: number; whatsapp: number };
@@ -40,7 +32,7 @@ export function buildWeekSeries(leads: SellerLead[]): DaySeries[] {
     });
 
     return {
-      label: date.toLocaleDateString('az-AZ', { day: 'numeric', month: 'short' }),
+      label: formatDayLabel(date),
       total: dayLeads.length,
       whatsapp: dayLeads.filter((lead) => lead.type === 'WHATSAPP_CLICK').length,
     };
@@ -59,7 +51,7 @@ export function timeAgo(iso: string): string {
   const days = Math.floor(hours / 24);
   if (days < 7) return `${days} gün əvvəl`;
 
-  return new Date(iso).toLocaleDateString('az-AZ');
+  return formatDateTime(iso);
 }
 
 export function greetingFor(hour: number): string {

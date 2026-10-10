@@ -10,17 +10,18 @@ import {
   type AdminProduct,
   type AdminProductStatus,
 } from '../../../lib/admin-api';
+import { productStatusLabel } from '../../../lib/status-labels';
 import { AdminPageHeader } from '../admin-ui';
 import { AdminProductTable } from './product-table';
 
 const statusOptions: Array<{ label: string; value: AdminProductStatus | '' }> = [
   { label: 'Bütün statuslar', value: '' },
-  { label: 'Review gözləyən', value: 'PENDING_REVIEW' },
-  { label: 'Aktiv', value: 'ACTIVE' },
-  { label: 'Draft', value: 'DRAFT' },
-  { label: 'Passiv', value: 'PASSIVE' },
-  { label: 'Rədd edilmiş', value: 'REJECTED' },
-  { label: 'Silinmiş', value: 'DELETED' },
+  { label: productStatusLabel('PENDING_REVIEW'), value: 'PENDING_REVIEW' },
+  { label: productStatusLabel('ACTIVE'), value: 'ACTIVE' },
+  { label: productStatusLabel('DRAFT'), value: 'DRAFT' },
+  { label: productStatusLabel('PASSIVE'), value: 'PASSIVE' },
+  { label: productStatusLabel('REJECTED'), value: 'REJECTED' },
+  { label: productStatusLabel('DELETED'), value: 'DELETED' },
 ];
 
 export default function AdminProductsPage() {
@@ -105,15 +106,26 @@ export default function AdminProductsPage() {
   return (
     <section className="admin-page">
       <AdminPageHeader
-        kicker="Catalog Ops"
+        kicker="Kataloq əməliyyatları"
         title="Məhsul moderasiyası"
         description="Bütün məhsulları status, mağaza və axtarış üzrə izləyin."
-        action={<Link className="button" href="/admin/products/pending">Pending review</Link>}
+        action={<Link className="button" href="/admin/products/pending">Yoxlama növbəsi</Link>}
       />
 
       <div className="admin-toolbar">
-        <input className="admin-input" placeholder="Məhsul, açıqlama və ya mağaza axtarın" value={query} onChange={(event) => setQuery(event.target.value)} />
-        <select className="admin-select" value={status} onChange={(event) => setStatus(event.target.value as AdminProductStatus | '')}>
+        <input
+          aria-label="Məhsul axtarışı"
+          className="admin-input"
+          placeholder="Məhsul, açıqlama və ya mağaza axtarın"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+        />
+        <select
+          aria-label="Məhsul statusu filtri"
+          className="admin-select"
+          value={status}
+          onChange={(event) => setStatus(event.target.value as AdminProductStatus | '')}
+        >
           {statusOptions.map((option) => (
             <option key={option.label} value={option.value}>
               {option.label}

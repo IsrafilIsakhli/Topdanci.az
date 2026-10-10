@@ -41,14 +41,14 @@ export function AdminStoreDetailPage({ id }: { id: string }) {
 
   async function run(action: 'suspend' | 'reactivate') {
     if (!store) return;
-    const note = action === 'suspend' ? window.prompt('Suspend səbəbini yazın:') : undefined;
+    const note = action === 'suspend' ? window.prompt('Dayandırma səbəbini yazın:') : undefined;
     if (action === 'suspend' && !note?.trim()) return;
     setIsBusy(true);
     setMessage(null);
     try {
       const response = action === 'suspend' ? await suspendAdminStore(store.id, note?.trim()) : await reactivateAdminStore(store.id);
       setStore(response.data);
-      setMessage('Mağaza statusu yeniləndi və public cache təmizləndi.');
+      setMessage('Mağaza statusu yeniləndi və public keş təmizləndi.');
     } catch (error) {
       setMessage(errorMessage(error));
     } finally {
@@ -72,7 +72,7 @@ export function AdminStoreDetailPage({ id }: { id: string }) {
       <div className="admin-stat-grid">
         <AdminMetricCard label="Məhsullar" value={store.counts.products} />
         <AdminMetricCard label="Üzvlər" value={store.counts.members} />
-        <AdminMetricCard label="Lead event" value={store.counts.leadEvents} />
+        <AdminMetricCard label="Lead hadisəsi" value={store.counts.leadEvents} />
         <AdminMetricCard label="Şikayət" value={store.counts.reports} />
       </div>
 
@@ -81,7 +81,7 @@ export function AdminStoreDetailPage({ id }: { id: string }) {
           <h3>Əsas məlumat</h3>
           <dl className="admin-detail-list">
             <div>
-              <dt>Legal ad</dt>
+              <dt>Hüquqi ad</dt>
               <dd>{store.legalName ?? '-'}</dd>
             </div>
             <div>
@@ -89,15 +89,15 @@ export function AdminStoreDetailPage({ id }: { id: string }) {
               <dd>{store.phone ?? store.whatsappNumber ?? '-'}</dd>
             </div>
             <div>
-              <dt>Email</dt>
+              <dt>E-poçt</dt>
               <dd>{store.email ?? '-'}</dd>
             </div>
             <div>
-              <dt>Owner</dt>
+              <dt>Sahib</dt>
               <dd>{store.ownerUser?.email ?? store.ownerUser?.phone ?? '-'}</dd>
             </div>
             <div>
-              <dt>Public link</dt>
+              <dt>Mağaza keçidi</dt>
               <dd>
                 <Link href={`/stores/${store.slug}`}>Mağazaya bax</Link>
               </dd>
@@ -105,10 +105,10 @@ export function AdminStoreDetailPage({ id }: { id: string }) {
           </dl>
           <div className="admin-actions">
             <button className="button button-danger" type="button" disabled={isBusy || store.status === 'SUSPENDED'} onClick={() => void run('suspend')}>
-              Suspend
+              Dayandır
             </button>
             <button className="button" type="button" disabled={isBusy || store.status === 'ACTIVE'} onClick={() => void run('reactivate')}>
-              Reactivate
+              Aktivləşdir
             </button>
           </div>
         </section>

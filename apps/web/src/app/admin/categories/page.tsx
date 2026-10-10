@@ -49,7 +49,7 @@ export default function AdminCategoriesPage() {
         sortOrder: Number(form.sortOrder) || 0,
       });
       setForm({ name: '', slug: '', parentId: '', icon: '', sortOrder: '0' });
-      setMessage('Kateqoriya yaradıldı və public cache yeniləndi.');
+      setMessage('Kateqoriya yaradıldı və public keş yeniləndi.');
       await load();
     } catch (error) {
       setMessage(errorMessage(error));
@@ -99,7 +99,7 @@ export default function AdminCategoriesPage() {
       <AdminPageHeader
         kicker="Superadmin"
         title="Kateqoriya idarəsi"
-        description="Delete yoxdur: kateqoriyalar statusla passiv edilir, slug və tree strukturu qorunur."
+        description="Kateqoriyalar silinmir — statusla passiv edilir; slug və alt-kateqoriya strukturu qorunur."
       />
       {message ? <div className="admin-alert">{message}</div> : null}
 
@@ -137,9 +137,9 @@ export default function AdminCategoriesPage() {
         </section>
 
         <section className="admin-panel">
-          <h3>Tree</h3>
+          <h3>Kateqoriya strukturu</h3>
           {isLoading ? <AdminLoadingBlock /> : null}
-          {hasError ? <AdminErrorBlock message="Kateqoriya tree yalnız SUPER_ADMIN üçün açıqdır." /> : null}
+          {hasError ? <AdminErrorBlock message="Kateqoriya strukturu yalnız SUPER_ADMIN üçün açıqdır." /> : null}
           {!isLoading && !hasError && !categories.length ? <AdminEmptyBlock title="Kateqoriya yoxdur" /> : null}
           {!isLoading && !hasError ? (
             <div className="admin-tree">

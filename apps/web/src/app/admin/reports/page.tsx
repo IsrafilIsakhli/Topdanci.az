@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { getAdminReports, updateAdminReportStatus, type AdminReport, type AdminReportStatus } from '../../../lib/admin-api';
 import { AdminEmptyBlock, AdminErrorBlock, AdminLoadingBlock, AdminPageHeader, AdminStatusBadge, errorMessage, formatDate } from '../admin-ui';
+import { REPORT_STATUS_OPTIONS, reportTypeLabel } from '../../../lib/status-labels';
 
 export default function AdminReportsPage() {
   const [status, setStatus] = useState<AdminReportStatus | ''>('OPEN');
@@ -31,6 +33,7 @@ export default function AdminReportsPage() {
   }
 
   async function run(id: string, action: 'in-review' | 'resolve' | 'reject') {
+    if (action !== 'in-review' && !window.confirm(action === 'resolve' ? 'Bu şikayət həll olunmuş kimi qeyd edilsin?' : 'Bu şikayət rədd edilsin?')) return;
     setIsBusy(true);
     setMessage(null);
     try {
@@ -47,16 +50,21 @@ export default function AdminReportsPage() {
   return (
     <section className="admin-page">
       <AdminPageHeader
-        kicker="Trust & Safety"
+        kicker="Etimad və Təhlükəsizlik"
         title="Şikayətlər"
         description="Mağaza və məhsullarla bağlı şikayətləri status üzrə idarə edin."
         action={
-          <select className="admin-select" value={status} onChange={(event) => setStatus(event.target.value as AdminReportStatus | '')}>
-            <option value="">Bütün statuslar</option>
-            <option value="OPEN">OPEN</option>
-            <option value="IN_REVIEW">IN_REVIEW</option>
-            <option value="RESOLVED">RESOLVED</option>
-            <option value="REJECTED">REJECTED</option>
+          <select
+            aria-label="Şikayət statusu filtri"
+            className="admin-select"
+            value={status}
+            onChange={(event) => setStatus(event.target.value as AdminReportStatus | '')}
+          >
+            {REPORT_STATUS_OPTIONS.map((option) => (
+              <option key={option.value || 'all'} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
         }
       />
@@ -71,22 +79,24 @@ export default function AdminReportsPage() {
             {items.map((report) => (
               <article className="admin-report-card" key={report.id}>
                 <div>
-                  <strong>{report.type}</strong>
+                  <strong>{reportTypeLabel(report.type)}</strong>
                   <p>{report.message}</p>
                   <small>
                     {report.store?.name ?? report.product?.title ?? 'Ümumi'} · {formatDate(report.createdAt)}
                   </small>
+                  {report.product ? <Link className="card-link" href={`/admin/products/${report.product.id}`}>Məhsula bax</Link> : report.store ? <Link className="card-link" href={`/admin/stores/${report.store.id}`}>Mağazaya bax</Link> : null}
+                  {report.reporter ? <small>Müraciət edən: {report.reporter.fullName ?? report.reporter.email ?? report.reporter.phone ?? 'İstifadəçi'}</small> : null}
                 </div>
                 <AdminStatusBadge status={report.status} />
                 <div className="admin-actions">
-                  <button className="admin-link-button" type="button" disabled={isBusy || report.status === 'IN_REVIEW'} onClick={() => void run(report.id, 'in-review')}>
-                    In review
+                  <button className="admin-link-button" type="button" disabled={isBusy || report.status !== 'OPEN'} onClick={() => void run(report.id, 'in-review')}>
+                    Baxışa götür
                   </button>
-                  <button className="admin-link-button" type="button" disabled={isBusy || report.status === 'RESOLVED'} onClick={() => void run(report.id, 'resolve')}>
-                    Resolve
+                  <button className="button button-primary" type="button" disabled={isBusy || !['OPEN', 'IN_REVIEW'].includes(report.status)} onClick={() => void run(report.id, 'resolve')}>
+                    Həll et
                   </button>
-                  <button className="admin-link-button" type="button" disabled={isBusy || report.status === 'REJECTED'} onClick={() => void run(report.id, 'reject')}>
-                    Reject
+                  <button className="admin-link-button" type="button" disabled={isBusy || !['OPEN', 'IN_REVIEW'].includes(report.status)} onClick={() => void run(report.id, 'reject')}>
+                    Rədd et
                   </button>
                 </div>
               </article>

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Store } from 'lucide-react';
 import { ApiClientError, apiPost } from '../../lib/api-client';
 
 type CategoryOption = {
@@ -26,7 +26,8 @@ export function OpenStoreForm({ categories }: OpenStoreFormProps) {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
 
     setState({ type: 'submitting' });
 
@@ -44,7 +45,7 @@ export function OpenStoreForm({ categories }: OpenStoreFormProps) {
       };
 
       await apiPost('/stores/applications', payload);
-      event.currentTarget.reset();
+      form.reset();
       setState({
         type: 'success',
         message: 'Müraciətiniz qəbul edildi. Admin yoxlamasından sonra sizinlə əlaqə saxlanılacaq.',
@@ -58,7 +59,7 @@ export function OpenStoreForm({ categories }: OpenStoreFormProps) {
     <div className="authx-wrap authx-wrap-wide">
       <Link className="authx-brand" href="/">
         <span className="authx-brand-mark" aria-hidden="true">
-          td
+          <Store size={22} />
         </span>
         <span className="authx-brand-name">TopdanBazar</span>
       </Link>
@@ -66,11 +67,11 @@ export function OpenStoreForm({ categories }: OpenStoreFormProps) {
       <form className="authx-card" onSubmit={handleSubmit}>
         <header className="authx-card-head">
           <h1>Mağaza açın</h1>
-          <p>Məlumatları doldurun — müraciət 2 dəqiqə çəkir.</p>
+          <p>Mağaza və əlaqə məlumatlarınızı göndərin.</p>
         </header>
 
-        {state.type === 'success' ? <p className="authx-alert authx-alert-success">{state.message}</p> : null}
-        {state.type === 'error' ? <p className="authx-alert authx-alert-error">{state.message}</p> : null}
+        {state.type === 'success' ? <p className="authx-alert authx-alert-success" role="status">{state.message}</p> : null}
+        {state.type === 'error' ? <p className="authx-alert authx-alert-error" role="alert">{state.message}</p> : null}
 
         <section className="authx-section">
           <header className="authx-section-head">
@@ -88,11 +89,11 @@ export function OpenStoreForm({ categories }: OpenStoreFormProps) {
               <input name="contactPhone" placeholder="+994 (__) ___-__-__" autoComplete="tel" inputMode="tel" required />
             </label>
             <label className="authx-field">
-              <span>E-poçt</span>
+              <span>E-poçt (könüllü)</span>
               <input name="contactEmail" placeholder="numune@email.com" type="email" autoComplete="email" />
             </label>
             <label className="authx-field">
-              <span>VÖEN</span>
+              <span>VÖEN (könüllü)</span>
               <input name="taxNumber" placeholder="VÖEN varsa daxil edin" />
             </label>
           </div>
@@ -110,7 +111,7 @@ export function OpenStoreForm({ categories }: OpenStoreFormProps) {
               <input name="companyName" placeholder="Şirkət və ya mağaza adı" required />
             </label>
             <label className="authx-field">
-              <span>Əsas kateqoriya</span>
+              <span>Əsas kateqoriya (könüllü)</span>
               <select name="categoryId">
                 <option value="">Kateqoriya seçin</option>
                 {categories.map((category) => (
@@ -125,11 +126,11 @@ export function OpenStoreForm({ categories }: OpenStoreFormProps) {
               <input name="city" placeholder="Bakı" autoComplete="address-level2" required />
             </label>
             <label className="authx-field">
-              <span>Rayon</span>
+              <span>Rayon (könüllü)</span>
               <input name="district" placeholder="Nəsimi" />
             </label>
             <label className="authx-field authx-field-full">
-              <span>Qısa mağaza təsviri</span>
+              <span>Qısa mağaza təsviri (könüllü)</span>
               <textarea name="description" placeholder="Mağazanız və məhsullarınız haqqında qısa məlumat" />
             </label>
           </div>

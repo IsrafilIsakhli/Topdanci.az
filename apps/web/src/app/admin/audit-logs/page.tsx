@@ -32,16 +32,22 @@ export default function AdminAuditLogsPage() {
     <section className="admin-page">
       <AdminPageHeader
         kicker="Superadmin"
-        title="Audit log"
-        description="Kritik admin və seller əməliyyatları burada redaktəsiz, amma secret-siz görünür."
+        title="Audit jurnalı"
+        description="Kritik admin və seller əməliyyatları burada dəyişdirilmədən, gizli məlumat olmadan görünür."
       />
       <div className="admin-toolbar">
-        <input className="admin-input" placeholder="Action filter: ADMIN_PRODUCT_APPROVED" value={query} onChange={(event) => setQuery(event.target.value)} />
+        <input
+          aria-label="Əməliyyat üzrə axtarış"
+          className="admin-input"
+          placeholder="Əməliyyat axtarışı: ADMIN_PRODUCT_APPROVED"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+        />
       </div>
       <section className="admin-panel">
         {isLoading ? <AdminLoadingBlock /> : null}
-        {hasError ? <AdminErrorBlock message="Audit log yalnız SUPER_ADMIN üçün açıqdır." /> : null}
-        {!isLoading && !hasError && !items.length ? <AdminEmptyBlock title="Audit log tapılmadı" /> : null}
+        {hasError ? <AdminErrorBlock message="Audit jurnalı yalnız SUPER_ADMIN üçün açıqdır." /> : null}
+        {!isLoading && !hasError && !items.length ? <AdminEmptyBlock title="Audit jurnalı tapılmadı" /> : null}
         {!isLoading && !hasError && items.length ? (
           <div className="admin-timeline">
             {items.map((log) => (

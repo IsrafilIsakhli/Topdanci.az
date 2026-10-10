@@ -31,7 +31,6 @@ export default function SellerSettingsPage() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSavingPassword, setIsSavingPassword] = useState(false);
-  const [passwordMessage, setPasswordMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
   useEffect(() => {
@@ -97,7 +96,6 @@ export default function SellerSettingsPage() {
   async function handlePasswordSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setPasswordError('');
-    setPasswordMessage('');
 
     if (newPassword !== confirmPassword) {
       setPasswordError('Yeni şifrələr bir-birinə uyğun gəlmir.');
@@ -111,7 +109,7 @@ export default function SellerSettingsPage() {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
-      setPasswordMessage('Şifrəniz yeniləndi. Növbəti girişdə yeni şifrəni istifadə edin.');
+      router.replace('/login');
     } catch (caught) {
       if (caught instanceof ApiClientError && caught.status === 400) {
         setPasswordError('Yeni şifrə ən azı 8 simvol — böyük hərf, kiçik hərf və rəqəm olmalıdır.');
@@ -203,7 +201,6 @@ export default function SellerSettingsPage() {
               <KeyRound size={24} />
             </div>
 
-            {passwordMessage ? <div className="form-alert form-alert-success">{passwordMessage}</div> : null}
             {passwordError ? <div className="form-alert form-alert-error">{passwordError}</div> : null}
 
             <div className="seller-form-grid seller-form-grid-single">
@@ -250,8 +247,8 @@ export default function SellerSettingsPage() {
           <section className="seller-card seller-form">
             <div className="seller-card-head">
               <div>
-                <h3>Session idarəsi</h3>
-                <p>Giriş httpOnly cookie və CSRF qoruması ilə işləyir.</p>
+                <h3>Hesaba girişlər</h3>
+                <p>Bu cihazda və ya bütün cihazlarda hesabınızdan çıxın.</p>
               </div>
               <ShieldCheck size={24} />
             </div>

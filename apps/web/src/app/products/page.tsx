@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, BadgeCheck, Filter, Package, Search, ShieldCheck, Truck, X } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Filter, Package, Search, ShieldCheck, MapPin, X } from 'lucide-react';
 import { CatalogSortSelect } from '../../components/catalog-sort-select';
 import { JsonLd } from '../../components/json-ld';
 import { ProductMarketCard } from '../../components/product-market-card';
@@ -68,6 +68,7 @@ export default async function ProductsPage({
   return (
     <main className="site-shell">
       <SiteHeader />
+      {page.meta.isDemo ? <div className="container catalog-demo-note">Nümunə kataloq</div> : null}
       <JsonLd data={productListJsonLd} />
 
       <section className="section products-hero-section">
@@ -96,8 +97,8 @@ export default async function ProductsPage({
               <strong>{page.meta.total}</strong> aktiv topdan elan
             </span>
             <span>
-              <Truck size={16} />
-              Ölkə üzrə topdan çatdırılma
+              <MapPin size={16} />
+              Şəhərlər üzrə mağazalar
             </span>
             <span>
               <BadgeCheck size={16} />
@@ -108,9 +109,9 @@ export default async function ProductsPage({
           <form action="/products" className="catalog-search-panel products-search-panel" id="products-filter-form">
             <label>
               <Search size={18} />
-              <input defaultValue={query?.q ?? ''} name="q" placeholder="Məhsul, mağaza və ya kateqoriya axtarın" />
+              <input aria-label="Məhsul, mağaza və ya kateqoriya axtarın" defaultValue={query?.q ?? ''} name="q" placeholder="Məhsul, mağaza və ya kateqoriya axtarın" />
             </label>
-            <input defaultValue={query?.city ?? ''} name="city" placeholder="Şəhər" />
+            <input aria-label="Şəhər" defaultValue={query?.city ?? ''} name="city" placeholder="Şəhər" />
             <button className="button button-primary" type="submit">
               Axtar
             </button>

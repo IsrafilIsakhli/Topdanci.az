@@ -403,7 +403,22 @@ Update report status.
 
 Audit log list.
 
-## 12. Health
+## 12. Additive Support Ticket API
+
+The existing report endpoints remain unchanged. Store owners and members can
+use `/seller/tickets`; only `SUPER_ADMIN` can use `/admin/tickets`.
+Both prefixes support `GET /`, `GET /:id`, `GET /:id/messages`,
+`POST /:id/messages`, and `PATCH /:id`. Creating tickets is supported only by
+`POST /seller/tickets`. All paths are relative to `/api/v1`.
+
+Ticket writes require the current `version`; stale writes return `409`.
+Closing requires a reason in `message`. Replies to closed tickets are rejected.
+Statuses are `OPEN`, `IN_PROGRESS`, `WAITING_SELLER`, `WAITING_SUPPORT`, and
+`CLOSED`. Existing authentication and CSRF protections apply.
+See [Ticket System](TICKET_SYSTEM.md) for request fields, pagination, role limits,
+notifications, migration instructions, and isolated integration tests.
+
+## 13. Health
 
 ### GET /health
 

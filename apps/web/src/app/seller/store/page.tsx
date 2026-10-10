@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from 'react';
 import { BadgeCheck, CheckCircle2, Clock, Image as ImageIcon, Loader2, Phone, Save, Store, TimerReset, Upload } from 'lucide-react';
+import { WorkingHoursField } from './working-hours-field';
 import {
   getSellerStores,
   updateSellerStore,
@@ -85,6 +86,11 @@ export default function SellerStorePage() {
 
   async function handleAssetUpload(kind: 'logo' | 'banner', file?: File) {
     if (!store || !file) return;
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 10 * 1024 * 1024) {
+      setMessage('');
+      setError('JPG, PNG və ya WEBP formatında, maksimum 10 MB ölçülü şəkil seçin.');
+      return;
+    }
 
     setUploadingAsset(kind);
     setError('');
@@ -146,12 +152,12 @@ export default function SellerStorePage() {
         </div>
 
         {message ? (
-          <div className="form-alert form-alert-success">
+          <div className="form-alert form-alert-success" role="status">
             <CheckCircle2 size={17} />
             {message}
           </div>
         ) : null}
-        {error ? <div className="form-alert form-alert-error">{error}</div> : null}
+        {error ? <div className="form-alert form-alert-error" role="alert">{error}</div> : null}
 
         <form className="dash2-store-form" onSubmit={handleSubmit}>
           <section className="dash2-section dash2-col-2">
@@ -205,7 +211,7 @@ export default function SellerStorePage() {
             <div className="dash2-media-grid">
               <label className="dash2-media-field">
                 <span className="dash2-media-preview" style={mediaStyle(store.logoKey)}>
-                  {!store.logoKey ? <ImageIcon size={22} /> : null}
+                  {!mediaStyle(store.logoKey) ? <ImageIcon size={22} /> : null}
                 </span>
                 <span className="dash2-media-info">
                   <strong>Mağaza loqosu</strong>
@@ -218,14 +224,18 @@ export default function SellerStorePage() {
                 <input
                   accept="image/jpeg,image/png,image/webp"
                   disabled={Boolean(uploadingAsset)}
-                  onChange={(event) => void handleAssetUpload('logo', event.target.files?.[0])}
+                  aria-label="Mağaza loqosunu seç"
+                  onChange={(event) => {
+                    void handleAssetUpload('logo', event.target.files?.[0]);
+                    event.target.value = '';
+                  }}
                   type="file"
                 />
               </label>
 
               <label className="dash2-media-field">
                 <span className="dash2-media-preview" style={mediaStyle(store.bannerKey)}>
-                  {!store.bannerKey ? <ImageIcon size={22} /> : null}
+                  {!mediaStyle(store.bannerKey) ? <ImageIcon size={22} /> : null}
                 </span>
                 <span className="dash2-media-info">
                   <strong>Örtük şəkli</strong>
@@ -238,7 +248,11 @@ export default function SellerStorePage() {
                 <input
                   accept="image/jpeg,image/png,image/webp"
                   disabled={Boolean(uploadingAsset)}
-                  onChange={(event) => void handleAssetUpload('banner', event.target.files?.[0])}
+                  aria-label="Örtük şəklini seç"
+                  onChange={(event) => {
+                    void handleAssetUpload('banner', event.target.files?.[0]);
+                    event.target.value = '';
+                  }}
                   type="file"
                 />
               </label>
@@ -282,18 +296,9 @@ export default function SellerStorePage() {
               </div>
             </header>
             <div className="dash2-form-grid">
-              <label className="dash2-field is-wide">
-                <span>Bazar ertəsi - Cümə</span>
-                <input value={form.workdays} onChange={(event) => updateField('workdays', event.target.value)} />
-              </label>
-              <label className="dash2-field">
-                <span>Şənbə</span>
-                <input value={form.saturday} onChange={(event) => updateField('saturday', event.target.value)} />
-              </label>
-              <label className="dash2-field">
-                <span>Bazar</span>
-                <input value={form.sunday} onChange={(event) => updateField('sunday', event.target.value)} />
-              </label>
+              <WorkingHoursField label="Bazar ertəsi - Cümə" value={form.workdays} onChange={(value) => updateField('workdays', value)} wide />
+              <WorkingHoursField label="Şənbə" value={form.saturday} onChange={(value) => updateField('saturday', value)} />
+              <WorkingHoursField label="Bazar" value={form.sunday} onChange={(value) => updateField('sunday', value)} />
             </div>
           </section>
 

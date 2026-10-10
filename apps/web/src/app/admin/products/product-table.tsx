@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import { statusLabel } from '../../../lib/status-labels';
 import type { AdminProduct } from '../../../lib/admin-api';
 import { AdminEmptyBlock, AdminErrorBlock, AdminLoadingBlock, AdminStatusBadge, formatDate } from '../admin-ui';
 
@@ -65,13 +67,18 @@ export function AdminProductTable({
                     </td>
                   ) : null}
                   <td>
+                    <div className="admin-product-identity">
+                    <Image src={product.images?.find((image) => image.status === 'READY' && image.cdnUrl)?.cdnUrl ?? '/product-placeholder.svg'} alt="" width={44} height={44} unoptimized />
+                    <div>
                     <strong>{product.title}</strong>
                     <small>{product.category?.name ?? 'Kateqoriya yoxdur'}</small>
                     {product.openReportCount ? <small className="admin-flag-label">{product.openReportCount} açıq işarə</small> : null}
+                    </div>
+                    </div>
                   </td>
                   <td>
                     <span>{product.store.name}</span>
-                    <small>{product.store.status}</small>
+                    <small>{statusLabel(product.store.status)}</small>
                   </td>
                   <td>{product.priceLabel}</td>
                   <td>
@@ -81,8 +88,8 @@ export function AdminProductTable({
                   <td>
                     <div className="admin-row-actions">
                       {onFlag && product.status !== 'DELETED' ? (
-                        <button className="admin-link-button admin-flag-button" onClick={() => onFlag(product.id)} type="button">
-                          Şübhəli
+                        <button className="admin-link-button admin-flag-button" title="Əlavə yoxlama üçün səbəb göstərərək işarələ" onClick={() => onFlag(product.id)} type="button">
+                          İşarələ
                         </button>
                       ) : null}
                       <Link className="admin-link-button" href={`/admin/products/${product.id}`}>

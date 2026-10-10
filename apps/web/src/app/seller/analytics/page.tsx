@@ -1,4 +1,5 @@
 'use client';
+import { percentage } from '../../../lib/display-format';
 
 import { useEffect, useState } from 'react';
 import { BarChart3, Eye, MessageSquare, Phone, Store } from 'lucide-react';
@@ -63,7 +64,7 @@ export default function SellerAnalyticsPage() {
         <div className="dash2-page-head">
           <div>
             <h2>Mağaza statistikası</h2>
-            <p>Raw IP və user-agent göstərilmir. Yalnız təhlükəsiz lead sayları paneldə görünür.</p>
+            <p>Seçilən dövr üzrə məhsul baxışları və alıcıların əlaqə hərəkətləri.</p>
           </div>
           <div aria-label="Period seçimi" className="dash2-range" role="group">
             {ranges.map((item) => (
@@ -133,7 +134,7 @@ export default function SellerAnalyticsPage() {
 
               <article className="dash2-tile is-amber" style={{ animationDelay: '180ms' }}>
                 <div className="dash2-tile-head">
-                  <small>WhatsApp klik</small>
+                  <small>WhatsApp klikləri</small>
                   <span className="dash2-tile-icon">
                     <MessageSquare size={17} />
                   </span>
@@ -179,7 +180,7 @@ export default function SellerAnalyticsPage() {
                     <span className="dash2-dist-bar">
                       <i
                         style={{
-                          width: `${Math.max(4, (row.value / Math.max(total, 1)) * 100)}%`,
+                          width: `${percentage(row.value, total)}%`,
                           background: row.accent,
                           animationDelay: `${360 + index * 60}ms`,
                         }}

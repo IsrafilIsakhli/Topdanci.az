@@ -1,4 +1,5 @@
 'use client';
+import { formatLongDate, percentage } from '../../lib/display-format';
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
@@ -7,6 +8,7 @@ import { ArrowUpRight, BadgeCheck, Eye, MessageSquare, Package, Pencil, Plus, Sp
 import { ApiClientError } from '../../lib/api-client';
 import { CountUp } from '../../components/count-up';
 import { getSellerLeads, getSellerOverview, type SellerLead, type SellerOverview } from '../../lib/seller-api';
+import { productStatusLabel, productStatusTone } from '../../lib/status-labels';
 import { LeadActivityChart } from './dashboard/lead-activity-chart';
 import { OnboardingRing } from './dashboard/onboarding-ring';
 import {
@@ -15,7 +17,6 @@ import {
   leadIcon,
   leadLabels,
   leadTone,
-  statusLabels,
   timeAgo,
 } from './dashboard/dashboard-utils';
 
@@ -113,7 +114,7 @@ export default function SellerDashboardPage() {
     { label: 'Gözləyən məhsul', value: overview.pendingProducts, caption: 'yoxlamada', icon: TimerReset, accent: 'amber' },
     { label: 'Qaralama', value: overview.draftProducts, caption: 'redaktə olunur', icon: Pencil, accent: 'violet' },
     {
-      label: 'WhatsApp klik',
+      label: 'WhatsApp klikləri',
       value: overview.whatsappClicksToday,
       caption: 'son 7 gün',
       icon: MessageSquare,
@@ -191,7 +192,7 @@ function DashboardView({
                 <span>{greeting}</span>
                 {now ? (
                   <span className="dash2-hero-date">
-                    · {now.toLocaleDateString('az-AZ', { weekday: 'long', day: 'numeric', month: 'long' })}
+                    · {formatLongDate(now)}
                   </span>
                 ) : null}
               </div>
@@ -249,7 +250,7 @@ function DashboardView({
                         <i
                           key={sparkIndex}
                           style={{
-                            height: `${Math.max(10, (value / sparkMax) * 100)}%`,
+                            height: `${percentage(value, sparkMax)}%`,
                             animationDelay: `${280 + sparkIndex * 55}ms`,
                           }}
                         />
@@ -329,13 +330,13 @@ function DashboardView({
                     </span>
                     <div className="dash2-board-info">
                       <strong>{product.title}</strong>
-                      <span className={`dash2-status ${statusLabels[product.status ?? '']?.tone ?? 'is-draft'}`}>
-                        {statusLabels[product.status ?? '']?.label ?? 'Naməlum'}
+                      <span className={`dash2-status ${productStatusTone(product.status)}`}>
+                        {productStatusLabel(product.status)}
                       </span>
                       <span className="dash2-bar">
                         <i
                           style={{
-                            width: `${Math.max(6, (product.leadCount / maxLeadCount) * 100)}%`,
+                            width: `${percentage(product.leadCount, maxLeadCount)}%`,
                             animationDelay: `${320 + index * 80}ms`,
                           }}
                         />

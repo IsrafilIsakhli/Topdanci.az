@@ -3,17 +3,14 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
-import { ArrowRight, Loader2, Eye, EyeOff, LockKeyhole, Mail } from 'lucide-react';
+import { ArrowRight, Loader2, Eye, EyeOff, LockKeyhole, Mail, Store } from 'lucide-react';
 import { ApiClientError } from '../../lib/api-client';
 import { login } from '../../lib/seller-api';
 
-const defaultDemoEmail = process.env.NEXT_PUBLIC_DEMO_SELLER_EMAIL || 'seller-demo@topdanci.az';
-const defaultDemoPassword = process.env.NEXT_PUBLIC_DEMO_SELLER_PASSWORD || 'SellerDemo123!';
-
 export function LoginForm({ next }: { next?: string | undefined }) {
   const router = useRouter();
-  const [identifier, setIdentifier] = useState(defaultDemoEmail);
-  const [password, setPassword] = useState(defaultDemoPassword);
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,7 +28,7 @@ export function LoginForm({ next }: { next?: string | undefined }) {
           : response.user.role === 'SELLER'
             ? '/seller'
             : '/';
-      router.push(next && next.startsWith('/') ? next : fallback);
+      router.push(next && next.startsWith('/') && !next.startsWith('//') && !next.includes('\\') ? next : fallback);
       router.refresh();
     } catch (caught) {
       const status = caught instanceof ApiClientError ? caught.status : undefined;
@@ -45,12 +42,12 @@ export function LoginForm({ next }: { next?: string | undefined }) {
     <div className="authx-wrap">
       <Link className="authx-brand" href="/">
         <span className="authx-brand-mark" aria-hidden="true">
-          td
+          <Store size={22} />
         </span>
         <span className="authx-brand-name">TopdanBazar</span>
       </Link>
 
-      <form className="authx-card" onSubmit={handleSubmit} noValidate>
+      <form className="authx-card" onSubmit={handleSubmit}>
         <header className="authx-card-head">
           <h1>Xoş gəldiniz</h1>
           <p>Hesabınıza daxil olun.</p>
@@ -102,15 +99,8 @@ export function LoginForm({ next }: { next?: string | undefined }) {
         </label>
 
         <div className="authx-row">
-          <label className="authx-check">
-            <input type="checkbox" defaultChecked />
-            <span>
-              <i aria-hidden="true">✓</i>
-            </span>
-            <em>Məni yadda saxla</em>
-          </label>
           <Link className="authx-link" href="/contact">
-            Şifrəni unutmusan?
+            Giriş üçün dəstək
           </Link>
         </div>
 
@@ -123,7 +113,6 @@ export function LoginForm({ next }: { next?: string | undefined }) {
       <p className="authx-alt">
         Hesabınız yoxdur? <Link href="/open-store">Pulsuz mağaza açın</Link>
       </p>
-      <p className="authx-note">Demo giriş üçün test məlumatları əvvəlcədən doldurulub.</p>
     </div>
   );
 }
